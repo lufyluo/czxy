@@ -247,5 +247,15 @@ create table user
 )
   comment '用户信息';
 
+create table token
+(
+	id serial not null,
+	account varchar(60),
+	token varchar(180),
+	expire integer,
+	updated_time timestamp default CURRENT_TIMESTAMP,
+	created_time timestamp default CURRENT_TIMESTAMP
+);
+
 
 ```
