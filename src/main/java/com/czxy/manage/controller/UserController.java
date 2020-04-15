@@ -28,8 +28,8 @@ public class UserController {
         return ResponseUtil.success(userService.get());
     }
 
-    @GetMapping
-    @ApiOperation("get")
+    @GetMapping("/page")
+    @ApiOperation("page")
     public PageResponse<Integer> page(){
         return userService.page();
     }

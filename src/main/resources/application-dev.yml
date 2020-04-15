@@ -4,3 +4,5 @@ spring:
     username: root
     password: 123456
     url: jdbc:mysql://localhost:3308/czxy?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+logstrategy:
+  request: true
