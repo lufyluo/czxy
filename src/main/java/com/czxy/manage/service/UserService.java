@@ -24,7 +24,7 @@ public class UserService {
         UserEntity userEntity = PojoMapper.INSTANCE.toUserEntity(userInfo);
         userMapper.insert(userEntity);
         AccountEntity accountEntity =PojoMapper.INSTANCE.toAccountEntity(userInfo);
-        accountEntity.setId(userEntity.getId());
+        accountEntity.setUserId(userEntity.getId());
         userMapper.insertAccount(accountEntity);
         return null;
     }
