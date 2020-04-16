@@ -1,6 +1,7 @@
 package com.czxy.manage.model.vo.user;
 
 import com.czxy.manage.model.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -19,6 +20,7 @@ public class UserInfo extends BaseEntity {
     private int gender;
     private String position;
     private int age;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date birthday;
     private int category;
     private String wechatId;

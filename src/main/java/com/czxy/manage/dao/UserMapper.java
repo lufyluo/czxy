@@ -1,5 +1,6 @@
 package com.czxy.manage.dao;
 
+import com.czxy.manage.model.entity.AccountEntity;
 import com.czxy.manage.model.entity.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,4 +14,6 @@ public interface UserMapper {
     UserEntity query(int id);
 
     Integer insert(UserEntity userEntity);
+
+    Integer insertAccount(AccountEntity accountEntity);
 }

@@ -2,12 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.UserMapper">
     <sql id="base_column">
-        id, name, idcard, phone, gender, "position", age, birthday, category,
+        id, name, idcard, phone, gender, position, age, birthday, category,
         wechat_id as wechatId,
         updated_time as updatedTime, created_time as createdTime
     </sql>
     <insert id="insert" parameterType="com.czxy.manage.model.entity.UserEntity" useGeneratedKeys="true"
             keyProperty="id">
+        insert into user
+        (name, idcard, phone, gender, position, age, birthday, category, wechat_id, updated_time, created_time)
+        values(#{name}, #{idCard}, #{phone}, #{gender}, #{position}, #{age}, #{birthday}, #{category}, #{wechatId}, #{updatedTime}, #{createdTime});
+    </insert>
+    <insert id="insertAccount" parameterType="com.czxy.manage.model.entity.UserEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into account (account, user_id, password) values (#{account},#{userId},#{password});
     </insert>
 
     <select id="query" resultType="com.czxy.manage.model.entity.UserEntity">
