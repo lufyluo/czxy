@@ -16,6 +16,6 @@
         select
         <include refid="base_column"/>
         from account
-        where account = #{account} and password = #{password}
+        where account = #{account} and password = #{pwd}
     </select>
 </mapper>

@@ -64,7 +64,7 @@ public class AccountService {
         String pwd = decodePassword(changePwdInfo.getOriginPassword(), null);
         String newPwd = decodePassword(changePwdInfo.getNewPassword(), null);
 
-        AccountEntity accountEntity = userAccountMapper.query(token, pwd);
+        AccountEntity accountEntity = userAccountMapper.query(pwd, token);
 
         if (accountEntity == null) {
             throw new ManageException(ResponseStatus.ORIGINPWDERROR);
@@ -79,6 +79,6 @@ public class AccountService {
     }
 
     public Boolean delete(Integer accountId) {
-        return accountMapper.delete(accountId)==1;
+        return accountMapper.delete(accountId) == 1;
     }
 }

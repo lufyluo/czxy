@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 /**
  * @Author lufy
@@ -20,6 +19,7 @@ import javax.validation.constraints.NotNull;
  */
 @RestController
 @Api("账号操作")
+@RequestMapping("/api/account")
 public class AccountController {
     @Autowired
     private AccountService accountService;
@@ -29,8 +29,8 @@ public class AccountController {
         return ResponseUtil.success(accountService.login(accountInfo, timestamp));
     }
 
-    @PutMapping("/login")
-    @ApiOperation(value = "账号密码登录", notes = "登录")
+    @PutMapping
+    @ApiOperation(value = "修改密码", notes = "登录")
     public BaseResponse<Boolean> changePassword(@RequestBody ChangePwdInfo changePwdInfo,@RequestHeader String token) {
         return ResponseUtil.success(accountService.changePassword(changePwdInfo,token));
     }
