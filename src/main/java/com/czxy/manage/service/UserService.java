@@ -1,7 +1,12 @@
 package com.czxy.manage.service;
 
-import com.czxy.manage.infrastructure.response.PageResponse;
+import com.czxy.manage.dao.UserMapper;
+import com.czxy.manage.infrastructure.util.PojoMapper;
+import com.czxy.manage.model.entity.UserEntity;
+import com.czxy.manage.model.vo.UserCreateInfo;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @Author lufy
@@ -10,11 +15,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService {
-    public Integer get() {
-        return 0;
-    }
-
-    public PageResponse<Integer> page() {
+    @Resource
+    private UserMapper userMapper;
+    public Boolean add(UserCreateInfo userInfo) {
+        UserEntity userEntity = PojoMapper.INSTANCE.toUserEntity(userInfo);
+        userMapper.insert(userEntity);
         return null;
     }
 }

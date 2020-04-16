@@ -1,5 +1,6 @@
-package com.czxy.manage.model.entity;
+package com.czxy.manage.model.vo;
 
+import com.czxy.manage.model.entity.BaseEntity;
 import lombok.Data;
 
 import java.util.Date;
@@ -7,10 +8,10 @@ import java.util.Date;
 /**
  * @Author lufy
  * @Description ...
- * @Date 20-4-15 下午9:44
+ * @Date 20-4-16 下午9:10
  */
 @Data
-public class UserEntity extends BaseEntity{
+public class UserInfo extends BaseEntity {
     private int id;
     private String name;
     private String idCard;

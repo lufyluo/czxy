@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.UserMapper">
+    <sql id="base_column">
+        id, name, idcard, phone, gender, "position", age, birthday, category,
+        wechat_id as wechatId,
+        updated_time as updatedTime, created_time as createdTime
+    </sql>
+    <insert id="insert" parameterType="com.czxy.manage.model.entity.UserEntity" useGeneratedKeys="true"
+            keyProperty="id">
+    </insert>
 
-    <select id="query" resultType="com.czxy.manage.model.entity.UserEntity"></select>
+    <select id="query" resultType="com.czxy.manage.model.entity.UserEntity">
+        select
+        <include refid="base_column"/>
+        from user
+    </select>
 </mapper>

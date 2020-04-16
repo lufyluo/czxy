@@ -257,5 +257,6 @@ create table token
 	created_time timestamp default CURRENT_TIMESTAMP
 );
 
+alter table account alter column password set default 'e10adc3949ba59abbe56e057f20f883e';
 
 ```

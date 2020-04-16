@@ -11,4 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper {
     UserEntity query(int id);
+
+    Integer insert(UserEntity userEntity);
 }

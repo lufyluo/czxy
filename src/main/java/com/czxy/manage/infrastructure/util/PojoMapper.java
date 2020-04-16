@@ -1,5 +1,7 @@
 package com.czxy.manage.infrastructure.util;
 
+import com.czxy.manage.model.entity.UserEntity;
+import com.czxy.manage.model.vo.UserCreateInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -11,4 +13,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface PojoMapper {
     PojoMapper INSTANCE = Mappers.getMapper(PojoMapper.class);
+
+    UserEntity toUserEntity(UserCreateInfo userInfo);
 }
