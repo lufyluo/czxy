@@ -1,4 +1,4 @@
-package com.czxy.manage.model.vo;
+package com.czxy.manage.model.vo.user;
 
 import lombok.Data;
 

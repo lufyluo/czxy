@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.UserAccountMapper">
+    <sql id="base_column">
+        id, account, user_id as userId
+    </sql>
+
+    <select id="query" resultType="com.czxy.manage.model.entity.AccountEntity">
+        select
+        <include refid="base_column"/>
+        from account a
+        left join token t
+        on a.account = t.account
+        where a.password = #{pwd} and t.token = #{token}
+    </select>
+</mapper>

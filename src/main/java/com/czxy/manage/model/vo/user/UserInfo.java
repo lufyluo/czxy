@@ -1,4 +1,4 @@
-package com.czxy.manage.model.vo;
+package com.czxy.manage.model.vo.user;
 
 import com.czxy.manage.model.entity.BaseEntity;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.czxy.manage.infrastructure.util;
 
 import com.czxy.manage.model.entity.UserEntity;
-import com.czxy.manage.model.vo.UserCreateInfo;
+import com.czxy.manage.model.vo.user.UserCreateInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

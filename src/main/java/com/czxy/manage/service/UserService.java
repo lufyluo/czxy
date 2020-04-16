@@ -3,7 +3,7 @@ package com.czxy.manage.service;
 import com.czxy.manage.dao.UserMapper;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.UserEntity;
-import com.czxy.manage.model.vo.UserCreateInfo;
+import com.czxy.manage.model.vo.user.UserCreateInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
