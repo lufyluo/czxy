@@ -5,12 +5,12 @@ import lombok.Data;
 import java.util.Date;
 @Data
 public class ClassEntity extends BaseEntity {
-    private int id;
+    private Integer id;
     private String name;
-    private int teacherId;
-    private int addressId;
-    private int org;
+    private Integer teacherId;
+    private Integer addressId;
+    private Integer org;
     private Date beginTime;
     private Date endTime;
-    private int arrangeId;
+    private Integer arrangeId;
 }

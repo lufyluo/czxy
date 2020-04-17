@@ -12,14 +12,14 @@ import java.util.Date;
  */
 @Data
 public class UserEntity extends BaseEntity{
-    private int id;
+    private Integer id;
     private String name;
     private String idCard;
     private String phone;
-    private int gender;
+    private Integer gender;
     private String position;
-    private int age;
+    private Integer age;
     private Date birthday;
-    private int category;
+    private Integer category;
     private String wechatId;
 }

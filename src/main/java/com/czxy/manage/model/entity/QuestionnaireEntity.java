@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class QuestionnaireEntity extends  BaseEntity {
-    private int id;
+    private Integer id;
     private String name;
-    private int classId;
+    private Integer classId;
 }

@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class AddressEntity extends BaseEntity {
-    private int id;
+    private Integer id;
     private String name;
-    private int parentId;
-    private int category;
+    private Integer parentId;
+    private Integer category;
     private String code;
 }

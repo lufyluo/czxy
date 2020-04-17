@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class MenusEntity extends BaseEntity {
-    private int id;
-    private int parentId;
+    private Integer id;
+    private Integer parentId;
     private String name;
     private String code;
 }

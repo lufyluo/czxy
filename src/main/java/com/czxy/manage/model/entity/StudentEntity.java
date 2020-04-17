@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class StudentEntity extends BaseEntity {
-    private int id;
+    private Integer id;
     private String signFlag;
-    private int classId;
+    private Integer classId;
 }

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class OrgEntity extends BaseEntity {
-    private int id;
-    private int name;
-    private int addressId;
+    private Integer id;
+    private Integer name;
+    private Integer addressId;
 }

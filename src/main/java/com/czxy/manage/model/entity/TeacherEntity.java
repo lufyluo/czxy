@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class TeacherEntity extends BaseEntity {
-    private int id;
-    private int score;
+    private Integer id;
+    private Integer score;
     private String comment;
 }

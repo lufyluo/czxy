@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class AccountEntity extends BaseEntity{
-    private int id;
+    private Integer id;
     private String account;
     private String password;
-    private int userId;
+    private Integer userId;
 }

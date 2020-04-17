@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class QuestionrecieveEntity extends BaseEntity {
-    private int id;
+    private Integer id;
     private String recieverId;
-    private int questionitemId;
-    private int score;
-    private int content;
+    private Integer questionitemId;
+    private Integer score;
+    private Integer content;
 }

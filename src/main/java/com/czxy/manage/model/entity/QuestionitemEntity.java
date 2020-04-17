@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class QuestionitemEntity {
-    private int id;
-    private int naireId;
+    private Integer id;
+    private Integer naireId;
     private String title;
-    private int score;
-    private int index;
+    private Integer score;
+    private Integer index;
 
 }
