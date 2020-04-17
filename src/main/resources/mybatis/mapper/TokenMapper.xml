@@ -13,4 +13,7 @@
     <delete id="delete">
         delete from token where account = #{account}
     </delete>
+    <select id="tokenQuery" resultType="java.lang.Boolean">
+        select count(1) from token where token=#{token};
+    </select>
 </mapper>

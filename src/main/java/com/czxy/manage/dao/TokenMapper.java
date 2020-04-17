@@ -12,4 +12,5 @@ public interface TokenMapper {
     Integer delete(String account);
 
     void insert(String account, String token, Long expire);
+    Boolean tokenQuery(String token);
 }
