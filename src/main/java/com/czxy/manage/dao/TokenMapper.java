@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface TokenMapper {
+    void flushTime(String token);
+
     Integer delete(String account);
 
     void insert(String account, String token, Long expire);

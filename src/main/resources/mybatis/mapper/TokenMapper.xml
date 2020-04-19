@@ -10,10 +10,13 @@
         #{account},#{token},#{expire}
         )
     </insert>
+    <update id="flushTime">
+        update token set updated_time=SYSDATE() where token=#{token}
+    </update>
     <delete id="delete">
         delete from token where account = #{account}
     </delete>
     <select id="tokenQuery" resultType="java.lang.Boolean">
-        select count(1) from token where token=#{token};
+        select count(1) from token where token=#{token} and now() - updated_time <![CDATA[<=]]>expire
     </select>
 </mapper>

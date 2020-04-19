@@ -1,5 +1,6 @@
 package com.czxy.manage.controller;
 
+import com.czxy.manage.infrastructure.aop.Anonymous;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.vo.user.AccountInfo;
@@ -25,6 +26,7 @@ public class AccountController {
     private AccountService accountService;
     @PostMapping("/login")
     @ApiOperation(value = "账号密码登录", notes = "登录")
+    @Anonymous
     public BaseResponse<String> login(@RequestBody AccountInfo accountInfo, @RequestHeader String timestamp) {
         return ResponseUtil.success(accountService.login(accountInfo, timestamp));
     }
