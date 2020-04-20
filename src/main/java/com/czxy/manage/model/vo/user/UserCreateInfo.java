@@ -11,4 +11,5 @@ import lombok.Data;
 public class UserCreateInfo extends UserInfo {
     private String account;
     private String password;
+    private String orgName;
 }

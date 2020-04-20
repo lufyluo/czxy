@@ -18,10 +18,14 @@
         a.account,a.password,
         name, idcard, phone, gender, position, age, birthday, category,
         wechat_id as wechatId,
+        org_id as orgId,
+        o.name as orgName,
+        nation,
         a.created_time as createdTime,
         a.updated_time as updatedTime
         from account a
         left join 'user' u
+        left join org o
         on a.user_id = u.id
         where u.name like '%${param}%'
         order by a.created_time

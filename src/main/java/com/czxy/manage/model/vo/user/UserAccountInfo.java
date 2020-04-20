@@ -15,4 +15,5 @@ import java.util.Date;
 public class UserAccountInfo extends UserInfo {
     private String account;
     private String password;
+    private String orgName;
 }
