@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.UserMenuMapper">
+    <sql id="base_column">
+        id,parent_id as parentId,name,code,updated_time as updatedTime,created_time as createdTime
+    </sql>
+    <select id="get" resultType="com.czxy.manage.model.vo.user.UserMenuInfo">
+        select <include refid="base_column"/> from menus
+    </select>
+
+</mapper>
