@@ -4,18 +4,25 @@ import com.czxy.manage.dao.AccountMapper;
 import com.czxy.manage.dao.TokenMapper;
 import com.czxy.manage.dao.UserAccountMapper;
 import com.czxy.manage.infrastructure.gloable.ManageException;
+import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
+import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.AccountEntity;
 import com.czxy.manage.model.entity.TokenEntity;
 import com.czxy.manage.model.entity.UserEntity;
 import com.czxy.manage.model.vo.user.AccountInfo;
 import com.czxy.manage.model.vo.user.ChangePwdInfo;
+import com.czxy.manage.model.vo.user.UserAccountInfo;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Base64;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
@@ -80,5 +87,12 @@ public class AccountService {
 
     public Boolean delete(Integer accountId) {
         return accountMapper.delete(accountId) == 1;
+    }
+
+    public PageInfo<UserAccountInfo> page(PageParam<String> pageParam) {
+        Page pageUtil = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
+        List<UserAccountInfo> result = userAccountMapper.queryAll(pageParam.getParam());
+        PageInfo<UserAccountInfo> userAccountPageInfo = pageUtil.toPageInfo();
+        return userAccountPageInfo;
     }
 }

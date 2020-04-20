@@ -13,4 +13,17 @@
         on a.account = t.account
         where a.password = #{pwd} and t.token = #{token}
     </select>
+    <select id="queryAll" resultType="com.czxy.manage.model.vo.user.UserAccountInfo">
+        select
+        a.account,a.password,
+        name, idcard, phone, gender, position, age, birthday, category,
+        wechat_id as wechatId,
+        a.created_time as createdTime,
+        a.updated_time as updatedTime
+        from account a
+        left join 'user' u
+        on a.user_id = u.id
+        where u.name like '%${param}%'
+        order by a.created_time
+    </select>
 </mapper>
