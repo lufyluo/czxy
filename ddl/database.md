@@ -247,6 +247,17 @@ create table user
 )
   comment '用户信息';
 
+create table user_menu
+(
+    id           int auto_increment
+        primary key,
+    user_id int  not null ,
+    menu_id int not null ,
+    updated_time datetime default CURRENT_TIMESTAMP null,
+    created_time datetime default CURRENT_TIMESTAMP null
+);
+
+
 create table token
 (
 	id serial not null,
