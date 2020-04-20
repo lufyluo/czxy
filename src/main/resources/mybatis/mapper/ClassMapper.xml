@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.ClassMapper">
+    <sql id="base_column">
+               id
+        ,name
+        ,teacher_id as teacherId
+        ,address_id as addressId
+        ,org_id as orgId
+        ,begin_time as beginTime
+        ,end_time as endTime
+        ,arrange_id as arrangeId
+        updated_time as updatedTime, created_time as createdTime
+    </sql>
+
+    <select id="queryAll" resultType="com.czxy.manage.model.entity.ClassOrgEntity">
+        select
+         c.id
+        ,c.name
+        ,c.teacher_id as teacherId
+        ,c.address_id as addressId
+        ,c.org_id as orgId
+        ,c.begin_time as beginTime
+        ,c.end_time as endTime
+        ,c.arrange_id as arrangeId
+        c.updated_time as updatedTime, c.created_time as createdTime
+        org.name
+        from class c
+        left join org o
+        on c.org_id = org.id
+        where name like '${param}' or org_name like '${param}'
+    </select>
+</mapper>

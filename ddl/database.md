@@ -246,7 +246,11 @@ create table user
   created_time datetime default CURRENT_TIMESTAMP null
 )
   comment '用户信息';
+alter table user
+	add org_id int null comment '工作单位';
 
+alter table user
+	add nation varchar(10) null comment '民族';
 create table user_menu
 (
     id           int auto_increment

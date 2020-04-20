@@ -2,6 +2,7 @@ package com.czxy.manage.model.vo.user;
 
 import com.czxy.manage.model.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
@@ -17,7 +18,9 @@ public class UserInfo extends BaseEntity {
     private String name;
     private String idCard;
     private String phone;
+    @ApiModelProperty("0-男,1-女,2-未知")
     private Integer gender;
+    @ApiModelProperty("职位")
     private String position;
     private Integer age;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
