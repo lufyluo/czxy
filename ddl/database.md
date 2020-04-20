@@ -276,4 +276,7 @@ alter table account alter column password set default 'e10adc3949ba59abbe56e057f
 
 
 alter table org modify name varchar(50) not null;
+
+alter table user
+	add native varchar(255) null comment '籍贯';
 ```
