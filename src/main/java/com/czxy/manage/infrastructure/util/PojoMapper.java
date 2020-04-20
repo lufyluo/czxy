@@ -1,9 +1,6 @@
 package com.czxy.manage.infrastructure.util;
 
-import com.czxy.manage.model.entity.AccountEntity;
-import com.czxy.manage.model.entity.ClassEntity;
-import com.czxy.manage.model.entity.ClassOrgEntity;
-import com.czxy.manage.model.entity.UserEntity;
+import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.classes.ClassInfo;
 import com.czxy.manage.model.vo.classes.ClassOrgInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
@@ -27,4 +24,5 @@ public interface PojoMapper {
 
     ClassOrgInfo toClassOrgInfo(ClassOrgEntity entity);
     List<ClassOrgInfo> toClassOrgInfos(List<ClassOrgEntity> classEntities);
+
 }

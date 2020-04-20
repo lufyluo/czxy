@@ -9,12 +9,8 @@
     <insert id="insert" parameterType="com.czxy.manage.model.entity.UserEntity" useGeneratedKeys="true"
             keyProperty="id">
         insert into user
-        (name, idcard, phone, gender, position, age, birthday, category, wechat_id, updated_time, created_time)
-        values(#{name}, #{idCard}, #{phone}, #{gender}, #{position}, #{age}, #{birthday}, #{category}, #{wechatId}, #{updatedTime}, #{createdTime});
-    </insert>
-    <insert id="insertAccount" parameterType="com.czxy.manage.model.entity.UserEntity" useGeneratedKeys="true"
-            keyProperty="id">
-        insert into account (account, user_id, password) values (#{account},#{userId},#{password});
+        (name, idcard, phone, gender, position, age, birthday, category, wechat_id, updated_time, created_time,org_id,nation)
+        values(#{name}, #{idCard}, #{phone}, #{gender}, #{position}, #{age}, #{birthday}, #{category}, #{wechatId}, #{updatedTime}, #{createdTime}, #{orgId}, #{nation});
     </insert>
 
     <select id="query" resultType="com.czxy.manage.model.entity.UserEntity">

@@ -18,4 +18,9 @@
         from account
         where account = #{account} and password = #{pwd}
     </select>
+
+    <insert id="insert" parameterType="com.czxy.manage.model.entity.AccountEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into account (account, user_id, password) values (#{account},#{userId},#{password});
+    </insert>
 </mapper>

@@ -15,4 +15,6 @@ public interface AccountMapper {
     Integer updatePwd(int id, String newPwd);
 
     Integer delete(Integer id);
+
+    Integer insert(AccountEntity accountEntity);
 }
