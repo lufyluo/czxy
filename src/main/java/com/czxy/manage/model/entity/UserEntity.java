@@ -22,4 +22,6 @@ public class UserEntity extends BaseEntity{
     private Date birthday;
     private Integer category;
     private String wechatId;
+    private Integer orgId;
+    private String nation;
 }
