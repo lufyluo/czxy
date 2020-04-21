@@ -13,4 +13,5 @@ public class ClassEntity extends BaseEntity {
     private Date beginTime;
     private Date endTime;
     private Integer arrangeId;
+    private String topics;
 }
