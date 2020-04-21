@@ -279,4 +279,5 @@ alter table org modify name varchar(50) not null;
 
 alter table user
 	add native varchar(255) null comment '籍贯';
+alter table user change native nativeplace varchar(255) null comment '籍贯';
 ```

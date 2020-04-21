@@ -25,8 +25,13 @@ public class UserInfo extends BaseEntity {
     private Integer age;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date birthday;
+    @ApiModelProperty("用户类型-0：普通用户，1：学员，2：讲师，3：班主任，4：公职人员，5：其它")
     private Integer category;
     private String wechatId;
+    @ApiModelProperty("工作单位")
     private Integer orgId;
+    @ApiModelProperty("民族")
     private String nation;
+    @ApiModelProperty("籍贯")
+    private String nativePlace;
 }
