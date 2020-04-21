@@ -9,8 +9,8 @@
     <insert id="insert" parameterType="com.czxy.manage.model.entity.UserEntity" useGeneratedKeys="true"
             keyProperty="id">
         insert into user
-        (name, idcard, phone, gender, position, age, birthday, category, wechat_id, updated_time, created_time,org_id,nation)
-        values(#{name}, #{idCard}, #{phone}, #{gender}, #{position}, #{age}, #{birthday}, #{category}, #{wechatId}, #{updatedTime}, #{createdTime}, #{orgId}, #{nation});
+        (name, idcard, phone, gender, position, age, birthday, category, wechat_id, updated_time, created_time,org_id,nation,nativeplace)
+        values(#{name}, #{idCard}, #{phone}, #{gender}, #{position}, #{age}, #{birthday}, #{category}, #{wechatId}, #{updatedTime}, #{createdTime}, #{orgId}, #{nation}, #{nativePlace});
     </insert>
 
     <select id="query" resultType="com.czxy.manage.model.entity.UserEntity">
