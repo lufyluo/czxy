@@ -30,7 +30,7 @@ public class UserService {
 
     @Transactional
     public Boolean add(UserCreateInfo userInfo) {
-        method(userInfo);
+        insertIfAbsentOrg(userInfo);
         UserEntity userEntity = PojoMapper.INSTANCE.toUserEntity(userInfo);
         userMapper.insert(userEntity);
         AccountEntity accountEntity = PojoMapper.INSTANCE.toAccountEntity(userInfo);
@@ -46,12 +46,12 @@ public class UserService {
     }
 
     public Boolean update(UserCreateInfo userCreateInfo) {
-        method(userCreateInfo);
-        updateMethod(userCreateInfo);
+        insertIfAbsentOrg(userCreateInfo);
+        updateUserAccount(userCreateInfo);
         return true;
     }
 
-    private void method(UserCreateInfo userCreateInfo) {
+    private void insertIfAbsentOrg(UserCreateInfo userCreateInfo) {
         if (userCreateInfo.getOrgId() == null && !StringUtils.isEmpty(userCreateInfo.getOrgName())) {
             OrgEntity orgEntity = new OrgEntity();
             orgEntity.setName(userCreateInfo.getOrgName());
@@ -61,7 +61,7 @@ public class UserService {
         }
     }
 
-    private void updateMethod(UserCreateInfo userCreateInfo) {
+    private void updateUserAccount(UserCreateInfo userCreateInfo) {
         UserEntity userEntity = PojoMapper.INSTANCE.toUserEntity(userCreateInfo);
         userMapper.update(userEntity);
         AccountEntity accountEntity = PojoMapper.INSTANCE.toAccountEntity(userCreateInfo);
