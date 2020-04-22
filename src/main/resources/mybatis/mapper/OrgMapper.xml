@@ -5,4 +5,7 @@
             keyProperty="id">
         insert into org (name, address_id) values (#{name},#{addressId});
     </insert>
+    <update id="update">
+        update org set  name=#{name}, address_id=#{addressId},updated_time= now() where id=#{id}
+    </update>
 </mapper>

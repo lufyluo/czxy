@@ -17,4 +17,8 @@ public interface AccountMapper {
     Integer delete(Integer id);
 
     Integer insert(AccountEntity accountEntity);
+
+    Integer deleteByUserId(Integer id);
+
+    Integer update(AccountEntity accountEntity);
 }

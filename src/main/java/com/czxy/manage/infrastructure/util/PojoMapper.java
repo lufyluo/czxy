@@ -25,4 +25,5 @@ public interface PojoMapper {
     ClassOrgInfo toClassOrgInfo(ClassOrgEntity entity);
     List<ClassOrgInfo> toClassOrgInfos(List<ClassOrgEntity> classEntities);
 
+    OrgEntity toOrgEntity(UserCreateInfo userCreateInfo);
 }

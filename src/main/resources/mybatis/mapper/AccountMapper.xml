@@ -6,10 +6,16 @@
         updated_time as updatedTime, created_time as createdTime
     </sql>
     <update id="updatePwd">
-        update account set password = #{newPwd} where id = #{id}
+        update account set password = #{newPwd},updated_time = now() where id = #{id}
+    </update>
+    <update id="update">
+        update account set account = #{account}, password =#{password},updated_time = now() where user_id =#{id}
     </update>
     <delete id="delete">
         delete from account where id = #{id}
+    </delete>
+    <delete id="deleteByUserId">
+        delete from account where user_id=#{id}
     </delete>
 
     <select id="query" resultType="com.czxy.manage.model.entity.AccountEntity">

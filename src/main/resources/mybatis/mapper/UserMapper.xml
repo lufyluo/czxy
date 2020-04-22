@@ -12,6 +12,14 @@
         (name, idcard, phone, gender, position, age, birthday, category, wechat_id, updated_time, created_time,org_id,nation,nativeplace)
         values(#{name}, #{idCard}, #{phone}, #{gender}, #{position}, #{age}, #{birthday}, #{category}, #{wechatId}, #{updatedTime}, #{createdTime}, #{orgId}, #{nation}, #{nativePlace});
     </insert>
+    <update id="update">
+        update user
+        set name=#{name}, idcard=#{idCard}, phone=#{phone}, gender=#{gender}, position=#{position}, age=#{age}, birthday=#{birthday}, category=#{category}, wechat_id=#{wechatId}, updated_time=now(), org_id=#{orgId},nation=#{nation},nativeplace=#{nativePlace}
+        where id=#{id}
+    </update>
+    <delete id="delete">
+      delete from user where id=#{id}
+    </delete>
 
     <select id="query" resultType="com.czxy.manage.model.entity.UserEntity">
         select
