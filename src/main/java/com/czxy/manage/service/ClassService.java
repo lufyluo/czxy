@@ -28,6 +28,7 @@ public class ClassService {
     private ClassMapper classMapper;
     @Resource
     private TypeMapper typeMapper;
+
     public PageInfo<ClassOrgInfo> page(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<ClassOrgEntity> classEntities = classMapper.queryAll(pageParam.getParam());
@@ -37,33 +38,34 @@ public class ClassService {
         fetchTopics(userAccountPageInfo.getList());
         return userAccountPageInfo;
     }
-    private void fetchTopics(List<ClassOrgInfo> classOrgInfos){
+
+    private void fetchTopics(List<ClassOrgInfo> classOrgInfos) {
         List<TypeEntity> types = getTypes(classOrgInfos);
-        classOrgInfos.forEach(n->{
-            if (StringUtil.isNotEmpty(n.getTopics())){
+        classOrgInfos.forEach(n -> {
+            if (StringUtil.isNotEmpty(n.getTopics())) {
                 List<String> idsTemp = Arrays.asList(
                         n.getTopics().split(","));
                 n.setTopicNames(types.stream()
-                        .filter(item->idsTemp.contains(item.getId()+""))
+                        .filter(item -> idsTemp.contains(item.getId() + ""))
                         .map(TypeEntity::getName)
                         .collect(Collectors.joining(",")));
             }
         });
     }
 
-    private  List<TypeEntity>  getTypes(List<ClassOrgInfo> classOrgInfos) {
+    private List<TypeEntity> getTypes(List<ClassOrgInfo> classOrgInfos) {
         List<String> partionTopicIds = classOrgInfos.stream().map(ClassOrgInfo::getTopics).collect(Collectors.toList());
         List<Integer> topicIds = new ArrayList<>();
         for (String strs :
                 partionTopicIds) {
-            if (StringUtil.isNotEmpty(strs)){
+            if (StringUtil.isNotEmpty(strs)) {
                 Arrays.asList(
-                        strs.split(",")).stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(num))).forEach(n->{
+                        strs.split(",")).stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(num))).forEach(n -> {
                     topicIds.add(n);
                 });
 
             }
         }
-       return typeMapper.queryAll(topicIds);
+        return typeMapper.queryAll(topicIds);
     }
 }

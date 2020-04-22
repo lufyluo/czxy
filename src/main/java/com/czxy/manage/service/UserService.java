@@ -41,13 +41,13 @@ public class UserService {
         AccountEntity accountEntity = PojoMapper.INSTANCE.toAccountEntity(userInfo);
         accountEntity.setUserId(userEntity.getId());
         accountMapper.insert(accountEntity);
-        return null;
+        return true;
     }
 
     public Boolean delete(Integer id) {
         userMapper.delete(id);
         accountMapper.deleteByUserId(id);
-        return null;
+        return true;
     }
 
     public Boolean update(UserCreateInfo userCreateInfo) {
@@ -56,15 +56,10 @@ public class UserService {
             orgEntity.setName(userCreateInfo.getOrgName());
             orgMapper.insertOrg(orgEntity);
             userCreateInfo.setOrgId(orgEntity.getId());
-            updateMethod(userCreateInfo);
-        }
-        if (userCreateInfo.getOrgId() != null) {
-            OrgEntity orgEntity = PojoMapper.INSTANCE.toOrgEntity(userCreateInfo);
-            orgMapper.update(orgEntity);
-            updateMethod(userCreateInfo);
 
         }
-        return null;
+        updateMethod(userCreateInfo);
+        return true;
     }
 
     private void updateMethod(UserCreateInfo userCreateInfo) {
