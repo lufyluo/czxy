@@ -283,4 +283,76 @@ alter table user change native nativeplace varchar(255) null comment '籍贯';
 
 alter table class
 	add topics varchar(40) null comment '班级主题id';
+
+
+alter table course
+	add type smallint default 0 null comment '0-党政综合；1-社会管理；2-农业农村；3-城建规划；4-经济与产业；5-能力素质提升；20-其他' after description;
+alter table site
+	add drive_time varchar(50) null after topics;
+create table problem_track
+(
+    id           int auto_increment
+        primary key,
+    feedback     varchar(255)                       null comment '反馈',
+    metion_time  datetime default CURRENT_TIMESTAMP null comment '提出时间',
+    advise       varchar(255)                       null comment '整改意见',
+    status       smallint default 0                 not null comment '是否解决',
+    remark       varchar(255)                       null comment '备注',
+    updated_time datetime default CURRENT_TIMESTAMP not null,
+    created_time datetime default CURRENT_TIMESTAMP null,
+    source       smallint default 0                 null comment '0-教师；1-点位'
+)
+    comment '问题追踪';
+
+create table fee_detail
+(
+	id int auto_increment,
+	type smallint not null comment '费用类型',
+	detail varchar(100) null,
+	pay int null,
+	audit int null,
+	total_pay int null comment '总支出',
+	subtotal int null comment '小计',
+	updated_time datetime default now() null,
+	created_time datetime default now() null,
+	constraint fee_detail_pk
+		primary key (id)
+)
+comment '问题明细';
+
+alter table fee_detail
+	add class_id int null;
+
+create table stock
+(
+	id int auto_increment,
+	type varchar(20) null comment '总类',
+	name varchar(50) null,
+	unit int not null comment '单位',
+	spec varchar(20) null comment '规格',
+	spend int null comment '消耗',
+	op smallint null comment '0-入库操作；1-出库操作',
+	origin_id int null comment '隶属哪个入库记录，以计算总量',
+	class_id int null,
+	user_id int null,
+	updated_time datetime default now() null,
+	created_time datetime default now() null,
+	constraint stock_pk
+		primary key (id)
+)
+comment '库存';
+alter table stock change name goods_id int null;
+
+create table goods
+(
+	id int auto_increment,
+	name varchar(20) not null,
+	updated_time datetime default now() null,
+	created_time datetime default now() null,
+	constraint goods_pk
+		primary key (id)
+)
+comment '物品';
+
+
 ```
