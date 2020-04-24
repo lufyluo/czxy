@@ -11,4 +11,5 @@ public class SiteEntity extends BaseEntity {
     private String contactorPhone;
     private Integer addressId;
     private String topics;
+    private String driveTime;
 }
