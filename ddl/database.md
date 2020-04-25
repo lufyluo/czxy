@@ -410,6 +410,47 @@ create table composition
 comment '班级成分类别';
 
 
+alter table fee_detail modify type varchar(30) not null comment '费用类型名称';
+
+alter table course_arrange change course_id description varchar(100) null comment '课表描述';
+
+alter table course_arrange change description arrange_id int not null comment '课表描述';
+
+create table arrange
+(
+    id           int auto_increment
+        primary key,
+    name         varchar(50)                        not null,
+    description  varchar(100)                       null,
+    updated_time datetime default CURRENT_TIMESTAMP null,
+    created_time datetime default CURRENT_TIMESTAMP null
+)
+    comment '课程';
+
+alter table course_arrange comment '课程课题关系表详情';
+create table class_arrange
+(
+	id int auto_increment,
+	class_id int not null,
+	arrange_id int not null,
+	updated_time datetime default now() null,
+	created_time datetime default now() null,
+	constraint class_arrange_pk
+		primary key (id)
+)
+comment '班级课表关系';
+
+alter table teacher
+	add user_id int not null after comment;
+
+
+alter table site add addr varchar(255) null after drive_time;
+
+alter table course_arrange modify begin_time bigint null;
+
+alter table course_arrange modify end_time bigint null;
+
+alter table course_arrange change `index` offset int null comment '第几天的课程安排,日期偏移量';
 
 
 ```

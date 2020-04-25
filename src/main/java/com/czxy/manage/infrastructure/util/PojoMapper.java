@@ -1,8 +1,7 @@
 package com.czxy.manage.infrastructure.util;
 
 import com.czxy.manage.model.entity.*;
-import com.czxy.manage.model.vo.classes.ClassInfo;
-import com.czxy.manage.model.vo.classes.ClassOrgInfo;
+import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserMenuInfo;
 import org.mapstruct.Mapper;
@@ -30,4 +29,12 @@ public interface PojoMapper {
 
     UserMenuInfo toUserMenuInfo(MenusEntity menusEntity);
     List<UserMenuInfo> toUserMenuInfos(List<MenusEntity> menusEntities);
+
+    ClassFeeDetailInfo toClassFeeDetailInfo(ClassFeeEntity classFeeEntity);
+    List<ClassFeeDetailInfo> toClassFeeDetailInfos(List<ClassFeeEntity> classFeeEntities);
+
+    ClassArrangeInfo toClassArrangeInfo(ArrangeEntity arrangeEntity);
+
+    CourseDetailInfo toCourseInfo(CourseDetailEntity courseEntities);
+    List<CourseDetailInfo> toCourseInfos(List<CourseDetailEntity> courseEntities);
 }

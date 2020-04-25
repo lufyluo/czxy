@@ -2,8 +2,8 @@ package com.czxy.manage.controller;
 
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
-import com.czxy.manage.model.vo.classes.ClassFeeDetailInfo;
-import com.czxy.manage.service.ClassFeeService;
+import com.czxy.manage.model.vo.classes.ClassArrangeInfo;
+import com.czxy.manage.service.ClassCourseService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,18 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-
 @RestController
-@Api("班级管理")
-@RequestMapping("/api/class/fee_detail")
-public class ClassFeeController {
+@Api("班级课表")
+@RequestMapping("/api/class/course")
+public class ClassCourseController {
     @Autowired
-    private ClassFeeService classFeeService;
-
+    ClassCourseService classCourseService;
     @GetMapping("/{classId}")
-    public BaseResponse<List<ClassFeeDetailInfo>> get(@PathVariable Integer classId){
-        return ResponseUtil.success(classFeeService.get(classId)) ;
+    public BaseResponse<ClassArrangeInfo> get(@PathVariable Integer classId){
+        return ResponseUtil.success(classCourseService.get(classId));
     }
 }

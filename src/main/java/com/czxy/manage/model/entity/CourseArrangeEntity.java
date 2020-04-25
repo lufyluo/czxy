@@ -5,10 +5,9 @@ import lombok.Data;
 @Data
 public class CourseArrangeEntity extends BaseEntity {
     private Integer id;
-    private Integer courseId;
+    private Integer arrangeId;
     private Integer contentId;
-    private Integer beginTime;
-    private Integer endTime;
+    private Long beginTime;
+    private Long endTime;
     private Integer category;
-
 }

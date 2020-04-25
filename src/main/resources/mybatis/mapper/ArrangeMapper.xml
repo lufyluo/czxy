@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.ArrangeMapper">
+    <sql id="base_column">
+               id
+        ,name
+        ,description
+        updated_time as updatedTime, created_time as createdTime
+    </sql>
+    <select id="get" resultType="com.czxy.manage.model.entity.ClassArrangeWithTimeEntity">
+        select
+        a.id,
+        a.name,
+        a.description,
+        c.begin_time as beginTime,
+        c.end_time as endTime,
+        a.updated_time as updatedTime, a.created_time as createdTime
+        from class_arrange arra
+        left join arrange a
+        on arra.arrange_id = a.id
+        left join class c
+        on arra.class_id = c.id
+        where arra.class_id = #{classId}
+    </select>
+</mapper>
