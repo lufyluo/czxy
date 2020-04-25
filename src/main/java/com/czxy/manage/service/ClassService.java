@@ -2,10 +2,12 @@ package com.czxy.manage.service;
 
 import com.czxy.manage.dao.ClassMapper;
 import com.czxy.manage.dao.TypeMapper;
+import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.ClassOrgEntity;
 import com.czxy.manage.model.entity.TypeEntity;
+import com.czxy.manage.model.vo.classes.ClassInfo;
 import com.czxy.manage.model.vo.classes.ClassOrgInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -67,5 +69,15 @@ public class ClassService {
             }
         }
         return typeMapper.queryAll(topicIds);
+    }
+
+    public Boolean delete(Integer id) {
+        classMapper.delete(id);
+        return true;
+    }
+
+    public List<ClassInfo> query(Integer id) {
+        List<ClassInfo> classInfo = classMapper.query(id);
+        return classInfo;
     }
 }

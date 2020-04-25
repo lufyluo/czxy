@@ -12,6 +12,9 @@
         ,arrange_id as arrangeId
         updated_time as updatedTime, created_time as createdTime
     </sql>
+    <delete id="delete">
+        delete from class where id = #{id}
+    </delete>
 
     <select id="queryAll" resultType="com.czxy.manage.model.entity.ClassOrgEntity">
         select
@@ -29,5 +32,20 @@
         left join org o
         on c.org_id = org.id
         where name like '${param}' or org_name like '${param}'
+    </select>
+    <select id="query" resultType="com.czxy.manage.model.vo.classes.ClassInfo">
+        select
+        id,
+        name,
+        teacher_id as teacherId,
+        address_id as addressId,
+        org,
+        begin_time as beginTime,
+        end_time as endTime,
+        arrange_id as arrangeId,
+        updated_time as updatedTime,
+        created_time as createdTime,
+        topics
+        from class where id = #{id}
     </select>
 </mapper>

@@ -21,19 +21,22 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     UserService userService;
+
     @PostMapping("/add")
     @ApiOperation(value = "添加用户", notes = "工作单位如果选择已经存在的则必须传orgId")
-    public BaseResponse<Boolean> add(@RequestBody UserCreateInfo userInfo){
+    public BaseResponse<Boolean> add(@RequestBody UserCreateInfo userInfo) {
         return ResponseUtil.success(userService.add(userInfo));
     }
+
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除用户信息", notes = "传入id的为userId")
-    public BaseResponse<Boolean> delete(@PathVariable Integer id){
+    public BaseResponse<Boolean> delete(@PathVariable Integer id) {
         return ResponseUtil.success(userService.delete(id));
     }
+
     @PutMapping
-    @ApiOperation(value = "编辑用户信息",notes = "工作单位如果选择已经存在的则必须传入orgId")
-    public BaseResponse<Boolean> update(@RequestBody UserCreateInfo userCreateInfo){
+    @ApiOperation(value = "编辑用户信息", notes = "工作单位如果选择已经存在的则必须传入orgId")
+    public BaseResponse<Boolean> update(@RequestBody UserCreateInfo userCreateInfo) {
         return ResponseUtil.success(userService.update(userCreateInfo));
     }
 }
