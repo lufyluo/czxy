@@ -395,6 +395,21 @@ alter table class
 alter table class
 	add duration int null comment '周期（天）';
 
+alter table class
+	add composition_id int null comment '班级成分' after recommend_org_id;
+
+create table composition
+(
+	id int auto_increment,
+	name varchar(30) not null,
+	updated_time datetime default now() null,
+	created_time datetime default now() null,
+	constraint composition_pk
+		primary key (id)
+)
+comment '班级成分类别';
+
+
 
 
 ```
