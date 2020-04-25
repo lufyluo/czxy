@@ -354,5 +354,16 @@ create table goods
 )
 comment '物品';
 
+alter table problem_track
+	add source_id int null after source_type;
+
+alter table problem_track change source source_type smallint default 0 null comment '0-教师；1-点位' after remark;
+
+alter table student
+	add user_id int not null after class_id;
+alter table student
+	add type smallint default 0 null comment '0-学员；1-班委干部；8-带班领导' after user_id;
+alter table class change org org_id int null comment '所属单位';
+
 
 ```
