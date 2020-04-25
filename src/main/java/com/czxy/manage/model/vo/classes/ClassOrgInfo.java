@@ -6,4 +6,6 @@ import lombok.Data;
 public class ClassOrgInfo extends ClassInfo{
     private String orgName;
     private String topicNames;
+    private String masterName;
+    private String leaderName;
 }

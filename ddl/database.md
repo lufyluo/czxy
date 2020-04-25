@@ -381,4 +381,20 @@ constraint class_master_pk
 comment '班级班主任和副班主任';
 alter table class drop column teacher_id;
 
+alter table fee_detail modify audit int null comment '审计';
+
+alter table course_arrange
+    add `index` int null comment '第几天的课程安排' after category;
+
+alter table class_master
+	add class_id int null after type;
+
+alter table class
+	add recommend_org_id int null comment '推荐单位' after arrange_id;
+
+alter table class
+	add duration int null comment '周期（天）';
+
+
+
 ```

@@ -4,7 +4,6 @@
     <sql id="base_column">
                id
         ,name
-        ,teacher_id as teacherId
         ,address_id as addressId
         ,org_id as orgId
         ,begin_time as beginTime
@@ -20,18 +19,27 @@
         select
          c.id
         ,c.name
-        ,c.teacher_id as teacherId
         ,c.address_id as addressId
         ,c.org_id as orgId
         ,c.begin_time as beginTime
         ,c.end_time as endTime
         ,c.arrange_id as arrangeId
-        c.updated_time as updatedTime, c.created_time as createdTime
-        org.name
+        ,c.updated_time as updatedTime, c.created_time as createdTime
+        ,org.name as orgName
+        ,u.name as masterName
+        ,u1.name as leaderName
         from class c
         left join org o
         on c.org_id = org.id
-        where name like '${param}' or org_name like '${param}'
+        left join class_master cm
+        on c.id = cm.class_id and cm.type =
+        left join user u
+        on cm.user_id = u.id
+        left join student s
+        on s.class_id = c.id and s.type = 8
+        left join user u1
+        on s.user_id = u1.id
+        where name like '%${param}%' or org_name like '%${param}%' or u.name like '%${param}%'
     </select>
     <select id="query" resultType="com.czxy.manage.model.vo.classes.ClassInfo">
         select

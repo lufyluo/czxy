@@ -7,7 +7,6 @@ import java.util.Date;
 public class ClassEntity extends BaseEntity {
     private Integer id;
     private String name;
-    private Integer teacherId;
     private Integer addressId;
     private Integer org;
     private Date beginTime;
