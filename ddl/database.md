@@ -354,8 +354,8 @@ create table goods
 )
 comment '物品';
 
-alter table problem_track
-	add source_id int null after source_type;
+-- alter table problem_track
+-- 	add source_id int null after source_type;
 
 alter table problem_track change source source_type smallint default 0 null comment '0-教师；1-点位' after remark;
 
@@ -365,5 +365,20 @@ alter table student
 	add type smallint default 0 null comment '0-学员；1-班委干部；8-带班领导' after user_id;
 alter table class change org org_id int null comment '所属单位';
 
+alter table course
+	add teacher_id int not null comment '课题讲师' after type;
+
+create table class_master
+(
+	id int auto_increment,
+	user_id int not null,
+	type smallint default 0 not null comment '0-班主任；1-副班主任',
+	updated_time datetime default now() null,
+	created_time datetime default now() null,
+constraint class_master_pk
+		primary key (id)
+)
+comment '班级班主任和副班主任';
+alter table class drop column teacher_id;
 
 ```
