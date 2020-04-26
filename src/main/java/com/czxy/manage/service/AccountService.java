@@ -49,7 +49,7 @@ public class AccountService {
         if (accountEntity != null && accountEntity.getUserId() > 0) {
             String token = UUID.randomUUID().toString();
             tokenMapper.delete(accountEntity.getAccount());
-            tokenMapper.insert(accountInfo.getAccount(), token, expire);
+            tokenMapper.insert(accountEntity.getUserId(),accountInfo.getAccount(), token, expire);
             return token;
         }
         throw new ManageException(ResponseStatus.LOGINERROR);

@@ -6,8 +6,8 @@
         updated_time as updatedTime, created_time as createdTime
     </sql>
     <insert id="insert">
-        insert into token(account, token, expire) VALUES (
-        #{account},#{token},#{expire}
+        insert into token(user_id,account, token, expire) VALUES (
+        #{user_id},#{account},#{token},#{expire}
         )
     </insert>
     <update id="flushTime">

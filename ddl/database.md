@@ -461,5 +461,22 @@ alter table class modify duration int null comment '周期（天）' after topic
 
 alter table class modify appellation varchar(50) null comment '培训对象，比如 中组部，书记、干部。。。';
 
+alter table address
+	add path varchar(255) null after code;
+
+alter table teacher
+	add `system` smallint null comment '0-党校系统，1-领导干部系统，2-高校系统' after user_id;
+
+alter table teacher
+	add skill varchar(20) null comment '职称' after `system`;
+
+alter table teacher
+	add star varchar(8) null comment '星级' after skill;
+
+alter table teacher
+	add area varchar(10) null comment '中央级别、四川省级别、成都市级别....' after star;
+
+alter table user
+	add education varchar(10) null comment '学历';
 
 ```

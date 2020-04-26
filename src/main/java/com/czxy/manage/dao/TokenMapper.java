@@ -13,6 +13,6 @@ public interface TokenMapper {
 
     Integer delete(String account);
 
-    void insert(String account, String token, Long expire);
+    void insert(Integer userId,String account, String token, Long expire);
     Boolean tokenQuery(String token);
 }
