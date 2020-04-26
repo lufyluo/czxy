@@ -36,10 +36,11 @@
         left join user u
         on cm.user_id = u.id
         left join student s
-        on s.class_id = c.id and s.type = 8
+        on s.class_id = c.id and s.type = 8 --8为培训班级带队领导
         left join user u1
         on s.user_id = u1.id
         where name like '%${param}%' or org_name like '%${param}%' or u.name like '%${param}%'
+        order by name,orgName,masterName
     </select>
     <select id="query" resultType="com.czxy.manage.model.entity.ClassInformationEntity">
         select

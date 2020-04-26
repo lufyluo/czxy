@@ -452,5 +452,14 @@ alter table course_arrange modify end_time bigint null;
 
 alter table course_arrange change `index` offset int null comment '第几天的课程安排,日期偏移量';
 
+alter table class
+	add appellation int null comment '培训对象，比如 中组部，书记、干部。。。' after composition_id;
+
+alter table class modify topics varchar(40) null comment '班级主题id 对应type表 category为1' after appellation;
+
+alter table class modify duration int null comment '周期（天）' after topics;
+
+alter table class modify appellation varchar(50) null comment '培训对象，比如 中组部，书记、干部。。。';
+
 
 ```
