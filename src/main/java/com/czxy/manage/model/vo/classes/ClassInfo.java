@@ -15,9 +15,11 @@ public class ClassInfo extends BaseEntity {
     private Date beginTime;
     private Date endTime;
     private Integer arrangeId;
+    @ApiModelProperty("主题")
     private String topics;
     private Integer recommendOrgId;
     private Integer compositionId;
+    @ApiModelProperty("培训周期")
     private Integer duration;
     @ApiModelProperty("培训对象")
     private String appellation;

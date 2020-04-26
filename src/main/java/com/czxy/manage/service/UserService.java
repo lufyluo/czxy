@@ -7,7 +7,9 @@ import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.AccountEntity;
 import com.czxy.manage.model.entity.OrgEntity;
 import com.czxy.manage.model.entity.UserEntity;
+import com.czxy.manage.model.vo.classes.ClassInformationInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
+import com.czxy.manage.model.vo.user.UserInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -66,6 +68,10 @@ public class UserService {
         userMapper.update(userEntity);
         AccountEntity accountEntity = PojoMapper.INSTANCE.toAccountEntity(userCreateInfo);
         accountMapper.update(accountEntity);
+    }
+
+    public UserInfo query(String token) {
+        return null;
     }
 }
 
