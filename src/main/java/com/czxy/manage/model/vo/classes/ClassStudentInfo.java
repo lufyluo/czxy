@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class ClassStudentInfo extends ClassInfo{
+public class ClassStudentInfo {
     private Integer userId;
     private String userName;
     private String userIdCard;
@@ -31,5 +31,4 @@ public class ClassStudentInfo extends ClassInfo{
     @ApiModelProperty("学员身份")
     private Integer studentType;
     private String studentTypeName;
-    private Integer classMasterUserId;
 }

@@ -1,6 +1,7 @@
 package com.czxy.manage.model.vo.classes;
 
 import com.czxy.manage.model.entity.BaseEntity;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
@@ -18,4 +19,6 @@ public class ClassInfo extends BaseEntity {
     private Integer recommendOrgId;
     private Integer compositionId;
     private Integer duration;
+    @ApiModelProperty("培训对象")
+    private String appellation;
 }

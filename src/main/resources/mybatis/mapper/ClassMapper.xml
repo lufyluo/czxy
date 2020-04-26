@@ -56,7 +56,9 @@
         c.updated_time as updatedTime,
         c.created_time as createdTime,
         c.topics,
+        c.appellation,
         c.duration as duration,
+        c.appellation,
         o.name as orgName,
         a.name as addressName,
         u.name as masterName,
@@ -77,6 +79,7 @@
         on ul.id = s.user_id
         left join org og
         on c.recommend_org_id = og.id
+        where c.id = #{id}
     </select>
     <select id="queryAllStudent" resultType="com.czxy.manage.model.entity.ClassStudentEntity">
         select
@@ -95,14 +98,10 @@
         u.org_id as userOrgId,
         u.nation as userNation,
         u.nativeplace as userNativeplace,
-        cm.user_id as classMasterUserId,
         s.type as StudentType
-        from class c
-        left join class_master cm
-        on c.id = cm.class_id
+        from student s
         left join user u
-        on cm.user_id = u.id
-        left join student s
-        on c.id = s.class_id
+        on u.id = s.user_id
+        where s.class_id=#{id}
     </select>
 </mapper>
