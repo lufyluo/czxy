@@ -8,4 +8,6 @@ public interface OrgMapper {
     Integer insertOrg(OrgEntity orgEntity);
 
     Integer update(OrgEntity orgEntity);
+
+    OrgEntity query(int orgId);
 }

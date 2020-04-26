@@ -1,14 +1,17 @@
 package com.czxy.manage.service;
 
+import com.czxy.manage.dao.AddressMapper;
 import com.czxy.manage.dao.ClassMapper;
+import com.czxy.manage.dao.OrgMapper;
 import com.czxy.manage.dao.TypeMapper;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
-import com.czxy.manage.model.entity.ClassOrgEntity;
-import com.czxy.manage.model.entity.TypeEntity;
+import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.classes.ClassInfo;
+import com.czxy.manage.model.vo.classes.ClassInformationInfo;
 import com.czxy.manage.model.vo.classes.ClassOrgInfo;
+import com.czxy.manage.model.vo.classes.ClassStudentInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -30,6 +33,10 @@ public class ClassService {
     private ClassMapper classMapper;
     @Resource
     private TypeMapper typeMapper;
+    @Resource
+    private AddressMapper addressMapper;
+    @Resource
+    private OrgMapper orgMapper;
 
     public PageInfo<ClassOrgInfo> page(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -76,8 +83,28 @@ public class ClassService {
         return true;
     }
 
-    public List<ClassInfo> query(Integer id) {
-        List<ClassInfo> classInfo = classMapper.query(id);
-        return classInfo;
+    public ClassInformationInfo query(Integer id) {
+        ClassInformationEntity classInformationEntity = classMapper.query(id);
+        ClassInformationInfo classInformationInfo = PojoMapper.INSTANCE.toClassInformationInfo(classInformationEntity);
+        return classInformationInfo;
+    }
+
+    public PageInfo<ClassStudentInfo> pageStudent(PageParam<Integer> pageParam) {
+        Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
+        List<ClassStudentEntity> classStudentEntities = classMapper.queryAllStudent(pageParam.getParam());
+        for (int i = 0; i < classStudentEntities.size(); i++) {
+            ClassStudentEntity classStudentEntity = classStudentEntities.get(i);
+            if (classStudentEntity.getStudentType() == 0) {
+                classStudentEntity.setStudentTypeName("学员");
+            } else if (classStudentEntity.getStudentType() == 1) {
+                classStudentEntity.setStudentTypeName("班委干部");
+            } else if (classStudentEntity.getStudentType() == 8) {
+                classStudentEntity.setStudentTypeName("带班领导");
+            }
+        }
+        PageInfo<ClassStudentInfo> result = page.toPageInfo();
+        result.setList(PojoMapper.INSTANCE.toClassStudentInfos(classStudentEntities));
+        PageInfo<ClassStudentInfo> classStudentInfo = page.toPageInfo();
+        return classStudentInfo;
     }
 }

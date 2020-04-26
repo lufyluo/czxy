@@ -12,5 +12,5 @@ public class ProblemTrackEntity extends BaseEntity {
     private String advise;
     private Integer status;
     private String remark;
-    private Integer source;
+    private Integer sourceType;
 }

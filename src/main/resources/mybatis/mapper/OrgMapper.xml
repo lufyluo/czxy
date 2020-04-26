@@ -8,4 +8,7 @@
     <update id="update">
         update org set  name=#{name}, address_id=#{addressId},updated_time= now() where id=#{id}
     </update>
+    <select id="query" resultType="com.czxy.manage.model.entity.OrgEntity">
+        select name from org where id = #{orgId}
+    </select>
 </mapper>

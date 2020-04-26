@@ -8,6 +8,6 @@ public class SubjectEntity extends BaseEntity {
     private String name;
     private String content;
     private String types;
-    private String file;
+    private String files;
     private Integer teacherId;
 }

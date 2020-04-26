@@ -10,9 +10,12 @@ public class ClassInfo extends BaseEntity {
     private Integer id;
     private String name;
     private Integer addressId;
-    private Integer org;
+    private Integer orgId;
     private Date beginTime;
     private Date endTime;
     private Integer arrangeId;
     private String topics;
+    private Integer recommendOrgId;
+    private Integer compositionId;
+    private Integer duration;
 }

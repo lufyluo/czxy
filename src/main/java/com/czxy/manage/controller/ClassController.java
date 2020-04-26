@@ -1,18 +1,15 @@
 package com.czxy.manage.controller;
 
-import com.czxy.manage.infrastructure.response.BaseResponse;
-import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
-import com.czxy.manage.model.vo.classes.ClassInfo;
+import com.czxy.manage.model.vo.classes.ClassInformationInfo;
 import com.czxy.manage.model.vo.classes.ClassOrgInfo;
+import com.czxy.manage.model.vo.classes.ClassStudentInfo;
 import com.czxy.manage.service.ClassService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -29,11 +26,16 @@ public class ClassController {
     }
 
     @GetMapping("/query")
-    @ApiOperation(value = "查看班级学员信息", notes = "传入ID为class id")
-    public List<ClassInfo> query(Integer id) {
+    @ApiOperation(value = "查看班级基础信息", notes = "传入ID为class id")
+    public ClassInformationInfo query(Integer id) {
         return classService.query(id);
     }
 
+    @GetMapping("/pageStudent")
+    @ApiOperation(value = "查看班级学员信息", notes = "传入ID为class id")
+    public PageInfo<ClassStudentInfo> pageStudent(PageParam<Integer> pageParam){
+        return classService.pageStudent(pageParam);
+    }
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除班级信息", notes = "传入id的为class表的id")
     public Boolean delete(@PathVariable Integer id) {

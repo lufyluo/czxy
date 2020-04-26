@@ -43,4 +43,11 @@ public interface PojoMapper {
     })
     CourseDetailInfo toCourseInfo(CourseDetailEntity courseEntities);
     List<CourseDetailInfo> toCourseInfos(List<CourseDetailEntity> courseEntities);
+
+    ClassInfo toClassInfo(ClassEntity classEntity);
+
+    ClassInformationInfo toClassInformationInfo(ClassInformationEntity classInformationEntity);
+
+    ClassStudentInfo toClassStudentInfo(ClassStudentEntity classStudentEntity);
+    List<ClassStudentInfo> toClassStudentInfos(List<ClassStudentEntity> classStudentEntities);
 }
