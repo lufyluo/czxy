@@ -8,4 +8,5 @@ public class TokenEntity extends BaseEntity {
     private String account;
     private String token;
     private Integer expire;
+    private Integer userId;
 }

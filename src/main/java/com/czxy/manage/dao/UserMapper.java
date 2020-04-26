@@ -20,4 +20,6 @@ public interface UserMapper {
     Integer delete(int id);
 
     Integer update(UserEntity userEntity);
+
+    UserEntity queryByToken(String token);
 }
