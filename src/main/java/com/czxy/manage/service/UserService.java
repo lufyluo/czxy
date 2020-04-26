@@ -71,7 +71,8 @@ public class UserService {
     }
 
     public UserInfo query(String token) {
-        return null;
+        UserEntity userEntity = userMapper.queryByToken(token);
+        return  PojoMapper.INSTANCE.toUserInfo(userEntity);
     }
 }
 

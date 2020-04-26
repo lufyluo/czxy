@@ -4,7 +4,11 @@
     <sql id="base_column">
         id, name, idcard, phone, gender, position, age, birthday, category,
         wechat_id as wechatId,
-        updated_time as updatedTime, created_time as createdTime
+        updated_time as updatedTime,
+        created_time as createdTime,
+        org_id as orgId,
+        nation,
+        nativeplace as nativePlace
     </sql>
     <insert id="insert" parameterType="com.czxy.manage.model.entity.UserEntity" useGeneratedKeys="true"
             keyProperty="id">
@@ -25,5 +29,19 @@
         select
         <include refid="base_column"/>
         from user
+    </select>
+    <select id="queryByToken" resultType="com.czxy.manage.model.entity.UserEntity">
+        select
+        u.id, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
+        u.wechat_id as wechatId,
+        u.updated_time as updatedTime,
+        u.created_time as createdTime,
+        u.org_id as orgId,
+        u.nation,
+        u.nativeplace as nativePlace
+        from user u
+        left join token t
+        on t.user_id = u.id
+        where t.token = #{token}
     </select>
 </mapper>

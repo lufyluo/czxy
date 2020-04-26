@@ -3,6 +3,7 @@ package com.czxy.manage.infrastructure.util;
 import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
+import com.czxy.manage.model.vo.user.UserInfo;
 import com.czxy.manage.model.vo.user.UserMenuInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -50,4 +51,6 @@ public interface PojoMapper {
 
     ClassStudentInfo toClassStudentInfo(ClassStudentEntity classStudentEntity);
     List<ClassStudentInfo> toClassStudentInfos(List<ClassStudentEntity> classStudentEntities);
+
+    UserInfo toUserInfo(UserEntity userEntity);
 }
