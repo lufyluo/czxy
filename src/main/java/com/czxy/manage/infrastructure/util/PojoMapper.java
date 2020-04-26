@@ -5,6 +5,8 @@ import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserMenuInfo;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -35,6 +37,10 @@ public interface PojoMapper {
 
     ClassArrangeInfo toClassArrangeInfo(ArrangeEntity arrangeEntity);
 
+    @Mappings({
+            @Mapping(ignore = true,target = "beginTime"),
+            @Mapping(ignore = true,target = "endTime")
+    })
     CourseDetailInfo toCourseInfo(CourseDetailEntity courseEntities);
     List<CourseDetailInfo> toCourseInfos(List<CourseDetailEntity> courseEntities);
 }
