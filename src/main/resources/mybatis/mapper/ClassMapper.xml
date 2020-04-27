@@ -99,9 +99,9 @@
         u.nation as userNation,
         u.nativeplace as userNativeplace,
         s.type as StudentType
-        from student s
-        left join user u
-        on u.id = s.user_id
-        where s.class_id=#{id}
+        from user u
+        left join student s
+        on s.user_id = u.id
+        where s.class_id = #{classId}
     </select>
 </mapper>

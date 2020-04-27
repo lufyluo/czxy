@@ -8,6 +8,7 @@ import com.czxy.manage.model.entity.ClassOrgEntity;
 import com.czxy.manage.model.entity.ClassStudentEntity;
 import com.czxy.manage.model.vo.classes.ClassInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface ClassMapper {
 
     ClassInformationEntity query(Integer id);
 
-    List<ClassStudentEntity> queryAllStudent(Integer pageParam);
+    List<ClassStudentEntity> queryAllStudent(Integer classId);
 }

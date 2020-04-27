@@ -15,5 +15,5 @@ public class PageParam<T> {
     @ApiModelProperty("页大小，默认10")
     private int pageSize = 10;
     @ApiModelProperty("查询参数关键字")
-    private T param;
+    public T param;
 }

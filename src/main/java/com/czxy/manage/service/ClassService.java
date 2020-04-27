@@ -12,6 +12,7 @@ import com.czxy.manage.model.vo.classes.ClassInfo;
 import com.czxy.manage.model.vo.classes.ClassInformationInfo;
 import com.czxy.manage.model.vo.classes.ClassOrgInfo;
 import com.czxy.manage.model.vo.classes.ClassStudentInfo;
+import com.czxy.manage.model.vo.student.StudentPageParam;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -89,9 +90,9 @@ public class ClassService {
         return classInformationInfo;
     }
 
-    public PageInfo<ClassStudentInfo> pageStudent(PageParam<Integer> pageParam) {
+    public PageInfo<ClassStudentInfo> pageStudent(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
-        List<ClassStudentEntity> classStudentEntities = classMapper.queryAllStudent(pageParam.getParam());
+        List<ClassStudentEntity> classStudentEntities = classMapper.queryAllStudent(Integer.valueOf(pageParam.getParam()));
         for (int i = 0; i < classStudentEntities.size(); i++) {
             ClassStudentEntity classStudentEntity = classStudentEntities.get(i);
             if (classStudentEntity.getStudentType() == 0) {

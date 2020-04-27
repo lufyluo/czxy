@@ -1,6 +1,7 @@
 package com.czxy.manage.service;
 
 import com.czxy.manage.dao.StudentMapper;
+import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.model.entity.StudentDetailEntity;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentPageParam;
@@ -19,7 +20,12 @@ public class StudentService {
 
     public PageInfo<StudentDetailInfo> page(StudentPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
-        List<StudentDetailEntity> studentDetailEntities =  studentMapper.query(pageParam);
+        List<StudentDetailEntity> studentDetailEntities = studentMapper.query(pageParam);
         return null;
+    }
+
+    public Boolean sign(List<Integer> studentIds) {
+        Boolean sign = studentMapper.sign(studentIds);
+        return sign;
     }
 }
