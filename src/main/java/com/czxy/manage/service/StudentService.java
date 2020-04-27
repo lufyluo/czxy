@@ -1,8 +1,9 @@
 package com.czxy.manage.service;
 
 import com.czxy.manage.dao.StudentMapper;
-import com.czxy.manage.infrastructure.response.BaseResponse;
+import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.StudentDetailEntity;
+import com.czxy.manage.model.vo.classes.ClassStudentInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentPageParam;
 import com.github.pagehelper.Page;
@@ -11,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -21,7 +23,37 @@ public class StudentService {
     public PageInfo<StudentDetailInfo> page(StudentPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<StudentDetailEntity> studentDetailEntities = studentMapper.query(pageParam);
+        PageInfo<StudentDetailInfo> result = page.toPageInfo();
+        List<StudentDetailInfo> list = fillOtherProperty(PojoMapper.INSTANCE.toStudentDetailInfos(studentDetailEntities));
+        result.setList(list);
+
+        return result;
+    }
+
+    private List<StudentDetailInfo> fillOtherProperty(List<StudentDetailInfo> toStudentDetailInfos) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        toStudentDetailInfos.forEach(n -> {
+            n.setSign(n.getSignFlag() == 1);
+            n.setDuration(sdf.format(n.getBeginTime())+sdf.format(n.getEndTime()));
+            n.setStudentIdentity(getStudentIdentity(n.getType()));
+        });
         return null;
+    }
+    private String getStudentIdentity(Integer type){
+        //0-学员；1-班委干部；8-带班领导
+        String identity = "-";
+        switch (type){
+            case 0:
+                identity = "学员";
+                break;
+            case 1:
+                identity = "班委干部";
+                break;
+            case 8:
+                identity = "带班领导";
+                break;
+        }
+        return identity;
     }
 
     public Boolean sign(List<Integer> studentIds) {

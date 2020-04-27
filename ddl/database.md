@@ -479,4 +479,18 @@ alter table teacher
 alter table user
 	add education varchar(10) null comment '学历';
 
+alter table class drop column address_id;
+
+alter table class
+	add province_id int null comment '对应addressid，省' after duration;
+
+alter table class
+	add city_id int null comment '对应addressid，市' after province_id;
+
+alter table class
+	add county int null comment '对应addressid，县、区...' after city_id;
+
+alter table user modify gender smallint default 0 null comment '性别,0-男，1-女，2-未知';
+
+
 ```

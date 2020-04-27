@@ -5,6 +5,28 @@
         id, sign_flag as sign, user_id as userId,class_id  as classId,type,
         updated_time as updatedTime, created_time as createdTime
     </sql>
+    <select id="query" resultType="com.czxy.manage.model.entity.StudentDetailEntity">
+        select
+        s.id as studentId, sign_flag as sign, user_id as userId,class_id  as classId,type,
+        u.id, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
+        u.wechat_id as wechatId,
+        u.org_id as orgId,
+        u.nation,
+        u.nativeplace as nativePlace,
+        c.name as className,c.begin_time as beginTime,c.end_time as endTime
+         from
+        student s
+        left join user u
+        on s.user_id = u.id
+        left join class c
+        on s.class_id = c.id
+        where 1=1
+        <if test="param != null and param != '' ">and u.name like '%${param}%'</if>
+        <if test="provinceId != null and provinceId>0 ">and c.province_id = provinceId</if>
+        <if test="cityId != null and cityId>0 ">and c.city_id = cityId</if>
+        <if test="countyId != null and countyId>0 ">and c.county_id = countyId</if>
+        <if test="classId != null and classId >0 ">and c.class_id=classId</if>
+    </select>
     <update id="sign">
         update student set sign_flag = 1 where id in
         <foreach collection="studentIds" item="item" index="index"

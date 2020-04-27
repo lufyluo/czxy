@@ -7,7 +7,7 @@
     </sql>
     <insert id="insert">
         insert into token(user_id,account, token, expire) VALUES (
-        #{user_id},#{account},#{token},#{expire}
+        #{userId},#{account},#{token},#{expire}
         )
     </insert>
     <update id="flushTime">

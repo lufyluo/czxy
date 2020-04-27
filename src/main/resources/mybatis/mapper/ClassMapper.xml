@@ -4,7 +4,9 @@
     <sql id="base_column">
                id
         ,name
-        ,address_id as addressId
+        ,province_id as provinceId
+        ,city_id as cityId
+        ,county_id as countyId
         ,org_id as orgId
         ,begin_time as beginTime
         ,end_time as endTime
@@ -19,7 +21,9 @@
         select
          c.id
         ,c.name
-        ,c.address_id as addressId
+        ,c.province_id as provinceId
+        ,c.city_id as cityId
+        ,c.county_id as countyId
         ,c.org_id as orgId
         ,c.begin_time as beginTime
         ,c.end_time as endTime
@@ -46,7 +50,9 @@
         select
         c.id,
         c.name,
-        c.address_id as addressId,
+        c.province_id as provinceId,
+        c.city_id as cityId,
+        c.county_id as countyId,
         c.org_id as orgId,
         c.begin_time as beginTime,
         c.end_time as endTime,
@@ -60,7 +66,7 @@
         c.duration as duration,
         c.appellation,
         o.name as orgName,
-        a.name as addressName,
+        a.path as addressName,
         u.name as masterName,
         ul.name as leaderName,
         og.name as recommendOrgName
@@ -68,7 +74,7 @@
         left join org o
         on c.org_id = o.id
         left join address a
-        on c.address_id = a.id
+        on c.county_id = a.id
         left join class_master cm
         on c.id = cm.class_id
         left join user u

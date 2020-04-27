@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 public class StudentPageParam<T> extends PageParam {
    private Integer provinceId;
-   private Integer city;
-   private Integer county;
+   private Integer cityId;
+   private Integer countyId;
    private Integer classId;
 }

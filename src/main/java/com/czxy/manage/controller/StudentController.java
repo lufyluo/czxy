@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Api("班级管理")
-@RequestMapping("/api/student/fee_detail")
+@Api("学生管理")
+@RequestMapping("/api/student/")
 public class StudentController {
     @Autowired
     private StudentService studentService;

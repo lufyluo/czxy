@@ -8,7 +8,9 @@ import java.util.Date;
 public class ClassEntity extends BaseEntity {
     private Integer id;
     private String name;
-    private Integer addressId;
+    private Integer provinceId;
+    private Integer cityId;
+    private Integer countyId;
     private Integer orgId;
     private Date beginTime;
     private Date endTime;
