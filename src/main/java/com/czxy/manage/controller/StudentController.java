@@ -1,7 +1,7 @@
 package com.czxy.manage.controller;
 
-import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.classes.ClassOrgInfo;
+import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentPageParam;
 import com.czxy.manage.service.StudentService;
 import com.github.pagehelper.PageInfo;
@@ -20,7 +20,7 @@ public class StudentController {
     private StudentService studentService;
     @GetMapping("/page")
     @ApiOperation(value = "分页获取", notes = "分页获取班级")
-    public PageInfo<ClassOrgInfo> page(StudentPageParam<String> pageParam) {
+    public PageInfo<StudentDetailInfo> page(StudentPageParam<String> pageParam) {
         return studentService.page(pageParam);
     }
 }

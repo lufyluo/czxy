@@ -14,6 +14,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.Min;
 
@@ -32,7 +33,7 @@ public class AccountController {
     @PostMapping("/login")
     @ApiOperation(value = "账号密码登录", notes = "登录")
     @Anonymous
-    public BaseResponse<String> login(@RequestBody AccountInfo accountInfo, @RequestHeader String timestamp) {
+    public BaseResponse<String> login(@RequestBody AccountInfo accountInfo, @ApiIgnore @RequestHeader String timestamp) {
         return ResponseUtil.success(accountService.login(accountInfo, timestamp));
     }
 
