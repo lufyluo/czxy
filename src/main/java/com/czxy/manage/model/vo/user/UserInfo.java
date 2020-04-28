@@ -35,4 +35,6 @@ public class UserInfo extends BaseEntity {
     private String nation;
     @ApiModelProperty("籍贯")
     private String nativePlace;
+    @ApiModelProperty("学历")
+    private String education;
 }

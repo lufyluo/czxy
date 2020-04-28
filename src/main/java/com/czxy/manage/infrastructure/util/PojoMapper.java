@@ -2,6 +2,7 @@ package com.czxy.manage.infrastructure.util;
 
 import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.classes.*;
+import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserInfo;
@@ -57,4 +58,8 @@ public interface PojoMapper {
 
     StudentDetailInfo toStudentDetailInfos(StudentDetailEntity studentDetailEntity);
     List<StudentDetailInfo> toStudentDetailInfos(List<StudentDetailEntity> studentDetailEntities);
+
+    UserEntity studentAddtoUserEntity(StudentAddInfo studentAddInfo);
+
+    StudentEntity toStudentEntity(StudentAddInfo studentAddInfo);
 }

@@ -5,6 +5,16 @@
         id, sign_flag as sign, user_id as userId,class_id  as classId,type,
         updated_time as updatedTime, created_time as createdTime
     </sql>
+    <insert id="insert" parameterType="com.czxy.manage.model.entity.StudentEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into student (sign_flag, class_id, user_id, type, updated_time, created_time) VALUES (#{signFlag},#{classId},#{userId},#{type},#{updatedTime},#{createdTime})
+    </insert>
+    <delete id="delete">
+        delete from student where id in
+        <foreach collection="studentIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
+    </delete>
     <select id="query" resultType="com.czxy.manage.model.entity.StudentDetailEntity">
         select
         s.id as studentId, sign_flag as sign, user_id as userId,class_id  as classId,type,

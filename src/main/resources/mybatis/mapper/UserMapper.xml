@@ -13,8 +13,8 @@
     <insert id="insert" parameterType="com.czxy.manage.model.entity.UserEntity" useGeneratedKeys="true"
             keyProperty="id">
         insert into user
-        (name, idcard, phone, gender, position, age, birthday, category, wechat_id, updated_time, created_time,org_id,nation,nativeplace)
-        values(#{name}, #{idCard}, #{phone}, #{gender}, #{position}, #{age}, #{birthday}, #{category}, #{wechatId}, #{updatedTime}, #{createdTime}, #{orgId}, #{nation}, #{nativePlace});
+        (name, idcard, phone, gender, position, age, birthday, category, wechat_id,org_id,nation,nativeplace,education)
+        values(#{name}, #{idCard}, #{phone}, #{gender}, #{position}, #{age}, #{birthday}, #{category}, #{wechatId}, #{orgId}, #{nation}, #{nativePlace},#{education});
     </insert>
     <update id="update">
         update user

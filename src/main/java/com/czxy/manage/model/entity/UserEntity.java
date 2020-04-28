@@ -25,4 +25,5 @@ public class UserEntity extends BaseEntity{
     private Integer orgId;
     private String nation;
     private String nativePlace;
+    private String education;
 }

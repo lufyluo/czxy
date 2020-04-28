@@ -1,6 +1,9 @@
 package com.czxy.manage.dao;
 
+import com.czxy.manage.model.entity.StudentAddEntity;
 import com.czxy.manage.model.entity.StudentDetailEntity;
+import com.czxy.manage.model.entity.StudentEntity;
+import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentPageParam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -12,4 +15,8 @@ public interface StudentMapper {
     List<StudentDetailEntity> query(StudentPageParam<String> pageParam);
 
     Boolean sign(@Param("studentIds") List<Integer> studentIds);
+
+    Boolean delete(@Param("studentIds") List<Integer> studentIds);
+
+    Integer insert(StudentEntity studentEntity);
 }

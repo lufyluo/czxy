@@ -2,10 +2,10 @@ package com.czxy.manage.controller;
 
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
-import com.czxy.manage.model.PageParam;
-import com.czxy.manage.model.vo.classes.ClassOrgInfo;
+import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentPageParam;
+import com.czxy.manage.model.vo.student.StudentUpdateInfo;
 import com.czxy.manage.service.StudentService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -31,4 +31,19 @@ public class StudentController {
     public BaseResponse<Boolean> sign(@RequestBody List<Integer> studentIds ){
            return ResponseUtil.success(studentService.sign(studentIds));
     }
+    @DeleteMapping
+    @ApiOperation("删除学员")
+    public BaseResponse<Boolean> delete(@RequestBody List<Integer> studentIds){
+        return ResponseUtil.success(studentService.delete(studentIds));
+    }
+    @PostMapping("/add")
+    @ApiOperation("新增学员")
+    public BaseResponse<Boolean> add(@RequestBody StudentAddInfo studentAddInfo){
+        return ResponseUtil.success(studentService.add(studentAddInfo));
+    }
+//    @PutMapping
+//    @ApiOperation("编辑学员")
+//    public BaseResponse<Boolean> update(@RequestBody StudentUpdateInfo studentUpdateInfo){
+//        return ResponseUtil.success(studentService.update(studentUpdateInfo));
+//    }
 }
