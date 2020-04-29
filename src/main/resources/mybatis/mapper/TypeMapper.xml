@@ -5,6 +5,11 @@
         id, name ,
         updated_time as updatedTime, created_time as createdTime
     </sql>
+    <insert id="insert" parameterType="com.czxy.manage.model.entity.TypeEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into type (name, category) VALUES(#{name},0)
+    </insert>
+
     <select id="queryAll" resultType="com.czxy.manage.model.entity.TypeEntity">
         select
         <include refid="base_column"/>

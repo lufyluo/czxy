@@ -2,6 +2,8 @@ package com.czxy.manage.infrastructure.util;
 
 import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.classes.*;
+import com.czxy.manage.model.vo.site.SiteAddInfo;
+import com.czxy.manage.model.vo.site.TypeInfo;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentUpdateInfo;
@@ -69,4 +71,9 @@ public interface PojoMapper {
     StudentEntity toStudentEntityByStudentUpadate(StudentUpdateInfo studentUpdateInfo);
 
     UserUpdateEntity studentUpdateToUserUpdateEntity(StudentUpdateInfo studentUpdateInfo);
+
+    SiteEntity toSiteEntity(SiteAddInfo siteAddInfo);
+
+    TypeEntity siteAddInfoToType(TypeInfo types);
+    List<TypeEntity> siteAddInfoToTypes(List<TypeInfo> types);
 }

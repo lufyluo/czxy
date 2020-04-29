@@ -64,7 +64,6 @@
         c.topics,
         c.appellation,
         c.duration as duration,
-        c.appellation,
         o.name as orgName,
         a.path as addressName,
         u.name as masterName,
