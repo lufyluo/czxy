@@ -12,6 +12,7 @@ import com.czxy.manage.model.vo.student.StudentUpdateInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -28,6 +29,8 @@ public class StudentService {
     private OrgMapper orgMapper;
     @Resource
     private UserMapper userMapper;
+    @Autowired
+    private OrgService orgService;
 
     public PageInfo<StudentDetailInfo> page(StudentPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -78,12 +81,8 @@ public class StudentService {
 
     @Transactional
     public Boolean add(StudentAddInfo studentAddInfo) {
-        if (studentAddInfo.getOrgId() == null && !StringUtils.isEmpty(studentAddInfo.getOrgName())) {
-            OrgEntity orgEntity = new OrgEntity();
-            orgEntity.setName(studentAddInfo.getOrgName());
-            orgMapper.insertOrg(orgEntity);
-            studentAddInfo.setOrgId(orgEntity.getId());
-        }
+        Integer orgId = orgService.insertIfAbsentOrg(studentAddInfo.getOrgName(),studentAddInfo.getOrgId());
+        studentAddInfo.setOrgId(orgId);
         UserEntity userEntity = PojoMapper.INSTANCE.studentAddToUserEntity(studentAddInfo);
         userMapper.insert(userEntity);
         studentAddInfo.setUserId(userEntity.getId());
@@ -93,12 +92,8 @@ public class StudentService {
     }
     @Transactional
     public Boolean update(StudentUpdateInfo studentUpdateInfo) {
-        if (studentUpdateInfo.getOrgId() == null && !StringUtils.isEmpty(studentUpdateInfo.getOrgName())) {
-            OrgEntity orgEntity = new OrgEntity();
-            orgEntity.setName(studentUpdateInfo.getOrgName());
-            orgMapper.insertOrg(orgEntity);
-            studentUpdateInfo.setOrgId(orgEntity.getId());
-        }
+        Integer orgId = orgService.insertIfAbsentOrg(studentUpdateInfo.getOrgName(),studentUpdateInfo.getOrgId());
+        studentUpdateInfo.setOrgId(orgId);
         StudentEntity studentEntity=PojoMapper.INSTANCE.toStudentEntityByStudentUpadate(studentUpdateInfo);
         studentMapper.update(studentEntity);
         StudentUpdateEntity studentUpdateEntity = studentMapper.queryByStudentId(studentEntity);

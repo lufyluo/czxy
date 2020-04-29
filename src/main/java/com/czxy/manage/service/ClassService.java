@@ -8,10 +8,7 @@ import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.*;
-import com.czxy.manage.model.vo.classes.ClassInfo;
-import com.czxy.manage.model.vo.classes.ClassInformationInfo;
-import com.czxy.manage.model.vo.classes.ClassOrgInfo;
-import com.czxy.manage.model.vo.classes.ClassStudentInfo;
+import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.student.StudentPageParam;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -107,5 +104,10 @@ public class ClassService {
         result.setList(PojoMapper.INSTANCE.toClassStudentInfos(classStudentEntities));
         PageInfo<ClassStudentInfo> classStudentInfo = page.toPageInfo();
         return classStudentInfo;
+    }
+
+    public Boolean create(ClassCreateInfo classCreateInfo) {
+        return true;
+
     }
 }

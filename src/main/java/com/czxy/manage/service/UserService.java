@@ -10,6 +10,7 @@ import com.czxy.manage.model.entity.UserEntity;
 import com.czxy.manage.model.vo.classes.ClassInformationInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -30,6 +31,8 @@ public class UserService {
     @Resource
     private AccountMapper accountMapper;
 
+    @Autowired
+    OrgService orgService;
     @Transactional
     public Boolean add(UserCreateInfo userInfo) {
         insertIfAbsentOrg(userInfo);
@@ -54,13 +57,8 @@ public class UserService {
     }
 
     private void insertIfAbsentOrg(UserCreateInfo userCreateInfo) {
-        if (userCreateInfo.getOrgId() == null && !StringUtils.isEmpty(userCreateInfo.getOrgName())) {
-            OrgEntity orgEntity = new OrgEntity();
-            orgEntity.setName(userCreateInfo.getOrgName());
-            orgMapper.insertOrg(orgEntity);
-            userCreateInfo.setOrgId(orgEntity.getId());
-
-        }
+        Integer orgId = orgService.insertIfAbsentOrg(userCreateInfo.getOrgName(),userCreateInfo.getOrgId());
+        userCreateInfo.setOrgId(orgId);
     }
 
     private void updateUserAccount(UserCreateInfo userCreateInfo) {

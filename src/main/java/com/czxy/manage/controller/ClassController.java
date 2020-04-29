@@ -3,6 +3,7 @@ package com.czxy.manage.controller;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
+import com.czxy.manage.model.vo.classes.ClassCreateInfo;
 import com.czxy.manage.model.vo.classes.ClassInformationInfo;
 import com.czxy.manage.model.vo.classes.ClassOrgInfo;
 import com.czxy.manage.model.vo.classes.ClassStudentInfo;
@@ -46,5 +47,10 @@ public class ClassController {
         return ResponseUtil.success(classService.delete(id));
     }
 
+    @PostMapping
+    @ApiOperation(value = "创建班级", notes = "创建班级")
+    public BaseResponse<Boolean> create(@RequestBody ClassCreateInfo classCreateInfo) {
+        return ResponseUtil.success(classService.create(classCreateInfo));
+    }
 
 }
