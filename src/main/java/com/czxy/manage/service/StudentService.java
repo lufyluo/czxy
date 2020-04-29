@@ -97,9 +97,9 @@ public class StudentService {
         StudentEntity studentEntity=PojoMapper.INSTANCE.toStudentEntityByStudentUpadate(studentUpdateInfo);
         studentMapper.update(studentEntity);
         StudentUpdateEntity studentUpdateEntity = studentMapper.queryByStudentId(studentEntity);
-        UserUpdateByStudentIdEntity userUpdateByStudentIdEntity = PojoMapper.INSTANCE.studentUpdateToUserUpdateByStudentIdEntity(studentUpdateInfo);
-        userUpdateByStudentIdEntity.setUserId(studentUpdateEntity.getUserId());
-        userMapper.updateByStudent(userUpdateByStudentIdEntity);
+        UserUpdateEntity userUpdateEntity = PojoMapper.INSTANCE.studentUpdateToUserUpdateEntity(studentUpdateInfo);
+        userUpdateEntity.setUserId(studentUpdateEntity.getUserId());
+        userMapper.updateByStudent(userUpdateEntity);
         return true;
     }
 }

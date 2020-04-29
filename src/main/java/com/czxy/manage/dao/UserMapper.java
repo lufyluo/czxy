@@ -21,5 +21,5 @@ public interface UserMapper {
 
     UserEntity queryByToken(String token);
 
-    Integer updateByStudent(UserUpdateByStudentIdEntity userUpdateByStudentIdEntity);
+    Integer updateByStudent(UserUpdateEntity userUpdateEntity);
 }
