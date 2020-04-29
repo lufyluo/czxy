@@ -525,6 +525,25 @@ alter table site
 alter table site
 	add attach_files varchar(255) null after pics;
 alter table class change county county_id int null comment '对应addressid，县、区...';
+alter table student
+	add org_id int null after type;
+
+create table course_excute_arrange
+(
+    id           int auto_increment
+        primary key,
+    arrange_id   int                                not null comment '课表描述',
+    content_id   int                                null comment '课程id，可能是点位id，也可能是课题id',
+    begin_time   bigint                             null,
+    end_time     bigint                             null,
+    category     smallint default 0                 null comment '课程类型-0：普通，1：点位，2：其它',
+    offset       int                                null comment '第几天的课程安排,日期偏移量',
+    teacher_instead_id int null comment '替代老师id',
+    updated_time datetime default CURRENT_TIMESTAMP null,
+    created_time datetime default CURRENT_TIMESTAMP null
+)
+    comment '执行课程课题关系表详情，类似课表快照';
+
 
 
 

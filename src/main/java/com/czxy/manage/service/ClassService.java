@@ -1,23 +1,17 @@
 package com.czxy.manage.service;
 
-import com.czxy.manage.dao.AddressMapper;
-import com.czxy.manage.dao.ClassMapper;
-import com.czxy.manage.dao.OrgMapper;
-import com.czxy.manage.dao.TypeMapper;
-import com.czxy.manage.infrastructure.response.BaseResponse;
+import com.czxy.manage.dao.*;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.classes.*;
-import com.czxy.manage.model.vo.student.StudentPageParam;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
-import org.apache.logging.log4j.core.util.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -38,6 +32,12 @@ public class ClassService {
     private OrgMapper orgMapper;
     @Autowired
     private OrgService orgService;
+    @Autowired
+    private StudentService studentService;
+    @Resource
+    private ClassMasterMapper classMasterMapper;
+    @Resource
+    private ClassExcuteCourseMapper classCourseMapper;
 
     public PageInfo<ClassOrgInfo> page(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -109,11 +109,24 @@ public class ClassService {
         return classStudentInfo;
     }
 
+    @Transactional
     public Boolean create(ClassCreateInfo classCreateInfo) {
-        Integer orgId = orgService.insertIfAbsentOrg(classCreateInfo.getOrgName(),classCreateInfo.getOrgId());
-        Integer recommendOrgId = orgService.insertIfAbsentOrg(classCreateInfo.getRecommendOrgName(),classCreateInfo.getRecommendOrgId());
-
+        Integer orgId = orgService.insertIfAbsentOrg(classCreateInfo.getOrgName(), classCreateInfo.getOrgId());
+        Integer recommendOrgId = orgService.insertIfAbsentOrg(classCreateInfo.getRecommendOrgName(), classCreateInfo.getRecommendOrgId());
+        classCreateInfo.setOrgId(orgId);
+        classCreateInfo.setRecommendOrgId(recommendOrgId);
+        ClassEntity classEntity = PojoMapper.INSTANCE.classCreateInfoToClassEntity(classCreateInfo);
+        classMapper.insert(classEntity);
+        classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId());
+        if (classCreateInfo.getStudentAddInfos() != null && classCreateInfo.getStudentAddInfos().size() > 0) {
+            classCreateInfo.getStudentAddInfos().forEach(n -> {
+                n.setOrgId(orgId);
+            });
+            studentService.batchInsert(classCreateInfo.getStudentAddInfos());
+        }
+        if (classCreateInfo.getClassArrangeId() != null) {
+            classCourseMapper.copySnapshot(classCreateInfo.getClassArrangeId());
+        }
         return true;
-
     }
 }

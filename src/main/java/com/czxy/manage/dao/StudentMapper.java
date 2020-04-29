@@ -25,4 +25,6 @@ public interface StudentMapper {
     Integer update(StudentEntity studentEntity);
 
     StudentUpdateEntity queryByStudentId(StudentEntity studentEntity);
+
+    Integer batchInsert(List<StudentEntity> list);
 }

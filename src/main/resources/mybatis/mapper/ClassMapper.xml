@@ -13,6 +13,15 @@
         ,arrange_id as arrangeId
         updated_time as updatedTime, created_time as createdTime
     </sql>
+    <insert id="insert">
+        insert into class(
+        name,province_id,city_id,county_id,org_id,arrange_id,recommend_org_id,appellation,
+        begin_time,end_time,duration,topics
+        )values(
+        #{name},#{provinceId},#{cityId},#{countyId},#{orgId},#{arrangeId},#{recommendOrgId},#{appellation},
+        #{beginTime},#{endTime},#{duration},#{topics}
+        )
+    </insert>
     <delete id="delete">
         delete from class where id = #{id}
     </delete>

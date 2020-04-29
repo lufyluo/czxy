@@ -3,6 +3,8 @@ package com.czxy.manage.dao;
 import com.czxy.manage.model.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @Author lufy
  * @Description ...
@@ -22,4 +24,6 @@ public interface UserMapper {
     UserEntity queryByToken(String token);
 
     Integer updateByStudent(UserUpdateEntity userUpdateEntity);
+
+    Integer batchInsert(List<UserEntity> list);
 }

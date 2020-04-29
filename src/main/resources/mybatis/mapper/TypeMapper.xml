@@ -9,6 +9,15 @@
             keyProperty="id">
         insert into type (name, category) VALUES(#{name},0)
     </insert>
+    <insert id="batchInsert" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into type
+        (name, category)
+        VALUES
+        <foreach collection="list" separator=";" item="item">
+            (#{item.name},#{item.category})
+        </foreach>
+    </insert>
 
     <select id="queryAll" resultType="com.czxy.manage.model.entity.TypeEntity">
         select

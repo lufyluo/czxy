@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.ClassExcuteCourseMapper">
+    <sql id="base_column">
+               id
+        ,arrange_id as arrangeId
+        ,content_id as contentId
+        ,begin_time as beginTime
+        ,end_time as endTime
+        ,arrange_id as arrangeId
+        ,category
+        ,offset
+        ,teacher_instead_id as teacherInsteadId
+        updated_time as updatedTime, created_time as createdTime
+    </sql>
+    <insert id="copySnapshot" parameterType="">
+        insert into course_excute_arrange(arrange_id ,content_id,category,begin_time,end_time,offset)
+        select arrange_id ,content_id,category,begin_time,end_time,offset from course_arrange a
+        where a.arrange_id = #{arrangeId}
+    </insert>
+</mapper>

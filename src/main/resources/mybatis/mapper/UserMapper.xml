@@ -16,6 +16,18 @@
         (name, idcard, phone, gender, position, age, birthday, category, wechat_id,org_id,nation,nativeplace,education)
         values(#{name}, #{idCard}, #{phone}, #{gender}, #{position}, #{age}, #{birthday}, #{category}, #{wechatId}, #{orgId}, #{nation}, #{nativePlace},#{education});
     </insert>
+    <insert id="batchInsert" useGeneratedKeys="true"
+            keyProperty="id">
+         insert into user
+        (name, idcard, phone, gender, position, age, birthday, category, wechat_id,org_id,nation,nativeplace,education)
+        values
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{name}, #{idCard}, #{phon}, #{gender},
+            #{position}, #{age}, #{birthday}, #{category},
+             #{wechatId}, #{orgId}, #{nation}, #{nativePlace},#{education}
+        </foreach>
+
+    </insert>
     <update id="update">
         update user
         set name=#{name}, idcard=#{idCard}, phone=#{phone}, gender=#{gender}, position=#{position}, age=#{age}, birthday=#{birthday}, category=#{category}, wechat_id=#{wechatId}, updated_time=now(), org_id=#{orgId},nation=#{nation},nativeplace=#{nativePlace},education=#{education}

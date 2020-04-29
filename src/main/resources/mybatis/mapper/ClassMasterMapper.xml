@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.ClassMasterMapper">
+    <sql id="base_column">
+               id
+        ,user_id as userId
+        ,type
+        updated_time as updatedTime, created_time as createdTime
+    </sql>
+    <insert id="insertMaster">
+        insert into class_master(user_id,type,class_id)
+        values(#{userId},0,#{classId})
+    </insert>
+</mapper>

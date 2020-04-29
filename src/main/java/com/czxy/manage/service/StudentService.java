@@ -20,13 +20,12 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
     @Resource
     private StudentMapper studentMapper;
-    @Resource
-    private OrgMapper orgMapper;
     @Resource
     private UserMapper userMapper;
     @Autowired
@@ -90,6 +89,22 @@ public class StudentService {
         studentMapper.insert(studentEntity);
         return true;
     }
+
+    @Transactional
+    public Boolean batchInsert(List<StudentAddInfo> studentAddInfos) {
+        List<UserEntity> userEntity = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos);
+        userMapper.batchInsert(userEntity);
+        studentAddInfos.forEach(n->{
+            Optional<UserEntity> user = userEntity.stream().filter(item->item.getIdCard().equals(n.getIdCard())).findFirst();
+            if(user.isPresent()){
+                n.setUserId(user.get().getId());
+            }
+        });
+        List<StudentEntity> studentEntities = PojoMapper.INSTANCE.toStudentEntities(studentAddInfos);
+        studentMapper.batchInsert(studentEntities);
+        return true;
+    }
+
     @Transactional
     public Boolean update(StudentUpdateInfo studentUpdateInfo) {
         Integer orgId = orgService.insertIfAbsentOrg(studentUpdateInfo.getOrgName(),studentUpdateInfo.getOrgId());

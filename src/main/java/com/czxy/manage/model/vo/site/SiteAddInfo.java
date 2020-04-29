@@ -12,7 +12,7 @@ public class SiteAddInfo extends BaseEntity {
     private List<TypeInfo> types;
     private String contactorName;
     private String contactorPhone;
-    private String topics;
+    private List<TypeInfo> topics;
     private String driveTime;
     private String addr;
     private String description;

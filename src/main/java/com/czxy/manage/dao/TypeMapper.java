@@ -11,4 +11,6 @@ public interface TypeMapper {
 
 
     Integer insert(TypeEntity typeEntity);
+
+    Integer batchInsert(List<TypeEntity> typeAddEntities);
 }

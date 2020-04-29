@@ -20,6 +20,7 @@ public class ClassInfo extends BaseEntity {
     @ApiModelProperty("主题")
     private String topics;
     private Integer recommendOrgId;
+    @ApiModelProperty("班级成分")
     private Integer compositionId;
     @ApiModelProperty("培训周期")
     private Integer duration;

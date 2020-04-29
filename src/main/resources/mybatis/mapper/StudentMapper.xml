@@ -7,7 +7,19 @@
     </sql>
     <insert id="insert" parameterType="com.czxy.manage.model.entity.StudentEntity" useGeneratedKeys="true"
             keyProperty="id">
-        insert into student (sign_flag, class_id, user_id, type, updated_time, created_time) VALUES (#{signFlag},#{classId},#{userId},#{type},#{updatedTime},#{createdTime})
+        insert into
+        student (sign_flag, class_id, user_id, type, org_id)
+        VALUES
+        (0,#{classId},#{userId},#{type},#{orgId})
+    </insert>
+    <insert id="batchInsert" parameterType="com.czxy.manage.model.entity.StudentEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into
+        student (sign_flag, class_id, user_id, type, org_id,updated_time, created_time)
+        VALUES
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            0,#{item.classId},#{item.userId},#{item.type},#{item.orgId}
+        </foreach>
     </insert>
     <delete id="delete">
         delete from student where id in

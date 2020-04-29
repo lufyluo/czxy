@@ -20,27 +20,21 @@ public class SiteService {
     @Resource
     private SiteMapper siteMapper;
     @Resource
-    private TypeMapper typeMapper;
+    private TypeService typeService;
 
     public Boolean add(SiteAddInfo siteAddInfo) {
         SiteEntity siteEntity = PojoMapper.INSTANCE.toSiteEntity(siteAddInfo);
-        if(siteAddInfo.getTypes()!=null&&siteAddInfo.getTypes().size()>0){
+        if (siteAddInfo.getTypes() != null && siteAddInfo.getTypes().size() > 0) {
             List<TypeEntity> typeEntityList = PojoMapper.INSTANCE.siteAddInfoToTypes(siteAddInfo.getTypes());
-            List<TypeEntity> typeAddEntities = typeEntityList
-                    .stream()
-                    .filter(n->n.getId()==null&& !StringUtils.isEmpty(n.getName()))
-                    .collect(Collectors.toList());
-             for (TypeEntity typeEntity:typeAddEntities){
-               typeMapper.insert(typeEntity);
-             }
-
-            if(typeAddEntities.size() < typeEntityList.size()){
-                typeAddEntities.addAll(typeEntityList.stream().filter(n->n.getId()!=null).collect(Collectors.toList()));
-            }
-            Arrays.toString(typeAddEntities.stream().map(TypeEntity::getId).collect(Collectors.toList()));
-            siteEntity.setTypes(.);
+            typeService.batchInsertIfObsent(typeEntityList);
+            siteEntity.setTypes(typeEntityList.stream().map(n-> n.getId().toString()).collect(Collectors.joining(",")));
         }
-
+        if(siteAddInfo.getTopics() != null && siteAddInfo.getTopics().size() > 0)
+        {
+            List<TypeEntity> typeEntityList = PojoMapper.INSTANCE.siteAddInfoToTypes(siteAddInfo.getTopics());
+            typeService.batchInsertIfObsent(typeEntityList);
+            siteEntity.setTopics(typeEntityList.stream().map(n-> n.getId().toString()).collect(Collectors.joining(",")));
+        }
         siteMapper.insert(siteEntity);
 
         return true;

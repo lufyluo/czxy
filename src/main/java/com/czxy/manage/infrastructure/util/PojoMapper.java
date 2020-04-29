@@ -63,14 +63,18 @@ public interface PojoMapper {
     List<StudentDetailInfo> toStudentDetailInfos(List<StudentDetailEntity> studentDetailEntities);
 
     UserEntity studentAddToUserEntity(StudentAddInfo studentAddInfo);
+    List<UserEntity> studentAddToUserEntities(List<StudentAddInfo> studentAddInfos);
 
     StudentEntity toStudentEntity(StudentAddInfo studentAddInfo);
+    List<StudentEntity> toStudentEntities(List<StudentAddInfo> studentAddInfos);
 
     UserEntity studentUpdateToUserEntity(StudentUpdateInfo studentUpdateInfo);
 
     StudentEntity toStudentEntityByStudentUpadate(StudentUpdateInfo studentUpdateInfo);
 
     UserUpdateEntity studentUpdateToUserUpdateEntity(StudentUpdateInfo studentUpdateInfo);
+
+    ClassEntity classCreateInfoToClassEntity(ClassCreateInfo classCreateInfo);
 
     SiteEntity toSiteEntity(SiteAddInfo siteAddInfo);
 
