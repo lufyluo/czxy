@@ -15,6 +15,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import org.apache.logging.log4j.core.util.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -35,6 +36,8 @@ public class ClassService {
     private AddressMapper addressMapper;
     @Resource
     private OrgMapper orgMapper;
+    @Autowired
+    private OrgService orgService;
 
     public PageInfo<ClassOrgInfo> page(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -107,6 +110,9 @@ public class ClassService {
     }
 
     public Boolean create(ClassCreateInfo classCreateInfo) {
+        Integer orgId = orgService.insertIfAbsentOrg(classCreateInfo.getOrgName(),classCreateInfo.getOrgId());
+        Integer recommendOrgId = orgService.insertIfAbsentOrg(classCreateInfo.getRecommendOrgName(),classCreateInfo.getRecommendOrgId());
+
         return true;
 
     }

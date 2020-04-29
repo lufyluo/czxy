@@ -492,5 +492,41 @@ alter table class
 
 alter table user modify gender smallint default 0 null comment '性别,0-男，1-女，2-未知';
 
+alter table site
+	add province_id int null comment '对应addressid，省' after addr;
+
+alter table site
+	add city_id int null comment '对应addressid，市' after province_id;
+
+alter table site
+	add county_id int null comment '对应addressid，县、区...' after city_id;
+alter table site drop column address_id;
+alter table site
+	add description varchar(200) null after addr;
+
+create table file
+(
+	id int auto_increment,
+	name varchar(150) not null,
+	code varchar(64) null,
+	extension varchar(10) null,
+	size bigint null,
+	updated_time datetime default now() null,
+	created_time datetime default now() null,
+	constraint file_pk
+		primary key (id)
+);
+alter table file
+	add url varchar(255) null;
+
+alter table site
+	add pics varchar(255) null after description;
+
+alter table site
+	add attach_files varchar(255) null after pics;
+alter table class change county county_id int null comment '对应addressid，县、区...';
+
+
+
 
 ```
