@@ -1,5 +1,6 @@
-package com.czxy.manage.model.vo.student;
+package com.czxy.manage.model.entity;
 
+import com.czxy.manage.model.vo.student.StudentInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -7,7 +8,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class StudentUpdateInfo extends StudentInfo{
+public class StudentUpdateEntity extends StudentInfo {
     private String orgName;
     private String name;
     private String idCard;

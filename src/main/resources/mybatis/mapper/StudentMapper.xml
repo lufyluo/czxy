@@ -37,10 +37,17 @@
         <if test="countyId != null and countyId>0 ">and c.county_id = countyId</if>
         <if test="classId != null and classId >0 ">and c.class_id=classId</if>
     </select>
+    <select id="queryByStudentId" resultType="com.czxy.manage.model.entity.StudentUpdateEntity">
+        select sign_flag as signFlag, class_id as classId, user_id as userId, type from student where id=#{id}
+    </select>
+
     <update id="sign">
-        update student set sign_flag = 1 where id in
+        update student set sign_flag = 1 and updated_time=now() where id in
         <foreach collection="studentIds" item="item" index="index"
                  open="(" separator="," close=")">#{item}
         </foreach>
+    </update>
+    <update id="update">
+        update student set sign_flag=#{signFlag}, class_id=#{classId}, type=#{type}, updated_time=now() where id=#{id}
     </update>
 </mapper>

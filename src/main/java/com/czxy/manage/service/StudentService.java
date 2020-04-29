@@ -5,7 +5,6 @@ import com.czxy.manage.dao.StudentMapper;
 import com.czxy.manage.dao.UserMapper;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.*;
-import com.czxy.manage.model.vo.classes.ClassStudentInfo;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentPageParam;
@@ -44,15 +43,16 @@ public class StudentService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         toStudentDetailInfos.forEach(n -> {
             n.setSign(n.getSignFlag() == 1);
-            n.setDuration(sdf.format(n.getBeginTime())+sdf.format(n.getEndTime()));
+            n.setDuration(sdf.format(n.getBeginTime()) + sdf.format(n.getEndTime()));
             n.setStudentIdentity(getStudentIdentity(n.getType()));
         });
         return null;
     }
-    private String getStudentIdentity(Integer type){
+
+    private String getStudentIdentity(Integer type) {
         //0-学员；1-班委干部；8-带班领导
         String identity = "-";
-        switch (type){
+        switch (type) {
             case 0:
                 identity = "学员";
                 break;
@@ -75,23 +75,36 @@ public class StudentService {
         Boolean delete = studentMapper.delete(studentIds);
         return delete;
     }
+
     @Transactional
     public Boolean add(StudentAddInfo studentAddInfo) {
-        if (studentAddInfo.getOrgId()==null&&!StringUtils.isEmpty(studentAddInfo.getOrgName())){
+        if (studentAddInfo.getOrgId() == null && !StringUtils.isEmpty(studentAddInfo.getOrgName())) {
             OrgEntity orgEntity = new OrgEntity();
             orgEntity.setName(studentAddInfo.getOrgName());
             orgMapper.insertOrg(orgEntity);
             studentAddInfo.setOrgId(orgEntity.getId());
         }
-        UserEntity userEntity = PojoMapper.INSTANCE.studentAddtoUserEntity(studentAddInfo);
+        UserEntity userEntity = PojoMapper.INSTANCE.studentAddToUserEntity(studentAddInfo);
         userMapper.insert(userEntity);
         studentAddInfo.setUserId(userEntity.getId());
         StudentEntity studentEntity = PojoMapper.INSTANCE.toStudentEntity(studentAddInfo);
         studentMapper.insert(studentEntity);
         return true;
     }
-
-//    public Boolean update(StudentUpdateInfo studentUpdateInfo) {
-//        return null;
-//    }
+    @Transactional
+    public Boolean update(StudentUpdateInfo studentUpdateInfo) {
+        if (studentUpdateInfo.getOrgId() == null && !StringUtils.isEmpty(studentUpdateInfo.getOrgName())) {
+            OrgEntity orgEntity = new OrgEntity();
+            orgEntity.setName(studentUpdateInfo.getOrgName());
+            orgMapper.insertOrg(orgEntity);
+            studentUpdateInfo.setOrgId(orgEntity.getId());
+        }
+        StudentEntity studentEntity=PojoMapper.INSTANCE.toStudentEntityByStudentUpadate(studentUpdateInfo);
+        studentMapper.update(studentEntity);
+        StudentUpdateEntity studentUpdateEntity = studentMapper.queryByStudentId(studentEntity);
+        UserUpdateByStudentIdEntity userUpdateByStudentIdEntity = PojoMapper.INSTANCE.studentUpdateToUserUpdateByStudentIdEntity(studentUpdateInfo);
+        userUpdateByStudentIdEntity.setUserId(studentUpdateEntity.getUserId());
+        userMapper.updateByStudent(userUpdateByStudentIdEntity);
+        return true;
+    }
 }

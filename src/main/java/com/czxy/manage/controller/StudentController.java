@@ -21,29 +21,34 @@ import java.util.List;
 public class StudentController {
     @Autowired
     private StudentService studentService;
+
     @GetMapping("/page")
     @ApiOperation(value = "分页获取", notes = "分页获取班级")
     public PageInfo<StudentDetailInfo> page(StudentPageParam<String> pageParam) {
         return studentService.page(pageParam);
     }
+
     @PutMapping
     @ApiOperation("一键签到")
-    public BaseResponse<Boolean> sign(@RequestBody List<Integer> studentIds ){
-           return ResponseUtil.success(studentService.sign(studentIds));
+    public BaseResponse<Boolean> sign(@RequestBody List<Integer> studentIds) {
+        return ResponseUtil.success(studentService.sign(studentIds));
     }
+
     @DeleteMapping
     @ApiOperation("删除学员")
-    public BaseResponse<Boolean> delete(@RequestBody List<Integer> studentIds){
+    public BaseResponse<Boolean> delete(@RequestBody List<Integer> studentIds) {
         return ResponseUtil.success(studentService.delete(studentIds));
     }
+
     @PostMapping("/add")
     @ApiOperation("新增学员")
-    public BaseResponse<Boolean> add(@RequestBody StudentAddInfo studentAddInfo){
+    public BaseResponse<Boolean> add(@RequestBody StudentAddInfo studentAddInfo) {
         return ResponseUtil.success(studentService.add(studentAddInfo));
     }
-//    @PutMapping
-//    @ApiOperation("编辑学员")
-//    public BaseResponse<Boolean> update(@RequestBody StudentUpdateInfo studentUpdateInfo){
-//        return ResponseUtil.success(studentService.update(studentUpdateInfo));
-//    }
+
+    @PutMapping("/update")
+    @ApiOperation("编辑学员")
+    public BaseResponse<Boolean> update(@RequestBody StudentUpdateInfo studentUpdateInfo) {
+        return ResponseUtil.success(studentService.update(studentUpdateInfo));
+    }
 }

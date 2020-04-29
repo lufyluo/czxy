@@ -1,9 +1,6 @@
 package com.czxy.manage.dao;
 
-import com.czxy.manage.model.entity.AccountEntity;
-import com.czxy.manage.model.entity.OrgEntity;
-import com.czxy.manage.model.entity.StudentAddEntity;
-import com.czxy.manage.model.entity.UserEntity;
+import com.czxy.manage.model.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -24,4 +21,5 @@ public interface UserMapper {
 
     UserEntity queryByToken(String token);
 
+    Integer updateByStudent(UserUpdateByStudentIdEntity userUpdateByStudentIdEntity);
 }

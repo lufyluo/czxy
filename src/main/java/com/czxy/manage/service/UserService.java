@@ -72,7 +72,7 @@ public class UserService {
 
     public UserInfo query(String token) {
         UserEntity userEntity = userMapper.queryByToken(token);
-        return  PojoMapper.INSTANCE.toUserInfo(userEntity);
+        return PojoMapper.INSTANCE.toUserInfo(userEntity);
     }
 }
 
