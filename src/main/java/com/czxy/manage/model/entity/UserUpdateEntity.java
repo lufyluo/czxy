@@ -10,7 +10,7 @@ import java.util.Date;
  * @Date 20-4-15 下午9:44
  */
 @Data
-public class UserUpdateByStudentIdEntity extends BaseEntity{
+public class UserUpdateEntity extends BaseEntity{
     private Integer UserId;
     private String name;
     private String idCard;

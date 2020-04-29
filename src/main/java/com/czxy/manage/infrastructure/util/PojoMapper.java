@@ -68,5 +68,5 @@ public interface PojoMapper {
 
     StudentEntity toStudentEntityByStudentUpadate(StudentUpdateInfo studentUpdateInfo);
 
-    UserUpdateByStudentIdEntity studentUpdateToUserUpdateByStudentIdEntity(StudentUpdateInfo studentUpdateInfo);
+    UserUpdateEntity studentUpdateToUserUpdateEntity(StudentUpdateInfo studentUpdateInfo);
 }
