@@ -7,6 +7,32 @@
     insert into site
     (name, types, contactor_name, contactor_phone, topics, drive_time, addr, description, pics, attach_files, province_id, city_id, county_id, fee)
      VALUES
-     (#{name},#{types},#{contactorName},#{contactorPhone},#{topics},#{driverTime},#{addr},#{description},#{pics},#{attchFiles},#{provinceId},#{cityId},#{countyId},#{fee})
+     (#{name},#{types},#{contactorName},#{contactorPhone},#{topics},#{driveTime},#{addr},#{description},#{pics},#{attachFiles},#{provinceId},#{cityId},#{countyId},#{fee})
     </insert>
+    <update id="update">
+        update site set name=#{name}, types=#{types},contactor_name=#{contactorName},contactor_phone=#{contactorPhone}, topics=#{topics},
+        drive_time=#{driveTime},addr=#{addr},description=#{description},pics=#{pics},attach_files=#{attachFiles},province_id=#{provinceId},
+        city_id=#{cityId},county_id=#{countyId},fee=#{fee},updated_time=now()
+        where
+        id=#{id}
+    </update>
+    <delete id="delete">
+        delete from site where id in
+        <foreach collection="siteIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
+    </delete>
+    <select id="query" resultType="com.czxy.manage.model.entity.SitePageEntity">
+        select
+        s.id,s.name,s.types,s.contactor_name,s.contactor_phone,s.topics,s.drive_time,s.addr,
+        s.description,s.pics,s.attach_files,s.province_id,s.city_id,s.county_id,s.updated_time,s.created_time,
+        t.name as typeName,t.category as typeCategory
+        from
+        site s
+        left join type t
+        on
+        where 1=1
+        <if test="param != null and param != '' ">and t.name like '%${param}%'</if>
+        <if test="typeCategory==0">and t.category =typeCategory </if>
+    </select>
 </mapper>

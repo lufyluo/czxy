@@ -1,6 +1,7 @@
 package com.czxy.manage.model.vo.site;
 
 import com.czxy.manage.model.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.List;
