@@ -31,23 +31,27 @@ public interface PojoMapper {
     AccountEntity toAccountEntity(UserCreateInfo userInfo);
 
     ClassOrgInfo toClassOrgInfo(ClassOrgEntity entity);
+
     List<ClassOrgInfo> toClassOrgInfos(List<ClassOrgEntity> classEntities);
 
     OrgEntity toOrgEntity(UserCreateInfo userCreateInfo);
 
     UserMenuInfo toUserMenuInfo(MenusEntity menusEntity);
+
     List<UserMenuInfo> toUserMenuInfos(List<MenusEntity> menusEntities);
 
     ClassFeeDetailInfo toClassFeeDetailInfo(ClassFeeEntity classFeeEntity);
+
     List<ClassFeeDetailInfo> toClassFeeDetailInfos(List<ClassFeeEntity> classFeeEntities);
 
     ClassArrangeInfo toClassArrangeInfo(ArrangeEntity arrangeEntity);
 
     @Mappings({
-            @Mapping(ignore = true,target = "beginTime"),
-            @Mapping(ignore = true,target = "endTime")
+            @Mapping(ignore = true, target = "beginTime"),
+            @Mapping(ignore = true, target = "endTime")
     })
     CourseDetailInfo toCourseInfo(CourseDetailEntity courseEntities);
+
     List<CourseDetailInfo> toCourseInfos(List<CourseDetailEntity> courseEntities);
 
     ClassInfo toClassInfo(ClassEntity classEntity);
@@ -55,17 +59,21 @@ public interface PojoMapper {
     ClassInformationInfo toClassInformationInfo(ClassInformationEntity classInformationEntity);
 
     ClassStudentInfo toClassStudentInfo(ClassStudentEntity classStudentEntity);
+
     List<ClassStudentInfo> toClassStudentInfos(List<ClassStudentEntity> classStudentEntities);
 
     UserInfo toUserInfo(UserEntity userEntity);
 
     StudentDetailInfo toStudentDetailInfos(StudentDetailEntity studentDetailEntity);
+
     List<StudentDetailInfo> toStudentDetailInfos(List<StudentDetailEntity> studentDetailEntities);
 
     UserEntity studentAddToUserEntity(StudentAddInfo studentAddInfo);
+
     List<UserEntity> studentAddToUserEntities(List<StudentAddInfo> studentAddInfos);
 
     StudentEntity toStudentEntity(StudentAddInfo studentAddInfo);
+
     List<StudentEntity> toStudentEntities(List<StudentAddInfo> studentAddInfos);
 
     UserEntity studentUpdateToUserEntity(StudentUpdateInfo studentUpdateInfo);
@@ -76,8 +84,10 @@ public interface PojoMapper {
 
     ClassEntity classCreateInfoToClassEntity(ClassCreateInfo classCreateInfo);
 
+    @Mappings({@Mapping(ignore = true, target = "types"), @Mapping(ignore = true, target = "topics")})
     SiteEntity toSiteEntity(SiteAddInfo siteAddInfo);
 
     TypeEntity siteAddInfoToType(TypeInfo types);
+
     List<TypeEntity> siteAddInfoToTypes(List<TypeInfo> types);
 }

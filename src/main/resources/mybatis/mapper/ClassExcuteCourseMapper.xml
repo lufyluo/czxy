@@ -13,7 +13,7 @@
         ,teacher_instead_id as teacherInsteadId
         updated_time as updatedTime, created_time as createdTime
     </sql>
-    <insert id="copySnapshot" parameterType="">
+    <insert id="copySnapshot">
         insert into course_excute_arrange(arrange_id ,content_id,category,begin_time,end_time,offset)
         select arrange_id ,content_id,category,begin_time,end_time,offset from course_arrange a
         where a.arrange_id = #{arrangeId}
