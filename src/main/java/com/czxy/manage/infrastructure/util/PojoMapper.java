@@ -99,8 +99,6 @@ public interface PojoMapper {
     OrgInfo toOrgInfo(OrgEntity orgEntity);
     List<OrgInfo> toOrgInfos(List<OrgEntity> orgEntities);
 
-    TypeEntity toTypeEntity(TypeInfo topicInfo);
-    List<TypeEntity> toTypeEntities(List<TypeInfo> topicInfos);
 
     CompositionInfo toCompositionInfo(CompositionEntity compositionEntity);
     List<CompositionInfo> toCompositionInfos(List<CompositionEntity> compositionEntities);
