@@ -55,12 +55,12 @@ public class SiteService {
     public Boolean update(SiteAddInfo siteAddInfo) {
         SiteEntity siteEntity = PojoMapper.INSTANCE.toSiteEntity(siteAddInfo);
         if (siteAddInfo.getTypes() != null && siteAddInfo.getTypes().size() > 0) {
-            List<TypeEntity> typeEntityList = PojoMapper.INSTANCE.siteAddInfoToTypes(siteAddInfo.getTypes());
+            List<TypeEntity> typeEntityList = PojoMapper.INSTANCE.toTypeEntities(siteAddInfo.getTypes());
             typeService.batchInsertIfObsent(typeEntityList);
             siteEntity.setTypes(typeEntityList.stream().map(n -> n.getId().toString()).collect(Collectors.joining(",")));
         }
         if (siteAddInfo.getTopics() != null && siteAddInfo.getTopics().size() > 0) {
-            List<TypeEntity> typeEntityList = PojoMapper.INSTANCE.siteAddInfoToTypes(siteAddInfo.getTopics());
+            List<TypeEntity> typeEntityList = PojoMapper.INSTANCE.toTypeEntities(siteAddInfo.getTopics());
             typeService.batchInsertIfObsent(typeEntityList);
             siteEntity.setTopics(typeEntityList.stream().map(n -> n.getId().toString()).collect(Collectors.joining(",")));
         }
