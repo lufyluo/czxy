@@ -27,8 +27,6 @@ public class UserService {
     @Resource
     private UserMapper userMapper;
     @Resource
-    private OrgMapper orgMapper;
-    @Resource
     private AccountMapper accountMapper;
 
     @Autowired

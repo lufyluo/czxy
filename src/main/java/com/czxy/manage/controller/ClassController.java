@@ -52,5 +52,9 @@ public class ClassController {
     public BaseResponse<Boolean> create(@RequestBody ClassCreateInfo classCreateInfo) {
         return ResponseUtil.success(classService.create(classCreateInfo));
     }
-
+    @PostMapping
+    @ApiOperation(value = "编辑班级", notes = "编辑班级")
+    public BaseResponse<Boolean> update(@RequestBody ClassCreateInfo classCreateInfo) {
+        return ResponseUtil.success(classService.update(classCreateInfo));
+    }
 }

@@ -1,10 +1,13 @@
 package com.czxy.manage.model.vo.classes;
 
 import com.czxy.manage.model.entity.BaseEntity;
+import com.czxy.manage.model.vo.site.TypeInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class ClassInfo extends BaseEntity {
@@ -17,13 +20,14 @@ public class ClassInfo extends BaseEntity {
     private Date beginTime;
     private Date endTime;
     private Integer arrangeId;
-    @ApiModelProperty("主题")
-    private String topics;
     private Integer recommendOrgId;
-    @ApiModelProperty("班级成分")
-    private Integer compositionId;
+    @ApiModelProperty("培训对象（班级成分）")
+    private String composition;
     @ApiModelProperty("培训周期")
     private Integer duration;
-    @ApiModelProperty("培训对象")
-    private String appellation;
+    @ApiModelProperty("主题")
+    private List<TypeInfo> topicInfos;
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private String topics;
 }

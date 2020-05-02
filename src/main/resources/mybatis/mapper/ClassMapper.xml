@@ -13,15 +13,33 @@
         ,arrange_id as arrangeId
         updated_time as updatedTime, created_time as createdTime
     </sql>
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true"
+            keyProperty="id">
         insert into class(
         name,province_id,city_id,county_id,org_id,arrange_id,recommend_org_id,appellation,
-        begin_time,end_time,duration,topics
+        begin_time,end_time,duration,topics,addr
         )values(
         #{name},#{provinceId},#{cityId},#{countyId},#{orgId},#{arrangeId},#{recommendOrgId},#{appellation},
-        #{beginTime},#{endTime},#{duration},#{topics}
+        #{beginTime},#{endTime},#{duration},#{topics},#{addr}
         )
     </insert>
+    <update id="update">
+        update class
+        set
+        name = #{name}
+        ,province_id = #{provinceId}
+        ,city_id = #{cityId}
+        ,county_id = #{countyId}
+        ,org_id = #{orgId}
+        ,begin_time = #{beginTime}
+        ,end_time = #{endTime}
+        ,arrange_id = #{arrangeId}
+        ,recommend_org_id = #{recommendOrgId}
+        ,duration = #{duration}
+        ,appellation = #{appellation}
+        ,topics = #{topics}
+        ,updated_time = now()
+    </update>
     <delete id="delete">
         delete from class where id = #{id}
     </delete>
@@ -41,18 +59,21 @@
         ,org.name as orgName
         ,u.name as masterName
         ,u1.name as leaderName
+        ,s.id  as leaderId
         from class c
         left join org o
         on c.org_id = org.id
         left join class_master cm
-        on c.id = cm.class_id and cm.type =
+        on c.id = cm.class_id and cm.type = 0 --0:班主任
         left join user u
         on cm.user_id = u.id
         left join student s
         on s.class_id = c.id and s.type = 8 --8为培训班级带队领导
         left join user u1
         on s.user_id = u1.id
-        where name like '%${param}%' or org_name like '%${param}%' or u.name like '%${param}%'
+        <if test="param != null and param != ''">
+            where name like '%${param}%' or org_name like '%${param}%' or u.name like '%${param}%'
+        </if>
         order by name,orgName,masterName
     </select>
     <select id="query" resultType="com.czxy.manage.model.entity.ClassInformationEntity">

@@ -5,6 +5,7 @@ import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.classes.*;
+import com.czxy.manage.model.vo.site.TypeInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -29,7 +30,7 @@ public class ClassService {
     @Resource
     private AddressMapper addressMapper;
     @Resource
-    private OrgMapper orgMapper;
+    private TypeService typeService;
     @Autowired
     private OrgService orgService;
     @Autowired
@@ -50,20 +51,19 @@ public class ClassService {
     }
 
     private void fetchTopics(List<ClassOrgInfo> classOrgInfos) {
-        List<TypeEntity> types = getTypes(classOrgInfos);
+        List<TypeInfo> types = getTypes(classOrgInfos);
         classOrgInfos.forEach(n -> {
             if (StringUtil.isNotEmpty(n.getTopics())) {
                 List<String> idsTemp = Arrays.asList(
                         n.getTopics().split(","));
-                n.setTopicNames(types.stream()
+                n.setTopicInfos(types.stream()
                         .filter(item -> idsTemp.contains(item.getId() + ""))
-                        .map(TypeEntity::getName)
-                        .collect(Collectors.joining(",")));
+                        .collect(Collectors.toList()));
             }
         });
     }
 
-    private List<TypeEntity> getTypes(List<ClassOrgInfo> classOrgInfos) {
+    private List<TypeInfo> getTypes(List<ClassOrgInfo> classOrgInfos) {
         List<String> partionTopicIds = classOrgInfos.stream().map(ClassOrgInfo::getTopics).collect(Collectors.toList());
         List<Integer> topicIds = new ArrayList<>();
         for (String strs :
@@ -76,7 +76,9 @@ public class ClassService {
 
             }
         }
-        return typeMapper.queryAll(topicIds);
+        List<TypeEntity> typeEntities = typeMapper.queryAll(topicIds);
+
+        return PojoMapper.INSTANCE.toTypeInfos(typeEntities);
     }
 
     public Boolean delete(Integer id) {
@@ -105,28 +107,50 @@ public class ClassService {
         }
         PageInfo<ClassStudentInfo> result = page.toPageInfo();
         result.setList(PojoMapper.INSTANCE.toClassStudentInfos(classStudentEntities));
-        PageInfo<ClassStudentInfo> classStudentInfo = page.toPageInfo();
-        return classStudentInfo;
+        return result;
     }
 
     @Transactional
     public Boolean create(ClassCreateInfo classCreateInfo) {
-        Integer orgId = orgService.insertIfAbsentOrg(classCreateInfo.getOrgName(), classCreateInfo.getOrgId());
-        Integer recommendOrgId = orgService.insertIfAbsentOrg(classCreateInfo.getRecommendOrgName(), classCreateInfo.getRecommendOrgId());
-        classCreateInfo.setOrgId(orgId);
-        classCreateInfo.setRecommendOrgId(recommendOrgId);
+        buildData(classCreateInfo);
         ClassEntity classEntity = PojoMapper.INSTANCE.classCreateInfoToClassEntity(classCreateInfo);
         classMapper.insert(classEntity);
         classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId());
         if (classCreateInfo.getStudentAddInfos() != null && classCreateInfo.getStudentAddInfos().size() > 0) {
             classCreateInfo.getStudentAddInfos().forEach(n -> {
-                n.setOrgId(orgId);
+                n.setOrgId(classCreateInfo.getOrgId());
             });
             studentService.batchInsert(classCreateInfo.getStudentAddInfos());
         }
         if (classCreateInfo.getClassArrangeId() != null) {
             classCourseMapper.copySnapshot(classCreateInfo.getClassArrangeId());
         }
+        studentService.setClassLeader(classCreateInfo.getLeaderId(),classEntity.getId());
         return true;
+    }
+
+    public Boolean update(ClassCreateInfo classCreateInfo) {
+        buildData(classCreateInfo);
+        ClassEntity classEntity = PojoMapper.INSTANCE.classCreateInfoToClassEntity(classCreateInfo);
+        classMapper.update(classEntity);
+        studentService.setClassLeader(classCreateInfo.getLeaderId(),classEntity.getId());
+        return true;
+    }
+
+    private void buildData(ClassCreateInfo classCreateInfo){
+        Integer orgId = orgService.insertIfAbsentOrg(classCreateInfo.getOrgName(), classCreateInfo.getOrgId());
+        Integer recommendOrgId = orgService.insertIfAbsentOrg(classCreateInfo.getRecommendOrgName(), classCreateInfo.getRecommendOrgId());
+        classCreateInfo.setOrgId(orgId);
+        classCreateInfo.setRecommendOrgId(recommendOrgId);
+        saveTopics(classCreateInfo);
+    }
+    private void saveTopics(ClassCreateInfo classCreateInfo){
+        if(classCreateInfo.getTopicInfos() ==null || classCreateInfo.getTopicInfos().size() == 0){
+            classCreateInfo.setTopics(null);
+            return;
+        }
+        List<TypeEntity> topics = PojoMapper.INSTANCE.toTypeEntities(classCreateInfo.getTopicInfos());
+        typeService.batchInsertIfObsent(topics);
+        classCreateInfo.setTopics(topics.stream().map(n->n.getId().toString()).collect(Collectors.joining(",")));
     }
 }

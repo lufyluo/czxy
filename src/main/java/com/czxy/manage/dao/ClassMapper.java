@@ -23,4 +23,6 @@ public interface ClassMapper {
     List<ClassStudentEntity> queryAllStudent(Integer classId);
 
     Integer insert(ClassEntity classEntity);
+
+    Integer update(ClassEntity classEntity);
 }

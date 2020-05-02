@@ -1,5 +1,6 @@
 package com.czxy.manage.model.vo.classes;
 
+import com.czxy.manage.model.vo.site.TypeInfo;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,5 +13,7 @@ public class ClassCreateInfo extends ClassOrgInfo{
     private Integer masterId;
     @ApiModelProperty("课程表id")
     private Integer classArrangeId;
+    @ApiModelProperty("培训对象(班级成分id)")
+    private Integer compositionId;
     private List<StudentAddInfo> studentAddInfos;
 }

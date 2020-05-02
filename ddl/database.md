@@ -544,6 +544,12 @@ create table course_excute_arrange
 )
     comment '执行课程课题关系表详情，类似课表快照';
 
+alter table class
+    add addr varchar(150) null comment '详细地址' after county_id;
+
+alter table type modify category smallint default 0 null comment '0:类型，1：主题,2：班级成分';
+
+alter table class change appellation composition varchar(50) null comment '培训对象，比如 中组部，书记、干部。。。';
 
 
 

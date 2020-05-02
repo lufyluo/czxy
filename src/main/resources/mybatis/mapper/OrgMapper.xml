@@ -11,4 +11,8 @@
     <select id="query" resultType="com.czxy.manage.model.entity.OrgEntity">
         select name from org where id = #{orgId}
     </select>
+    <select id="queryAll" resultType="com.czxy.manage.model.entity.OrgEntity">
+        select id,name from org
+        <if test="param != null and param != ''">where name like '%$param}%'</if>
+    </select>
 </mapper>

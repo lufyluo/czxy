@@ -62,4 +62,10 @@
     <update id="update">
         update student set sign_flag=#{signFlag}, class_id=#{classId}, type=#{type}, updated_time=now() where id=#{id}
     </update>
+    <update id="clearLeader">
+        update student set type = 0 where class_id = #{classId} and type = 8
+    </update>
+    <update id="setLeader">
+        update student set type = 8 where class_id = #{classId} and user_id = #{userId}
+    </update>
 </mapper>

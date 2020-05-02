@@ -117,4 +117,9 @@ public class StudentService {
         userMapper.updateByStudent(userUpdateEntity);
         return true;
     }
+
+    public void setClassLeader(Integer studentId, Integer classId) {
+        studentMapper.clearLeader(classId);
+        studentMapper.setLeader(studentId,classId);
+    }
 }

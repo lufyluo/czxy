@@ -27,4 +27,8 @@ public interface StudentMapper {
     StudentUpdateEntity queryByStudentId(StudentEntity studentEntity);
 
     Integer batchInsert(List<StudentEntity> list);
+
+    Integer clearLeader(Integer classId);
+
+    Integer setLeader(Integer studentId, Integer classId);
 }
