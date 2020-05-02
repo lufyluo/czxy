@@ -149,7 +149,7 @@ public class ClassService {
             classCreateInfo.setTopics(null);
             return;
         }
-        List<TypeEntity> topics = PojoMapper.INSTANCE.siteAddInfoToTypes(classCreateInfo.getTopicInfos());
+        List<TypeEntity> topics = PojoMapper.INSTANCE.toTypeEntities(classCreateInfo.getTopicInfos());
         typeService.batchInsertIfObsent(topics);
         classCreateInfo.setTopics(topics.stream().map(n->n.getId().toString()).collect(Collectors.joining(",")));
     }

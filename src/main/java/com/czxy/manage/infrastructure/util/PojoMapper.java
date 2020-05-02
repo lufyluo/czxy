@@ -89,9 +89,9 @@ public interface PojoMapper {
     @Mappings({@Mapping(ignore = true, target = "types"), @Mapping(ignore = true, target = "topics")})
     SiteEntity toSiteEntity(SiteAddInfo siteAddInfo);
 
-    TypeEntity siteAddInfoToType(TypeInfo types);
+    TypeEntity toTypeEntity(TypeInfo types);
 
-    List<TypeEntity> siteAddInfoToTypes(List<TypeInfo> types);
+    List<TypeEntity> toTypeEntities(List<TypeInfo> types);
 
     TypeInfo toTypeInfo(TypeEntity typeEntity);
     List<TypeInfo> toTypeInfos(List<TypeEntity> typeEntities);
