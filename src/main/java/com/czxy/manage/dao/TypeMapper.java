@@ -15,5 +15,5 @@ public interface TypeMapper {
 
     Integer batchInsert(List<TypeEntity> typeAddEntities);
 
-    TypeEntity query(@Param("parseInt") Integer parseInt);
+    String query(@Param("parseInt") Integer parseInt);
 }

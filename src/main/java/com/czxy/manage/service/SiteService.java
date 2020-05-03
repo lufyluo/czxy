@@ -7,6 +7,7 @@ import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.SiteEntity;
 import com.czxy.manage.model.entity.TypeEntity;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
+import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.model.vo.site.SitePageAddInfo;
 import com.czxy.manage.model.vo.site.SitePageParam;
 import com.github.pagehelper.Page;
@@ -42,28 +43,35 @@ public class SiteService {
         return delete;
     }
 
-    public PageInfo<SiteAddInfo> page(PageParam<String> pageParam) {
+    public PageInfo<SiteInfo> page(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<SiteEntity> siteEntities = siteMapper.query(pageParam.getParam());
-        List<TypeEntity> typeEntities = new ArrayList<TypeEntity>();
         for (int i = 0; i < siteEntities.size(); i++) {
             SiteEntity siteEntity = siteEntities.get(i);
             String types = siteEntity.getTypes();
             String[] split = types.split(",");
+            List<String> typeNames= new ArrayList<>();
+            List<String> topicsNames= new ArrayList<>();
             for (int j = 0; j < split.length; j++) {
                 Integer m = Integer.parseInt(split[j]);
-                TypeEntity typeEntity = typeMapper.query(m);
-                typeEntities.add(typeEntity);
+                String typeName = typeMapper.query(m);
+                typeNames.add(typeName);
             }
+            String typeName = String.join(",", typeNames);
+            siteEntity.setTypeName(typeName);
             String topics = siteEntity.getTopics();
             String[] typeIds = topics.split(",");
             for (int k = 0; k <typeIds.length ; k++) {
                 Integer n = Integer.parseInt(typeIds[k]);
-                TypeEntity query = typeMapper.query(n);
-                typeEntities.add(query);
+                String topicsName = typeMapper.query(n);
+                topicsNames.add(topicsName);
             }
+            String topicsName = String.join(",", topicsNames);
+            siteEntity.setTopicsName(topicsName);
         }
-        return null;
+        PageInfo<SiteInfo> result = page.toPageInfo();
+        result.setList(PojoMapper.INSTANCE.toSiteInfo(siteEntities));
+        return result;
     }
 
     public Boolean update(SiteAddInfo siteAddInfo) {

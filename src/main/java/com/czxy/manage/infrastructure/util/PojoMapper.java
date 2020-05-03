@@ -5,6 +5,7 @@ import com.czxy.manage.model.vo.CompositionInfo;
 import com.czxy.manage.model.vo.OrgInfo;
 import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
+import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.model.vo.site.TypeInfo;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
@@ -97,16 +98,20 @@ public interface PojoMapper {
     List<TypeEntity> toTypeEntities(List<TypeInfo> types);
 
     TypeInfo toTypeInfo(TypeEntity typeEntity);
+
     List<TypeInfo> toTypeInfos(List<TypeEntity> typeEntities);
 
     OrgInfo toOrgInfo(OrgEntity orgEntity);
+
     List<OrgInfo> toOrgInfos(List<OrgEntity> orgEntities);
 
 
     CompositionInfo toCompositionInfo(CompositionEntity compositionEntity);
+
     List<CompositionInfo> toCompositionInfos(List<CompositionEntity> compositionEntities);
 
     TeacherDetailInfo toTeacherDetailInfo(TeacherDetailEntity teacherDetailEntity);
+
     List<TeacherDetailInfo> toTeacherDetailInfos(List<TeacherDetailEntity> teacherDetailEntities);
 
     UserEntity teacherInfoToUserEntity(TeacherInfo teacherInfo);
@@ -118,4 +123,8 @@ public interface PojoMapper {
     UserEntity teacherUpdateToUserEnity(TeacherUpdateInfo teacherUpdateInfo);
 
     UserUpdateEntity teacherUpdateToUserUpdateEnity(TeacherUpdateInfo teacherUpdateInfo);
+
+    SiteInfo toSiteInfo(SiteEntity siteEntity);
+
+    List<SiteInfo> toSiteInfo(List<SiteEntity> siteEntities);
 }

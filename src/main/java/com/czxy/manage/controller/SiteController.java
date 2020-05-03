@@ -4,6 +4,7 @@ import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
+import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.service.SiteService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -32,7 +33,7 @@ public class SiteController {
     }
     @GetMapping("/page")
     @ApiOperation("分页获取点位")
-    public PageInfo<SiteAddInfo> page(PageParam<String> pageParam){
+    public PageInfo<SiteInfo> page(PageParam<String> pageParam){
         return siteService.page(pageParam);
     }
     @PutMapping

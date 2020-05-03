@@ -25,7 +25,7 @@
     <select id="query" resultType="com.czxy.manage.model.entity.SiteEntity">
         select
         id,name,types,contactor_name as contactorName,contactor_phone as contactorPhone,topics,drive_time as driveTime,addr,
-        description,pics,attach_files as attachFiles,province_id as provinceId,city_id as cityId,county_id as countyId,updated_time as updatedTime,created_time as  createdTime
+        description,pics,attach_files as attachFiles,province_id as provinceId,city_id as cityId,county_id as countyId,updated_time as updatedTime,created_time as  createdTime,fee
         from
         site
     </select>
