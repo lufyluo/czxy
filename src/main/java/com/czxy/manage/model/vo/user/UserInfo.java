@@ -37,4 +37,6 @@ public class UserInfo extends BaseEntity {
     private String nativePlace;
     @ApiModelProperty("学历")
     private String education;
+    @ApiModelProperty("政治面貌")
+    private String politics;
 }
