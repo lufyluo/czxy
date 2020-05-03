@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class SitePageInfo extends SiteEntity {
+public class SitePageInfo extends SiteInfo {
     private String typeName;
     private Integer typeCategory;
 }

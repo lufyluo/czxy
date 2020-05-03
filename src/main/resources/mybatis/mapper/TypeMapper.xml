@@ -28,4 +28,10 @@
             #{item}
         </foreach>
     </select>
+    <select id="query" resultType="com.czxy.manage.model.entity.TypeEntity">
+        select
+        name, description, category, updated_time, created_time
+        from type
+        where id={parseInt}
+    </select>
 </mapper>
