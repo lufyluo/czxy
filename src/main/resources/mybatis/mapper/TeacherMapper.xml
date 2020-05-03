@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.TeacherMapper">
-    <insert id="insert" parameterType="com.czxy.manage.model.entity.TeacherEntity" useGeneratedKeys="true"
-            keyProperty="id">
-        INSERT INTO teacher (score, comment, user_id, system, skill, star, area) VALUES (#{score},#{comment},#{userId},#{system},#{skill},#{star},#{area})
-    </insert>
+    <sql id="base_column">
+        id, score, user_id as userId,comment,system,
+        skill,star,area
+        updated_time as updatedTime, created_time as createdTime
+    </sql>
+    <select id="query" resultType="com.czxy.manage.model.entity.TeacherDetailEntity">
+        select
+        t.id as teacherId,
+        t.score, t.user_id as userId,t.comment,t.system,
+        t.skill,t.star,t.area,
+        u.id, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
+        u.wechat_id as wechatId,
+        u.org_id as orgId,
+        u.nation,
+        u.nativeplace as nativePlace,
+        u.politics,
+        t.begin_time as beginTime,t.end_time as endTime
+         from
+        teacher t
+        left join user u
+        on t.user_id = u.id
+        where 1=1
+        <if test="param != null and param != '' ">and u.name like '%${param}%'</if>
+        <if test="skill != null and skill!='' ">and t.skill = #{skill}</if>
+        <if test="star != null and star!='' ">and t.star = #{star}</if>
+        order by t.id desc
+    </select>
 </mapper>

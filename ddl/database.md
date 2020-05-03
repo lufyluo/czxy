@@ -551,6 +551,8 @@ alter table type modify category smallint default 0 null comment '0:类型，1�
 
 alter table class change appellation composition varchar(50) null comment '培训对象，比如 中组部，书记、干部。。。';
 
+alter table user
+	add politics varchar(20) null comment '政治面貌';
 
 
 

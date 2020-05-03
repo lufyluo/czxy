@@ -33,7 +33,7 @@ public class SwaggerConfiguration {
         return new ApiInfoBuilder()
                 .title("村政学院接口文档")
                 .description("村政学院管理系统在线接口文档")
-                .termsOfServiceUrl("http://localhost:8099/")
+                .termsOfServiceUrl("http://localhost:8090/")
                 .contact("lufyluo@163.com")
                 .version("1.0")
                 .build();
