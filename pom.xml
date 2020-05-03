@@ -52,6 +52,12 @@
             <version>${org.mapstruct.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!--swagger-->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>1.9.6</version>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -72,12 +78,6 @@
             <version>1.8.13</version>
         </dependency>
 
-        <!--swagger-->
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>1.9.6</version>
-        </dependency>
 
         <dependency>
             <groupId>mysql</groupId>

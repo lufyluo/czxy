@@ -3,16 +3,24 @@ package com.czxy.manage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.*;
 import springfox.documentation.spring.web.SpringfoxWebMvcConfiguration;
 
 @SpringBootApplication
-@ConditionalOnClass(SpringfoxWebMvcConfiguration.class)
-public class ManageApplication implements WebMvcConfigurer {
+public class ManageApplication extends WebMvcConfigurationSupport {
 
     public static void main(String[] args) {
         SpringApplication.run(ManageApplication.class, args);
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedMethods("*")
+                .allowedOrigins("*")
+                .allowedHeaders("*");
+        super.addCorsMappings(registry);
     }
 
     @Override
