@@ -46,6 +46,12 @@ public class StudentController {
         return ResponseUtil.success(studentService.add(studentAddInfo));
     }
 
+    @PostMapping("/import")
+    @ApiOperation("新增学员")
+    public BaseResponse<Boolean> importExcel(@RequestBody List<StudentAddInfo> studentAddInfos) {
+        return ResponseUtil.success(studentService.batchInsert(studentAddInfos));
+    }
+
     @PutMapping("/update")
     @ApiOperation("编辑学员")
     public BaseResponse<Boolean> update(@RequestBody StudentUpdateInfo studentUpdateInfo) {
