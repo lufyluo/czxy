@@ -26,4 +26,6 @@ public interface UserMapper {
     Integer updateByStudent(UserUpdateEntity userUpdateEntity);
 
     Integer batchInsert(List<UserEntity> list);
+
+    Integer updateByTeacher(UserUpdateEntity userUpdateEntity);
 }

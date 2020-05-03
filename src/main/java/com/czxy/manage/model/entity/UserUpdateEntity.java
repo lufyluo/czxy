@@ -25,4 +25,5 @@ public class UserUpdateEntity extends BaseEntity{
     private String nation;
     private String nativePlace;
     private String education;
+    private String politics;
 }

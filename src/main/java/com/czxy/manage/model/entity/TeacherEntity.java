@@ -9,6 +9,7 @@ public class TeacherEntity extends BaseEntity {
     private Integer teacherId;
     private Integer score;
     private String comment;
+    private Integer userId;
     private String system;
     private String skill;
     private String star;

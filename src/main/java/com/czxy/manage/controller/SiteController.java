@@ -3,9 +3,7 @@ package com.czxy.manage.controller;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
-import com.czxy.manage.model.vo.site.SiteInfo;
-import com.czxy.manage.model.vo.site.SitePageInfo;
-import com.czxy.manage.model.vo.site.SitePageParam;
+import com.czxy.manage.model.vo.site.SiteAddInfo;
 import com.czxy.manage.service.SiteService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -24,8 +22,8 @@ public class SiteController {
     private SiteService siteService;
     @PostMapping("/add")
     @ApiOperation("新增点位")
-    public BaseResponse<Boolean> add(@RequestBody SiteInfo siteInfo){
-        return ResponseUtil.success(siteService.add(siteInfo));
+    public BaseResponse<Boolean> add(@RequestBody SiteAddInfo siteAddInfo){
+        return ResponseUtil.success(siteService.add(siteAddInfo));
     }
     @DeleteMapping
     @ApiOperation("删除点位")
@@ -34,12 +32,12 @@ public class SiteController {
     }
     @GetMapping("/page")
     @ApiOperation("分页获取点位")
-    public PageInfo<SiteInfo> page(PageParam<String> pageParam){
+    public PageInfo<SiteAddInfo> page(PageParam<String> pageParam){
         return siteService.page(pageParam);
     }
     @PutMapping
     @ApiOperation("编辑点位")
-    public BaseResponse<Boolean> update(@RequestBody SiteInfo siteInfo){
-        return ResponseUtil.success(siteService.update(siteInfo));
+    public BaseResponse<Boolean> update(@RequestBody SiteAddInfo siteAddInfo){
+        return ResponseUtil.success(siteService.update(siteAddInfo));
     }
 }

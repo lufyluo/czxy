@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class SiteInfo extends BaseEntity {
+public class SiteAddInfo extends BaseEntity {
     private Integer id;
     private String name;
     private List<TypeInfo> types;

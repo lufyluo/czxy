@@ -35,7 +35,12 @@
     </update>
     <update id="updateByStudent">
         update user
-        set name=#{name}, idcard=#{idCard}, phone=#{phone}, gender=#{gender}, position=#{position}, age=#{age}, birthday=#{birthday}, category=#{category}, wechat_id=#{wechatId}, updated_time=now(), org_id=#{orgId},nation=#{nation},nativeplace=#{nativePlace},education=#{education}
+        set name=#{name}, idcard=#{idCard}, phone=#{phone}, gender=#{gender}, position=#{position}, age=#{age}, birthday=#{birthday}, category=#{category}, wechat_id=#{wechatId}, updated_time=now(), org_id=#{orgId},nation=#{nation},nativeplace=#{nativePlace},education=#{education},politics=#{politics}
+        where id=#{userId}
+    </update>
+    <update id="updateByTeacher">
+        update user
+        set name=#{name}, idcard=#{idCard}, phone=#{phone}, gender=#{gender}, position=#{position}, age=#{age}, birthday=#{birthday}, category=#{category}, wechat_id=#{wechatId}, updated_time=now(), org_id=#{orgId},nation=#{nation},nativeplace=#{nativePlace},education=#{education},politics=#{politics}
         where id=#{userId}
     </update>
     <delete id="delete">

@@ -1,17 +1,22 @@
 package com.czxy.manage.controller;
 
+import com.czxy.manage.infrastructure.response.BaseResponse;
+import com.czxy.manage.infrastructure.response.ResponseUtil;
+import com.czxy.manage.model.vo.site.SiteAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentPageParam;
 import com.czxy.manage.model.vo.teacher.TeacherDetailInfo;
+import com.czxy.manage.model.vo.teacher.TeacherInfo;
 import com.czxy.manage.model.vo.teacher.TeacherPageParam;
+import com.czxy.manage.model.vo.teacher.TeacherUpdateInfo;
 import com.czxy.manage.service.TeacherService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Api("师资管理")
@@ -23,5 +28,20 @@ public class TeacherController {
     @ApiOperation(value = "分页获取", notes = "分页获取班级")
     public PageInfo<TeacherDetailInfo> page(TeacherPageParam<String> pageParam) {
         return teacherService.page(pageParam);
+    }
+    @PostMapping
+    @ApiOperation("新增教师")
+    public BaseResponse<Boolean> add(@RequestBody TeacherInfo teacherInfo){
+        return ResponseUtil.success(teacherService.add(teacherInfo));
+    }
+    @DeleteMapping
+    @ApiOperation("批量删除教师")
+    public BaseResponse<Boolean> delete(@RequestBody List<Integer> teacherIds){
+        return ResponseUtil.success(teacherService.delete(teacherIds));
+    }
+    @PutMapping
+    @ApiOperation("编辑教师")
+    public BaseResponse<Boolean> update(@RequestBody TeacherUpdateInfo teacherUpdateInfo){
+        return ResponseUtil.success(teacherService.update(teacherUpdateInfo));
     }
 }
