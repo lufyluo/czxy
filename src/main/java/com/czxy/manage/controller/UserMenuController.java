@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api("用户菜单管理")
+@Api(tags = "用户菜单管理",value = "用户菜单管理")
 @RestController
 @RequestMapping("/api/user/menu")
 public class UserMenuController {

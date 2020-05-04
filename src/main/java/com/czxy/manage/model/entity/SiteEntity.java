@@ -11,7 +11,7 @@ public class SiteEntity extends BaseEntity {
     private String types;
     private String contactorName;
     private String contactorPhone;
-    private String topics;
+    private Integer topicId;
     private String driveTime;
     private String addr;
     private String description;
@@ -21,7 +21,7 @@ public class SiteEntity extends BaseEntity {
     private Integer cityId;
     private Integer countyId;
     private Integer fee;
-    private String topicsName;
+    private String topicName;
     private String typeName;
     private String typeDescription;
     private Integer typeCategory;

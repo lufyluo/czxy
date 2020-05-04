@@ -16,7 +16,7 @@ public class SiteAddInfo extends BaseEntity {
     private String contactorName;
     private String contactorPhone;
     @ApiModelProperty("点位主题")
-    private List<TypeInfo> topics;
+    private TypeInfo topic;
     private String driveTime;
     private String addr;
     private String description;

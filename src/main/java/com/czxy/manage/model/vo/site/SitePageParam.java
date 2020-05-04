@@ -6,6 +6,4 @@ import lombok.Data;
 @Data
 public class SitePageParam<T>  extends PageParam {
     private String types;
-    private String topics;
-    private String name;
 }

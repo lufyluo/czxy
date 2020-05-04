@@ -34,7 +34,7 @@ public class SiteController {
     }
     @GetMapping("/page")
     @ApiOperation("分页获取点位")
-    public PageInfo<SiteInfo> page(PageParam<String> pageParam){
+    public PageInfo<SiteInfo> page(SitePageParam<String> pageParam){
         return siteService.page(pageParam);
     }
     @PutMapping

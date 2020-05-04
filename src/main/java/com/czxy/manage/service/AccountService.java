@@ -6,6 +6,7 @@ import com.czxy.manage.dao.UserAccountMapper;
 import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
+import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.AccountEntity;
 import com.czxy.manage.model.entity.TokenEntity;
@@ -93,6 +94,7 @@ public class AccountService {
         Page pageUtil = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<UserAccountInfo> result = userAccountMapper.queryAll(pageParam.getParam());
         PageInfo<UserAccountInfo> userAccountPageInfo = pageUtil.toPageInfo();
+        userAccountPageInfo.setList(PojoMapper.INSTANCE.toUserAccountInfos(result));
         return userAccountPageInfo;
     }
 }

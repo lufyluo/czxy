@@ -24,12 +24,23 @@
     </delete>
     <select id="query" resultType="com.czxy.manage.model.entity.SiteEntity">
         select
-        id,name,types,contactor_name as contactorName,contactor_phone as contactorPhone,topics,drive_time as driveTime,addr,
+        id,name,types,
+        contactor_name as contactorName,
+        contactor_phone as contactorPhone,
+        topic_id as topicId,
+        t.name as topicName,
+        drive_time as driveTime,addr,
         description,pics,attach_files as attachFiles,province_id as provinceId,city_id as cityId,county_id as countyId,updated_time as updatedTime,created_time as  createdTime,fee
         from
-        site
+        site s
+        left join type t
+        on t.id = s.topic_id
+        where 1=1
         <if test="param != null and param != ''">
-            where name like '%${param}%'
+            and (name like '%${param}%' or t.name like '%${param}%')
+        </if>
+        <if test="types != null and types != ''">
+            and (t.types like '${types},%' or t.types like '%,${types}' or t.types like '%,${types},%')
         </if>
     </select>
 </mapper>
