@@ -93,7 +93,7 @@ public interface PojoMapper {
 
     ClassEntity classCreateInfoToClassEntity(ClassCreateInfo classCreateInfo);
 
-    @Mappings({@Mapping(ignore = true, target = "types"), @Mapping(ignore = true, target = "topics")})
+    @Mappings({@Mapping(ignore = true, target = "types"), @Mapping(ignore = true, target = "topicId")})
     SiteEntity toSiteEntity(SiteAddInfo siteAddInfo);
 
     TypeEntity toTypeEntity(TypeInfo types);

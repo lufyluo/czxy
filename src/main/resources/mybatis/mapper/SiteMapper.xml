@@ -43,7 +43,7 @@
             and (name like '%${param}%' or t.name like '%${param}%')
         </if>
         <if test="typeId != null and typeId != ''">
-            and (t.types like '${typeId},%' or t.types like '%,${typeId}' or t.types like '%,${typeId},%')
+            and (s.types like '${typeId},%' or s.types like '%,${typeId}' or s.types like '%,${typeId},%')
         </if>
     </select>
 </mapper>

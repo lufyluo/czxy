@@ -86,6 +86,7 @@ public class SiteService {
         if (siteAddInfo.getTopic() != null) {
             TypeEntity typeEntity = PojoMapper.INSTANCE.toTypeEntity(siteAddInfo.getTopic());
             typeService.batchInsertIfObsent(Arrays.asList(typeEntity));
+            siteEntity.setTopicId(typeEntity.getId());
         }
         return siteEntity;
     }
