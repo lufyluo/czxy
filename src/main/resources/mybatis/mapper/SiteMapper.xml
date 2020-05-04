@@ -5,9 +5,9 @@
     <insert id="insert"  parameterType="com.czxy.manage.model.entity.SiteEntity" useGeneratedKeys="true"
             keyProperty="id">
     insert into site
-    (name, types, contactor_name, contactor_phone, topics, drive_time, addr, description, pics, attach_files, province_id, city_id, county_id, fee)
+    (name, types, contactor_name, contactor_phone, topic_id, drive_time, addr, description, pics, attach_files, province_id, city_id, county_id, fee)
      VALUES
-     (#{name},#{types},#{contactorName},#{contactorPhone},#{topics},#{driveTime},#{addr},#{description},#{pics},#{attachFiles},#{provinceId},#{cityId},#{countyId},#{fee})
+     (#{name},#{types},#{contactorName},#{contactorPhone},#{topicId},#{driveTime},#{addr},#{description},#{pics},#{attachFiles},#{provinceId},#{cityId},#{countyId},#{fee})
     </insert>
     <update id="update">
         update site set name=#{name}, types=#{types},contactor_name=#{contactorName},contactor_phone=#{contactorPhone}, topics=#{topics},
