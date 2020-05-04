@@ -28,4 +28,10 @@
             #{item}
         </foreach>
     </select>
+    <select id="query" resultType="java.lang.String">
+        select
+        name
+        from type
+        where id=#{parseInt}
+    </select>
 </mapper>

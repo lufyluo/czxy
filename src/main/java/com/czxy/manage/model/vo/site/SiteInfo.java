@@ -1,11 +1,12 @@
-package com.czxy.manage.model.entity;
+package com.czxy.manage.model.vo.site;
 
+import com.czxy.manage.model.entity.BaseEntity;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class SiteEntity extends BaseEntity {
+public class SiteInfo extends BaseEntity {
     private Integer id;
     private String name;
     private String types;

@@ -6,6 +6,22 @@
         skill,star,area
         updated_time as updatedTime, created_time as createdTime
     </sql>
+    <insert id="insert" parameterType="com.czxy.manage.model.entity.UserEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into teacher (score, comment, user_id, `system`, skill, star, area) VALUES
+        (#{score},#{comment},#{userId},#{system},#{skill},#{star},#{area})
+    </insert>
+    <update id="update">
+        update teacher
+        set score=#{score},comment=#{comment},`system`=#{system},skill=#{skill},star=#{star},area=#{area}
+        where id=#{id}
+    </update>
+    <delete id="delete">
+        delete from teacher where id in
+        <foreach collection="teacherIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
+    </delete>
     <select id="query" resultType="com.czxy.manage.model.entity.TeacherDetailEntity">
         select
         t.id as teacherId,
@@ -30,5 +46,8 @@
         <if test="skill != null and skill!='' ">and t.skill = #{skill}</if>
         <if test="star != null and star!='' ">and t.star = #{star}</if>
         order by t.id desc
+    </select>
+    <select id="queryUserId" resultType="java.lang.Integer">
+        select user_id as userId from teacher where id=#{id}
     </select>
 </mapper>

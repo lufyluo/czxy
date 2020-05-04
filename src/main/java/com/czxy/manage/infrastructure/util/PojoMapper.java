@@ -6,11 +6,14 @@ import com.czxy.manage.model.vo.CompositionInfo;
 import com.czxy.manage.model.vo.OrgInfo;
 import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
+import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.model.vo.site.TypeInfo;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentUpdateInfo;
 import com.czxy.manage.model.vo.teacher.TeacherDetailInfo;
+import com.czxy.manage.model.vo.teacher.TeacherInfo;
+import com.czxy.manage.model.vo.teacher.TeacherUpdateInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserInfo;
 import com.czxy.manage.model.vo.user.UserMenuInfo;
@@ -110,4 +113,18 @@ public interface PojoMapper {
 
     AddressInfo toAddressInfo(AddressEntity addressEntity);
     List<AddressInfo> toAddressInfos(List<AddressEntity> addressEntities);
+
+    UserEntity teacherInfoToUserEntity(TeacherInfo teacherInfo);
+
+    TeacherEntity toTeacherEntity(TeacherInfo teacherInfo);
+
+    TeacherEntity TeacherUpdateToTeacherEntity(TeacherUpdateInfo teacherUpdateInfo);
+
+    UserEntity teacherUpdateToUserEnity(TeacherUpdateInfo teacherUpdateInfo);
+
+    UserUpdateEntity teacherUpdateToUserUpdateEnity(TeacherUpdateInfo teacherUpdateInfo);
+
+    SiteInfo toSiteInfo(SiteEntity siteEntity);
+
+    List<SiteInfo> toSiteInfo(List<SiteEntity> siteEntities);
 }

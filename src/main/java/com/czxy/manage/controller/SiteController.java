@@ -2,9 +2,9 @@ package com.czxy.manage.controller;
 
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
+import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
-import com.czxy.manage.model.vo.site.SitePageInfo;
-import com.czxy.manage.model.vo.site.SitePageParam;
+import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.service.SiteService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -31,9 +31,9 @@ public class SiteController {
     public BaseResponse<Boolean> delete(@RequestBody List<Integer> siteIds){
         return ResponseUtil.success(siteService.delete(siteIds));
     }
-    @GetMapping("page")
+    @GetMapping("/page")
     @ApiOperation("分页获取点位")
-    public PageInfo<SitePageInfo> page(SitePageParam<String> pageParam){
+    public PageInfo<SiteInfo> page(PageParam<String> pageParam){
         return siteService.page(pageParam);
     }
     @PutMapping

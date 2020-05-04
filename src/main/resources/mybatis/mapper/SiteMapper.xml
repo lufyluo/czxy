@@ -22,17 +22,11 @@
                  open="(" separator="," close=")">#{item}
         </foreach>
     </delete>
-    <select id="query" resultType="com.czxy.manage.model.entity.SitePageEntity">
+    <select id="query" resultType="com.czxy.manage.model.entity.SiteEntity">
         select
-        s.id,s.name,s.types,s.contactor_name,s.contactor_phone,s.topics,s.drive_time,s.addr,
-        s.description,s.pics,s.attach_files,s.province_id,s.city_id,s.county_id,s.updated_time,s.created_time,
-        t.name as typeName,t.category as typeCategory
+        id,name,types,contactor_name as contactorName,contactor_phone as contactorPhone,topics,drive_time as driveTime,addr,
+        description,pics,attach_files as attachFiles,province_id as provinceId,city_id as cityId,county_id as countyId,updated_time as updatedTime,created_time as  createdTime,fee
         from
-        site s
-        left join type t
-        on
-        where 1=1
-        <if test="param != null and param != '' ">and t.name like '%${param}%'</if>
-        <if test="typeCategory==0">and t.category =typeCategory </if>
+        site
     </select>
 </mapper>
