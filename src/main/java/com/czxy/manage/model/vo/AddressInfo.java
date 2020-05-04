@@ -1,9 +1,9 @@
-package com.czxy.manage.model.entity;
+package com.czxy.manage.model.vo;
 
 import lombok.Data;
 
 @Data
-public class AddressEntity extends BaseEntity {
+public class AddressInfo {
     private Integer id;
     private String name;
     private Integer parentId;

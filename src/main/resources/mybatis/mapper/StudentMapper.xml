@@ -44,10 +44,10 @@
         on s.class_id = c.id
         where 1=1
         <if test="param != null and param != '' ">and u.name like '%${param}%'</if>
-        <if test="provinceId != null and provinceId>0 ">and c.province_id = provinceId</if>
-        <if test="cityId != null and cityId>0 ">and c.city_id = cityId</if>
-        <if test="countyId != null and countyId>0 ">and c.county_id = countyId</if>
-        <if test="classId != null and classId >0 ">and c.class_id=classId</if>
+        <if test="provinceId != null and provinceId>0 ">and c.province_id = #{provinceId}</if>
+        <if test="cityId != null and cityId>0 ">and c.city_id = #{cityId}</if>
+        <if test="countyId != null and countyId>0 ">and c.county_id = #{countyId}</if>
+        <if test="classId != null and classId >0 ">and c.class_id= #{classId}</if>
     </select>
     <select id="queryByStudentId" resultType="com.czxy.manage.model.entity.StudentUpdateEntity">
         select sign_flag as signFlag, class_id as classId, user_id as userId, type from student where id=#{id}

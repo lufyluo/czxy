@@ -1,6 +1,7 @@
 package com.czxy.manage.infrastructure.util;
 
 import com.czxy.manage.model.entity.*;
+import com.czxy.manage.model.vo.AddressInfo;
 import com.czxy.manage.model.vo.CompositionInfo;
 import com.czxy.manage.model.vo.OrgInfo;
 import com.czxy.manage.model.vo.classes.*;
@@ -106,4 +107,7 @@ public interface PojoMapper {
 
     TeacherDetailInfo toTeacherDetailInfo(TeacherDetailEntity teacherDetailEntity);
     List<TeacherDetailInfo> toTeacherDetailInfos(List<TeacherDetailEntity> teacherDetailEntities);
+
+    AddressInfo toAddressInfo(AddressEntity addressEntity);
+    List<AddressInfo> toAddressInfos(List<AddressEntity> addressEntities);
 }

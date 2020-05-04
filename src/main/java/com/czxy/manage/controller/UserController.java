@@ -25,8 +25,8 @@ public class UserController {
 
     @GetMapping("/token")
     @ApiOperation("根据token获取用户信息")
-    public UserInfo query(@RequestHeader String token) {
-        return userService.query(token);
+    public BaseResponse<UserInfo> query(@RequestHeader String token) {
+        return ResponseUtil.success(userService.query(token));
     }
 
     @PostMapping("/add")

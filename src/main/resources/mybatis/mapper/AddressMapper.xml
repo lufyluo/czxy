@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.AddressMapper">
-
-    <select id="query" resultType="com.czxy.manage.model.entity.AddressEntity">
-        select
-        name,
+<sql id="base_column">
+id,
+    name,
         parent_id as parentId,
         category,
         code,
-        updated_time as updatedTime,
-        created_time as createdTime
+        sname,
+        path,
+        pinyin
+</sql>
+    <select id="query" resultType="com.czxy.manage.model.entity.AddressEntity">
+        select
+        <include refid="base_column"/>
         from address where id=#{addressId}
+    </select>
+    <select id="queryAll" resultType="com.czxy.manage.model.entity.AddressEntity">
+        select
+        <include refid="base_column"/>
+        from address where category=#{category}
+        <if test="parentId != null and parentId >0">
+            and parent_id = #{parentId}
+        </if>
     </select>
 </mapper>

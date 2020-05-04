@@ -554,6 +554,8 @@ alter table class change appellation composition varchar(50) null comment '培�
 alter table user
 	add politics varchar(20) null comment '政治面貌';
 
+alter table address modify category smallint default 0 null comment '0:国家，1:省，2：市，3：县/区';
+
 
 
 ```
