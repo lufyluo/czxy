@@ -3,14 +3,8 @@ package com.czxy.manage.service;
 import com.czxy.manage.dao.TeacherMapper;
 import com.czxy.manage.dao.UserMapper;
 import com.czxy.manage.infrastructure.util.PojoMapper;
-import com.czxy.manage.model.entity.TeacherDetailEntity;
-import com.czxy.manage.model.entity.TeacherEntity;
-import com.czxy.manage.model.entity.UserEntity;
-import com.czxy.manage.model.entity.UserUpdateEntity;
-import com.czxy.manage.model.vo.teacher.TeacherDetailInfo;
-import com.czxy.manage.model.vo.teacher.TeacherInfo;
-import com.czxy.manage.model.vo.teacher.TeacherPageParam;
-import com.czxy.manage.model.vo.teacher.TeacherUpdateInfo;
+import com.czxy.manage.model.entity.*;
+import com.czxy.manage.model.vo.teacher.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -64,5 +58,11 @@ public class TeacherService {
         UserUpdateEntity userUpdateEntity = PojoMapper.INSTANCE.teacherUpdateToUserUpdateEnity(teacherUpdateInfo);
         userMapper.updateByTeacher(userUpdateEntity);
         return true;
+    }
+
+    public TeacherInformationInfo query(Integer teacherId) {
+        TeacherInformationEntity teacherInformationEntity = teacherMapper.queryAll(teacherId);
+        TeacherInformationInfo teacherInformationInfo = PojoMapper.INSTANCE.toTeacherInformationInfo(teacherInformationEntity);
+        return teacherInformationInfo;
     }
 }

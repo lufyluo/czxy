@@ -12,6 +12,7 @@ import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentUpdateInfo;
 import com.czxy.manage.model.vo.teacher.TeacherDetailInfo;
 import com.czxy.manage.model.vo.teacher.TeacherInfo;
+import com.czxy.manage.model.vo.teacher.TeacherInformationInfo;
 import com.czxy.manage.model.vo.teacher.TeacherUpdateInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserInfo;
@@ -127,4 +128,6 @@ public interface PojoMapper {
     SiteInfo toSiteInfo(SiteEntity siteEntity);
 
     List<SiteInfo> toSiteInfo(List<SiteEntity> siteEntities);
+
+    TeacherInformationInfo toTeacherInformationInfo(TeacherInformationEntity teacherInformationEntity);
 }

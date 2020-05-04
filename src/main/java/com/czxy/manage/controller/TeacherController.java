@@ -5,10 +5,7 @@ import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentPageParam;
-import com.czxy.manage.model.vo.teacher.TeacherDetailInfo;
-import com.czxy.manage.model.vo.teacher.TeacherInfo;
-import com.czxy.manage.model.vo.teacher.TeacherPageParam;
-import com.czxy.manage.model.vo.teacher.TeacherUpdateInfo;
+import com.czxy.manage.model.vo.teacher.*;
 import com.czxy.manage.service.TeacherService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -43,5 +40,10 @@ public class TeacherController {
     @ApiOperation("编辑教师")
     public BaseResponse<Boolean> update(@RequestBody TeacherUpdateInfo teacherUpdateInfo){
         return ResponseUtil.success(teacherService.update(teacherUpdateInfo));
+    }
+    @GetMapping
+    @ApiOperation("教师详情")
+    public BaseResponse<TeacherInformationInfo> query(@RequestParam Integer teacherId){
+        return ResponseUtil.success(teacherService.query(teacherId));
     }
 }
