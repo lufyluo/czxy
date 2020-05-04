@@ -13,12 +13,17 @@ public class SiteAddInfo extends BaseEntity {
     private String name;
     @ApiModelProperty("点位类型")
     private List<TypeInfo> types;
+    @ApiModelProperty("联系人姓名")
     private String contactorName;
+    @ApiModelProperty("联系人电话")
     private String contactorPhone;
     @ApiModelProperty("点位主题")
     private TypeInfo topic;
+    @ApiModelProperty("参观时间")
     private String driveTime;
+    @ApiModelProperty("点位详细地址")
     private String addr;
+    @ApiModelProperty("点位描述")
     private String description;
     private String pics;
     private String attachFiles;
@@ -27,6 +32,4 @@ public class SiteAddInfo extends BaseEntity {
     private Integer countyId;
     private Integer fee;
     private String typeName;
-    private String typeDescription;
-    private Integer typeCategory;
 }

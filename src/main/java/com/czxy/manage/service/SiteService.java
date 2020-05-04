@@ -64,6 +64,9 @@ public class SiteService {
         }
         PageInfo<SiteInfo> result = page.toPageInfo();
         result.setList(PojoMapper.INSTANCE.toSiteInfo(siteEntities));
+        result.getList().forEach(n->{
+            n.setAddress(n.getPath().replace(",","")+n.getAddr());
+        });
         return result;
     }
 

@@ -14,6 +14,7 @@ public class SiteEntity extends BaseEntity {
     private Integer topicId;
     private String driveTime;
     private String addr;
+    private String path;
     private String description;
     private String pics;
     private String attachFiles;
@@ -23,6 +24,4 @@ public class SiteEntity extends BaseEntity {
     private Integer fee;
     private String topicName;
     private String typeName;
-    private String typeDescription;
-    private Integer typeCategory;
 }

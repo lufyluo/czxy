@@ -1,6 +1,7 @@
 package com.czxy.manage.model.vo.site;
 
 import com.czxy.manage.model.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -24,10 +25,12 @@ public class SiteInfo extends BaseEntity {
     private Integer countyId;
     private Integer fee;
     @ApiModelProperty("点位主题名称")
-    private String topicsName;
+    private String topicName;
     @ApiModelProperty("点位类型名称")
     private String typeName;
-    private String typeDescription;
-    @ApiModelProperty("0代表类型，1代表主题")
-    private Integer typeCategory;
+    @ApiModelProperty("点位详细地址（带省市县）")
+    private String address;
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    private String path;
 }

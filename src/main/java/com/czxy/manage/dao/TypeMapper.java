@@ -8,8 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface TypeMapper {
-    List<TypeEntity> queryAll(List<Integer> topicIds);
-
+    List<TypeEntity> queryAll(@Param("types") List<Integer> topicIds);
 
     Integer insert(TypeEntity typeEntity);
 
