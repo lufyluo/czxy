@@ -2,6 +2,8 @@ package com.czxy.manage.dao;
 
 import com.czxy.manage.model.entity.TeacherDetailEntity;
 import com.czxy.manage.model.entity.TeacherEntity;
+import com.czxy.manage.model.entity.TeacherInformationEntity;
+import com.czxy.manage.model.vo.teacher.TeacherInformationInfo;
 import com.czxy.manage.model.vo.teacher.TeacherPageParam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,4 +21,6 @@ public interface TeacherMapper {
     Integer update(TeacherEntity teacherEntity);
 
     Integer queryUserId(TeacherEntity teacherEntity);
+
+    TeacherInformationEntity queryAll(@Param("teacherId") Integer teacherId);
 }

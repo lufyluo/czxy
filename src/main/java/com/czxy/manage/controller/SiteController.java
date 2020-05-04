@@ -5,6 +5,7 @@ import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
 import com.czxy.manage.model.vo.site.SiteInfo;
+import com.czxy.manage.model.vo.site.SitePageParam;
 import com.czxy.manage.service.SiteService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;

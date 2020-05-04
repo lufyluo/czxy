@@ -28,5 +28,8 @@
         description,pics,attach_files as attachFiles,province_id as provinceId,city_id as cityId,county_id as countyId,updated_time as updatedTime,created_time as  createdTime,fee
         from
         site
+        <if test="param != null and param != ''">
+            where name like '%${param}%'
+        </if>
     </select>
 </mapper>
