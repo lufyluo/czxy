@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api("单位")
+@Api(tags = "单位",value = "单位")
 @RestController
 @RequestMapping("/api/org")
 public class OrgController {
     private OrgService orgService;
     @GetMapping("/page")
-    @ApiOperation(value = "分页获取班级", notes = "分页获取班级")
+    @ApiOperation(value = "分页获取单位", notes = "分页获取单位")
     public PageInfo<OrgInfo> page(PageParam<String> pageParam) {
         return orgService.page(pageParam);
     }

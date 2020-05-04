@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Api("点位管理")
+@Api(tags = "点位管理",value = "点位管理")
 @RequestMapping("/api/site")
 public class SiteController {
 

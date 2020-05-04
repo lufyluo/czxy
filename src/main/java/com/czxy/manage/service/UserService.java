@@ -28,9 +28,11 @@ public class UserService {
     private UserMapper userMapper;
     @Resource
     private AccountMapper accountMapper;
-
+    @Autowired
+    private UserMenuService userMenuService;
     @Autowired
     OrgService orgService;
+
     @Transactional
     public Boolean add(UserCreateInfo userInfo) {
         insertIfAbsentOrg(userInfo);
@@ -55,7 +57,7 @@ public class UserService {
     }
 
     private void insertIfAbsentOrg(UserCreateInfo userCreateInfo) {
-        Integer orgId = orgService.insertIfAbsentOrg(userCreateInfo.getOrgName(),userCreateInfo.getOrgId());
+        Integer orgId = orgService.insertIfAbsentOrg(userCreateInfo.getOrgName(), userCreateInfo.getOrgId());
         userCreateInfo.setOrgId(orgId);
     }
 
@@ -68,7 +70,9 @@ public class UserService {
 
     public UserInfo query(String token) {
         UserEntity userEntity = userMapper.queryByToken(token);
-        return PojoMapper.INSTANCE.toUserInfo(userEntity);
+        UserInfo userInfo = PojoMapper.INSTANCE.toUserInfo(userEntity);
+        userInfo.setUserMenuInfoList(userMenuService.get(userInfo.getId()));
+        return userInfo;
     }
 }
 

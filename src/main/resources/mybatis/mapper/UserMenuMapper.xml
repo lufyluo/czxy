@@ -2,8 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.UserMenuMapper">
     <sql id="base_column">
-        user_id as userId,menu_id as id,updated_time as updatedTime,created_time as createdTime
+        user_id as userId,menu_codes as menuCodes,updated_time as updatedTime,created_time as createdTime
     </sql>
+    <insert id="insert">
+        insert into user_menu(user_id,menu_codes)
+        values (#{userId},#{menus})
+    </insert>
+    <delete id="delete">
+        delete from user_menu where user_id = #{userId}
+    </delete>
+
     <select id="getByUserId" resultType="com.czxy.manage.model.entity.UserMenuEntity">
         select
         <include refid="base_column"></include>

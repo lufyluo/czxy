@@ -20,4 +20,5 @@ public class TeacherDetailEntity extends UserEntity {
     private String orgName;
     @ApiModelProperty("区域")
     private String area;
+    private Integer pay;
 }

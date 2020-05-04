@@ -6,14 +6,14 @@
         skill,star,area
         updated_time as updatedTime, created_time as createdTime
     </sql>
-    <insert id="insert" parameterType="com.czxy.manage.model.entity.UserEntity" useGeneratedKeys="true"
+    <insert id="insert" parameterType="com.czxy.manage.model.entity.TeacherEntity" useGeneratedKeys="true"
             keyProperty="id">
-        insert into teacher (score, comment, user_id, `system`, skill, star, area) VALUES
-        (#{score},#{comment},#{userId},#{system},#{skill},#{star},#{area})
+        insert into teacher (score, comment, user_id, `system`, skill, star, area,pay) VALUES
+        (#{score},#{comment},#{userId},#{system},#{skill},#{star},#{area},#{pay})
     </insert>
     <update id="update">
         update teacher
-        set score=#{score},comment=#{comment},`system`=#{system},skill=#{skill},star=#{star},area=#{area}
+        set score=#{score},comment=#{comment},`system`=#{system},skill=#{skill},star=#{star},area=#{area},pay=#{pay}
         where id=#{id}
     </update>
     <delete id="delete">
@@ -27,6 +27,7 @@
         t.id as teacherId,
         t.score, t.user_id as userId,t.comment,t.system,
         t.skill,t.star,t.area,
+        t.pay
         u.id, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
         u.wechat_id as wechatId,
         u.org_id as orgId,
@@ -45,6 +46,8 @@
         <if test="param != null and param != '' ">and u.name like '%${param}%'</if>
         <if test="skill != null and skill!='' ">and t.skill = #{skill}</if>
         <if test="star != null and star!='' ">and t.star = #{star}</if>
+        <if test="system != null and system>0 ">and t.system = #{system}</if>
+        <if test="area != null and area!='' ">and t.area = #{area}</if>
         order by t.id desc
     </select>
     <select id="queryUserId" resultType="java.lang.Integer">

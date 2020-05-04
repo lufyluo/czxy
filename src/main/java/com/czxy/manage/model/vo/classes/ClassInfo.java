@@ -13,11 +13,17 @@ import java.util.List;
 public class ClassInfo extends BaseEntity {
     private Integer id;
     private String name;
+    @ApiModelProperty("省id")
     private Integer provinceId;
+    @ApiModelProperty("市id")
     private Integer cityId;
+    @ApiModelProperty("区、县id")
     private Integer countyId;
+    @ApiModelProperty("主办方id")
     private Integer orgId;
+    @ApiModelProperty("开始时间")
     private Date beginTime;
+    @ApiModelProperty("结束时间")
     private Date endTime;
     private Integer arrangeId;
     private Integer recommendOrgId;

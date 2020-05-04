@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Api("师资管理")
-@RequestMapping("/api/teacher/")
+@Api(tags = "师资管理",value = "师资管理")
+@RequestMapping("/api/teacher")
 public class TeacherController {
     @Autowired
     private TeacherService teacherService;
     @GetMapping("/page")
-    @ApiOperation(value = "分页获取", notes = "分页获取班级")
+    @ApiOperation(value = "分页获取", notes = "根据教师姓名、星级、职称分页获取，参数选填")
     public PageInfo<TeacherDetailInfo> page(TeacherPageParam<String> pageParam) {
         return teacherService.page(pageParam);
     }

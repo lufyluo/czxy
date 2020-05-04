@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * @Description ...
  * @Date 20-4-15 下午7:35
  */
-@Api("用户管理")
+@Api(tags = "用户管理",value = "用户管理")
 @RestController
 @RequestMapping("/api/user")
 public class UserController {

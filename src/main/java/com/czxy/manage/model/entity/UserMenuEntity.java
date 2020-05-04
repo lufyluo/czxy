@@ -6,5 +6,5 @@ import lombok.Data;
 public class UserMenuEntity extends BaseEntity {
     private Integer id;
     private Integer userId;
-    private Integer MenuId;
+    private String MenuCodes;
 }

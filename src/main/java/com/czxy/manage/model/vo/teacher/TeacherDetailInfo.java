@@ -2,7 +2,9 @@ package com.czxy.manage.model.vo.teacher;
 
 import com.czxy.manage.model.vo.user.UserInfo;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
+@Data
 public class TeacherDetailInfo extends UserInfo {
     private Integer teacherId;
     @ApiModelProperty("得分")
@@ -19,4 +21,6 @@ public class TeacherDetailInfo extends UserInfo {
     private String orgName;
     @ApiModelProperty("区域")
     private String area;
+    @ApiModelProperty("课酬，单位 元/天")
+    private Integer pay;
 }

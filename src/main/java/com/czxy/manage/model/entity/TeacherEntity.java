@@ -14,4 +14,5 @@ public class TeacherEntity extends BaseEntity {
     private String skill;
     private String star;
     private String area;
+    private Integer pay;
 }

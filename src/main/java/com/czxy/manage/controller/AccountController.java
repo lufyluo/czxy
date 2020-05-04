@@ -24,7 +24,7 @@ import javax.validation.constraints.Min;
  * @Date 20-4-16 下午8:57
  */
 @RestController
-@Api("账号操作")
+@Api(tags = "账号操作",value = "账号操作")
 @RequestMapping("/api/account")
 public class AccountController {
     @Autowired

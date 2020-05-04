@@ -553,8 +553,22 @@ alter table class change appellation composition varchar(50) null comment '培�
 
 alter table user
 	add politics varchar(20) null comment '政治面貌';
+alter table teacher
+	add pay int null comment '课酬，单位元/天' after area;
+
 
 alter table address modify category smallint default 0 null comment '0:国家，1:省，2：市，3：县/区';
+
+alter table user_menu modify menu_codes varchar(255) not null;
+
+alter table menus
+	add url varchar(100) null comment '前端路由' after code;
+
+alter table menus
+	add `order` int default 0 null after url;
+
+alter table menus
+	add icon varchar(50) null after `order`;
 
 
 

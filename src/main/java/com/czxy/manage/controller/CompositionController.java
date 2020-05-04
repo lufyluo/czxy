@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api("培训对象")
+@Api(tags = "班级成分、培训对象",value = "班级成分、培训对象")
 @RestController
 @RequestMapping("/api/composition")
 public class CompositionController {
     private CompositionService compositionService;
     @GetMapping("/page")
-    @ApiOperation(value = "分页培训对象", notes = "分页培训对象")
+    @ApiOperation(value = "班级成分、培训对象分页获取", notes = "班级成分、培训对象分页获取")
     public PageInfo<CompositionInfo> page(PageParam<String> pageParam) {
         return compositionService.page(pageParam);
     }

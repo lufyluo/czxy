@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author lufy
@@ -14,7 +15,7 @@ import java.util.Date;
  */
 @Data
 public class UserInfo extends BaseEntity {
-    @ApiModelProperty("用户id")
+    @ApiModelProperty("用户id,新加则不传")
     private Integer id;
     private String name;
     private String idCard;
@@ -39,4 +40,6 @@ public class UserInfo extends BaseEntity {
     private String education;
     @ApiModelProperty("政治面貌")
     private String politics;
+    @ApiModelProperty("用户菜单权限")
+    private List<UserMenuInfo> userMenuInfoList;
 }

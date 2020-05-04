@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @RestController
-@Api("班级管理")
+@Api(tags = "班级费用",value = "班级费用")
 @RequestMapping("/api/class/fee_detail")
 public class ClassFeeController {
     @Autowired

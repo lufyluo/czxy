@@ -7,5 +7,9 @@ import java.util.List;
 
 @Mapper
 public interface UserMenuMapper {
-    List<UserMenuEntity> getByUserId(Integer userId);
+    UserMenuEntity getByUserId(Integer userId);
+
+    Integer delete(Integer userId);
+
+    Integer insert(Integer userId, String menus);
 }

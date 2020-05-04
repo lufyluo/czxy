@@ -62,7 +62,7 @@
         ,s.id  as leaderId
         from class c
         left join org o
-        on c.org_id = org.id
+        on c.org_id = o.id
         left join class_master cm
         on c.id = cm.class_id and cm.type = 0 --0:班主任
         left join user u

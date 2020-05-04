@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@Api("地址")
+@Api(tags = "省市县获取",value = "省市县获取")
 @RequestMapping("/api/address")
 public class AddressController {
     @Autowired
