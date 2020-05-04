@@ -2,6 +2,7 @@ package com.czxy.manage.model.vo.site;
 
 import com.czxy.manage.model.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -10,9 +11,11 @@ import java.util.List;
 public class SiteAddInfo extends BaseEntity {
     private Integer id;
     private String name;
+    @ApiModelProperty("点位类型")
     private List<TypeInfo> types;
     private String contactorName;
     private String contactorPhone;
+    @ApiModelProperty("点位主题")
     private List<TypeInfo> topics;
     private String driveTime;
     private String addr;

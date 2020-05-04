@@ -9,9 +9,12 @@ import java.util.Date;
 
 @Data
 public class StudentAddInfo extends UserInfo {
+    @ApiModelProperty("中文主办方，推荐单位")
     private String orgName;
+    @ApiModelProperty("0-学员；1-班委干部；8-带班领导")
     private Integer type;
     private Integer classId;
+    @ApiModelProperty("签到状态，0代表未签到，1代表签到")
     private Integer signFlag;
     private Integer userId;
 }

@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Data
 public class StudentUpdateInfo extends StudentInfo{
+    @ApiModelProperty("中文主办方，推荐单位")
     private String orgName;
     private String name;
     private String idCard;

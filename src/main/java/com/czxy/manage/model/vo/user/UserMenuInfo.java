@@ -8,8 +8,11 @@ import java.util.Date;
 
 @Data
 public class UserMenuInfo extends Ancestors {
+    @ApiModelProperty("菜单名称")
     private String name;
+    @ApiModelProperty("菜单code")
     private String code;
+    @ApiModelProperty("是否有权限")
     private Boolean permission;
     private Date updatedTime;
     private Date createdTime;

@@ -11,8 +11,11 @@ import lombok.Data;
  */
 @Data
 public class StudentPageParam<T> extends PageParam {
+   @ApiModelProperty("省ID")
    private Integer provinceId;
+   @ApiModelProperty("市ID")
    private Integer cityId;
+   @ApiModelProperty("镇ID")
    private Integer countyId;
    private Integer classId;
 }

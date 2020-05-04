@@ -1,6 +1,7 @@
 package com.czxy.manage.model.vo.site;
 
 import com.czxy.manage.model.entity.BaseEntity;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -22,8 +23,11 @@ public class SiteInfo extends BaseEntity {
     private Integer cityId;
     private Integer countyId;
     private Integer fee;
+    @ApiModelProperty("点位主题名称")
     private String topicsName;
+    @ApiModelProperty("点位类型名称")
     private String typeName;
     private String typeDescription;
+    @ApiModelProperty("0代表类型，1代表主题")
     private Integer typeCategory;
 }
