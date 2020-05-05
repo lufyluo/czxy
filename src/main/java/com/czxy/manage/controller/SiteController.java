@@ -28,7 +28,7 @@ public class SiteController {
     public BaseResponse<Boolean> add(@RequestBody SiteAddInfo siteAddInfo){
         return ResponseUtil.success(siteService.add(siteAddInfo));
     }
-    @DeleteMapping
+    @DeleteMapping("/{siteIds}")
     @ApiOperation("删除点位")
     public BaseResponse<Boolean> delete(@PathVariable List<Integer> siteIds){
         return ResponseUtil.success(siteService.delete(siteIds));
