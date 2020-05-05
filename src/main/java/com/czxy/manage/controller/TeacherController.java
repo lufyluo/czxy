@@ -34,7 +34,7 @@ public class TeacherController {
     }
     @DeleteMapping
     @ApiOperation("批量删除教师")
-    public BaseResponse<Boolean> delete(@RequestBody List<Integer> teacherIds){
+    public BaseResponse<Boolean> delete(@PathVariable List<Integer> teacherIds){
         return ResponseUtil.success(teacherService.delete(teacherIds));
     }
     @PutMapping

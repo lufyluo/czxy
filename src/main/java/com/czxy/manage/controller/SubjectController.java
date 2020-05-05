@@ -5,6 +5,7 @@ import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentPageParam;
+import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
 import com.czxy.manage.model.vo.subject.SubjectDetailInfo;
 import com.czxy.manage.model.vo.subject.SubjectInfo;
 import com.czxy.manage.model.vo.subject.SubjectPageParam;
@@ -33,5 +34,9 @@ public class SubjectController {
     public BaseResponse<Boolean> add(@RequestBody SubjectInfo subjectInfo){
       return ResponseUtil.success(subjectService.add(subjectInfo));
     }
-
+    @PutMapping
+    @ApiOperation(value = "编辑课题",notes = "根据课题ID返回课题信息")
+    public BaseResponse<SubjectByIdInfo> getById(@RequestParam Integer subjectId){
+        return ResponseUtil.success(subjectService.getById(subjectId));
+    }
 }

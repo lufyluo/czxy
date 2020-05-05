@@ -23,4 +23,6 @@ public interface TeacherMapper {
     Integer queryUserId(TeacherEntity teacherEntity);
 
     TeacherInformationEntity queryAll(@Param("teacherId") Integer teacherId);
+
+    String queryName(@Param("teacherId") Integer teacherId);
 }

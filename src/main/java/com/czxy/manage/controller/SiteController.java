@@ -30,7 +30,7 @@ public class SiteController {
     }
     @DeleteMapping
     @ApiOperation("删除点位")
-    public BaseResponse<Boolean> delete(@RequestBody List<Integer> siteIds){
+    public BaseResponse<Boolean> delete(@PathVariable List<Integer> siteIds){
         return ResponseUtil.success(siteService.delete(siteIds));
     }
     @GetMapping("/page")
