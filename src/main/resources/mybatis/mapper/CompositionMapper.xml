@@ -5,8 +5,13 @@
             keyProperty="id">
         insert into composition (name) values (#{name});
     </insert>
+    <insert id="insertEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into composition (name) values (#{name});
+    </insert>
     <select id="queryAll" resultType="com.czxy.manage.model.entity.CompositionEntity">
         select id,name from composition
         <if test="param != null and param != ''">where name like '%$param}%'</if>
+        order by name,id desc
     </select>
 </mapper>

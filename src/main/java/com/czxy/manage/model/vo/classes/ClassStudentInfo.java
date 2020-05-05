@@ -9,6 +9,7 @@ import java.util.Date;
 @Data
 public class ClassStudentInfo {
     private Integer userId;
+    private Integer studentId;
     private String userName;
     private String userIdCard;
     private String userPhone;

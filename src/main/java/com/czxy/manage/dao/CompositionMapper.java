@@ -9,4 +9,6 @@ import java.util.List;
 public interface CompositionMapper {
     Integer insert(String name);
     List<CompositionEntity> queryAll(String param);
+
+    Integer insertEntity(CompositionEntity compositionEntity);
 }

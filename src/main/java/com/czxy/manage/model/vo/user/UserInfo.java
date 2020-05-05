@@ -22,6 +22,8 @@ public class UserInfo extends BaseEntity {
     private String phone;
     @ApiModelProperty("0-男,1-女,2-未知")
     private Integer gender;
+    @ApiModelProperty("男,女,未知")
+    private String genderDesc;
     @ApiModelProperty("职位")
     private String position;
     private Integer age;
@@ -30,7 +32,7 @@ public class UserInfo extends BaseEntity {
     @ApiModelProperty("用户类型-0：普通用户，1：学员，2：讲师，3：班主任，4：公职人员，5：其它")
     private Integer category;
     private String wechatId;
-    @ApiModelProperty("工作单位")
+    @ApiModelProperty("工作单位id")
     private Integer orgId;
     @ApiModelProperty("民族")
     private String nation;

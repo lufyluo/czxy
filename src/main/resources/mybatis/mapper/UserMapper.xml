@@ -13,34 +13,57 @@
     <insert id="insert" parameterType="com.czxy.manage.model.entity.UserEntity" useGeneratedKeys="true"
             keyProperty="id">
         insert into user
-        (name, idcard, phone, gender, position, age, birthday, category, wechat_id,org_id,nation,nativeplace,education)
-        values(#{name}, #{idCard}, #{phone}, #{gender}, #{position}, #{age}, #{birthday}, #{category}, #{wechatId}, #{orgId}, #{nation}, #{nativePlace},#{education});
+        (name, idcard, phone, gender, position, age,
+        birthday, category, wechat_id,org_id,nation,
+        nativeplace,education,politics)
+        values(#{name}, #{idCard}, #{phone},
+         #{gender}, #{position}, #{age},
+         #{birthday}, #{category}, #{wechatId},
+         #{orgId}, #{nation}, #{nativePlace},
+         #{education},#{politics});
     </insert>
     <insert id="batchInsert" useGeneratedKeys="true"
             keyProperty="id">
          insert into user
-        (name, idcard, phone, gender, position, age, birthday, category, wechat_id,org_id,nation,nativeplace,education)
+        (name, idcard, phone, gender,
+        position, age, birthday,
+        category, wechat_id,org_id,
+        nation,nativeplace,education,
+        politics)
         values
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             #{name}, #{idCard}, #{phon}, #{gender},
             #{position}, #{age}, #{birthday}, #{category},
-             #{wechatId}, #{orgId}, #{nation}, #{nativePlace},#{education}
+             #{wechatId}, #{orgId}, #{nation}, #{nativePlace},
+             #{education},#{politics}
         </foreach>
 
     </insert>
     <update id="update">
         update user
-        set name=#{name}, idcard=#{idCard}, phone=#{phone}, gender=#{gender}, position=#{position}, age=#{age}, birthday=#{birthday}, category=#{category}, wechat_id=#{wechatId}, updated_time=now(), org_id=#{orgId},nation=#{nation},nativeplace=#{nativePlace},education=#{education}
+        set name=#{name}, idcard=#{idCard}, phone=#{phone},
+        gender=#{gender}, position=#{position},
+        age=#{age}, birthday=#{birthday}, category=#{category},
+        wechat_id=#{wechatId}, updated_time=now(), politics=#{politics}
+        org_id=#{orgId},nation=#{nation},nativeplace=#{nativePlace},education=#{education}
         where id=#{id}
     </update>
     <update id="updateByStudent">
         update user
-        set name=#{name}, idcard=#{idCard}, phone=#{phone}, gender=#{gender}, position=#{position}, age=#{age}, birthday=#{birthday}, category=#{category}, wechat_id=#{wechatId}, updated_time=now(), org_id=#{orgId},nation=#{nation},nativeplace=#{nativePlace},education=#{education},politics=#{politics}
+        set name=#{name}, idcard=#{idCard}, phone=#{phone},
+        gender=#{gender}, position=#{position}, age=#{age},
+        birthday=#{birthday}, category=#{category}, wechat_id=#{wechatId},
+        updated_time=now(), org_id=#{orgId},nation=#{nation}
+        ,nativeplace=#{nativePlace},education=#{education},politics=#{politics}
         where id=#{userId}
     </update>
     <update id="updateByTeacher">
         update user
-        set name=#{name}, idcard=#{idCard}, phone=#{phone}, gender=#{gender}, position=#{position}, age=#{age}, birthday=#{birthday}, category=#{category}, wechat_id=#{wechatId}, updated_time=now(), org_id=#{orgId},nation=#{nation},nativeplace=#{nativePlace},education=#{education},politics=#{politics}
+        set name=#{name}, idcard=#{idCard}, phone=#{phone},
+        gender=#{gender}, position=#{position}, age=#{age},
+        birthday=#{birthday}, category=#{category}, wechat_id=#{wechatId},
+         updated_time=now(), org_id=#{orgId},nation=#{nation},
+         nativeplace=#{nativePlace},education=#{education},politics=#{politics}
         where id=#{userId}
     </update>
     <delete id="delete">
@@ -75,5 +98,24 @@
         <if test="param != null and param != ''">
             and name like '%${param}%'
         </if>
+        order by id desc
+    </select>
+    <select id="queryClassLeader" resultType="com.czxy.manage.model.entity.UserEntity">
+         select
+        u.id, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
+        u.wechat_id as wechatId,
+        u.updated_time as updatedTime,
+        u.created_time as createdTime,
+        u.org_id as orgId,
+        u.nation,
+        u.nativeplace as nativePlace
+        from user u
+        left join student s
+        on s.user_id = u.id
+        where s.type=8
+        <if test="param != null and param != ''">
+            and name like '%${param}%'
+        </if>
+        order by id desc
     </select>
 </mapper>

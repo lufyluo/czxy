@@ -47,11 +47,29 @@ public class StudentService {
         toStudentDetailInfos.forEach(n -> {
             n.setSign(ObjectUtils.nullSafeEquals(n.getSignFlag(),1));
             if(n.getBeginTime()!=null&&n.getEndTime()!=null){
-                n.setDuration(sdf.format(n.getBeginTime()) + sdf.format(n.getEndTime()));
+                n.setPeriod(sdf.format(n.getBeginTime()) + sdf.format(n.getEndTime()));
             }
+
             n.setStudentIdentity(getStudentIdentity(n.getType()));
+            n.setGenderDesc(getGenderDesc(n.getGender()));
         });
         return toStudentDetailInfos;
+    }
+
+    private String getGenderDesc(Integer gender){
+        String genderDesc = "";
+        switch (gender) {
+            case 0:
+                genderDesc = "男";
+                break;
+            case 1:
+                genderDesc = "女";
+                break;
+            default:
+                genderDesc = "未知";
+                break;
+        }
+        return genderDesc;
     }
 
     private String getStudentIdentity(Integer type) {

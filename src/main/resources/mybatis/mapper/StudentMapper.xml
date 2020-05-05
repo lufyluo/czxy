@@ -29,25 +29,32 @@
     </delete>
     <select id="query" resultType="com.czxy.manage.model.entity.StudentDetailEntity">
         select
-        s.id as studentId, sign_flag as signFlag, user_id as userId,class_id  as classId,type,
-        u.id, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
+        s.id as id, sign_flag as signFlag, user_id as userId,class_id  as classId,type,
+        u.id as userId, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
+        u.education,
         u.wechat_id as wechatId,
         u.org_id as orgId,
+        o.name as orgName,
         u.nation,
         u.nativeplace as nativePlace,
-        c.name as className,c.begin_time as beginTime,c.end_time as endTime
+        u.politics,
+        c.name as className,c.begin_time as beginTime,c.end_time as endTime,
+        c.duration
          from
         student s
         left join user u
         on s.user_id = u.id
         left join class c
         on s.class_id = c.id
+        left join org o
+        on u.org_id = o.id
         where 1=1
         <if test="param != null and param != '' ">and u.name like '%${param}%'</if>
         <if test="provinceId != null and provinceId>0 ">and c.province_id = #{provinceId}</if>
         <if test="cityId != null and cityId>0 ">and c.city_id = #{cityId}</if>
         <if test="countyId != null and countyId>0 ">and c.county_id = #{countyId}</if>
         <if test="classId != null and classId >0 ">and c.class_id= #{classId}</if>
+        order by s.id desc
     </select>
     <select id="queryByStudentId" resultType="com.czxy.manage.model.entity.StudentUpdateEntity">
         select sign_flag as signFlag, class_id as classId, user_id as userId, type from student where id=#{id}
@@ -60,7 +67,7 @@
         </foreach>
     </update>
     <update id="update">
-        update student set sign_flag=#{signFlag}, class_id=#{classId}, type=#{type}, updated_time=now() where id=#{id}
+        update student set class_id=#{classId}, type=#{type}, updated_time=now() where id=#{id}
     </update>
     <update id="clearLeader">
         update student set type = 0 where class_id = #{classId} and type = 8

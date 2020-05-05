@@ -8,6 +8,7 @@ import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.ClassArrangeWithTimeEntity;
 import com.czxy.manage.model.entity.CourseDetailEntity;
 import com.czxy.manage.model.vo.classes.ClassArrangeInfo;
+import com.czxy.manage.model.vo.classes.ClassCreateInfo;
 import com.czxy.manage.model.vo.classes.CourseDetailInfo;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +48,9 @@ public class ClassCourseService {
         });
         classArrangeInfo.setCourseInfos(courseInfos);
         return classArrangeInfo;
+    }
+
+    public Boolean add(ClassCreateInfo classCourseInfo) {
+        return null;
     }
 }

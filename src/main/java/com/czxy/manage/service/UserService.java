@@ -84,5 +84,14 @@ public class UserService {
         userInfos.setList(userInfoList);
         return userInfos;
     }
+
+    public PageInfo<UserInfo> pageClassLeader(PageParam<String> pageParam) {
+        Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
+        List<UserEntity> userEntities = userMapper.queryClassLeader(pageParam.getParam());
+        PageInfo<UserInfo> userInfos=page.toPageInfo();
+        List<UserInfo> userInfoList = PojoMapper.INSTANCE.toUserInfos(userEntities);
+        userInfos.setList(userInfoList);
+        return userInfos;
+    }
 }
 

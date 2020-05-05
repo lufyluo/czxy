@@ -51,9 +51,14 @@ public class UserController {
     public BaseResponse<Boolean> update(@RequestBody UserCreateInfo userCreateInfo) {
         return ResponseUtil.success(userService.update(userCreateInfo));
     }
-    @GetMapping("/page")
+    @GetMapping("/page_masters")
     @ApiOperation(value = "分页获取班主任", notes = "分页获取班主任")
     public PageResponse<UserInfo> page(PageParam<String> pageParam) {
         return PageResponse.success(userService.page(pageParam));
+    }
+    @GetMapping("/page_leaders")
+    @ApiOperation(value = "分页获取班级对接人", notes = "分页获取班级对接人")
+    public PageResponse<UserInfo> pageClassLeader(PageParam<String> pageParam) {
+        return PageResponse.success(userService.pageClassLeader(pageParam));
     }
 }

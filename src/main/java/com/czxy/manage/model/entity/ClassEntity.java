@@ -18,7 +18,7 @@ public class ClassEntity extends BaseEntity {
     private String topics;
     private Integer recommendOrgId;
     @ApiModelProperty("培训对象(班级成分)")
-    private String appellation;
+    private Integer compositiveId;
     private Integer duration;
     private String addr;
 }

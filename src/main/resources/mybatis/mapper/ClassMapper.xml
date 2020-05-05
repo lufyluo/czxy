@@ -16,10 +16,10 @@
     <insert id="insert" useGeneratedKeys="true"
             keyProperty="id">
         insert into class(
-        name,province_id,city_id,county_id,org_id,arrange_id,recommend_org_id,appellation,
+        name,province_id,city_id,county_id,org_id,arrange_id,recommend_org_id,compositive_id,
         begin_time,end_time,duration,topics,addr
         )values(
-        #{name},#{provinceId},#{cityId},#{countyId},#{orgId},#{arrangeId},#{recommendOrgId},#{appellation},
+        #{name},#{provinceId},#{cityId},#{countyId},#{orgId},#{arrangeId},#{recommendOrgId},#{compositiveId},
         #{beginTime},#{endTime},#{duration},#{topics},#{addr}
         )
     </insert>
@@ -36,7 +36,7 @@
         ,arrange_id = #{arrangeId}
         ,recommend_org_id = #{recommendOrgId}
         ,duration = #{duration}
-        ,appellation = #{appellation}
+        ,compositive_id = #{compositiveId}
         ,topics = #{topics}
         ,updated_time = now()
     </update>
@@ -57,6 +57,7 @@
         ,c.begin_time as beginTime
         ,c.end_time as endTime
         ,c.arrange_id as arrangeId
+        ,c.compositive_id as compositiveId
         ,c.updated_time as updatedTime, c.created_time as createdTime
         ,org.name as orgName
         ,u.name as masterName
@@ -135,10 +136,12 @@
         u.org_id as userOrgId,
         u.nation as userNation,
         u.nativeplace as userNativeplace,
-        s.type as StudentType
+        s.type as StudentType,
+        s.id as studentId
         from user u
         left join student s
         on s.user_id = u.id
         where s.class_id = #{classId}
+        order by s.id desc
     </select>
 </mapper>

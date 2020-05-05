@@ -39,6 +39,8 @@ public class ClassService {
     private ClassMasterMapper classMasterMapper;
     @Resource
     private ClassExcuteCourseMapper classCourseMapper;
+    @Autowired
+    private CompositionService compositionService;
 
     public PageInfo<ClassOrgInfo> page(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -113,6 +115,8 @@ public class ClassService {
     public Boolean create(ClassCreateInfo classCreateInfo) {
         buildData(classCreateInfo);
         ClassEntity classEntity = PojoMapper.INSTANCE.classCreateInfoToClassEntity(classCreateInfo);
+        Integer compositiveId = compositionService.insertIfAbsent(classCreateInfo.getCompositionId(),classCreateInfo.getComposition());
+        classEntity.setCompositiveId(compositiveId);
         classMapper.insert(classEntity);
         if(classCreateInfo.getMasterId()!=null&&classCreateInfo.getMasterId()>0){
             classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId());
@@ -126,6 +130,7 @@ public class ClassService {
         if (classCreateInfo.getClassArrangeId() != null) {
             classCourseMapper.copySnapshot(classCreateInfo.getClassArrangeId());
         }
+
         studentService.setClassLeader(classCreateInfo.getLeaderId(),classEntity.getId());
         return true;
     }

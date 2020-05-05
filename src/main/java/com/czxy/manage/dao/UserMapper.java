@@ -31,4 +31,6 @@ public interface UserMapper {
     Integer updateByTeacher(UserUpdateEntity userUpdateEntity);
 
     List<UserEntity> queryMaster(String param);
+
+    List<UserEntity> queryClassLeader(String param);
 }

@@ -16,11 +16,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotNull;
 
 @Api(tags = "课题管理", value = "课题管理")
 @RestController
 @RequestMapping("/api/subject")
+@Validated
 public class SubjectController {
     @Autowired
     private SubjectService subjectService;

@@ -12,8 +12,10 @@ public class StudentDetailInfo extends UserInfo {
     @ApiModelProperty("学生id")
     private Integer studentId;
     private String className;
-    @ApiModelProperty("培训时间")
-    private String duration;
+    @ApiModelProperty("培训时长")
+    private Integer duration;
+    @ApiModelProperty("培训区间中文描述")
+    private String period;
     @JsonIgnore
     private Date beginTime;
     @JsonIgnore
@@ -25,7 +27,9 @@ public class StudentDetailInfo extends UserInfo {
     private Integer signFlag;
     @ApiModelProperty("学员身份")
     private String studentIdentity;
-    @JsonIgnore
+    @ApiModelProperty("学员身份ID")
     private Integer type;
+    @ApiModelProperty("工作单位中文名称")
+    private String orgName;
 
 }
