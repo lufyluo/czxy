@@ -117,4 +117,8 @@ public class SubjectService {
         subjectByIdInfo.setTypes(typeInfoList);
         return subjectByIdInfo;
     }
+
+    public Boolean update(SubjectInfo subjectInfo) {
+        return null;
+    }
 }

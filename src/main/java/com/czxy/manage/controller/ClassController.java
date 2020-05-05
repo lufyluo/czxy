@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @Api(tags = "班级管理",value = "班级管理" )
@@ -45,7 +47,7 @@ public class ClassController {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除班级信息", notes = "传入id的为class表的id")
-    public BaseResponse<Boolean> delete(@PathVariable Integer id) {
+    public BaseResponse<Boolean> delete(@PathVariable List<Integer> id) {
         return ResponseUtil.success(classService.delete(id));
     }
 

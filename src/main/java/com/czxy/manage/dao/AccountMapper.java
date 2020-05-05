@@ -2,6 +2,9 @@ package com.czxy.manage.dao;
 
 import com.czxy.manage.model.entity.AccountEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @Author lufy
@@ -18,7 +21,7 @@ public interface AccountMapper {
 
     Integer insert(AccountEntity accountEntity);
 
-    Integer deleteByUserId(Integer id);
+    Integer deleteByUserId(@Param("id") List<Integer> id);
 
     Integer update(AccountEntity accountEntity);
 }

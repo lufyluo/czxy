@@ -44,7 +44,9 @@
         where id=#{userId}
     </update>
     <delete id="delete">
-      delete from user where id=#{id}
+      delete from user where id in <foreach collection="id" item="item" index="index"
+                                            open="(" separator="," close=")">#{item}
+                                   </foreach>
     </delete>
 
     <select id="query" resultType="com.czxy.manage.model.entity.UserEntity">

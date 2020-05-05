@@ -13,6 +13,7 @@ import com.czxy.manage.service.SubjectService;
 import com.czxy.manage.service.TeacherService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +35,15 @@ public class SubjectController {
     public BaseResponse<Boolean> add(@RequestBody SubjectInfo subjectInfo){
       return ResponseUtil.success(subjectService.add(subjectInfo));
     }
-    @PutMapping
+    @GetMapping("/{subjectId}")
     @ApiOperation(value = "编辑课题",notes = "根据课题ID返回课题信息")
-    public BaseResponse<SubjectByIdInfo> getById(@RequestParam Integer subjectId){
+    public BaseResponse<SubjectByIdInfo> getById(@PathVariable Integer subjectId){
         return ResponseUtil.success(subjectService.getById(subjectId));
     }
+    @PutMapping
+    @ApiOperation("编辑课题")
+    public BaseResponse<Boolean> update(@RequestBody SubjectInfo subjectInfo){
+        return ResponseUtil.success(subjectService.update(subjectInfo));
+    }
+
 }
