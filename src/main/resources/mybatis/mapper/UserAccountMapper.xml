@@ -16,7 +16,7 @@
     <select id="queryAll" resultType="com.czxy.manage.model.vo.user.UserAccountInfo">
         select
         a.account,a.password,
-        name, idcard, phone, gender, position, age, birthday, category,
+        u.name, idcard, phone, gender, position, age, birthday, category,
         wechat_id as wechatId,
         org_id as orgId,
         o.name as orgName,

@@ -51,7 +51,7 @@ public class StudentService {
             }
             n.setStudentIdentity(getStudentIdentity(n.getType()));
         });
-        return null;
+        return toStudentDetailInfos;
     }
 
     private String getStudentIdentity(Integer type) {
@@ -123,6 +123,10 @@ public class StudentService {
 
     public void setClassLeader(Integer studentId, Integer classId) {
         studentMapper.clearLeader(classId);
+        if(studentId == null || studentId==0)
+        {
+            return;
+        }
         studentMapper.setLeader(studentId,classId);
     }
 }

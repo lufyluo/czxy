@@ -1,5 +1,6 @@
 package com.czxy.manage.model.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,6 +12,8 @@ import java.util.Date;
  */
 @Data
 public class BaseEntity {
+    @ApiModelProperty(hidden = true)
     private Date updatedTime;
+    @ApiModelProperty(hidden = true)
     private Date createdTime;
 }

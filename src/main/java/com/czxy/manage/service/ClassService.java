@@ -114,7 +114,9 @@ public class ClassService {
         buildData(classCreateInfo);
         ClassEntity classEntity = PojoMapper.INSTANCE.classCreateInfoToClassEntity(classCreateInfo);
         classMapper.insert(classEntity);
-        classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId());
+        if(classCreateInfo.getMasterId()!=null&&classCreateInfo.getMasterId()>0){
+            classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId());
+        }
         if (classCreateInfo.getStudentAddInfos() != null && classCreateInfo.getStudentAddInfos().size() > 0) {
             classCreateInfo.getStudentAddInfos().forEach(n -> {
                 n.setOrgId(classCreateInfo.getOrgId());

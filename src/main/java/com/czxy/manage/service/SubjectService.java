@@ -40,9 +40,9 @@ public class SubjectService {
 
     public PageInfo<SubjectDetailInfo> page(SubjectPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
-        List<SubjectDetailEntity> subjectDetailEntities = subjectMapper.query(pageParam.getParam(), pageParam.getTypeId(),pageParam.getCategory());
+        List<SubjectDetailEntity> subjectDetailEntities = subjectMapper.query(pageParam.getParam(), pageParam.getTypeId(), pageParam.getCategory());
         List<SubjectDetailInfo> subjectDetailInfos = PojoMapper.INSTANCE.toSubjectDetaiInfos(subjectDetailEntities);
-        PageInfo<SubjectDetailInfo> result=page.toPageInfo();
+        PageInfo<SubjectDetailInfo> result = page.toPageInfo();
         List<Integer> fileIds = new ArrayList<>();
         List<Integer> typeIds = new ArrayList<>();
         for (int i = 0; i < subjectDetailEntities.size(); i++) {
@@ -81,6 +81,7 @@ public class SubjectService {
         result.setList(subjectDetailInfos);
         return result;
     }
+
     @Transactional
     public Boolean add(SubjectInfo subjectInfo) {
         List<TypeInfo> typeInfos = subjectInfo.getTypes();

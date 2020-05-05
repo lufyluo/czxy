@@ -51,8 +51,8 @@ public class AccountController {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页获取账号", notes = "分页获取账号")
-    public PageInfo<UserAccountInfo> page(PageParam<String> pageParam) {
-        return accountService.page(pageParam);
+    public PageResponse<UserAccountInfo> page(PageParam<String> pageParam) {
+        return PageResponse.success(accountService.page(pageParam));
     }
 
 
