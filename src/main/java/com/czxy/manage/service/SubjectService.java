@@ -8,6 +8,7 @@ import com.czxy.manage.model.entity.FileEntity;
 import com.czxy.manage.model.entity.SubjectDetailEntity;
 import com.czxy.manage.model.entity.SubjectEntity;
 import com.czxy.manage.model.entity.TypeEntity;
+import com.czxy.manage.model.vo.site.TypeInfo;
 import com.czxy.manage.model.vo.subject.SubjectDetailInfo;
 import com.czxy.manage.model.vo.subject.SubjectInfo;
 import com.czxy.manage.model.vo.subject.SubjectPageParam;
@@ -82,14 +83,13 @@ public class SubjectService {
     }
     @Transactional
     public Boolean add(SubjectInfo subjectInfo) {
-        TypeEntity typeEntity = new TypeEntity();
-        typeEntity.setCategory(0);
-        typeEntity.setName(subjectInfo.getTypeName());
-        typeEntity.setId(subjectInfo.getTypesId());
-        List<TypeEntity> typeEntityList = new ArrayList<>();
-        typeEntityList.add(typeEntity);
+        List<TypeInfo> typeInfos = subjectInfo.getTypes();
+        List<TypeEntity> typeEntityList = PojoMapper.INSTANCE.toTypeEntities(typeInfos);
         typeService.batchInsertIfObsent(typeEntityList);
         SubjectEntity subjectEntity = PojoMapper.INSTANCE.toSubjectEntity(subjectInfo);
-
+        String result = typeEntityList.stream().map(n->n.getId().toString()).collect(Collectors.joining(","));
+        subjectEntity.setTypes(result);
+        subjectMapper.add(subjectEntity);
+        return true;
     }
 }

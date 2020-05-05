@@ -33,4 +33,5 @@ public class SubjectController {
     public BaseResponse<Boolean> add(@RequestBody SubjectInfo subjectInfo){
       return ResponseUtil.success(subjectService.add(subjectInfo));
     }
+
 }

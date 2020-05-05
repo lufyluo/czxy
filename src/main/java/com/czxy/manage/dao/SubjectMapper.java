@@ -1,6 +1,7 @@
 package com.czxy.manage.dao;
 
 import com.czxy.manage.model.entity.SubjectDetailEntity;
+import com.czxy.manage.model.entity.SubjectEntity;
 import com.czxy.manage.model.vo.subject.SubjectDetailInfo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,6 +12,6 @@ public interface SubjectMapper {
 
     List<SubjectDetailEntity> query(String param, Integer typeId,Integer category);
 
-    Integer add(String name);
+    Integer add(SubjectEntity subjectEntity);
 
 }
