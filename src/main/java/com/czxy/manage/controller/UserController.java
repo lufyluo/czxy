@@ -1,7 +1,10 @@
 package com.czxy.manage.controller;
 
 import com.czxy.manage.infrastructure.response.BaseResponse;
+import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
+import com.czxy.manage.model.PageParam;
+import com.czxy.manage.model.vo.classes.ClassOrgInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserInfo;
 import com.czxy.manage.service.OrgService;
@@ -47,5 +50,10 @@ public class UserController {
     @ApiOperation(value = "编辑用户信息", notes = "工作单位如果选择已经存在的则必须传入orgId")
     public BaseResponse<Boolean> update(@RequestBody UserCreateInfo userCreateInfo) {
         return ResponseUtil.success(userService.update(userCreateInfo));
+    }
+    @GetMapping("/page")
+    @ApiOperation(value = "分页获取班主任", notes = "分页获取班主任")
+    public PageResponse<UserInfo> page(PageParam<String> pageParam) {
+        return PageResponse.success(userService.page(pageParam));
     }
 }

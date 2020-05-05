@@ -29,4 +29,6 @@ public interface UserMapper {
     Integer batchInsert(List<UserEntity> list);
 
     Integer updateByTeacher(UserUpdateEntity userUpdateEntity);
+
+    List<UserEntity> queryMaster(String param);
 }

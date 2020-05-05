@@ -68,4 +68,12 @@
         on t.user_id = u.id
         where t.token = #{token}
     </select>
+    <select id="queryMaster" resultType="com.czxy.manage.model.entity.UserEntity">
+        select
+        <include refid="base_column"/>
+        from user where category=3
+        <if test="param != null and param != ''">
+            and name like '%${param}%'
+        </if>
+    </select>
 </mapper>
