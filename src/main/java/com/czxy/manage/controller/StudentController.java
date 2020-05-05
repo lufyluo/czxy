@@ -35,9 +35,9 @@ public class StudentController {
         return ResponseUtil.success(studentService.sign(studentIds));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{studentIds}")
     @ApiOperation("删除学员")
-    public BaseResponse<Boolean> delete(@RequestBody List<Integer> studentIds) {
+    public BaseResponse<Boolean> delete(@PathVariable List<Integer> studentIds) {
         return ResponseUtil.success(studentService.delete(studentIds));
     }
 

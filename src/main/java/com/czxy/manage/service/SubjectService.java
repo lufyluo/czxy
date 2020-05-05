@@ -2,6 +2,7 @@ package com.czxy.manage.service;
 
 import com.czxy.manage.dao.FileMapper;
 import com.czxy.manage.dao.SubjectMapper;
+import com.czxy.manage.dao.TeacherMapper;
 import com.czxy.manage.dao.TypeMapper;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.FileEntity;
@@ -9,6 +10,7 @@ import com.czxy.manage.model.entity.SubjectDetailEntity;
 import com.czxy.manage.model.entity.SubjectEntity;
 import com.czxy.manage.model.entity.TypeEntity;
 import com.czxy.manage.model.vo.site.TypeInfo;
+import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
 import com.czxy.manage.model.vo.subject.SubjectDetailInfo;
 import com.czxy.manage.model.vo.subject.SubjectInfo;
 import com.czxy.manage.model.vo.subject.SubjectPageParam;
@@ -35,6 +37,8 @@ public class SubjectService {
     private FileMapper fileMapper;
     @Resource
     private TypeMapper typeMapper;
+    @Resource
+    private TeacherMapper teacherMapper;
     @Autowired
     private TypeService typeService;
 
@@ -92,5 +96,25 @@ public class SubjectService {
         subjectEntity.setTypes(result);
         subjectMapper.add(subjectEntity);
         return true;
+    }
+
+    public SubjectByIdInfo getById(Integer subjectId) {
+        SubjectEntity subjectEntity = subjectMapper.queryById(subjectId);
+        SubjectByIdInfo subjectByIdInfo = PojoMapper.INSTANCE.toSubjectByIdInfo(subjectEntity);
+        subjectByIdInfo.setTeacherName(teacherMapper.queryName(subjectEntity.getTeacherId()));
+        String types = subjectEntity.getTypes();
+        String[] split = types.split(",");
+        List<TypeInfo> typeInfoList = new ArrayList<>();
+            for (int i = 0; i <split.length ; i++) {
+                Integer typeInfoId = Integer.parseInt(split[i]);
+                TypeInfo typeInfo = new TypeInfo();
+                typeInfo.setId(typeInfoId);
+                typeInfo.setCategory(0);
+                String typeName = typeMapper.query(typeInfoId);
+                typeInfo.setName(typeName);
+                typeInfoList.add(typeInfo);
+            }
+        subjectByIdInfo.setTypes(typeInfoList);
+        return subjectByIdInfo;
     }
 }

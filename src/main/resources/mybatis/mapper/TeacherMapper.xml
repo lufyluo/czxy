@@ -66,4 +66,11 @@
         on t.id=s.teacher_id
         where t.id=#{teacherId}
     </select>
+    <select id="queryName" resultType="java.lang.String">
+        select  u.name
+        from teacher t
+        left join user u
+        on t.user_id = u.id
+        where t.id=#{teacherId}
+    </select>
 </mapper>

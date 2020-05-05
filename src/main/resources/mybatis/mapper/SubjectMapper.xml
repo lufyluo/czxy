@@ -22,4 +22,10 @@
             and (t.types like '${typeId},%' or t.types like '%,${typeId}' or t.types like '%,${typeId},%')
         </if>
     </select>
+    <select id="queryById" resultType="com.czxy.manage.model.entity.SubjectEntity">
+        select
+        name, content, types, files, teacher_id as teacherId, category
+        from subject
+        where id=#{subjectId}
+    </select>
 </mapper>

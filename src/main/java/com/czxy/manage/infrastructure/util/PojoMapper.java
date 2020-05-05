@@ -11,6 +11,7 @@ import com.czxy.manage.model.vo.site.TypeInfo;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentUpdateInfo;
+import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
 import com.czxy.manage.model.vo.subject.SubjectDetailInfo;
 import com.czxy.manage.model.vo.subject.SubjectInfo;
 import com.czxy.manage.model.vo.teacher.TeacherDetailInfo;
@@ -147,5 +148,9 @@ public interface PojoMapper {
 
     List<SubjectDetailInfo> toSubjectDetaiInfos(List<SubjectDetailEntity> subjectDetailEntities);
 
+    @Mappings({@Mapping(ignore = true, target = "types")})
     SubjectEntity toSubjectEntity(SubjectInfo subjectInfo);
+
+    @Mappings({@Mapping(ignore = true, target = "types")})
+    SubjectByIdInfo toSubjectByIdInfo(SubjectEntity subjectEntity);
 }
