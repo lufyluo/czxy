@@ -1,6 +1,7 @@
 package com.czxy.manage.controller;
 
 import com.czxy.manage.infrastructure.response.BaseResponse;
+import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
@@ -34,8 +35,8 @@ public class SiteController {
     }
     @GetMapping("/page")
     @ApiOperation("分页获取点位")
-    public PageInfo<SiteInfo> page(SitePageParam<String> pageParam){
-        return siteService.page(pageParam);
+    public PageResponse<SiteInfo> page(SitePageParam<String> pageParam){
+        return PageResponse.success(siteService.page(pageParam));
     }
     @PutMapping
     @ApiOperation("编辑点位")

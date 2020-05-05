@@ -10,4 +10,5 @@ public class SubjectEntity extends BaseEntity {
     private String types;
     private String files;
     private Integer teacherId;
+    private Integer category;
 }

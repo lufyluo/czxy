@@ -1,6 +1,7 @@
 package com.czxy.manage.controller;
 
 import com.czxy.manage.infrastructure.response.BaseResponse;
+import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.classes.ClassCreateInfo;
@@ -26,8 +27,8 @@ public class ClassController {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页获取班级", notes = "分页获取班级")
-    public PageInfo<ClassOrgInfo> page(PageParam<String> pageParam) {
-        return classService.page(pageParam);
+    public PageResponse<ClassOrgInfo> page(PageParam<String> pageParam) {
+        return PageResponse.success(classService.page(pageParam));
     }
 
     @GetMapping("/query")
@@ -38,8 +39,8 @@ public class ClassController {
 
     @GetMapping("/pageStudent")
     @ApiOperation(value = "查看班级学员信息", notes = "传入ID为class id")
-    public PageInfo<ClassStudentInfo> pageStudent(PageParam<String> pageParam) {
-        return classService.pageStudent(pageParam);
+    public PageResponse<ClassStudentInfo> pageStudent(PageParam<String> pageParam) {
+        return PageResponse.success(classService.pageStudent(pageParam));
     }
 
     @DeleteMapping("/{id}")

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.SubjectMapper">
+    <insert id="add">
+        insert into subject
+    </insert>
+
+    <select id="query" resultType="com.czxy.manage.model.entity.SubjectDetailEntity">
+        select
+        s.name,u.name as teacherName,s.types,s.files
+        from subject s
+        left join teacher t
+        on s.teacher_id=t.id
+        left join user u
+        on t.user_id=u.id
+        where category=#{category}
+        <if test="param != null and param != ''">
+            and (s.name like '%${param}%' or t.name like '%${param}%')
+        </if>
+        <if test="typeId != null and typeId != ''">
+            and (t.types like '${typeId},%' or t.types like '%,${typeId}' or t.types like '%,${typeId},%')
+        </if>
+    </select>
+</mapper>

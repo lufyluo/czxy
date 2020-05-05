@@ -1,5 +1,6 @@
 package com.czxy.manage.controller;
 
+import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.OrgInfo;
 import com.czxy.manage.model.vo.classes.ClassOrgInfo;
@@ -20,7 +21,7 @@ public class OrgController {
     private OrgService orgService;
     @GetMapping("/page")
     @ApiOperation(value = "分页获取单位", notes = "分页获取单位")
-    public PageInfo<OrgInfo> page(PageParam<String> pageParam) {
-        return orgService.page(pageParam);
+    public PageResponse<OrgInfo> page(PageParam<String> pageParam) {
+        return PageResponse.success(orgService.page(pageParam));
     }
 }

@@ -1,6 +1,7 @@
 package com.czxy.manage.controller;
 
 import com.czxy.manage.infrastructure.response.BaseResponse;
+import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
@@ -23,8 +24,8 @@ public class TeacherController {
     private TeacherService teacherService;
     @GetMapping("/page")
     @ApiOperation(value = "分页获取", notes = "根据教师姓名、星级、职称分页获取，参数选填")
-    public PageInfo<TeacherDetailInfo> page(TeacherPageParam<String> pageParam) {
-        return teacherService.page(pageParam);
+    public PageResponse<TeacherDetailInfo> page(TeacherPageParam<String> pageParam) {
+        return PageResponse.success(teacherService.page(pageParam));
     }
     @PostMapping
     @ApiOperation("新增教师")

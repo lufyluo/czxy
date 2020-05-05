@@ -1,0 +1,95 @@
+package com.czxy.manage.service;
+
+import com.czxy.manage.dao.FileMapper;
+import com.czxy.manage.dao.SubjectMapper;
+import com.czxy.manage.dao.TypeMapper;
+import com.czxy.manage.infrastructure.util.PojoMapper;
+import com.czxy.manage.model.entity.FileEntity;
+import com.czxy.manage.model.entity.SubjectDetailEntity;
+import com.czxy.manage.model.entity.SubjectEntity;
+import com.czxy.manage.model.entity.TypeEntity;
+import com.czxy.manage.model.vo.subject.SubjectDetailInfo;
+import com.czxy.manage.model.vo.subject.SubjectInfo;
+import com.czxy.manage.model.vo.subject.SubjectPageParam;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class SubjectService {
+    @Resource
+    private SubjectMapper subjectMapper;
+    @Resource
+    private FileMapper fileMapper;
+    @Resource
+    private TypeMapper typeMapper;
+    @Autowired
+    private TypeService typeService;
+
+    public PageInfo<SubjectDetailInfo> page(SubjectPageParam<String> pageParam) {
+        Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
+        List<SubjectDetailEntity> subjectDetailEntities = subjectMapper.query(pageParam.getParam(), pageParam.getTypeId(),pageParam.getCategory());
+        List<SubjectDetailInfo> subjectDetailInfos = PojoMapper.INSTANCE.toSubjectDetaiInfos(subjectDetailEntities);
+        PageInfo<SubjectDetailInfo> result=page.toPageInfo();
+        List<Integer> fileIds = new ArrayList<>();
+        List<Integer> typeIds = new ArrayList<>();
+        for (int i = 0; i < subjectDetailEntities.size(); i++) {
+            SubjectDetailEntity subjectDetailEntity = subjectDetailEntities.get(i);
+            if (!StringUtils.isEmpty(subjectDetailEntity.getFiles())) {
+                String files = subjectDetailEntity.getFiles();
+                Arrays.stream(files.split(",")).forEach(n -> fileIds.add(Integer.parseInt(n)));
+            }
+            if (!StringUtils.isEmpty(subjectDetailEntity.getTypes())) {
+                String types = subjectDetailEntity.getTypes();
+                Arrays.stream(types.split(",")).forEach(n -> typeIds.add(Integer.parseInt(n)));
+            }
+        }
+        List<FileEntity> fileEntities = fileMapper.query(fileIds);
+        List<TypeEntity> typeEntities = typeMapper.queryAll(typeIds);
+        subjectDetailInfos.forEach(n -> {
+            if (StringUtil.isNotEmpty(n.getFiles())) {
+                List<String> idsTemp = Arrays.asList(
+                        n.getFiles().split(","));
+                n.setFilesName(fileEntities.stream()
+                        .filter(item -> idsTemp.contains(item.getId() + ""))
+                        .map(FileEntity::getName)
+                        .collect(Collectors.joining(",")));
+            }
+        });
+        subjectDetailInfos.forEach(n -> {
+            if (StringUtil.isNotEmpty(n.getTypes())) {
+                List<String> idsTemp = Arrays.asList(
+                        n.getTypes().split(","));
+                n.setTypeName(typeEntities.stream()
+                        .filter(item -> idsTemp.contains(item.getId() + ""))
+                        .map(TypeEntity::getName)
+                        .collect(Collectors.joining(",")));
+            }
+        });
+        result.setList(subjectDetailInfos);
+        return result;
+    }
+    @Transactional
+    public Boolean add(SubjectInfo subjectInfo) {
+        TypeEntity typeEntity = new TypeEntity();
+        typeEntity.setCategory(0);
+        typeEntity.setName(subjectInfo.getTypeName());
+        typeEntity.setId(subjectInfo.getTypesId());
+        List<TypeEntity> typeEntityList = new ArrayList<>();
+        typeEntityList.add(typeEntity);
+        typeService.batchInsertIfObsent(typeEntityList);
+        SubjectEntity subjectEntity = PojoMapper.INSTANCE.toSubjectEntity(subjectInfo);
+
+    }
+}

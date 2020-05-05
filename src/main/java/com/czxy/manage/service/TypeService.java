@@ -39,6 +39,6 @@ public class TypeService {
     }
     public Boolean batchInsert(List<TypeEntity> typeAddEntities) {
         typeMapper.batchInsert(typeAddEntities);
-        return null;
+        return true;
     }
 }

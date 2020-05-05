@@ -11,6 +11,8 @@ import com.czxy.manage.model.vo.site.TypeInfo;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentUpdateInfo;
+import com.czxy.manage.model.vo.subject.SubjectDetailInfo;
+import com.czxy.manage.model.vo.subject.SubjectInfo;
 import com.czxy.manage.model.vo.teacher.TeacherDetailInfo;
 import com.czxy.manage.model.vo.teacher.TeacherInfo;
 import com.czxy.manage.model.vo.teacher.TeacherInformationInfo;
@@ -101,19 +103,24 @@ public interface PojoMapper {
     List<TypeEntity> toTypeEntities(List<TypeInfo> types);
 
     TypeInfo toTypeInfo(TypeEntity typeEntity);
+
     List<TypeInfo> toTypeInfos(List<TypeEntity> typeEntities);
 
     OrgInfo toOrgInfo(OrgEntity orgEntity);
+
     List<OrgInfo> toOrgInfos(List<OrgEntity> orgEntities);
 
 
     CompositionInfo toCompositionInfo(CompositionEntity compositionEntity);
+
     List<CompositionInfo> toCompositionInfos(List<CompositionEntity> compositionEntities);
 
     TeacherDetailInfo toTeacherDetailInfo(TeacherDetailEntity teacherDetailEntity);
+
     List<TeacherDetailInfo> toTeacherDetailInfos(List<TeacherDetailEntity> teacherDetailEntities);
 
     AddressInfo toAddressInfo(AddressEntity addressEntity);
+
     List<AddressInfo> toAddressInfos(List<AddressEntity> addressEntities);
 
     UserEntity teacherInfoToUserEntity(TeacherInfo teacherInfo);
@@ -133,5 +140,12 @@ public interface PojoMapper {
     TeacherInformationInfo toTeacherInformationInfo(TeacherInformationEntity teacherInformationEntity);
 
     UserAccountInfo toUserAccountInfo(UserAccountInfo userAccountInfo);
+
     List<UserAccountInfo> toUserAccountInfos(List<UserAccountInfo> userAccountInfos);
+
+    SubjectDetailInfo toSubjectDetaiInfo(SubjectDetailEntity subjectDetailEntity);
+
+    List<SubjectDetailInfo> toSubjectDetaiInfos(List<SubjectDetailEntity> subjectDetailEntities);
+
+    SubjectEntity toSubjectEntity(SubjectInfo subjectInfo);
 }

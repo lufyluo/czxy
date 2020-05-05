@@ -1,5 +1,6 @@
 package com.czxy.manage.controller;
 
+import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.CompositionInfo;
 import com.czxy.manage.service.CompositionService;
@@ -17,7 +18,7 @@ public class CompositionController {
     private CompositionService compositionService;
     @GetMapping("/page")
     @ApiOperation(value = "班级成分、培训对象分页获取", notes = "班级成分、培训对象分页获取")
-    public PageInfo<CompositionInfo> page(PageParam<String> pageParam) {
-        return compositionService.page(pageParam);
+    public PageResponse<CompositionInfo> page(PageParam<String> pageParam) {
+        return PageResponse.success(compositionService.page(pageParam));
     }
 }

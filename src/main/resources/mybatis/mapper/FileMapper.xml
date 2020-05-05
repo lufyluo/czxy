@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.FileMapper">
+
+    <select id="query" resultType="com.czxy.manage.model.entity.FileEntity">
+        select
+        id, name, code, extension, "size", updated_time, created_time, url
+        from
+        file
+        where id in <foreach collection="fileIds" item="item" index="index"
+                             open="(" separator="," close=")">#{item}
+                    </foreach>
+    </select>
+</mapper>

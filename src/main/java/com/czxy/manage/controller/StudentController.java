@@ -1,6 +1,7 @@
 package com.czxy.manage.controller;
 
 import com.czxy.manage.infrastructure.response.BaseResponse;
+import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
@@ -17,15 +18,15 @@ import java.util.List;
 
 @RestController
 @Api(tags = "学生管理",value = "学生管理")
-@RequestMapping("/api/student/")
+@RequestMapping("/api/student")
 public class StudentController {
     @Autowired
     private StudentService studentService;
 
     @GetMapping("/page")
     @ApiOperation(value = "分页获取", notes = "分页获取班级")
-    public PageInfo<StudentDetailInfo> page(StudentPageParam<String> pageParam) {
-        return studentService.page(pageParam);
+    public PageResponse<StudentDetailInfo> page(StudentPageParam<String> pageParam) {
+        return PageResponse.success(studentService.page(pageParam));
     }
 
     @PutMapping
