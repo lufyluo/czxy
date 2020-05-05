@@ -10,7 +10,7 @@ import lombok.Data;
  * @Date 19-11-18 下午3:50
  */
 @Data
-public class StudentPageParam<T> extends PageParam {
+public class StudentPageParam<T> extends PageParam<T> {
    @ApiModelProperty("省ID")
    private Integer provinceId;
    @ApiModelProperty("市ID")

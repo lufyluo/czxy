@@ -3,6 +3,8 @@ package com.czxy.manage.service;
 import com.czxy.manage.dao.TypeMapper;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.TypeEntity;
+import com.czxy.manage.model.vo.site.TypeInfo;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -40,5 +42,11 @@ public class TypeService {
     public Boolean batchInsert(List<TypeEntity> typeAddEntities) {
         typeMapper.batchInsert(typeAddEntities);
         return null;
+    }
+
+    public List<TypeInfo> get(String key) {
+        int typeCategory = 0;
+        List<TypeEntity> typeEntities = typeMapper.queryByKey(key,typeCategory);
+        return PojoMapper.INSTANCE.toTypeInfos(typeEntities);
     }
 }
