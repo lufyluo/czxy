@@ -16,7 +16,7 @@ import java.util.List;
 public interface ClassMapper {
     List<ClassOrgEntity> queryAll(String param);
 
-    Integer delete(Integer id);
+    Integer delete(@Param("id") List<Integer> id);
 
     ClassInformationEntity query(Integer id);
 

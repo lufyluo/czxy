@@ -11,6 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @Author lufy
  * @Description ...
@@ -37,7 +39,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除用户信息", notes = "传入id的为userId")
-    public BaseResponse<Boolean> delete(@PathVariable Integer id) {
+    public BaseResponse<Boolean> delete(@PathVariable List<Integer> id) {
         return ResponseUtil.success(userService.delete(id));
     }
 

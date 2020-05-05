@@ -80,7 +80,7 @@ public class ClassService {
         return PojoMapper.INSTANCE.toTypeInfos(typeEntities);
     }
 
-    public Boolean delete(Integer id) {
+    public Boolean delete(List<Integer> id) {
         classMapper.delete(id);
         return true;
     }

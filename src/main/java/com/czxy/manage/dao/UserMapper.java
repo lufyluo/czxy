@@ -2,6 +2,7 @@ package com.czxy.manage.dao;
 
 import com.czxy.manage.model.entity.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface UserMapper {
     Integer insert(UserEntity userEntity);
 
 
-    Integer delete(int id);
+    Integer delete(@Param("id") List<Integer> id);
 
     Integer update(UserEntity userEntity);
 

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author lufy
@@ -44,7 +45,7 @@ public class UserService {
         return true;
     }
 
-    public Boolean delete(Integer id) {
+    public Boolean delete(List<Integer> id) {
         userMapper.delete(id);
         accountMapper.deleteByUserId(id);
         return true;

@@ -41,7 +41,9 @@
         ,updated_time = now()
     </update>
     <delete id="delete">
-        delete from class where id = #{id}
+        delete from class where id in <foreach collection="id" item="item" index="index"
+                                               open="(" separator="," close=")">#{item}
+                                      </foreach>
     </delete>
 
     <select id="queryAll" resultType="com.czxy.manage.model.entity.ClassOrgEntity">

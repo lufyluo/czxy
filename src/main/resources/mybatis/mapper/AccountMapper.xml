@@ -15,7 +15,9 @@
         delete from account where id = #{id}
     </delete>
     <delete id="deleteByUserId">
-        delete from account where user_id=#{id}
+        delete from account where user_id in <foreach collection="id" item="item" index="index"
+                                                      open="(" separator="," close=")">#{item}
+                                             </foreach>
     </delete>
 
     <select id="query" resultType="com.czxy.manage.model.entity.AccountEntity">
