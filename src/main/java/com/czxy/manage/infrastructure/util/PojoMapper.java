@@ -76,6 +76,8 @@ public interface PojoMapper {
 
     UserInfo toUserInfo(UserEntity userEntity);
 
+    List<UserInfo> toUserInfos(List<UserEntity> userEntities);
+
     StudentDetailInfo toStudentDetailInfos(StudentDetailEntity studentDetailEntity);
 
     List<StudentDetailInfo> toStudentDetailInfos(List<StudentDetailEntity> studentDetailEntities);
@@ -153,4 +155,5 @@ public interface PojoMapper {
 
     @Mappings({@Mapping(ignore = true, target = "types")})
     SubjectByIdInfo toSubjectByIdInfo(SubjectEntity subjectEntity);
+
 }

@@ -1,19 +1,19 @@
 package com.czxy.manage.service;
 
 import com.czxy.manage.dao.AccountMapper;
-import com.czxy.manage.dao.OrgMapper;
 import com.czxy.manage.dao.UserMapper;
 import com.czxy.manage.infrastructure.util.PojoMapper;
+import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.AccountEntity;
-import com.czxy.manage.model.entity.OrgEntity;
 import com.czxy.manage.model.entity.UserEntity;
-import com.czxy.manage.model.vo.classes.ClassInformationInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserInfo;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -74,6 +74,15 @@ public class UserService {
         UserInfo userInfo = PojoMapper.INSTANCE.toUserInfo(userEntity);
         userInfo.setUserMenuInfoList(userMenuService.get(userInfo.getId()));
         return userInfo;
+    }
+
+    public PageInfo<UserInfo> page(PageParam<String> pageParam) {
+        Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
+        List<UserEntity> userEntities = userMapper.queryMaster(pageParam.getParam());
+        PageInfo<UserInfo> userInfos=page.toPageInfo();
+        List<UserInfo> userInfoList = PojoMapper.INSTANCE.toUserInfos(userEntities);
+        userInfos.setList(userInfoList);
+        return userInfos;
     }
 }
 
