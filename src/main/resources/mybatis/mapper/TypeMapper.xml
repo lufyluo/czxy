@@ -34,4 +34,13 @@
         from type
         where id=#{parseInt}
     </select>
+    <select id="queryByKey" resultType="com.czxy.manage.model.entity.TypeEntity">
+        select
+        <include refid="base_column"></include>
+        from type
+        where category = #{category}
+        <if test="key != null and key !=''">
+            and name like '%${key}%'
+        </if>
+    </select>
 </mapper>

@@ -15,6 +15,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -44,25 +45,27 @@ public class StudentService {
     private List<StudentDetailInfo> fillOtherProperty(List<StudentDetailInfo> toStudentDetailInfos) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         toStudentDetailInfos.forEach(n -> {
-            n.setSign(n.getSignFlag() == 1);
-            n.setDuration(sdf.format(n.getBeginTime()) + sdf.format(n.getEndTime()));
+            n.setSign(ObjectUtils.nullSafeEquals(n.getSignFlag(),1));
+            if(n.getBeginTime()!=null&&n.getEndTime()!=null){
+                n.setDuration(sdf.format(n.getBeginTime()) + sdf.format(n.getEndTime()));
+            }
             n.setStudentIdentity(getStudentIdentity(n.getType()));
         });
         return null;
     }
 
     private String getStudentIdentity(Integer type) {
-        //0-学员；1-班委干部；8-带班领导
+        //0（默认）-学员；1-班委干部；8-带班领导
         String identity = "-";
         switch (type) {
-            case 0:
-                identity = "学员";
-                break;
             case 1:
                 identity = "班委干部";
                 break;
             case 8:
                 identity = "带班领导";
+                break;
+            default:
+                identity = "学员";
                 break;
         }
         return identity;

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface TypeMapper {
-    List<TypeEntity> queryAll(@Param("types") List<Integer> types);
+    List<TypeEntity> queryAll(@Param("types") List<Integer> topicIds);
 
     Integer insert(TypeEntity typeEntity);
 
@@ -16,4 +16,5 @@ public interface TypeMapper {
 
     String query(@Param("parseInt") Integer parseInt);
 
+    List<TypeEntity> queryByKey(String key, int category);
 }

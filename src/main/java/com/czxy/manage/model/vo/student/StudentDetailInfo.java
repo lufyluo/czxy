@@ -21,6 +21,7 @@ public class StudentDetailInfo extends UserInfo {
     @ApiModelProperty("是否签到")
     private Boolean sign;
     @JsonIgnore
+    @ApiModelProperty(hidden = true)
     private Integer signFlag;
     @ApiModelProperty("学员身份")
     private String studentIdentity;
