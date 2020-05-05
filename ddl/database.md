@@ -570,6 +570,8 @@ alter table menus
 alter table menus
 	add icon varchar(50) null after `order`;
 
+alter table subject
+	add category int not null comment '0-党政综合，1-社会管理，2-农业农村，3-城建规划，4-经济与产业，5-能力素质提升，9-其他' after teacher_id;
 
 
 ```
