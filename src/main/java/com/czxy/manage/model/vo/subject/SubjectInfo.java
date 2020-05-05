@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class SubjectInfo extends BaseEntity {
+    private Integer id;
     private String name;
     private List<TypeInfo> types;
     private Integer teacherId;

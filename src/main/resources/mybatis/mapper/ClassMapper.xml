@@ -39,6 +39,7 @@
         ,compositive_id = #{compositiveId}
         ,topics = #{topics}
         ,updated_time = now()
+        where id =#{id}
     </update>
     <delete id="delete">
         delete from class where id in <foreach collection="id" item="item" index="index"

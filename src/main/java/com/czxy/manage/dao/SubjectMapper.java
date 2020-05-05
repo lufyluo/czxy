@@ -15,4 +15,6 @@ public interface SubjectMapper {
     Integer add(SubjectEntity subjectEntity);
 
     SubjectEntity queryById(Integer subjectId);
+
+    Integer update(SubjectEntity subjectEntity);
 }

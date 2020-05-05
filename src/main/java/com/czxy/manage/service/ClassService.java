@@ -135,6 +135,7 @@ public class ClassService {
         return true;
     }
 
+    @Transactional
     public Boolean update(ClassCreateInfo classCreateInfo) {
         buildData(classCreateInfo);
         ClassEntity classEntity = PojoMapper.INSTANCE.classCreateInfoToClassEntity(classCreateInfo);

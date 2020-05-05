@@ -117,8 +117,15 @@ public class SubjectService {
         subjectByIdInfo.setTypes(typeInfoList);
         return subjectByIdInfo;
     }
-
+    @Transactional
     public Boolean update(SubjectInfo subjectInfo) {
-        return null;
+        List<TypeInfo> typeInfos = subjectInfo.getTypes();
+        List<TypeEntity> typeEntityList = PojoMapper.INSTANCE.toTypeEntities(typeInfos);
+        typeService.batchInsertIfObsent(typeEntityList);
+        SubjectEntity subjectEntity = PojoMapper.INSTANCE.toSubjectEntity(subjectInfo);
+        String result = typeEntityList.stream().map(n->n.getId().toString()).collect(Collectors.joining(","));
+        subjectEntity.setTypes(result);
+        subjectMapper.update(subjectEntity);
+        return true;
     }
 }

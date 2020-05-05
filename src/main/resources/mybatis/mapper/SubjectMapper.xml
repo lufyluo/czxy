@@ -5,6 +5,17 @@
             keyProperty="id">
         insert into subject (name, content, types, files, teacher_id, category) values (#{name},#{content},#{types},#{files},#{teacherId},#{category})
     </insert>
+    <update id="update">
+        update subject
+        set
+        name = #{name}
+        ,content=#{content}
+        ,types=#{types}
+        ,teacher_id =#{teacherId}
+        ,category =#{category}
+        ,updated_time = now()
+        where id=#{id}
+    </update>
 
     <select id="query" resultType="com.czxy.manage.model.entity.SubjectDetailEntity">
         select
