@@ -20,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Api(tags = "课题管理", value = "课题管理")
 @RestController
@@ -49,5 +50,9 @@ public class SubjectController {
     public BaseResponse<Boolean> update(@RequestBody SubjectInfo subjectInfo){
         return ResponseUtil.success(subjectService.update(subjectInfo));
     }
-
+    @DeleteMapping("/{subjectIds}")
+    @ApiOperation("批量删除课题")
+    public BaseResponse<Boolean> delete(@PathVariable List<Integer> subjectIds){
+        return ResponseUtil.success(subjectService.delete(subjectIds));
+    }
 }

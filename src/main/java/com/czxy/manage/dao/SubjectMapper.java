@@ -4,6 +4,7 @@ import com.czxy.manage.model.entity.SubjectDetailEntity;
 import com.czxy.manage.model.entity.SubjectEntity;
 import com.czxy.manage.model.vo.subject.SubjectDetailInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface SubjectMapper {
     SubjectEntity queryById(Integer subjectId);
 
     Integer update(SubjectEntity subjectEntity);
+
+    Integer delete(@Param("subjectIds") List<Integer> subjectIds);
 }

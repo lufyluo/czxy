@@ -16,6 +16,11 @@
         ,updated_time = now()
         where id=#{id}
     </update>
+    <delete id="delete">
+        delete from subject where id in <foreach collection="subjectIds" item="item" index="index"
+                                                 open="(" separator="," close=")">#{item}
+                                        </foreach>
+    </delete>
 
     <select id="query" resultType="com.czxy.manage.model.entity.SubjectDetailEntity">
         select

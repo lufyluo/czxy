@@ -92,7 +92,7 @@ public class SubjectService {
         List<TypeEntity> typeEntityList = PojoMapper.INSTANCE.toTypeEntities(typeInfos);
         typeService.batchInsertIfObsent(typeEntityList);
         SubjectEntity subjectEntity = PojoMapper.INSTANCE.toSubjectEntity(subjectInfo);
-        String result = typeEntityList.stream().map(n->n.getId().toString()).collect(Collectors.joining(","));
+        String result = typeEntityList.stream().map(n -> n.getId().toString()).collect(Collectors.joining(","));
         subjectEntity.setTypes(result);
         subjectMapper.add(subjectEntity);
         return true;
@@ -105,27 +105,33 @@ public class SubjectService {
         String types = subjectEntity.getTypes();
         String[] split = types.split(",");
         List<TypeInfo> typeInfoList = new ArrayList<>();
-            for (int i = 0; i <split.length ; i++) {
-                Integer typeInfoId = Integer.parseInt(split[i]);
-                TypeInfo typeInfo = new TypeInfo();
-                typeInfo.setId(typeInfoId);
-                typeInfo.setCategory(0);
-                String typeName = typeMapper.query(typeInfoId);
-                typeInfo.setName(typeName);
-                typeInfoList.add(typeInfo);
-            }
+        for (int i = 0; i < split.length; i++) {
+            Integer typeInfoId = Integer.parseInt(split[i]);
+            TypeInfo typeInfo = new TypeInfo();
+            typeInfo.setId(typeInfoId);
+            typeInfo.setCategory(0);
+            String typeName = typeMapper.query(typeInfoId);
+            typeInfo.setName(typeName);
+            typeInfoList.add(typeInfo);
+        }
         subjectByIdInfo.setTypes(typeInfoList);
         return subjectByIdInfo;
     }
+
     @Transactional
     public Boolean update(SubjectInfo subjectInfo) {
         List<TypeInfo> typeInfos = subjectInfo.getTypes();
         List<TypeEntity> typeEntityList = PojoMapper.INSTANCE.toTypeEntities(typeInfos);
         typeService.batchInsertIfObsent(typeEntityList);
         SubjectEntity subjectEntity = PojoMapper.INSTANCE.toSubjectEntity(subjectInfo);
-        String result = typeEntityList.stream().map(n->n.getId().toString()).collect(Collectors.joining(","));
+        String result = typeEntityList.stream().map(n -> n.getId().toString()).collect(Collectors.joining(","));
         subjectEntity.setTypes(result);
         subjectMapper.update(subjectEntity);
+        return true;
+    }
+
+    public Boolean delete(List<Integer> subjectIds) {
+        subjectMapper.delete(subjectIds);
         return true;
     }
 }
