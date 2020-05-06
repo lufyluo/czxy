@@ -2,6 +2,7 @@ package com.czxy.manage.model.vo.classes;
 
 import com.czxy.manage.model.entity.BaseEntity;
 import com.czxy.manage.model.vo.site.TypeInfo;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -21,9 +22,11 @@ public class ClassInfo extends BaseEntity {
     private Integer countyId;
     @ApiModelProperty("主办方id")
     private Integer orgId;
-    @ApiModelProperty("开始时间")
+    @ApiModelProperty("开始时间yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date beginTime;
-    @ApiModelProperty("结束时间")
+    @ApiModelProperty("结束时间yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date endTime;
     private Integer arrangeId;
     private Integer recommendOrgId;

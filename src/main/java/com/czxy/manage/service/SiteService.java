@@ -16,6 +16,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.logging.log4j.core.util.ArrayUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -65,7 +66,12 @@ public class SiteService {
         PageInfo<SiteInfo> result = page.toPageInfo();
         result.setList(PojoMapper.INSTANCE.toSiteInfo(siteEntities));
         result.getList().forEach(n->{
-            n.setAddress(n.getPath().replace(",","")+n.getAddr());
+            if(StringUtils.isEmpty(n.getPath())){
+                n.setAddress(n.getAddr());
+            }else{
+                n.setAddress(n.getPath().replace(",","")+n.getAddr());
+            }
+
         });
         return result;
     }
