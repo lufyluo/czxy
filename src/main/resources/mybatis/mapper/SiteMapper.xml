@@ -10,7 +10,7 @@
      (#{name},#{types},#{contactorName},#{contactorPhone},#{topicId},#{driveTime},#{addr},#{description},#{pics},#{attachFiles},#{provinceId},#{cityId},#{countyId},#{fee})
     </insert>
     <update id="update">
-        update site set name=#{name}, types=#{types},contactor_name=#{contactorName},contactor_phone=#{contactorPhone}, topics=#{topics},
+        update site set name=#{name}, types=#{types},contactor_name=#{contactorName},contactor_phone=#{contactorPhone}, topic_id=#{topics},
         drive_time=#{driveTime},addr=#{addr},description=#{description},pics=#{pics},attach_files=#{attachFiles},province_id=#{provinceId},
         city_id=#{cityId},county_id=#{countyId},fee=#{fee},updated_time=now()
         where
@@ -24,14 +24,14 @@
     </delete>
     <select id="query" resultType="com.czxy.manage.model.entity.SiteEntity">
         select
-        id,name,types,
-        contactor_name as contactorName,
-        contactor_phone as contactorPhone,
-        topic_id as topicId,
+        s.id,s.name,s.types,
+        s.contactor_name as contactorName,
+        s.contactor_phone as contactorPhone,
+        s.topic_id as topicId,
         t.name as topicName,
-        drive_time as driveTime,addr,
+        s.drive_time as driveTime,s.addr,
         a.path,
-        description,pics,attach_files as attachFiles,province_id as provinceId,city_id as cityId,county_id as countyId,updated_time as updatedTime,created_time as  createdTime,fee
+        s.description,s.pics,s.attach_files as attachFiles,s.province_id as provinceId,s.city_id as cityId,s.county_id as countyId,s.updated_time as updatedTime,s.created_time as  createdTime,s.fee
         from
         site s
         left join type t
@@ -40,7 +40,7 @@
         on s.county_id = a.id
         where 1=1
         <if test="param != null and param != ''">
-            and (name like '%${param}%' or t.name like '%${param}%')
+            and (s.name like '%${param}%' or t.name like '%${param}%')
         </if>
         <if test="typeId != null and typeId != ''">
             and (s.types like '${typeId},%' or s.types like '%,${typeId}' or s.types like '%,${typeId},%')

@@ -14,7 +14,7 @@ public class SiteInfo extends BaseEntity {
     private String types;
     private String contactorName;
     private String contactorPhone;
-    private String topics;
+    private Integer topicId;
     private String driveTime;
     private String addr;
     private String description;

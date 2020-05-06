@@ -61,4 +61,5 @@ public class UserController {
     public PageResponse<UserInfo> pageClassLeader(PageParam<String> pageParam) {
         return PageResponse.success(userService.pageClassLeader(pageParam));
     }
+
 }
