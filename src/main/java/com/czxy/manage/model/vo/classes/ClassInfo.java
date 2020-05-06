@@ -34,9 +34,6 @@ public class ClassInfo extends BaseEntity {
     private String composition;
     @ApiModelProperty("培训周期")
     private Integer duration;
-    @ApiModelProperty("主题")
-    private List<TypeInfo> topicInfos;
-    @ApiModelProperty(hidden = true)
-    @JsonIgnore
-    private String topics;
+    @ApiModelProperty("详细地址（不包含省市县）")
+    private String addr;
 }

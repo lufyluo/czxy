@@ -59,6 +59,7 @@
         ,c.end_time as endTime
         ,c.arrange_id as arrangeId
         ,c.compositive_id as compositiveId
+        ,c.addr
         ,c.updated_time as updatedTime, c.created_time as createdTime
         ,org.name as orgName
         ,u.name as masterName

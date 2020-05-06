@@ -1,36 +1,32 @@
 package com.czxy.manage.service;
 
-import com.czxy.manage.dao.*;
+import com.czxy.manage.dao.ClassExcuteCourseMapper;
+import com.czxy.manage.dao.ClassMapper;
+import com.czxy.manage.dao.ClassMasterMapper;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
-import com.czxy.manage.model.entity.*;
-import com.czxy.manage.model.vo.classes.*;
-import com.czxy.manage.model.vo.site.TypeInfo;
+import com.czxy.manage.model.entity.ClassEntity;
+import com.czxy.manage.model.entity.ClassInformationEntity;
+import com.czxy.manage.model.entity.ClassOrgEntity;
+import com.czxy.manage.model.entity.ClassStudentEntity;
+import com.czxy.manage.model.vo.classes.ClassCreateInfo;
+import com.czxy.manage.model.vo.classes.ClassInformationInfo;
+import com.czxy.manage.model.vo.classes.ClassOrgInfo;
+import com.czxy.manage.model.vo.classes.ClassStudentInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 public class ClassService {
     @Resource
     private ClassMapper classMapper;
-    @Resource
-    private TypeMapper typeMapper;
-    @Resource
-    private AddressMapper addressMapper;
-    @Resource
-    private TypeService typeService;
     @Autowired
     private OrgService orgService;
     @Autowired
@@ -49,37 +45,6 @@ public class ClassService {
         result.setList(PojoMapper.INSTANCE.toClassOrgInfos(classEntities));
         //fetchTopics(userAccountPageInfo.getList());
         return result;
-    }
-
-    private void fetchTopics(List<ClassOrgInfo> classOrgInfos) {
-        List<TypeInfo> types = getTypes(classOrgInfos);
-        classOrgInfos.forEach(n -> {
-            if (StringUtil.isNotEmpty(n.getTopics())) {
-                List<String> idsTemp = Arrays.asList(
-                        n.getTopics().split(","));
-                n.setTopicInfos(types.stream()
-                        .filter(item -> idsTemp.contains(item.getId() + ""))
-                        .collect(Collectors.toList()));
-            }
-        });
-    }
-
-    private List<TypeInfo> getTypes(List<ClassOrgInfo> classOrgInfos) {
-        List<String> partionTopicIds = classOrgInfos.stream().map(ClassOrgInfo::getTopics).collect(Collectors.toList());
-        List<Integer> topicIds = new ArrayList<>();
-        for (String strs :
-                partionTopicIds) {
-            if (StringUtil.isNotEmpty(strs)) {
-                Arrays.asList(
-                        strs.split(",")).stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(num))).forEach(n -> {
-                    topicIds.add(n);
-                });
-
-            }
-        }
-        List<TypeEntity> typeEntities = typeMapper.queryAll(topicIds);
-
-        return PojoMapper.INSTANCE.toTypeInfos(typeEntities);
     }
 
     public Boolean delete(List<Integer> id) {
@@ -149,15 +114,5 @@ public class ClassService {
         Integer recommendOrgId = orgService.insertIfAbsentOrg(classCreateInfo.getRecommendOrgName(), classCreateInfo.getRecommendOrgId());
         classCreateInfo.setOrgId(orgId);
         classCreateInfo.setRecommendOrgId(recommendOrgId);
-        saveTopics(classCreateInfo);
-    }
-    private void saveTopics(ClassCreateInfo classCreateInfo){
-        if(classCreateInfo.getTopicInfos() ==null || classCreateInfo.getTopicInfos().size() == 0){
-            classCreateInfo.setTopics(null);
-            return;
-        }
-        List<TypeEntity> topics = PojoMapper.INSTANCE.toTypeEntities(classCreateInfo.getTopicInfos());
-        typeService.batchInsertIfObsent(topics);
-        classCreateInfo.setTopics(topics.stream().map(n->n.getId().toString()).collect(Collectors.joining(",")));
     }
 }

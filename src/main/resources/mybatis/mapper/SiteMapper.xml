@@ -33,7 +33,11 @@
         t.name as topicName,
         s.drive_time as driveTime,s.addr,
         a.path,
-        s.description,s.pics,s.attach_files as attachFiles,s.province_id as provinceId,s.city_id as cityId,s.county_id as countyId,s.updated_time as updatedTime,s.created_time as  createdTime,s.fee
+        s.description,s.pics,s.attach_files as attachFiles,
+        s.province_id as provinceId,
+        s.city_id as cityId,
+        s.county_id as countyId,
+        s.updated_time as updatedTime,s.created_time as  createdTime,s.fee
         from
         site s
         left join type t
@@ -45,7 +49,7 @@
             and (s.name like '%${param}%' or t.name like '%${param}%')
         </if>
         <if test="typeId != null and typeId != ''">
-            and (s.types like '${typeId},%' or s.types like '%,${typeId}' or s.types like '%,${typeId},%')
+            and (s.types like '${typeId},%' or s.types like '%,${typeId}' or s.types like '%,${typeId},%' or s.types = #{typeId})
         </if>
     </select>
 </mapper>

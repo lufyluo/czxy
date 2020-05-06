@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class SitePageParam<T>  extends PageParam {
+public class SitePageParam<T>  extends PageParam<T> {
     @ApiModelProperty("点位类型id")
     private String typeId;
 }

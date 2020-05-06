@@ -15,7 +15,7 @@ public interface SiteMapper {
 
     Boolean delete(@Param("siteIds") List<Integer> siteIds);
 
-    List<SiteEntity> query( SitePageParam Param);
+    List<SiteEntity> query( SitePageParam sitePageParam);
 
     Integer update(SiteEntity siteEntity);
 }

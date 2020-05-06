@@ -1,6 +1,5 @@
 package com.czxy.manage.model.vo.classes;
 
-import com.czxy.manage.model.vo.site.TypeInfo;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
