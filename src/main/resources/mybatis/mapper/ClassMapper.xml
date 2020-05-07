@@ -57,6 +57,7 @@
         ,c.begin_time as beginTime
         ,c.end_time as endTime
         ,c.arrange_id as arrangeId
+        ,c.duration
         ,c.composition_id as compositionId
         ,c.addr
         ,c.updated_time as updatedTime, c.created_time as createdTime
