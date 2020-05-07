@@ -7,12 +7,18 @@ import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.ArrangeEntity;
+import com.czxy.manage.model.PageParam;
+import com.czxy.manage.model.entity.ArrangeEntity;
 import com.czxy.manage.model.entity.ClassArrangeWithTimeEntity;
 import com.czxy.manage.model.entity.CourseArrangeEntity;
 import com.czxy.manage.model.entity.CourseDetailEntity;
+import com.czxy.manage.model.vo.arrange.ArrangeInfo;
 import com.czxy.manage.model.vo.classes.ClassArrangeInfo;
 import com.czxy.manage.model.vo.classes.CourseArrangeAddInfo;
 import com.czxy.manage.model.vo.classes.SubjectDetailInfo;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,6 +73,19 @@ public class ClassCourseService {
                 PojoMapper.INSTANCE.toCourseArrangeEntities(classCourseInfo.getCourseInfos());
         courseArrangeEntities.forEach(n->n.setArrangeId(arrangeEntity.getId()));
         courseArrangeMapper.batchInsert(courseArrangeEntities);
+        return true;
+    }
+
+    public PageInfo<ArrangeInfo> page(PageParam<String> pageParam) {
+        Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
+        List<ArrangeEntity> arrangeEntities = arrangeMapper.page(pageParam.getParam());
+        PageInfo<ArrangeInfo> result = page.toPageInfo();
+        result.setList(PojoMapper.INSTANCE.toArrangeInfos(arrangeEntities));
+        return result;
+    }
+
+    public Boolean delete(List<Integer> arrangeIds) {
+        arrangeMapper.delete(arrangeIds);
         return true;
     }
 }
