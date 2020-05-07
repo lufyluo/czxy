@@ -12,7 +12,6 @@ public class TypeInfo {
     private String name;
     @ApiModelProperty("类型id，为空则根据类型名称创建")
     private Integer id;
-    @ApiModelProperty("0-类型，1-主题")
-    @Min(value = 0,message = "类型错误")
+    @ApiModelProperty(value = "0-类型，1-主题",hidden = true)
     private Integer category;
 }

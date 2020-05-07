@@ -139,12 +139,12 @@ public class StudentService {
         return true;
     }
 
-    public void setClassLeader(Integer studentId, Integer classId) {
+    public void setClassLeader(Integer userId, Integer classId) {
         studentMapper.clearLeader(classId);
-        if(studentId == null || studentId==0)
+        if(userId == null || userId==0)
         {
             return;
         }
-        studentMapper.setLeader(studentId,classId);
+        studentMapper.setLeader(userId,classId);
     }
 }

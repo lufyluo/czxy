@@ -60,7 +60,7 @@
         ,c.composition_id as compositionId
         ,c.addr
         ,c.updated_time as updatedTime, c.created_time as createdTime
-        ,org.name as orgName
+        ,o.name as orgName
         ,u.name as masterName
         ,u1.name as leaderName
         ,s.id  as leaderId

@@ -30,5 +30,5 @@ public interface StudentMapper {
 
     Integer clearLeader(Integer classId);
 
-    Integer setLeader(Integer studentId, Integer classId);
+    Integer setLeader(Integer userId, Integer classId);
 }

@@ -11,5 +11,6 @@ public class ClassOrgInfo extends ClassInfo {
     private String recommendOrgName;
     @ApiModelProperty("带队人，带队领导")
     private String leaderName;
+    @ApiModelProperty("带队人，带队领导userId")
     private Integer leaderId;
 }
