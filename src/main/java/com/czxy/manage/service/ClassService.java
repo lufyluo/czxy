@@ -9,10 +9,7 @@ import com.czxy.manage.model.entity.ClassEntity;
 import com.czxy.manage.model.entity.ClassInformationEntity;
 import com.czxy.manage.model.entity.ClassOrgEntity;
 import com.czxy.manage.model.entity.ClassStudentEntity;
-import com.czxy.manage.model.vo.classes.ClassCreateInfo;
-import com.czxy.manage.model.vo.classes.ClassInformationInfo;
-import com.czxy.manage.model.vo.classes.ClassOrgInfo;
-import com.czxy.manage.model.vo.classes.ClassStudentInfo;
+import com.czxy.manage.model.vo.classes.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -80,8 +77,8 @@ public class ClassService {
     public Boolean create(ClassCreateInfo classCreateInfo) {
         buildData(classCreateInfo);
         ClassEntity classEntity = PojoMapper.INSTANCE.classCreateInfoToClassEntity(classCreateInfo);
-        Integer compositiveId = compositionService.insertIfAbsent(classCreateInfo.getCompositionId(),classCreateInfo.getComposition());
-        classEntity.setCompositiveId(compositiveId);
+        Integer compositionId = compositionService.insertIfAbsent(classCreateInfo.getCompositionId(),classCreateInfo.getComposition());
+        classEntity.setCompositionId(compositionId);
         classMapper.insert(classEntity);
         if(classCreateInfo.getMasterId()!=null&&classCreateInfo.getMasterId()>0){
             classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId());
@@ -101,12 +98,19 @@ public class ClassService {
     }
 
     @Transactional
-    public Boolean update(ClassCreateInfo classCreateInfo) {
+    public Boolean update(ClassUpdateInfo classCreateInfo) {
         buildData(classCreateInfo);
-        ClassEntity classEntity = PojoMapper.INSTANCE.classCreateInfoToClassEntity(classCreateInfo);
+        ClassEntity classEntity = PojoMapper.INSTANCE.classUpdateInfoToClassEntity(classCreateInfo);
         classMapper.update(classEntity);
         studentService.setClassLeader(classCreateInfo.getLeaderId(),classEntity.getId());
         return true;
+    }
+
+    private void buildData(ClassUpdateInfo classCreateInfo) {
+        Integer orgId = orgService.insertIfAbsentOrg(classCreateInfo.getOrgName(), classCreateInfo.getOrgId());
+        Integer recommendOrgId = orgService.insertIfAbsentOrg(classCreateInfo.getRecommendOrgName(), classCreateInfo.getRecommendOrgId());
+        classCreateInfo.setOrgId(orgId);
+        classCreateInfo.setRecommendOrgId(recommendOrgId);
     }
 
     private void buildData(ClassCreateInfo classCreateInfo){

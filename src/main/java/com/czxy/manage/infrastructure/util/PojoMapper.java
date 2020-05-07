@@ -12,7 +12,6 @@ import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentUpdateInfo;
 import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
-import com.czxy.manage.model.vo.subject.SubjectDetailInfo;
 import com.czxy.manage.model.vo.subject.SubjectInfo;
 import com.czxy.manage.model.vo.teacher.TeacherDetailInfo;
 import com.czxy.manage.model.vo.teacher.TeacherInfo;
@@ -62,9 +61,9 @@ public interface PojoMapper {
             @Mapping(ignore = true, target = "beginTime"),
             @Mapping(ignore = true, target = "endTime")
     })
-    CourseDetailInfo toCourseInfo(CourseDetailEntity courseEntities);
+    SubjectDetailInfo toCourseInfo(CourseDetailEntity courseEntities);
 
-    List<CourseDetailInfo> toCourseInfos(List<CourseDetailEntity> courseEntities);
+    List<SubjectDetailInfo> toCourseInfos(List<CourseDetailEntity> courseEntities);
 
     ClassInfo toClassInfo(ClassEntity classEntity);
 
@@ -146,9 +145,9 @@ public interface PojoMapper {
 
     List<UserAccountInfo> toUserAccountInfos(List<UserAccountInfo> userAccountInfos);
 
-    SubjectDetailInfo toSubjectDetaiInfo(SubjectDetailEntity subjectDetailEntity);
+    com.czxy.manage.model.vo.subject.SubjectDetailInfo toSubjectDetaiInfo(SubjectDetailEntity subjectDetailEntity);
 
-    List<SubjectDetailInfo> toSubjectDetaiInfos(List<SubjectDetailEntity> subjectDetailEntities);
+    List<com.czxy.manage.model.vo.subject.SubjectDetailInfo> toSubjectDetaiInfos(List<SubjectDetailEntity> subjectDetailEntities);
 
     @Mappings({@Mapping(ignore = true, target = "types")})
     SubjectEntity toSubjectEntity(SubjectInfo subjectInfo);
@@ -156,4 +155,5 @@ public interface PojoMapper {
     @Mappings({@Mapping(ignore = true, target = "types")})
     SubjectByIdInfo toSubjectByIdInfo(SubjectEntity subjectEntity);
 
+    ClassEntity classUpdateInfoToClassEntity(ClassUpdateInfo classCreateInfo);
 }

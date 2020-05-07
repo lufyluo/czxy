@@ -3,7 +3,6 @@ package com.czxy.manage.model.vo.classes;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Date;
 
 @Data
 public class CourseInfo {

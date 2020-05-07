@@ -44,9 +44,8 @@ public class TypeService {
         return true;
     }
 
-    public List<TypeInfo> get(String key) {
-        int typeCategory = 0;
-        List<TypeEntity> typeEntities = typeMapper.queryByKey(key,typeCategory);
+    public List<TypeInfo> get(String key,Integer category) {
+        List<TypeEntity> typeEntities = typeMapper.queryByKey(key,category);
         return PojoMapper.INSTANCE.toTypeInfos(typeEntities);
     }
 }

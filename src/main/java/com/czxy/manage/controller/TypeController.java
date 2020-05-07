@@ -21,7 +21,13 @@ public class TypeController {
     public TypeService typeService;
     @GetMapping
     @ApiOperation("根据类型关键字模糊搜索搜索，可不传")
-    public BaseResponse<List<TypeInfo>> get(String key){
-        return ResponseUtil.success(typeService.get(key));
+    public BaseResponse<List<TypeInfo>> getType(String key){
+        return ResponseUtil.success(typeService.get(key,0));
+    }
+
+    @GetMapping("/topic")
+    @ApiOperation("根据主题关键字模糊搜索搜索，可不传")
+    public BaseResponse<List<TypeInfo>> getTopic(String key){
+        return ResponseUtil.success(typeService.get(key,1));
     }
 }

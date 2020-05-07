@@ -16,11 +16,11 @@
     <insert id="insert" useGeneratedKeys="true"
             keyProperty="id">
         insert into class(
-        name,province_id,city_id,county_id,org_id,arrange_id,recommend_org_id,compositive_id,
-        begin_time,end_time,duration,topics,addr
+        name,province_id,city_id,county_id,org_id,arrange_id,recommend_org_id,composition_id,
+        begin_time,end_time,duration,addr
         )values(
-        #{name},#{provinceId},#{cityId},#{countyId},#{orgId},#{arrangeId},#{recommendOrgId},#{compositiveId},
-        #{beginTime},#{endTime},#{duration},#{topics},#{addr}
+        #{name},#{provinceId},#{cityId},#{countyId},#{orgId},#{arrangeId},#{recommendOrgId},#{compositionId},
+        #{beginTime},#{endTime},#{duration},#{addr}
         )
     </insert>
     <update id="update">
@@ -36,8 +36,7 @@
         ,arrange_id = #{arrangeId}
         ,recommend_org_id = #{recommendOrgId}
         ,duration = #{duration}
-        ,compositive_id = #{compositiveId}
-        ,topics = #{topics}
+        ,composition_id = #{compositionId}
         ,updated_time = now()
         where id =#{id}
     </update>
@@ -58,7 +57,7 @@
         ,c.begin_time as beginTime
         ,c.end_time as endTime
         ,c.arrange_id as arrangeId
-        ,c.compositive_id as compositiveId
+        ,c.composition_id as compositionId
         ,c.addr
         ,c.updated_time as updatedTime, c.created_time as createdTime
         ,org.name as orgName
@@ -96,7 +95,6 @@
         c.composition_id as compositionId,
         c.updated_time as updatedTime,
         c.created_time as createdTime,
-        c.topics,
         c.appellation,
         c.duration as duration,
         o.name as orgName,

@@ -6,11 +6,12 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ClassArrangeInfo {
+public class CourseArrangeAddInfo {
     private Integer id;
     @ApiModelProperty("课程表名称")
     private String name;
     @ApiModelProperty("课程描述")
     private String description;
-    private List<SubjectDetailInfo> courseInfos;
+    @ApiModelProperty("课程描述")
+    List<CourseInfo> courseArrangeInfoList;
 }

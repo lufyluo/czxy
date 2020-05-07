@@ -8,8 +8,8 @@ import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.ClassArrangeWithTimeEntity;
 import com.czxy.manage.model.entity.CourseDetailEntity;
 import com.czxy.manage.model.vo.classes.ClassArrangeInfo;
-import com.czxy.manage.model.vo.classes.ClassCreateInfo;
-import com.czxy.manage.model.vo.classes.CourseDetailInfo;
+import com.czxy.manage.model.vo.classes.CourseArrangeAddInfo;
+import com.czxy.manage.model.vo.classes.SubjectDetailInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,7 +31,7 @@ public class ClassCourseService {
         }
         ClassArrangeInfo classArrangeInfo = PojoMapper.INSTANCE.toClassArrangeInfo(classArrangeWithTimeEntity);
         List<CourseDetailEntity> courseEntities = courseMapper.get(classArrangeWithTimeEntity.getId());
-        List<CourseDetailInfo> courseInfos = PojoMapper.INSTANCE.toCourseInfos(courseEntities);
+        List<SubjectDetailInfo> courseInfos = PojoMapper.INSTANCE.toCourseInfos(courseEntities);
         Calendar calendar = Calendar.getInstance();
         Long dayMiliSeconds = 86400000L;
         calendar.setTime(classArrangeWithTimeEntity.getBeginTime());
@@ -50,7 +50,7 @@ public class ClassCourseService {
         return classArrangeInfo;
     }
 
-    public Boolean add(ClassCreateInfo classCourseInfo) {
+    public Boolean add(CourseArrangeAddInfo classCourseInfo) {
         return null;
     }
 }

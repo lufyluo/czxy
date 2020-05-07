@@ -28,7 +28,9 @@ public class ClassInfo extends BaseEntity {
     @ApiModelProperty("结束时间yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date endTime;
+    @ApiModelProperty("课表id")
     private Integer arrangeId;
+    @ApiModelProperty("推荐单位id")
     private Integer recommendOrgId;
     @ApiModelProperty("培训对象（班级成分）")
     private String composition;

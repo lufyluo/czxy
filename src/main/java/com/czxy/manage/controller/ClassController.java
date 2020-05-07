@@ -4,10 +4,7 @@ import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
-import com.czxy.manage.model.vo.classes.ClassCreateInfo;
-import com.czxy.manage.model.vo.classes.ClassInformationInfo;
-import com.czxy.manage.model.vo.classes.ClassOrgInfo;
-import com.czxy.manage.model.vo.classes.ClassStudentInfo;
+import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.student.StudentPageParam;
 import com.czxy.manage.service.ClassService;
 import com.github.pagehelper.PageInfo;
@@ -58,7 +55,7 @@ public class ClassController {
     }
     @PutMapping
     @ApiOperation(value = "编辑班级", notes = "编辑班级")
-    public BaseResponse<Boolean> update(@RequestBody ClassCreateInfo classCreateInfo) {
-        return ResponseUtil.success(classService.update(classCreateInfo));
+    public BaseResponse<Boolean> update(@RequestBody ClassUpdateInfo classUpdateInfo) {
+        return ResponseUtil.success(classService.update(classUpdateInfo));
     }
 }
