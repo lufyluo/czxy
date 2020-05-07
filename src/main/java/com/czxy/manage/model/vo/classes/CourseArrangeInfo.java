@@ -1,10 +1,7 @@
 package com.czxy.manage.model.vo.classes;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 public class CourseArrangeInfo {
@@ -14,10 +11,8 @@ public class CourseArrangeInfo {
     private Byte category;
     @ApiModelProperty("该课所在课程表当顺序")
     private Integer offset;
-    @ApiModelProperty("开始时间yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date beginTime;
-    @ApiModelProperty("结束时间yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date endTime;
+    @ApiModelProperty("开始时间Timestamp 精确到秒")
+    private Long beginTime;
+    @ApiModelProperty("结束时间Timestamp 精确到秒")
+    private Long endTime;
 }
