@@ -7,6 +7,10 @@
         ,description
         updated_time as updatedTime, created_time as createdTime
     </sql>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into arrange (name, description)
+        values (#{name},#{description})
+    </insert>
     <select id="get" resultType="com.czxy.manage.model.entity.ClassArrangeWithTimeEntity">
         select
         a.id,

@@ -51,5 +51,6 @@
         <if test="typeId != null and typeId != ''">
             and (s.types like '${typeId},%' or s.types like '%,${typeId}' or s.types like '%,${typeId},%' or s.types = #{typeId})
         </if>
+        order  by id desc
     </select>
 </mapper>

@@ -1,16 +1,20 @@
 package com.czxy.manage.service;
 
 import com.czxy.manage.dao.ArrangeMapper;
+import com.czxy.manage.dao.CourseArrangeMapper;
 import com.czxy.manage.dao.CourseMapper;
 import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
+import com.czxy.manage.model.entity.ArrangeEntity;
 import com.czxy.manage.model.entity.ClassArrangeWithTimeEntity;
+import com.czxy.manage.model.entity.CourseArrangeEntity;
 import com.czxy.manage.model.entity.CourseDetailEntity;
 import com.czxy.manage.model.vo.classes.ClassArrangeInfo;
 import com.czxy.manage.model.vo.classes.CourseArrangeAddInfo;
 import com.czxy.manage.model.vo.classes.SubjectDetailInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Calendar;
@@ -23,6 +27,8 @@ public class ClassCourseService {
     ArrangeMapper arrangeMapper;
     @Resource
     private CourseMapper courseMapper;
+    @Resource
+    private CourseArrangeMapper courseArrangeMapper;
 
     public ClassArrangeInfo get(Integer classId) {
         ClassArrangeWithTimeEntity classArrangeWithTimeEntity = arrangeMapper.get(classId);
@@ -50,7 +56,17 @@ public class ClassCourseService {
         return classArrangeInfo;
     }
 
+    @Transactional
     public Boolean add(CourseArrangeAddInfo classCourseInfo) {
-        return null;
+        ArrangeEntity arrangeEntity = PojoMapper.INSTANCE.toArrangeEntity(classCourseInfo);
+        arrangeMapper.insert(arrangeEntity);
+        if(classCourseInfo.getCourseInfos() ==null ||classCourseInfo.getCourseInfos().size() ==0){
+            return true;
+        }
+        List<CourseArrangeEntity> courseArrangeEntities =
+                PojoMapper.INSTANCE.toCourseArrangeEntities(classCourseInfo.getCourseInfos());
+        courseArrangeEntities.forEach(n->n.setArrangeId(arrangeEntity.getId()));
+        courseArrangeMapper.batchInsert(courseArrangeEntities);
+        return true;
     }
 }

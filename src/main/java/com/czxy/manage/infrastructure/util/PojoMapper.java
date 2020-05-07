@@ -156,4 +156,10 @@ public interface PojoMapper {
     SubjectByIdInfo toSubjectByIdInfo(SubjectEntity subjectEntity);
 
     ClassEntity classUpdateInfoToClassEntity(ClassUpdateInfo classCreateInfo);
+
+    ArrangeEntity toArrangeEntity(CourseArrangeAddInfo classCourseInfo);
+
+    CourseArrangeEntity toCourseArrangeEntity(CourseArrangeInfo classCourseInfo);
+
+    List<CourseArrangeEntity> toCourseArrangeEntities(List<CourseArrangeInfo> courseInfos);
 }
