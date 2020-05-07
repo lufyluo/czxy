@@ -7,6 +7,11 @@
         ,description
         updated_time as updatedTime, created_time as createdTime
     </sql>
+    <delete id="delete">
+        delete from arrange where id in <foreach collection="arrangeIds" item="item" index="index"
+                                                 open="(" separator="," close=")">#{item}
+                                        </foreach>
+    </delete>
     <select id="get" resultType="com.czxy.manage.model.entity.ClassArrangeWithTimeEntity">
         select
         a.id,
@@ -21,5 +26,16 @@
         left join class c
         on arra.class_id = c.id
         where arra.class_id = #{classId}
+    </select>
+    <select id="page" resultType="com.czxy.manage.model.entity.ArrangeEntity">
+     select
+     id, name, description, updated_time as updatedTime, created_time as createdTime
+     from
+     arrange
+     where 1=1
+        <if test="param != null and param != ''">
+            and (name like '%${param}%')
+        </if>
+        order by id DESC
     </select>
 </mapper>

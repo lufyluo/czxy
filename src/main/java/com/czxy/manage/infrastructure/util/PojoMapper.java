@@ -4,6 +4,7 @@ import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.AddressInfo;
 import com.czxy.manage.model.vo.CompositionInfo;
 import com.czxy.manage.model.vo.OrgInfo;
+import com.czxy.manage.model.vo.arrange.ArrangeInfo;
 import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
 import com.czxy.manage.model.vo.site.SiteInfo;
@@ -156,4 +157,8 @@ public interface PojoMapper {
     SubjectByIdInfo toSubjectByIdInfo(SubjectEntity subjectEntity);
 
     ClassEntity classUpdateInfoToClassEntity(ClassUpdateInfo classCreateInfo);
+
+    ArrangeInfo toArrangeInfo(ArrangeEntity arrangeEntity);
+
+    List<ArrangeInfo> toArrangeInfos(List<ArrangeEntity> arrangeEntities);
 }
