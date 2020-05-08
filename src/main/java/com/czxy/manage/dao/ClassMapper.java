@@ -25,4 +25,6 @@ public interface ClassMapper {
     Integer insert(ClassEntity classEntity);
 
     Integer update(ClassEntity classEntity);
+
+    Integer queryByName(String className);
 }

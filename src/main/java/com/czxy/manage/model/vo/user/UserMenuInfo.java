@@ -14,6 +14,7 @@ public class UserMenuInfo extends Ancestors {
     private String code;
     @ApiModelProperty("是否有权限")
     private Boolean permission;
+    private String url;
     private Date updatedTime;
     private Date createdTime;
 }
