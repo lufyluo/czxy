@@ -15,7 +15,7 @@
     <insert id="batchInsert" parameterType="com.czxy.manage.model.entity.StudentEntity" useGeneratedKeys="true"
             keyProperty="id">
         insert into
-        student (sign_flag, class_id, user_id, type, org_id,updated_time, created_time)
+        student (sign_flag, class_id, user_id, type, org_id)
         VALUES
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             0,#{item.classId},#{item.userId},#{item.type},#{item.orgId}
@@ -61,7 +61,7 @@
     </select>
 
     <update id="sign">
-        update student set sign_flag = 1 and updated_time=now() where id in
+        update student set sign_flag = 1 , updated_time=now() where id in
         <foreach collection="studentIds" item="item" index="index"
                  open="(" separator="," close=")">#{item}
         </foreach>

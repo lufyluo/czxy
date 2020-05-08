@@ -113,7 +113,7 @@ public class StudentService {
 
     @Transactional
     public Boolean batchInsert(List<StudentAddInfo> studentAddInfos) {
-        List<UserEntity> userEntity = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos);
+       List<UserEntity> userEntity = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos);
         userMapper.batchInsert(userEntity);
         studentAddInfos.forEach(n->{
             Optional<UserEntity> user = userEntity.stream().filter(item->item.getIdCard().equals(n.getIdCard())).findFirst();

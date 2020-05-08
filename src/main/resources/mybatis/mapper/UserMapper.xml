@@ -32,10 +32,10 @@
         politics)
         values
         <foreach collection="list" item="item" open="(" close=")" separator=",">
-            #{name}, #{idCard}, #{phon}, #{gender},
-            #{position}, #{age}, #{birthday}, #{category},
-             #{wechatId}, #{orgId}, #{nation}, #{nativePlace},
-             #{education},#{politics}
+            #{item.name}, #{item.idCard}, #{item.phone}, #{item.gender},
+            #{item.position}, #{item.age}, #{item.birthday}, #{item.category},
+             #{item.wechatId}, #{item.orgId}, #{item.nation}, #{item.nativePlace},
+             #{item.education},#{item.politics}
         </foreach>
 
     </insert>
