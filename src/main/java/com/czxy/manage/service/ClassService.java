@@ -57,7 +57,11 @@ public class ClassService {
 
     public PageInfo<ClassStudentInfo> pageStudent(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
-        List<ClassStudentEntity> classStudentEntities = classMapper.queryAllStudent(Integer.valueOf(pageParam.getParam()));
+        Integer classId = null;
+        if (pageParam.getParam()!=null&&pageParam.getParam()!=""){
+            classId = Integer.valueOf(pageParam.getParam());
+        }
+            List<ClassStudentEntity> classStudentEntities = classMapper.queryAllStudent(classId);
         for (int i = 0; i < classStudentEntities.size(); i++) {
             ClassStudentEntity classStudentEntity = classStudentEntities.get(i);
             if (classStudentEntity.getStudentType() == 0) {

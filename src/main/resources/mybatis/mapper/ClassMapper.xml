@@ -139,10 +139,12 @@
         u.nativeplace as userNativeplace,
         s.type as StudentType,
         s.id as studentId
-        from user u
-        left join student s
+        from  student s
+        left join user u
         on s.user_id = u.id
-        where s.class_id = #{classId}
+        <if test="classId != null">
+            where s.class_id = #{classId}
+        </if>
         order by s.id desc
     </select>
 </mapper>
