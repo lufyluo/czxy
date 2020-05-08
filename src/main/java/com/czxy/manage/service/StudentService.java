@@ -1,8 +1,11 @@
 package com.czxy.manage.service;
 
+import com.czxy.manage.dao.ClassMapper;
 import com.czxy.manage.dao.OrgMapper;
 import com.czxy.manage.dao.StudentMapper;
 import com.czxy.manage.dao.UserMapper;
+import com.czxy.manage.infrastructure.gloable.ManageException;
+import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
@@ -29,8 +32,11 @@ public class StudentService {
     private StudentMapper studentMapper;
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private ClassMapper classMapper;
     @Autowired
     private OrgService orgService;
+
 
     public PageInfo<StudentDetailInfo> page(StudentPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -45,8 +51,8 @@ public class StudentService {
     private List<StudentDetailInfo> fillOtherProperty(List<StudentDetailInfo> toStudentDetailInfos) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         toStudentDetailInfos.forEach(n -> {
-            n.setSign(ObjectUtils.nullSafeEquals(n.getSignFlag(),1));
-            if(n.getBeginTime()!=null&&n.getEndTime()!=null){
+            n.setSign(ObjectUtils.nullSafeEquals(n.getSignFlag(), 1));
+            if (n.getBeginTime() != null && n.getEndTime() != null) {
                 n.setPeriod(sdf.format(n.getBeginTime()) + sdf.format(n.getEndTime()));
             }
 
@@ -56,7 +62,7 @@ public class StudentService {
         return toStudentDetailInfos;
     }
 
-    private String getGenderDesc(Integer gender){
+    private String getGenderDesc(Integer gender) {
         String genderDesc = "";
         switch (gender) {
             case 0:
@@ -101,7 +107,7 @@ public class StudentService {
 
     @Transactional
     public Boolean add(StudentAddInfo studentAddInfo) {
-        Integer orgId = orgService.insertIfAbsentOrg(studentAddInfo.getOrgName(),studentAddInfo.getOrgId());
+        Integer orgId = orgService.insertIfAbsentOrg(studentAddInfo.getOrgName(), studentAddInfo.getOrgId());
         studentAddInfo.setOrgId(orgId);
         UserEntity userEntity = PojoMapper.INSTANCE.studentAddToUserEntity(studentAddInfo);
         userMapper.insert(userEntity);
@@ -113,24 +119,35 @@ public class StudentService {
 
     @Transactional
     public Boolean batchInsert(List<StudentAddInfo> studentAddInfos) {
-       List<UserEntity> userEntity = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos);
+        List<UserEntity> userEntity = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos);
         userMapper.batchInsert(userEntity);
-        studentAddInfos.forEach(n->{
-            Optional<UserEntity> user = userEntity.stream().filter(item->item.getIdCard().equals(n.getIdCard())).findFirst();
-            if(user.isPresent()){
+        studentAddInfos.forEach(n -> {
+            Optional<UserEntity> user = userEntity.stream().filter(item -> item.getIdCard().equals(n.getIdCard())).findFirst();
+            if (user.isPresent()) {
                 n.setUserId(user.get().getId());
             }
         });
+        fillClassId(studentAddInfos);
         List<StudentEntity> studentEntities = PojoMapper.INSTANCE.toStudentEntities(studentAddInfos);
         studentMapper.batchInsert(studentEntities);
         return true;
     }
 
+    private void fillClassId(List<StudentAddInfo> studentAddInfos) {
+        if (studentAddInfos.get(0).getClassId() == null && !StringUtils.isEmpty(studentAddInfos.get(0).getClassName())) {
+            if (studentAddInfos.stream().map(StudentAddInfo::getClassName).distinct().count() > 1) {
+                throw new ManageException(ResponseStatus.FAILURE, "一个批量导入不能导入多个班级学生");
+            }
+            Integer classId = classMapper.queryByName(studentAddInfos.get(0).getClassName());
+            studentAddInfos.forEach(n->n.setClassId(classId));
+        }
+    }
+
     @Transactional
     public Boolean update(StudentUpdateInfo studentUpdateInfo) {
-        Integer orgId = orgService.insertIfAbsentOrg(studentUpdateInfo.getOrgName(),studentUpdateInfo.getOrgId());
+        Integer orgId = orgService.insertIfAbsentOrg(studentUpdateInfo.getOrgName(), studentUpdateInfo.getOrgId());
         studentUpdateInfo.setOrgId(orgId);
-        StudentEntity studentEntity=PojoMapper.INSTANCE.toStudentEntityByStudentUpadate(studentUpdateInfo);
+        StudentEntity studentEntity = PojoMapper.INSTANCE.toStudentEntityByStudentUpadate(studentUpdateInfo);
         studentMapper.update(studentEntity);
         StudentUpdateEntity studentUpdateEntity = studentMapper.queryByStudentId(studentEntity);
         UserUpdateEntity userUpdateEntity = PojoMapper.INSTANCE.studentUpdateToUserUpdateEntity(studentUpdateInfo);
@@ -141,10 +158,9 @@ public class StudentService {
 
     public void setClassLeader(Integer userId, Integer classId) {
         studentMapper.clearLeader(classId);
-        if(userId == null || userId==0)
-        {
+        if (userId == null || userId == 0) {
             return;
         }
-        studentMapper.setLeader(userId,classId);
+        studentMapper.setLeader(userId, classId);
     }
 }

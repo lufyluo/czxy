@@ -48,7 +48,7 @@
 
     <select id="queryAll" resultType="com.czxy.manage.model.entity.ClassOrgEntity">
         select
-         c.id
+        c.id
         ,c.name
         ,c.province_id as provinceId
         ,c.city_id as cityId
@@ -57,17 +57,22 @@
         ,c.begin_time as beginTime
         ,c.end_time as endTime
         ,c.arrange_id as arrangeId
-        ,c.duration
         ,c.composition_id as compositionId
+        ,c.duration
+        ,com.name as composition
+        ,c.recommend_org_id as recommendOrgId
+        ,o1.name as recommendOrgName
         ,c.addr
         ,c.updated_time as updatedTime, c.created_time as createdTime
         ,o.name as orgName
         ,u.name as masterName
         ,u1.name as leaderName
-        ,s.id  as leaderId
+        ,s.user_id  as leaderId
         from class c
         left join org o
         on c.org_id = o.id
+        left join org o1
+        on c.recommend_org_id = o1.id
         left join class_master cm
         on c.id = cm.class_id and cm.type = 0
         left join user u
@@ -76,10 +81,12 @@
         on s.class_id = c.id and s.type = 8
         left join user u1
         on s.user_id = u1.id
+        left join composition com
+        on c.composition_id = com.id
         <if test="param != null and param != ''">
-            where name like '%${param}%' or org_name like '%${param}%' or u.name like '%${param}%'
+            where c.name like '%${param}%' or o.name like '%${param}%' or u.name like '%${param}%'
         </if>
-        order by name,orgName,masterName
+        order by id desc
     </select>
     <select id="query" resultType="com.czxy.manage.model.entity.ClassInformationEntity">
         select
@@ -144,5 +151,8 @@
         on s.user_id = u.id
         where s.class_id = #{classId}
         order by s.id desc
+    </select>
+    <select id="queryByName" resultType="java.lang.Integer">
+        select id from class where name = #{name} order by id desc limit 1
     </select>
 </mapper>

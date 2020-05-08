@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.MenuMapper">
     <sql id="base_column">
-        id,parent_id as parentId,name,code,updated_time as updatedTime,created_time as createdTime
+        id,parent_id as parentId,name,code,url,updated_time as updatedTime,created_time as createdTime
     </sql>
     <select id="get" resultType="com.czxy.manage.model.entity.MenusEntity">
         select <include refid="base_column"/> from menus

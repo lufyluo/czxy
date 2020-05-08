@@ -5,6 +5,7 @@ import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.arrange.ArrangeInfo;
+import com.czxy.manage.model.vo.classes.CourseArrangeUpdateInfo;
 import com.czxy.manage.model.vo.classes.CourseArrangeAddInfo;
 import com.czxy.manage.model.vo.classes.ClassArrangeInfo;
 import com.czxy.manage.service.ClassCourseService;
@@ -22,13 +23,20 @@ public class CourseArrangeController {
     @Autowired
     ClassCourseService classCourseService;
     @GetMapping("/{classId}")
+    @ApiOperation("根据班级获取课表")
     public BaseResponse<ClassArrangeInfo> get(@PathVariable Integer classId){
         return ResponseUtil.success(classCourseService.get(classId));
     }
 
     @PostMapping
+    @ApiOperation("添加课表")
     public BaseResponse<Boolean> add(@RequestBody CourseArrangeAddInfo courseArrangeAddInfo){
         return ResponseUtil.success(classCourseService.add(courseArrangeAddInfo));
+    }
+    @PutMapping
+    @ApiOperation("编辑课表")
+    public BaseResponse<Boolean> update(@RequestBody CourseArrangeUpdateInfo courseArrangeUpdateInfo){
+        return ResponseUtil.success(classCourseService.update(courseArrangeUpdateInfo));
     }
     @GetMapping("/page")
     @ApiOperation("分页获取课表")

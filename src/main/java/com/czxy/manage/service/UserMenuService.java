@@ -28,8 +28,11 @@ public class UserMenuService {
         List<MenusEntity> menusEntities = menuMapper.get();
         List<UserMenuInfo> userMenuInfos = PojoMapper.INSTANCE.toUserMenuInfos(menusEntities);
         UserMenuEntity userMenuEntities = userMenuMapper.getByUserId(userId);
-        if (userMenuEntities == null ) {
-            return userMenuInfos;
+        if (userMenuEntities == null) {
+            userMenuInfos.forEach(n -> {
+                n.setPermission(false);
+            });
+            return MaplainUtil.toHierarchy(userMenuInfos);
         }
         List<String> codes = Arrays.asList(userMenuEntities.getMenuCodes().split(","));
         userMenuInfos.forEach(n -> {
@@ -42,7 +45,7 @@ public class UserMenuService {
     public Boolean save(UserMenuSaveInfo userMenuSaveInfo) {
         userMenuMapper.delete(userMenuSaveInfo.getUserId());
         userMenuMapper.insert(userMenuSaveInfo.getUserId(),
-                StringUtils.collectionToDelimitedString(userMenuSaveInfo.getCodes(),",") );
+                StringUtils.collectionToDelimitedString(userMenuSaveInfo.getCodes(), ","));
         return true;
     }
 }

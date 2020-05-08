@@ -24,7 +24,7 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping("/page")
-    @ApiOperation(value = "分页获取", notes = "分页获取班级")
+    @ApiOperation(value = "分页获取", notes = "分页获取")
     public PageResponse<StudentDetailInfo> page(StudentPageParam<String> pageParam) {
         return PageResponse.success(studentService.page(pageParam));
     }

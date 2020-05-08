@@ -86,6 +86,7 @@ public class ClassService {
         if (classCreateInfo.getStudentAddInfos() != null && classCreateInfo.getStudentAddInfos().size() > 0) {
             classCreateInfo.getStudentAddInfos().forEach(n -> {
                 n.setOrgId(classCreateInfo.getOrgId());
+                n.setClassId(classEntity.getId());
             });
             studentService.batchInsert(classCreateInfo.getStudentAddInfos());
         }

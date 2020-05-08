@@ -29,7 +29,7 @@
     </delete>
     <select id="query" resultType="com.czxy.manage.model.entity.StudentDetailEntity">
         select
-        s.id as id, sign_flag as signFlag, user_id as userId,class_id  as classId,type,
+        s.id as id ,sign_flag as signFlag, user_id as userId,class_id  as classId,type,
         u.id as userId, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
         u.education,
         u.wechat_id as wechatId,

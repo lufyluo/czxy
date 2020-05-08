@@ -15,6 +15,7 @@ import com.czxy.manage.model.entity.CourseDetailEntity;
 import com.czxy.manage.model.vo.arrange.ArrangeInfo;
 import com.czxy.manage.model.vo.classes.ClassArrangeInfo;
 import com.czxy.manage.model.vo.classes.CourseArrangeAddInfo;
+import com.czxy.manage.model.vo.classes.CourseArrangeUpdateInfo;
 import com.czxy.manage.model.vo.classes.SubjectDetailInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -87,5 +88,9 @@ public class ClassCourseService {
     public Boolean delete(List<Integer> arrangeIds) {
         arrangeMapper.delete(arrangeIds);
         return true;
+    }
+
+    public Boolean update(CourseArrangeUpdateInfo courseArrangeUpdateInfo) {
+        return null;
     }
 }
