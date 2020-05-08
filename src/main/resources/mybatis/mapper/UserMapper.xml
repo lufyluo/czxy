@@ -31,11 +31,11 @@
         nation,nativeplace,education,
         politics)
         values
-        <foreach collection="list" item="item" open="(" close=")" separator=",">
-            #{item.name}, #{item.idCard}, #{item.phone}, #{item.gender},
+        <foreach collection="list" item="item" separator=",">
+            (#{item.name}, #{item.idCard}, #{item.phone}, #{item.gender},
             #{item.position}, #{item.age}, #{item.birthday}, #{item.category},
              #{item.wechatId}, #{item.orgId}, #{item.nation}, #{item.nativePlace},
-             #{item.education},#{item.politics}
+             #{item.education},#{item.politics})
         </foreach>
 
     </insert>

@@ -17,8 +17,8 @@
         insert into
         student (sign_flag, class_id, user_id, type, org_id)
         VALUES
-        <foreach collection="list" item="item" open="(" close=")" separator=",">
-            0,#{item.classId},#{item.userId},#{item.type},#{item.orgId}
+        <foreach collection="list" item="item" separator=",">
+            (0,#{item.classId},#{item.userId},#{item.type},#{item.orgId})
         </foreach>
     </insert>
     <delete id="delete">
