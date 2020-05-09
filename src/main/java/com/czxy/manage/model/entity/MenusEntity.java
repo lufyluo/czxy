@@ -9,4 +9,5 @@ public class MenusEntity extends BaseEntity {
     private String name;
     private String code;
     private String url;
+    private String icon;
 }
