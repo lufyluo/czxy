@@ -33,6 +33,8 @@ public class UserService {
     private UserMenuService userMenuService;
     @Autowired
     OrgService orgService;
+    @Autowired
+    private AccountService accountService;
 
     @Transactional
     public Boolean add(UserCreateInfo userInfo) {
@@ -41,6 +43,7 @@ public class UserService {
         userMapper.insert(userEntity);
         AccountEntity accountEntity = PojoMapper.INSTANCE.toAccountEntity(userInfo);
         accountEntity.setUserId(userEntity.getId());
+        accountEntity.setPassword(accountService.decodePassword(accountEntity.getPassword(),null));
         accountMapper.insert(accountEntity);
         return true;
     }

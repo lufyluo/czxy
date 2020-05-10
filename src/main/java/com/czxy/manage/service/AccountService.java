@@ -60,7 +60,7 @@ public class AccountService {
         throw new ManageException(ResponseStatus.LOGINERROR);
     }
 
-    private String decodePassword(String enodePassword, String timestamp) {
+    public String decodePassword(String enodePassword, String timestamp) {
         String base64Decode = new String(Base64.getDecoder().decode(enodePassword));
         StringTokenizer stringTokenizer = new StringTokenizer(base64Decode, ";");
         String result = stringTokenizer.nextToken();
