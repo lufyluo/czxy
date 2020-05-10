@@ -30,12 +30,15 @@
         on s.teacher_id=t.id
         left join user u
         on t.user_id=u.id
-        where category=#{category}
+        where 1=1
         <if test="param != null and param != ''">
-            and (s.name like '%${param}%' or t.name like '%${param}%')
+            and (s.name like '%${param}%' or u.name like '%${param}%')
         </if>
         <if test="typeId != null and typeId != ''">
-            and (t.types like '${typeId},%' or t.types like '%,${typeId}' or t.types like '%,${typeId},%')
+            and (s.types like '${typeId},%' or s.types like '%,${typeId}' or s.types like '%,${typeId},%')
+        </if>
+        <if test="category != null and category != ''">
+            and s.category=#{category}
         </if>
     </select>
     <select id="queryById" resultType="com.czxy.manage.model.entity.SubjectEntity">

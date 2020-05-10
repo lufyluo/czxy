@@ -60,28 +60,32 @@ public class SubjectService {
                 Arrays.stream(types.split(",")).forEach(n -> typeIds.add(Integer.parseInt(n)));
             }
         }
-        List<FileEntity> fileEntities = fileMapper.query(fileIds);
-        List<TypeEntity> typeEntities = typeMapper.queryAll(typeIds);
-        subjectDetailInfos.forEach(n -> {
-            if (StringUtil.isNotEmpty(n.getFiles())) {
-                List<String> idsTemp = Arrays.asList(
-                        n.getFiles().split(","));
-                n.setFilesName(fileEntities.stream()
-                        .filter(item -> idsTemp.contains(item.getId() + ""))
-                        .map(FileEntity::getName)
-                        .collect(Collectors.joining(",")));
-            }
-        });
-        subjectDetailInfos.forEach(n -> {
-            if (StringUtil.isNotEmpty(n.getTypes())) {
-                List<String> idsTemp = Arrays.asList(
-                        n.getTypes().split(","));
-                n.setTypeName(typeEntities.stream()
-                        .filter(item -> idsTemp.contains(item.getId() + ""))
-                        .map(TypeEntity::getName)
-                        .collect(Collectors.joining(",")));
-            }
-        });
+        if (!fileIds.isEmpty()) {
+            List<FileEntity> fileEntities = fileMapper.query(fileIds);
+            subjectDetailInfos.forEach(n -> {
+                if (StringUtil.isNotEmpty(n.getFiles())) {
+                    List<String> idsTemp = Arrays.asList(
+                            n.getFiles().split(","));
+                    n.setFilesName(fileEntities.stream()
+                            .filter(item -> idsTemp.contains(item.getId() + ""))
+                            .map(FileEntity::getName)
+                            .collect(Collectors.joining(",")));
+                }
+            });
+        }
+        if (!typeIds.isEmpty()) {
+            List<TypeEntity> typeEntities = typeMapper.queryAll(typeIds);
+            subjectDetailInfos.forEach(n -> {
+                if (StringUtil.isNotEmpty(n.getTypes())) {
+                    List<String> idsTemp = Arrays.asList(
+                            n.getTypes().split(","));
+                    n.setTypeName(typeEntities.stream()
+                            .filter(item -> idsTemp.contains(item.getId() + ""))
+                            .map(TypeEntity::getName)
+                            .collect(Collectors.joining(",")));
+                }
+            });
+        }
         result.setList(subjectDetailInfos);
         return result;
     }

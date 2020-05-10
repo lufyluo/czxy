@@ -9,6 +9,7 @@
         file
         where id in <foreach collection="fileIds" item="item" index="index"
                              open="(" separator="," close=")">#{item}
-                    </foreach>
+    </foreach>
+
     </select>
 </mapper>
