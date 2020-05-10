@@ -33,4 +33,8 @@ public interface UserMapper {
     List<UserEntity> queryMaster(String param);
 
     List<UserEntity> queryClassLeader(String param);
+
+    Integer queryId(String phone);
+
+    Integer updateWechat(Integer userId,String openId);
 }

@@ -139,7 +139,7 @@ public class StudentService {
                 throw new ManageException(ResponseStatus.FAILURE, "一个批量导入不能导入多个班级学生");
             }
             Integer classId = classMapper.queryByName(studentAddInfos.get(0).getClassName());
-            studentAddInfos.forEach(n->n.setClassId(classId));
+            studentAddInfos.forEach(n -> n.setClassId(classId));
         }
     }
 
@@ -162,5 +162,19 @@ public class StudentService {
             return;
         }
         studentMapper.setLeader(userId, classId);
+    }
+
+    public Boolean signByWechat(String phone, String openId) {
+        Integer userId = userMapper.queryId(phone);
+        if (userId == null) {
+            throw new ManageException(ResponseStatus.FAILURE, "签到失败");
+        }
+        if (studentMapper.queryByUserId(userId)) {
+            studentMapper.updateByUserId(userId);
+            userMapper.updateWechat(userId, openId);
+        } else {
+            throw new ManageException(ResponseStatus.FAILURE, "签到失败");
+        }
+        return true;
     }
 }

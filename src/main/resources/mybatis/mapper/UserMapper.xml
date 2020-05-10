@@ -66,6 +66,9 @@
          nativeplace=#{nativePlace},education=#{education},politics=#{politics}
         where id=#{userId}
     </update>
+    <update id="updateWechat">
+        update user set wechat_id =#{openId} where id=#{userId}
+    </update>
     <delete id="delete">
       delete from user where id in <foreach collection="id" item="item" index="index"
                                             open="(" separator="," close=")">#{item}
@@ -117,5 +120,8 @@
             and name like '%${param}%'
         </if>
         order by id desc
+    </select>
+    <select id="queryId" resultType="java.lang.Integer">
+        select id from user where phone=#{phone}
     </select>
 </mapper>
