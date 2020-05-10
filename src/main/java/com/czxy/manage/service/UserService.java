@@ -51,6 +51,7 @@ public class UserService {
         return true;
     }
 
+    @Transactional
     public Boolean update(UserCreateInfo userCreateInfo) {
         insertIfAbsentOrg(userCreateInfo);
         updateUserAccount(userCreateInfo);
@@ -79,16 +80,36 @@ public class UserService {
     public PageInfo<UserInfo> page(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<UserEntity> userEntities = userMapper.queryMaster(pageParam.getParam());
-        PageInfo<UserInfo> userInfos=page.toPageInfo();
+        PageInfo<UserInfo> userInfos = page.toPageInfo();
         List<UserInfo> userInfoList = PojoMapper.INSTANCE.toUserInfos(userEntities);
+        fillGender(userInfoList);
         userInfos.setList(userInfoList);
         return userInfos;
+    }
+
+    private void fillGender(List<UserInfo> userInfos) {
+        if (userInfos != null) {
+            userInfos.forEach(n->{
+
+                switch (n.getGender()){
+                    case 0:
+                        n.setGenderDesc("男");
+                        break;
+                    case 1:
+                        n.setGenderDesc("女");
+                        break;
+                    default:
+                        n.setGenderDesc("未知");
+                        break;
+                }
+            });
+        }
     }
 
     public PageInfo<UserInfo> pageClassLeader(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<UserEntity> userEntities = userMapper.queryClassLeader(pageParam.getParam());
-        PageInfo<UserInfo> userInfos=page.toPageInfo();
+        PageInfo<UserInfo> userInfos = page.toPageInfo();
         List<UserInfo> userInfoList = PojoMapper.INSTANCE.toUserInfos(userEntities);
         userInfos.setList(userInfoList);
         return userInfos;

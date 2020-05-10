@@ -44,7 +44,7 @@
         set name=#{name}, idcard=#{idCard}, phone=#{phone},
         gender=#{gender}, position=#{position},
         age=#{age}, birthday=#{birthday}, category=#{category},
-        wechat_id=#{wechatId}, updated_time=now(), politics=#{politics}
+        wechat_id=#{wechatId}, updated_time=now(), politics=#{politics},
         org_id=#{orgId},nation=#{nation},nativeplace=#{nativePlace},education=#{education}
         where id=#{id}
     </update>

@@ -14,10 +14,12 @@ import com.czxy.manage.model.entity.UserEntity;
 import com.czxy.manage.model.vo.user.AccountInfo;
 import com.czxy.manage.model.vo.user.ChangePwdInfo;
 import com.czxy.manage.model.vo.user.UserAccountInfo;
+import com.czxy.manage.model.vo.user.UserInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +45,8 @@ public class AccountService {
     private TokenMapper tokenMapper;
     @Value("${token.expire}")
     public Long expire;
+    @Autowired
+    public UserService userService;
 
     public String login(AccountInfo accountInfo, String timestamp) {
         String pwd = decodePassword(accountInfo.getPassword(), timestamp);
@@ -50,7 +54,7 @@ public class AccountService {
         if (accountEntity != null && accountEntity.getUserId() > 0) {
             String token = UUID.randomUUID().toString();
             tokenMapper.delete(accountEntity.getAccount());
-            tokenMapper.insert(accountEntity.getUserId(),accountInfo.getAccount(), token, expire);
+            tokenMapper.insert(accountEntity.getUserId(), accountInfo.getAccount(), token, expire);
             return token;
         }
         throw new ManageException(ResponseStatus.LOGINERROR);
@@ -93,8 +97,28 @@ public class AccountService {
     public PageInfo<UserAccountInfo> page(PageParam<String> pageParam) {
         Page pageUtil = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<UserAccountInfo> result = userAccountMapper.queryAll(pageParam.getParam());
+        fillGender(result);
         PageInfo<UserAccountInfo> userAccountPageInfo = pageUtil.toPageInfo();
         userAccountPageInfo.setList(PojoMapper.INSTANCE.toUserAccountInfos(result));
         return userAccountPageInfo;
+    }
+
+    private void fillGender(List<UserAccountInfo> userAccountInfos) {
+        if (userAccountInfos != null) {
+            userAccountInfos.forEach(n -> {
+
+                switch (n.getGender()) {
+                    case 0:
+                        n.setGenderDesc("男");
+                        break;
+                    case 1:
+                        n.setGenderDesc("女");
+                        break;
+                    default:
+                        n.setGenderDesc("未知");
+                        break;
+                }
+            });
+        }
     }
 }
