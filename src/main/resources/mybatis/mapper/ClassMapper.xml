@@ -65,6 +65,7 @@
         ,c.addr
         ,c.updated_time as updatedTime, c.created_time as createdTime
         ,o.name as orgName
+        ,cm.user_id as masterId
         ,u.name as masterName
         ,u1.name as leaderName
         ,s.user_id  as leaderId

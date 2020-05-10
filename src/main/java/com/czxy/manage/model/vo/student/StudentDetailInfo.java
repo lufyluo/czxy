@@ -12,6 +12,7 @@ public class StudentDetailInfo extends UserInfo {
     @ApiModelProperty("学生id")
     private Integer studentId;
     private String className;
+    private Integer classId;
     @ApiModelProperty("培训时长")
     private Integer duration;
     @ApiModelProperty("培训区间中文描述")

@@ -7,6 +7,7 @@ public class ClassOrgEntity extends ClassEntity{
     private String orgName;
     private String recommendOrgName;
     private String composition;
+    private Integer masterId;
     private String masterName;
     private String leaderName;
     private Integer leaderId;

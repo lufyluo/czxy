@@ -14,4 +14,5 @@ public class ClassUpdateInfo extends ClassOrgInfo{
     private Integer classArrangeId;
     @ApiModelProperty("培训对象(班级成分id)")
     private Integer compositionId;
+    private List<StudentAddInfo> studentAddInfos;
 }

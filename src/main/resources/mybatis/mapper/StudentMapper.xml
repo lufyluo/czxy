@@ -29,7 +29,7 @@
     </delete>
     <select id="query" resultType="com.czxy.manage.model.entity.StudentDetailEntity">
         select
-        s.id as id ,s.id as studentId ,sign_flag as signFlag, user_id as userId,class_id  as classId,type,
+        s.id as id ,s.id as studentId ,sign_flag as signFlag, s.user_id as userId,s.class_id  as classId,type,
         u.id as userId, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
         u.education,
         u.wechat_id as wechatId,
@@ -53,7 +53,8 @@
         <if test="provinceId != null and provinceId>0 ">and c.province_id = #{provinceId}</if>
         <if test="cityId != null and cityId>0 ">and c.city_id = #{cityId}</if>
         <if test="countyId != null and countyId>0 ">and c.county_id = #{countyId}</if>
-        <if test="classId != null and classId >0 ">and c.class_id= #{classId}</if>
+        <if test="classId != null and classId >0 ">and s.class_id= #{classId}</if>
+        <if test="excludeClassId != null and excludeClassId >0 ">and s.class_id != #{excludeClassId}</if>
         order by s.id desc
     </select>
     <select id="queryByStudentId" resultType="com.czxy.manage.model.entity.StudentUpdateEntity">
