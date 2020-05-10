@@ -58,4 +58,9 @@ public class ClassController {
     public BaseResponse<Boolean> update(@RequestBody ClassUpdateInfo classUpdateInfo) {
         return ResponseUtil.success(classService.update(classUpdateInfo));
     }
+    @PutMapping("/studentClass")
+    @ApiOperation("根据classID设置学生班级信息")
+    public BaseResponse<Boolean> updateStudentClass(@RequestBody StudentClassInfo studentClassInfo){
+        return ResponseUtil.success(classService.updateStudentClass(studentClassInfo));
+    }
 }

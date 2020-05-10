@@ -37,4 +37,6 @@ public interface StudentMapper {
     Boolean queryByUserId(Integer userId);
 
     Integer updateClass(List<StudentAddInfo> studentAddInfos);
+
+    Integer updateStudentClass(Integer classId,@Param("studentIds") List<Integer> studentIds);
 }
