@@ -8,7 +8,6 @@ import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentPageParam;
 import com.czxy.manage.model.vo.student.StudentUpdateInfo;
 import com.czxy.manage.service.StudentService;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +56,10 @@ public class StudentController {
     @ApiOperation("编辑学员")
     public BaseResponse<Boolean> update(@RequestBody StudentUpdateInfo studentUpdateInfo) {
         return ResponseUtil.success(studentService.update(studentUpdateInfo));
+    }
+    @PutMapping("/wechatSign")
+    @ApiOperation("微信签到")
+    public BaseResponse<Boolean> signByWechat(@RequestParam("phone") String phone,@RequestParam("openId") String openId){
+        return ResponseUtil.success(studentService.signByWechat(phone,openId));
     }
 }
