@@ -104,6 +104,7 @@
         c.updated_time as updatedTime,
         c.created_time as createdTime,
         c.appellation,
+
         c.duration as duration,
         o.name as orgName,
         a.path as addressName,
@@ -145,7 +146,8 @@
         u.nation as userNation,
         u.nativeplace as userNativeplace,
         s.type as StudentType,
-        s.id as studentId
+        s.id as studentId,
+        s.id as id
         from  student s
         left join user u
         on s.user_id = u.id

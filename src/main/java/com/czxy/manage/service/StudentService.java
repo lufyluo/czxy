@@ -119,6 +119,9 @@ public class StudentService {
 
     @Transactional
     public Boolean batchInsert(List<StudentAddInfo> studentAddInfos) {
+        if(studentAddInfos == null || studentAddInfos.size()==0){
+            return true;
+        }
         List<UserEntity> userEntity = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos);
         userMapper.batchInsert(userEntity);
         studentAddInfos.forEach(n -> {
@@ -175,6 +178,14 @@ public class StudentService {
         } else {
             throw new ManageException(ResponseStatus.FAILURE, "签到失败");
         }
+        return true;
+    }
+
+    public Boolean batchUpdateClass(List<StudentAddInfo> studentAddInfos) {
+        if(studentAddInfos == null || studentAddInfos.size()==0){
+            return true;
+        }
+        studentMapper.updateClass(studentAddInfos);
         return true;
     }
 }

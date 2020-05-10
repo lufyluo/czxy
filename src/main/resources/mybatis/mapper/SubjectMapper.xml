@@ -41,6 +41,28 @@
             and s.category=#{category}
         </if>
     </select>
+
+    <select id="queryByArrangeId" resultType="com.czxy.manage.model.entity.CourseDetailEntity">
+        select
+        c.id,
+        c.name,
+        u.name as teacherName,
+        s.addr as address,
+        ca.category,
+        ca.begin_time as beginTime,
+        ca.end_time as endTime,
+        ca.offset,
+        ca.updated_time as updatedTime, ca.created_time as createdTime
+        from course_arrange ca
+        left join subject c on ca.content_id = c.id
+        left join teacher t
+        on c.teacher_id = t.id
+        left  join user u
+        on t.user_id = u.id
+        left join site s
+        on ca.content_id = s.id
+        where  ca.arrange_id = #{arrangeId}
+    </select>
     <select id="queryById" resultType="com.czxy.manage.model.entity.SubjectEntity">
         select
         name, content, types, files, teacher_id as teacherId, category

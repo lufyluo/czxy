@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClassService {
@@ -92,7 +93,16 @@ public class ClassService {
                 n.setOrgId(classCreateInfo.getOrgId());
                 n.setClassId(classEntity.getId());
             });
-            studentService.batchInsert(classCreateInfo.getStudentAddInfos());
+            studentService.batchInsert(
+                    classCreateInfo.getStudentAddInfos()
+                            .stream()
+                            .filter(n->n.getStudentId()!=null)
+                            .collect(Collectors.toList()));
+            studentService.batchUpdateClass(
+                    classCreateInfo.getStudentAddInfos()
+                            .stream()
+                            .filter(n->n.getStudentId()==null)
+                            .collect(Collectors.toList()));
         }
         if (classCreateInfo.getClassArrangeId() != null) {
             classCourseMapper.copySnapshot(classCreateInfo.getClassArrangeId());

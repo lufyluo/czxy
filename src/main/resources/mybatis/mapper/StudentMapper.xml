@@ -29,7 +29,7 @@
     </delete>
     <select id="query" resultType="com.czxy.manage.model.entity.StudentDetailEntity">
         select
-        s.id as id ,sign_flag as signFlag, user_id as userId,class_id  as classId,type,
+        s.id as id ,s.id as studentId ,sign_flag as signFlag, user_id as userId,class_id  as classId,type,
         u.id as userId, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
         u.education,
         u.wechat_id as wechatId,
@@ -76,6 +76,11 @@
     </update>
     <update id="setLeader">
         update student set type = 8 where class_id = #{classId} and user_id = #{userId}
+    </update>
+    <update id="updateClass">
+        <foreach collection="list" item="item">
+            update student set class_id=#{classId}, type=#{type}, updated_time=now() where id=#{studentId};
+        </foreach>
     </update>
     <update id="updateByUserId">
         update student set sign_flag = 1 where user_id=#{userId}
