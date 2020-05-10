@@ -24,12 +24,10 @@
         c.begin_time as beginTime,
         c.end_time as endTime,
         a.updated_time as updatedTime, a.created_time as createdTime
-        from class_arrange arra
-        left join arrange a
-        on arra.arrange_id = a.id
+        from  arrange a
         left join class c
-        on arra.class_id = c.id
-        where arra.class_id = #{classId}
+        on a.id = c.arrange_id
+        where c.id = #{classId}
     </select>
     <select id="page" resultType="com.czxy.manage.model.entity.ArrangeEntity">
      select

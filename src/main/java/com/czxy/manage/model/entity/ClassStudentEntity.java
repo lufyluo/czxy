@@ -10,6 +10,7 @@ import java.util.Date;
 @Data
 public class ClassStudentEntity extends ClassEntity{
     private Integer userId;
+    private Integer studentId;
     private String userName;
     private String userIdCard;
     private String userPhone;

@@ -21,4 +21,5 @@ public class StudentAddInfo extends UserInfo {
     @ApiModelProperty("签到状态，0代表未签到，1代表签到")
     private Integer signFlag;
     private Integer userId;
+    private Integer studentId;
 }

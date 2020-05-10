@@ -10,4 +10,5 @@ public class CourseArrangeEntity extends BaseEntity {
     private Long beginTime;
     private Long endTime;
     private Integer category;
+    private Integer offset;
 }

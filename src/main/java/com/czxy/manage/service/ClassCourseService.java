@@ -2,13 +2,12 @@ package com.czxy.manage.service;
 
 import com.czxy.manage.dao.ArrangeMapper;
 import com.czxy.manage.dao.CourseArrangeMapper;
-import com.czxy.manage.dao.CourseMapper;
+import com.czxy.manage.dao.SubjectMapper;
 import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.ArrangeEntity;
 import com.czxy.manage.model.PageParam;
-import com.czxy.manage.model.entity.ArrangeEntity;
 import com.czxy.manage.model.entity.ClassArrangeWithTimeEntity;
 import com.czxy.manage.model.entity.CourseArrangeEntity;
 import com.czxy.manage.model.entity.CourseDetailEntity;
@@ -24,7 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,7 +34,7 @@ public class ClassCourseService {
     @Resource
     ArrangeMapper arrangeMapper;
     @Resource
-    private CourseMapper courseMapper;
+    private SubjectMapper subjectMapper;
     @Resource
     private CourseArrangeMapper courseArrangeMapper;
 
@@ -43,26 +44,32 @@ public class ClassCourseService {
             throw new ManageException(ResponseStatus.DATANOTEXIST);
         }
         ClassArrangeInfo classArrangeInfo = PojoMapper.INSTANCE.toClassArrangeInfo(classArrangeWithTimeEntity);
-        List<CourseDetailEntity> courseEntities = courseMapper.get(classArrangeWithTimeEntity.getId());
-        List<SubjectDetailInfo> courseInfos = PojoMapper.INSTANCE.toCourseInfos(courseEntities);
+        List<CourseDetailEntity> courseEntities = subjectMapper.queryByArrangeId(classArrangeWithTimeEntity.getId());
+        List<SubjectDetailInfo> courseInfos = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         Long dayMiliSeconds = 86400000L;
         calendar.setTime(classArrangeWithTimeEntity.getBeginTime());
         Long beginTime = calendar.getTimeInMillis();
         Calendar temp = Calendar.getInstance();
 
-        courseInfos.forEach(n -> {
-            Long current = beginTime + dayMiliSeconds * n.getOffset();
+        courseEntities.forEach(n -> {
+            SubjectDetailInfo subjectDetailInfo =  PojoMapper.INSTANCE.toCourseInfo(n);
+            Long current = beginTime+ + dayMiliSeconds * n.getOffset();
             temp.setTimeInMillis(current);
-            temp.add(Calendar.HOUR_OF_DAY, n.getBeginTime().getHours());
-            n.setBeginTime(temp.getTime());
-            temp.add(Calendar.HOUR_OF_DAY, n.getEndTime().getHours());
-            n.setEndTime(temp.getTime());
+
+            calendar.setTimeInMillis(n.getBeginTime());
+            temp.add(Calendar.HOUR_OF_DAY,calendar.getTime().getHours());
+            temp.add(Calendar.MINUTE,calendar.getTime().getMinutes());
+
+            subjectDetailInfo.setBeginTime(temp.getTime());
+            Long endTemp = n.getEndTime()-n.getBeginTime() + temp.getTimeInMillis();
+            temp.setTimeInMillis(endTemp);
+            subjectDetailInfo.setEndTime(temp.getTime());
+            courseInfos.add(subjectDetailInfo);
         });
         classArrangeInfo.setCourseInfos(courseInfos);
         return classArrangeInfo;
     }
-
     @Transactional
     public Boolean add(CourseArrangeAddInfo classCourseInfo) {
         ArrangeEntity arrangeEntity = PojoMapper.INSTANCE.toArrangeEntity(classCourseInfo);

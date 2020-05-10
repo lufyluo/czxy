@@ -4,12 +4,12 @@
 
     <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id">
         insert into course_arrange (
-        arrange_id, content_id,begin_time,end_time
+        arrange_id, content_id,begin_time,end_time,
         category,offset)
         values
-        <foreach collection="list" item="item" open="(" close=")" separator=",">
-            #{item.arrangeId},#{item.contentId},#{item.beginTime}
-            ,#{item.endTime},,#{item.category},#{item.offset}
+        <foreach collection="list" item="item" separator=",">
+            (#{item.arrangeId},#{item.contentId},#{item.beginTime}
+            ,#{item.endTime},#{item.category},#{item.offset})
         </foreach>
 
     </insert>

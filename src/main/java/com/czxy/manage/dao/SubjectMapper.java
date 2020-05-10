@@ -1,5 +1,6 @@
 package com.czxy.manage.dao;
 
+import com.czxy.manage.model.entity.CourseDetailEntity;
 import com.czxy.manage.model.entity.SubjectDetailEntity;
 import com.czxy.manage.model.entity.SubjectEntity;
 import com.czxy.manage.model.vo.subject.SubjectDetailInfo;
@@ -20,4 +21,6 @@ public interface SubjectMapper {
     Integer update(SubjectEntity subjectEntity);
 
     Integer delete(@Param("subjectIds") List<Integer> subjectIds);
+
+    List<CourseDetailEntity> queryByArrangeId(Integer arrangeId);
 }
