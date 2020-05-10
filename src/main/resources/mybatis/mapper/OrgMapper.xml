@@ -13,6 +13,8 @@
     </select>
     <select id="queryAll" resultType="com.czxy.manage.model.entity.OrgEntity">
         select id,name from org
-        <if test="param != null and param != ''">where name like '%$param}%'</if>
+        <if test="param != null and param != ''">
+        where name like '%${param}%'
+        </if>
     </select>
 </mapper>
