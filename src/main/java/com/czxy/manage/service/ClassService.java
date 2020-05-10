@@ -3,6 +3,7 @@ package com.czxy.manage.service;
 import com.czxy.manage.dao.ClassExcuteCourseMapper;
 import com.czxy.manage.dao.ClassMapper;
 import com.czxy.manage.dao.ClassMasterMapper;
+import com.czxy.manage.dao.StudentMapper;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.ClassEntity;
@@ -35,6 +36,8 @@ public class ClassService {
     private ClassExcuteCourseMapper classCourseMapper;
     @Autowired
     private CompositionService compositionService;
+    @Resource
+    private StudentMapper studentMapper;
 
     public PageInfo<ClassOrgInfo> page(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -133,5 +136,10 @@ public class ClassService {
         Integer recommendOrgId = orgService.insertIfAbsentOrg(classCreateInfo.getRecommendOrgName(), classCreateInfo.getRecommendOrgId());
         classCreateInfo.setOrgId(orgId);
         classCreateInfo.setRecommendOrgId(recommendOrgId);
+    }
+
+    public Boolean updateStudentClass(StudentClassInfo studentClassInfo) {
+        studentMapper.updateStudentClass(studentClassInfo.getClassId(),studentClassInfo.getStudentIds());
+        return true;
     }
 }

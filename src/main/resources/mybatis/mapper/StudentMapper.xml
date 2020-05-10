@@ -85,4 +85,9 @@
     <update id="updateByUserId">
         update student set sign_flag = 1 where user_id=#{userId}
     </update>
+    <update id="updateStudentClass">
+        update student set class_id=#{classId} where id in <foreach collection="studentIds" item="item" index="index"
+                                                                    open="(" separator="," close=")">#{item}
+                                                           </foreach>
+    </update>
 </mapper>
