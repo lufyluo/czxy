@@ -15,12 +15,14 @@
     </select>
     <select id="queryAll" resultType="com.czxy.manage.model.vo.user.UserAccountInfo">
         select
+        u.id,
         a.account,a.password,
         u.name, idcard, phone, gender, position, age, birthday, category,
         wechat_id as wechatId,
         org_id as orgId,
         o.name as orgName,
         nation,
+        u.nativeplace,
         a.created_time as createdTime,
         a.updated_time as updatedTime
         from account a
