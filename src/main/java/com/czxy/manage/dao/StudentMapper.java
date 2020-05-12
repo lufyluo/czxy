@@ -39,4 +39,6 @@ public interface StudentMapper {
     Integer updateClass(List<StudentAddInfo> studentAddInfos);
 
     Integer updateStudentClass(Integer classId,@Param("studentIds") List<Integer> studentIds);
+
+    StudentEntity queryStudent(Integer userId);
 }

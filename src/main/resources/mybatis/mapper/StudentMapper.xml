@@ -63,6 +63,10 @@
     <select id="queryByUserId" resultType="java.lang.Boolean">
         select id from student where user_id=#{userId}
     </select>
+    <select id="queryStudent" resultType="com.czxy.manage.model.entity.StudentEntity">
+        select id, sign_flag as signFlag, class_id as classId, user_id as userId, type, org_id as orgId
+        from student where user_id=#{userId}
+    </select>
     <update id="sign">
         update student set sign_flag = 1 , updated_time=now() where id in
         <foreach collection="studentIds" item="item" index="index"

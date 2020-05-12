@@ -160,4 +160,10 @@
     <select id="queryByName" resultType="java.lang.Integer">
         select id from class where name = #{name} order by id desc limit 1
     </select>
+    <select id="queryClass" resultType="com.czxy.manage.model.entity.ClassEntity">
+        select  id, name,
+        org_id as orgId, begin_time as beginTime, end_time as endTime, arrange_id as arrangeId, recommend_org_id as recommendOrgId,
+        composition_id as compostionId, duration, province_id as provinceId, city_id as cityId, county_id as countyId, addr
+        from class where id=#{classId}
+    </select>
 </mapper>

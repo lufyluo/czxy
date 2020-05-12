@@ -23,6 +23,8 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -119,7 +121,7 @@ public class StudentService {
 
     @Transactional
     public Boolean batchInsert(List<StudentAddInfo> studentAddInfos) {
-        if(studentAddInfos == null || studentAddInfos.size()==0){
+        if (studentAddInfos == null || studentAddInfos.size() == 0) {
             return true;
         }
         List<UserEntity> userEntity = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos);
@@ -169,20 +171,35 @@ public class StudentService {
 
     public Boolean signByWechat(String phone, String openId) {
         Integer userId = userMapper.queryId(phone);
-        if (userId == null) {
-            throw new ManageException(ResponseStatus.FAILURE, "签到失败");
+        if (userId == null || userId == 0) {
+            throw new ManageException(ResponseStatus.FAILURE, "学员不存在");
         }
-        if (studentMapper.queryByUserId(userId)) {
-            studentMapper.updateByUserId(userId);
-            userMapper.updateWechat(userId, openId);
-        } else {
-            throw new ManageException(ResponseStatus.FAILURE, "签到失败");
+        StudentEntity studentEntity = studentMapper.queryStudent(userId);
+        if (studentEntity.getClassId() == null || studentEntity.getClassId() == 0) {
+            throw new ManageException(ResponseStatus.FAILURE, "学生没有班级");
         }
+        ClassEntity classEntity = classMapper.queryClass(studentEntity.getClassId());
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        Calendar c3 = Calendar.getInstance();
+        c1.setTime(classEntity.getBeginTime());
+        c2.setTime(new Date());
+        c3.setTime(classEntity.getEndTime());
+        int result1 = c1.compareTo(c2);
+        int result2 = c2.compareTo(c3);
+        if (result1 > 0) {
+            throw new ManageException(ResponseStatus.FAILURE, "班级还未开始");
+        }
+        if (result2 == 1) {
+            throw new ManageException(ResponseStatus.FAILURE, "班级已经结束");
+        }
+        studentMapper.updateByUserId(userId);
+        userMapper.updateWechat(userId, openId);
         return true;
     }
 
     public Boolean batchUpdateClass(List<StudentAddInfo> studentAddInfos) {
-        if(studentAddInfos == null || studentAddInfos.size()==0){
+        if (studentAddInfos == null || studentAddInfos.size() == 0) {
             return true;
         }
         studentMapper.updateClass(studentAddInfos);
