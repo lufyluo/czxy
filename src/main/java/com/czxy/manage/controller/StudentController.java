@@ -1,5 +1,6 @@
 package com.czxy.manage.controller;
 
+import com.czxy.manage.infrastructure.aop.Anonymous;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
@@ -47,9 +48,9 @@ public class StudentController {
     }
 
     @PostMapping("/import")
-    @ApiOperation("新增学员")
+    @ApiOperation("批量导入/新增")
     public BaseResponse<Boolean> importExcel(@RequestBody List<StudentAddInfo> studentAddInfos) {
-        return ResponseUtil.success(studentService.batchInsert(studentAddInfos));
+        return ResponseUtil.success(studentService.importExcel(studentAddInfos));
     }
 
     @PutMapping("/update")
@@ -59,7 +60,8 @@ public class StudentController {
     }
     @PutMapping("/wechatSign")
     @ApiOperation("微信签到")
-    public BaseResponse<Boolean> signByWechat(@RequestParam("phone") String phone,@RequestParam("openId") String openId){
-        return ResponseUtil.success(studentService.signByWechat(phone,openId));
+    @Anonymous
+    public BaseResponse<Boolean> signByWechat(@RequestParam("phone") String phone,@RequestParam("openId") String code){
+        return ResponseUtil.success(studentService.signByWechat(phone,code));
     }
 }

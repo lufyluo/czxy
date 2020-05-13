@@ -7,6 +7,8 @@ import com.czxy.manage.dao.UserMapper;
 import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
+import com.czxy.manage.infrastructure.util.wechat.WechatAccessTokenResponse;
+import com.czxy.manage.infrastructure.util.wechat.WechatUtil;
 import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
@@ -27,6 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -38,7 +41,10 @@ public class StudentService {
     private ClassMapper classMapper;
     @Autowired
     private OrgService orgService;
-
+    @Resource
+    private OrgMapper orgMapper;
+    @Autowired
+    private WechatUtil wechatUtil;
 
     public PageInfo<StudentDetailInfo> page(StudentPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -119,6 +125,43 @@ public class StudentService {
         return true;
     }
 
+    public Boolean importExcel(List<StudentAddInfo> studentAddInfos) {
+        fillOrgIds(studentAddInfos);
+        return batchInsert(studentAddInfos);
+    }
+
+    private void fillOrgIds(List<StudentAddInfo> studentAddInfos) {
+        List<String> orgNames = studentAddInfos.stream()
+                .filter(n -> !StringUtils.isEmpty(n.getOrgName()))
+                .map(StudentAddInfo::getOrgName)
+                .collect(Collectors.toList());
+        List<OrgEntity> orgs = getOrgEntities(orgNames);
+
+        for (int i = 0; i < studentAddInfos.size(); i++) {
+            StudentAddInfo studentAddInfo = studentAddInfos.get(i);
+            Optional<OrgEntity> first = orgs.stream()
+                    .filter(item -> item.getName().equals(studentAddInfo.getOrgName()))
+                    .findFirst();
+            if (first.isPresent()) {
+                studentAddInfo.setOrgId(first.get().getId());
+            }
+        }
+    }
+
+    private List<OrgEntity> getOrgEntities(List<String> orgNames) {
+        List<OrgEntity> orgs = orgMapper.getByNames(orgNames);
+        if (orgs == null || orgs.size() == 0) {
+            orgMapper.batchInsert(orgNames);
+            orgs = orgMapper.getByNames(orgNames);
+        } else if (orgs.size() < orgNames.size()) {
+            List<String> orgExists = orgs.stream().map(OrgEntity::getName).collect(Collectors.toList());
+            orgNames.removeAll(orgExists);
+            orgMapper.batchInsert(orgNames);
+            orgs = orgMapper.getByNames(orgNames);
+        }
+        return orgs;
+    }
+
     @Transactional
     public Boolean batchInsert(List<StudentAddInfo> studentAddInfos) {
         if (studentAddInfos == null || studentAddInfos.size() == 0) {
@@ -169,7 +212,7 @@ public class StudentService {
         studentMapper.setLeader(userId, classId);
     }
 
-    public Boolean signByWechat(String phone, String openId) {
+    public Boolean signByWechat(String phone, String code) {
         Integer userId = userMapper.queryId(phone);
         if (userId == null || userId == 0) {
             throw new ManageException(ResponseStatus.FAILURE, "学员不存在");
@@ -196,8 +239,12 @@ public class StudentService {
         if (result2 == 1) {
             throw new ManageException(ResponseStatus.FAILURE, "班级已经结束");
         }
+        WechatAccessTokenResponse wechatAccessTokenResponse = wechatUtil.getOpenId(code);
+        if(wechatAccessTokenResponse == null){
+            throw new ManageException(ResponseStatus.FAILURE, "签到失败，请重试！");
+        }
         studentMapper.updateByUserId(userId);
-        userMapper.updateWechat(userId, openId);
+        userMapper.updateWechat(userId, wechatAccessTokenResponse.getOpenid());
         return true;
     }
 

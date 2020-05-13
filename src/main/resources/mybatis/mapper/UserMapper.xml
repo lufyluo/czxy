@@ -118,7 +118,7 @@
         from user u
         left join student s
         on s.user_id = u.id
-        where s.type=8
+        where s.type=10
         <if test="param != null and param != ''">
             and name like '%${param}%'
         </if>

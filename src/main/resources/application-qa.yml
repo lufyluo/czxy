@@ -3,8 +3,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: czxy
     password: l87289610
-    url: jdbc:mysql://rm-m5e32862t94h42445125010.mysql.rds.aliyuncs.com:3306/czxy?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://rm-m5e32862t94h42445qo.mysql.rds.aliyuncs.com:3306/czxy?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
 logstrategy:
   request: true
 token:
   expire: 6000
+czxy:
+  wechat:
+    appId: wx657fdaf188aec6b1
+    secret: abc
+    accessTokenUrl: https://api.weixin.qq.com/sns/oauth2/access_token?appid=${czxy.wechat.appId}&secret=${czxy.wechat.secret}&code=%s&grant_type=authorization_code

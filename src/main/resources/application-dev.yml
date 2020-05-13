@@ -8,3 +8,8 @@ logstrategy:
   request: true
 token:
   expire: 6000
+czxy:
+  wechat:
+    appId: wx657fdaf188aec6b1
+    secret: abc
+    accessTokenUrl: https://api.weixin.qq.com/sns/oauth2/access_token?appid=${czxy.wechat.appId}&secret=${czxy.wechat.secret}&code=%s&grant_type=authorization_code

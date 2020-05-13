@@ -5,6 +5,12 @@
             keyProperty="id">
         insert into org (name, address_id) values (#{name},#{addressId});
     </insert>
+    <insert id="batchInsert">
+        insert into org (name) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item})
+        </foreach>
+    </insert>
     <update id="update">
         update org set  name=#{name}, address_id=#{addressId},updated_time= now() where id=#{id}
     </update>
@@ -17,7 +23,14 @@
     <select id="queryAll" resultType="com.czxy.manage.model.entity.OrgEntity">
         select id,name from org
         <if test="param != null and param != ''">
-        where name like '%${param}%'
+            where name like '%${param}%'
         </if>
+    </select>
+    <select id="getByNames" resultType="com.czxy.manage.model.entity.OrgEntity">
+        select id,name from org
+        where name in
+        <foreach collection="list" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
     </select>
 </mapper>

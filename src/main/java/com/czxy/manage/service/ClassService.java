@@ -74,6 +74,8 @@ public class ClassService {
                 classStudentEntity.setStudentTypeName("班委干部");
             } else if (classStudentEntity.getStudentType() == 8) {
                 classStudentEntity.setStudentTypeName("带班领导");
+            }else if (classStudentEntity.getStudentType() == 10) {
+                classStudentEntity.setStudentTypeName("对接人");
             }
         }
         PageInfo<ClassStudentInfo> result = page.toPageInfo();
