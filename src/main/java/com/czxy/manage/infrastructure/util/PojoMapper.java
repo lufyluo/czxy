@@ -3,6 +3,7 @@ package com.czxy.manage.infrastructure.util;
 import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.AddressInfo;
 import com.czxy.manage.model.vo.CompositionInfo;
+import com.czxy.manage.model.vo.GreetInfo;
 import com.czxy.manage.model.vo.OrgInfo;
 import com.czxy.manage.model.vo.arrange.ArrangeInfo;
 import com.czxy.manage.model.vo.classes.*;
@@ -172,4 +173,8 @@ public interface PojoMapper {
     CustomerInfo toCustomerInfo(CustomerEntity customerEntity);
 
     List<CustomerInfo> toCustomerInfos(List<CustomerEntity> customerEntityList);
+
+    GreetInfo toGreetInfo(GreetEntity greetEntity);
+
+    List<GreetInfo> toGreetInfos(List<GreetEntity> greetEntityList);
 }

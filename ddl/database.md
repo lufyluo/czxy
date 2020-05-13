@@ -573,5 +573,19 @@ alter table menus
 alter table subject
 	add category int not null comment '0-党政综合，1-社会管理，2-农业农村，3-城建规划，4-经济与产业，5-能力素质提升，9-其他' after teacher_id;
 
+create table greetings
+(
+	id int auto_increment,
+	type smallint null comment '类型',
+	name varchar(50) null comment '节假日名称',
+	greet varchar(255) null comment '问候语',
+	date datetime null comment '问候语发送时间',
+	constraint greetings_pk
+		primary key (id)
+)
+comment '问候语';
+alter table greetings modify type varchar(30) null comment '类型';
+alter table greetings change time send_time datetime null comment '问候语发送时间';
+
 
 ```
