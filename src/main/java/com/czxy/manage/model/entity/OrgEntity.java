@@ -7,4 +7,5 @@ public class OrgEntity extends BaseEntity {
     private Integer id;
     private String name;
     private Integer addressId;
+    private Integer star;
 }

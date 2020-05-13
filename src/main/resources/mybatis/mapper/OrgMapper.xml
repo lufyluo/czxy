@@ -8,6 +8,9 @@
     <update id="update">
         update org set  name=#{name}, address_id=#{addressId},updated_time= now() where id=#{id}
     </update>
+    <update id="updateStar">
+        update org set star=#{orgStar} where id=#{orgId}
+    </update>
     <select id="query" resultType="com.czxy.manage.model.entity.OrgEntity">
         select name from org where id = #{orgId}
     </select>

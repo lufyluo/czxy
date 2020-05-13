@@ -9,6 +9,7 @@ import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
 import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.model.vo.site.TypeInfo;
+import com.czxy.manage.model.vo.student.CustomerInfo;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentUpdateInfo;
@@ -167,4 +168,8 @@ public interface PojoMapper {
     CourseArrangeEntity toCourseArrangeEntity(CourseArrangeInfo classCourseInfo);
 
     List<CourseArrangeEntity> toCourseArrangeEntities(List<CourseArrangeInfo> courseInfos);
+
+    CustomerInfo toCustomerInfo(CustomerEntity customerEntity);
+
+    List<CustomerInfo> toCustomerInfos(List<CustomerEntity> customerEntityList);
 }

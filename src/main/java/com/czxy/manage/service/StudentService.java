@@ -178,6 +178,9 @@ public class StudentService {
         if (studentEntity.getClassId() == null || studentEntity.getClassId() == 0) {
             throw new ManageException(ResponseStatus.FAILURE, "学生没有班级");
         }
+        if (studentEntity.getSignFlag()==1){
+            throw new ManageException(ResponseStatus.FAILURE,"已签到，请勿重复签到");
+        }
         ClassEntity classEntity = classMapper.queryClass(studentEntity.getClassId());
         Calendar c1 = Calendar.getInstance();
         Calendar c2 = Calendar.getInstance();

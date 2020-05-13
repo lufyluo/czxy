@@ -1,6 +1,7 @@
 package com.czxy.manage.dao;
 
 import com.czxy.manage.model.entity.*;
+import com.czxy.manage.model.vo.student.CustomerInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -37,4 +38,6 @@ public interface UserMapper {
     Integer queryId(String phone);
 
     Integer updateWechat(Integer userId,String openId);
+
+    Integer updateByCustomer(CustomerInfo customerInfo);
 }
