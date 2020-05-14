@@ -18,7 +18,7 @@
         nativeplace,education,politics)
         values(#{name}, #{idCard}, #{phone},
          #{gender}, #{position}, #{age},
-         #{birthday}, #{category}, #{wechatId},
+         #{birthday},2, #{wechatId},
          #{orgId}, #{nation}, #{nativePlace},
          #{education},#{politics});
     </insert>
