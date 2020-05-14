@@ -79,7 +79,7 @@
         left join user u
         on cm.user_id = u.id
         left join student s
-        on s.class_id = c.id and s.type = 8
+        on s.class_id = c.id and s.type = 10
         left join user u1
         on s.user_id = u1.id
         left join composition com
@@ -122,7 +122,7 @@
         left join user u
         on cm.user_id = u.id
         left join student s
-        on  s.class_id = c.id and s.type = 8
+        on  s.class_id = c.id and s.type = 10
         left join user ul
         on ul.id = s.user_id
         left join org og
