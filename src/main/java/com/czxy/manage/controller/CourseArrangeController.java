@@ -5,6 +5,7 @@ import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.arrange.ArrangeInfo;
+import com.czxy.manage.model.vo.classes.ClassArrangeTableInfo;
 import com.czxy.manage.model.vo.classes.CourseArrangeUpdateInfo;
 import com.czxy.manage.model.vo.classes.CourseArrangeAddInfo;
 import com.czxy.manage.model.vo.classes.ClassArrangeInfo;
@@ -28,6 +29,11 @@ public class CourseArrangeController {
         return ResponseUtil.success(classCourseService.get(classId));
     }
 
+    @GetMapping("/table/{classId}")
+    @ApiOperation("根据班级获取课表（课表管理，查看页数据结构）")
+    public BaseResponse<ClassArrangeTableInfo> table(@PathVariable Integer classId) {
+        return ResponseUtil.success(classCourseService.table(classId));
+    }
     @PostMapping
     @ApiOperation("添加课表")
     public BaseResponse<Boolean> add(@RequestBody CourseArrangeAddInfo courseArrangeAddInfo){

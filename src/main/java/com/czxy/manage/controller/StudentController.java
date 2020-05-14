@@ -61,7 +61,7 @@ public class StudentController {
     @PutMapping("/wechatSign")
     @ApiOperation("微信签到")
     @Anonymous
-    public BaseResponse<Boolean> signByWechat(@RequestParam("phone") String phone,@RequestParam("openId") String code){
+    public BaseResponse<Boolean> signByWechat(@RequestParam("phone") String phone,@RequestParam("code") String code){
         return ResponseUtil.success(studentService.signByWechat(phone,code));
     }
 }

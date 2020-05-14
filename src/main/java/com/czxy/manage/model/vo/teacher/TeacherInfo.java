@@ -18,7 +18,7 @@ public class TeacherInfo extends UserInfo {
     private String comment;
     @ApiModelProperty(hidden = true)
     private Integer userId;
-    @ApiModelProperty("系统")
+    @ApiModelProperty("0-党校系统，1-领导干部系统，2-高校系统")
     private Integer system;
     @ApiModelProperty("职称：高级、一级、二级、三级")
     private String skill;

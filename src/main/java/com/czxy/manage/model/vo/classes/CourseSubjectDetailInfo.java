@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class SubjectDetailInfo extends CourseInfo {
+public class CourseSubjectDetailInfo extends CourseInfo {
     private String teacherName;
     @ApiModelProperty("若是点位，则有地址")
     private String address;

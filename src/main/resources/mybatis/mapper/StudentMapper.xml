@@ -65,7 +65,7 @@
     </select>
     <select id="queryStudent" resultType="com.czxy.manage.model.entity.StudentEntity">
         select id, sign_flag as signFlag, class_id as classId, user_id as userId, type, org_id as orgId
-        from student where user_id=#{userId}
+        from student where user_id=#{userId} order by id desc limit 1
     </select>
     <update id="sign">
         update student set sign_flag = 1 , updated_time=now() where id in

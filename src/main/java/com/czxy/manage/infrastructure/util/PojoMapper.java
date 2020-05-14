@@ -15,6 +15,7 @@ import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentUpdateInfo;
 import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
+import com.czxy.manage.model.vo.subject.SubjectDetailDomainInfo;
 import com.czxy.manage.model.vo.subject.SubjectInfo;
 import com.czxy.manage.model.vo.teacher.TeacherDetailInfo;
 import com.czxy.manage.model.vo.teacher.TeacherInfo;
@@ -64,9 +65,9 @@ public interface PojoMapper {
             @Mapping(ignore = true, target = "beginTime"),
             @Mapping(ignore = true, target = "endTime")
     })
-    SubjectDetailInfo toCourseInfo(CourseDetailEntity courseEntities);
+    CourseSubjectDetailInfo toCourseInfo(CourseDetailEntity courseEntities);
 
-    List<SubjectDetailInfo> toCourseInfos(List<CourseDetailEntity> courseEntities);
+    List<CourseSubjectDetailInfo> toCourseInfos(List<CourseDetailEntity> courseEntities);
 
     ClassInfo toClassInfo(ClassEntity classEntity);
 
@@ -177,4 +178,7 @@ public interface PojoMapper {
     GreetInfo toGreetInfo(GreetEntity greetEntity);
 
     List<GreetInfo> toGreetInfos(List<GreetEntity> greetEntityList);
+
+    SubjectDetailDomainInfo toSubjectDetailDomainInfo(CourseSubjectDetailInfo courseInfos);
+    List<SubjectDetailDomainInfo> toSubjectDetailDomainInfos(List<CourseSubjectDetailInfo> courseInfos);
 }

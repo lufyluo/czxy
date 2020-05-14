@@ -17,6 +17,7 @@ import com.czxy.manage.model.vo.student.StudentUpdateInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class StudentService {
     @Resource
@@ -221,30 +223,27 @@ public class StudentService {
         if (studentEntity.getClassId() == null || studentEntity.getClassId() == 0) {
             throw new ManageException(ResponseStatus.FAILURE, "学生没有班级");
         }
-        if (studentEntity.getSignFlag()==1){
-            throw new ManageException(ResponseStatus.FAILURE,"已签到，请勿重复签到");
+        if (studentEntity.getSignFlag() == 1) {
+            throw new ManageException(ResponseStatus.FAILURE, "已签到，请勿重复签到");
         }
         ClassEntity classEntity = classMapper.queryClass(studentEntity.getClassId());
-        Calendar c1 = Calendar.getInstance();
         Calendar c2 = Calendar.getInstance();
-        Calendar c3 = Calendar.getInstance();
-        c1.setTime(classEntity.getBeginTime());
         c2.setTime(new Date());
-        c3.setTime(classEntity.getEndTime());
-        int result1 = c1.compareTo(c2);
-        int result2 = c2.compareTo(c3);
-        if (result1 > 0) {
+        if (c2.before(classEntity.getBeginTime())) {
             throw new ManageException(ResponseStatus.FAILURE, "班级还未开始");
         }
-        if (result2 == 1) {
+        if (c2.after(classEntity.getEndTime())) {
             throw new ManageException(ResponseStatus.FAILURE, "班级已经结束");
         }
-        WechatAccessTokenResponse wechatAccessTokenResponse = wechatUtil.getOpenId(code);
-        if(wechatAccessTokenResponse == null){
+        log.info("==================================》");
+        String openId = wechatUtil.getOpenId(code);
+        log.info("《==================================");
+        if (StringUtils.isEmpty(openId)) {
             throw new ManageException(ResponseStatus.FAILURE, "签到失败，请重试！");
         }
+        log.info("学生id: " + userId);
         studentMapper.updateByUserId(userId);
-        userMapper.updateWechat(userId, wechatAccessTokenResponse.getOpenid());
+        userMapper.updateWechat(userId, openId);
         return true;
     }
 

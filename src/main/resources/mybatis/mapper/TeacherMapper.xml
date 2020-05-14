@@ -27,16 +27,15 @@
         t.id as teacherId,
         t.score, t.user_id as userId,t.comment,t.system,
         t.skill,t.star,t.area,
-        t.pay
+        t.pay,
         u.id, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
         u.wechat_id as wechatId,
         u.org_id as orgId,
         o.name as orgName,
         u.nation,
         u.nativeplace as nativePlace,
-        u.politics,
-        t.begin_time as beginTime,t.end_time as endTime
-         from
+        u.politics
+        from
         teacher t
         left join user u
         on t.user_id = u.id

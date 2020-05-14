@@ -40,6 +40,7 @@
         <if test="category != null and category != ''">
             and s.category=#{category}
         </if>
+        order by id desc
     </select>
 
     <select id="queryByArrangeId" resultType="com.czxy.manage.model.entity.CourseDetailEntity">
@@ -62,6 +63,7 @@
         left join site s
         on ca.content_id = s.id
         where  ca.arrange_id = #{arrangeId}
+        order by ca.begin_time
     </select>
     <select id="queryById" resultType="com.czxy.manage.model.entity.SubjectEntity">
         select
