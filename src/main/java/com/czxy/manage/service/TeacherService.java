@@ -24,11 +24,19 @@ public class TeacherService {
     @Autowired
     private OrgService orgService;
 
+    @Autowired
+    private UserService userService;
+
     public PageInfo<TeacherDetailInfo> page(TeacherPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<TeacherDetailEntity> teacherDetailEntities = teacherMapper.query(pageParam);
         PageInfo<TeacherDetailInfo> result = page.toPageInfo();
-        result.setList(PojoMapper.INSTANCE.toTeacherDetailInfos(teacherDetailEntities));
+        List<TeacherDetailInfo> teacherDetailInfos = PojoMapper.INSTANCE.toTeacherDetailInfos(teacherDetailEntities);
+        if (teacherDetailInfos != null) {
+            teacherDetailInfos.forEach(n -> n.setGenderDesc(userService.getGenderDesc(n.getGender())));
+        }
+
+        result.setList(teacherDetailInfos);
         return result;
     }
 

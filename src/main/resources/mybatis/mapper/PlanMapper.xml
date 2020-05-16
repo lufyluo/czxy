@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.PlanMapper">
+    <insert id="insert">
+        insert into play (arrange_id,files,name,types,description)
+        values (#{arrangeId},#{files},#{name},#{types},#{description})
+    </insert>
+    <delete id="delete">
+        delete from plan
+        where id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="query" resultType="com.czxy.manage.model.entity.PlanEntity">
+        select id,name,types,description
+        from plan
+        where 1=1
+        <if test="param != null and param != ''">
+            and name like '%${param}%'
+        </if>
+        <if test="typeId != null and typeId != ''">
+            and (types like '${typeId},%' or types like '%,${typeId}' or types like '%,${typeId},%' or types = #{typeId})
+        </if>
+        order by id desc
+    </select>
+
+    <update id="update">
+        update plan set arrange_id = #{arrangeId}
+        ,files = #{files}
+        ,types = #{types}
+        ,description = #{description}
+        where id = #{id}
+    </update>
+</mapper>

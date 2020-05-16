@@ -41,7 +41,7 @@ public class SubjectController {
       return ResponseUtil.success(subjectService.add(subjectInfo));
     }
     @GetMapping("/{subjectId}")
-    @ApiOperation(value = "编辑课题",notes = "根据课题ID返回课题信息")
+    @ApiOperation(value = "根据课题ID获取课题",notes = "根据课题ID返回课题信息")
     public BaseResponse<SubjectByIdInfo> getById(@PathVariable Integer subjectId){
         return ResponseUtil.success(subjectService.getById(subjectId));
     }

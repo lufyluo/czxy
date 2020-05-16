@@ -3,8 +3,9 @@ package com.czxy.manage.controller;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
-import com.czxy.manage.model.vo.CustomerPageParam;
-import com.czxy.manage.model.vo.student.CustomerInfo;
+import com.czxy.manage.model.vo.customer.CustomerPageParam;
+import com.czxy.manage.model.vo.customer.CustomerCreateInfo;
+import com.czxy.manage.model.vo.customer.CustomerInfo;
 import com.czxy.manage.service.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,5 +27,11 @@ public class CustomerController {
     @ApiOperation("编辑")
     public BaseResponse<Boolean> update(@RequestBody CustomerInfo customerInfo){
      return ResponseUtil.success(customerService.update(customerInfo));
+    }
+
+    @PostMapping
+    @ApiOperation("添加")
+    public BaseResponse<Boolean> add(@RequestBody CustomerCreateInfo customerInfo){
+        return ResponseUtil.success(customerService.add(customerInfo));
     }
 }

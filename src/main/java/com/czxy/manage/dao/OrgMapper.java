@@ -1,8 +1,7 @@
 package com.czxy.manage.dao;
 
-import com.czxy.manage.model.entity.ClassOrgEntity;
 import com.czxy.manage.model.entity.OrgEntity;
-import com.czxy.manage.model.vo.student.CustomerInfo;
+import com.czxy.manage.model.vo.customer.CustomerInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,5 +21,5 @@ public interface OrgMapper {
 
     Integer batchInsert(List<String> orgNames);
 
-    Integer updateStar(CustomerInfo customerInfo);
+    Integer updateStarAndName(CustomerInfo customerInfo);
 }

@@ -40,7 +40,7 @@
         <if test="category != null and category != ''">
             and s.category=#{category}
         </if>
-        order by id desc
+        order by s.id desc
     </select>
 
     <select id="queryByArrangeId" resultType="com.czxy.manage.model.entity.CourseDetailEntity">

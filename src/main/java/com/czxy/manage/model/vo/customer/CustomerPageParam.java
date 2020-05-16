@@ -1,4 +1,4 @@
-package com.czxy.manage.model.vo;
+package com.czxy.manage.model.vo.customer;
 
 import com.czxy.manage.model.PageParam;
 import lombok.Data;

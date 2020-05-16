@@ -1,7 +1,7 @@
 package com.czxy.manage.dao;
 
 import com.czxy.manage.model.entity.*;
-import com.czxy.manage.model.vo.student.CustomerInfo;
+import com.czxy.manage.model.vo.customer.CustomerInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

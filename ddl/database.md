@@ -594,6 +594,23 @@ alter table stock modify unit varchar(10) not null comment '单位';
 
 alter table stock modify total int null comment '本次操作后剩余总量';
 
+create table org_contactor
+(
+	contactor_name varchar(20) null,
+	contactor_phone varchar(20) null,
+	contractor_position varchar(40) null comment '对接人职务',
+	updated_time timestamp default now() null,
+	created_time timestamp default now() null
+)
+comment '单位对接人';
+alter table org_contactor
+	add org_id int null after contractor_position;
+
+alter table plan
+	add description varchar(255) null comment '描述' after topics;
+
+
+
 
 
 ```

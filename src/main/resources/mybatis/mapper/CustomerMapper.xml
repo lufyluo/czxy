@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.CustomerMapper">
+    <insert id="insert">
+        insert into org_contactor
+        (contactor_name,contactor_phone,contactor_position,org_id)
+        values (#{contactorName},#{contactorPhone},#{contactorPosition},#{orgId})
+    </insert>
 
     <select id="query" resultType="com.czxy.manage.model.entity.CustomerEntity">
-        select u.name,u.position,u.phone,c.id,c.name as className,o.name as orgName,o.star as orgStar,o.id as orgId,u.id as userId,s.id as studentId
-        from student s
-        left join user u
-        on s.user_id=u.id and type=8
-        left join class c
-        on c.id=s.class_id
+        select oc.id,o.name as orgName,oc.contactor_position as contactorPosition
+        ,oc.contactor_phone as contactorPhone,c.name as className
+        ,oc.contactor_name as contactorName
+        ,o.star as orgStar,o.id as orgId
+        from org_contactor oc
         left join org o
-        on s.org_id=o.id
+        on oc.ogr_id = o.id
+        left join class c
+        on c.org_id=o.id
         where 1=1
         <if test="param != null and param != ''">
             and (o.name like '%${param}%' or u.name like '%${param}%')
@@ -20,4 +26,11 @@
         </if>
         order by id desc
     </select>
+
+    <update id="update">
+        update org_contactor set contactor_name = #{contactorName}
+        ,contactor_phone = #{contactorPhone}
+        ,contactor_position = #{contactorPosition}
+        where id = #{id}
+    </update>
 </mapper>

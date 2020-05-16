@@ -7,10 +7,14 @@ import com.czxy.manage.model.vo.GreetInfo;
 import com.czxy.manage.model.vo.OrgInfo;
 import com.czxy.manage.model.vo.arrange.ArrangeInfo;
 import com.czxy.manage.model.vo.classes.*;
+import com.czxy.manage.model.vo.customer.CustomerCreateInfo;
+import com.czxy.manage.model.vo.customer.CustomerInfo;
+import com.czxy.manage.model.vo.plan.PlanCreateInfo;
+import com.czxy.manage.model.vo.plan.PlanInfo;
+import com.czxy.manage.model.vo.plan.PlanUpdateInfo;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
 import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.model.vo.site.TypeInfo;
-import com.czxy.manage.model.vo.student.CustomerInfo;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentUpdateInfo;
@@ -181,4 +185,13 @@ public interface PojoMapper {
 
     SubjectDetailDomainInfo toSubjectDetailDomainInfo(CourseSubjectDetailInfo courseInfos);
     List<SubjectDetailDomainInfo> toSubjectDetailDomainInfos(List<CourseSubjectDetailInfo> courseInfos);
+
+    CustomerEntity toCustomerEntity(CustomerCreateInfo customerInfo);
+
+    PlanInfo toPlanEntitys(PlanEntity planEntity);
+    List<PlanInfo> toPlanEntitys(List<PlanEntity> planEntities);
+
+    PlanEntity toPlanEntity(PlanUpdateInfo planUpdateInfo);
+
+    PlanEntity planCreateInfoToPlanEntity(PlanCreateInfo planCreateInfo);
 }

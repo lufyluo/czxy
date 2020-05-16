@@ -30,7 +30,7 @@ public class LogAspect {
     @Value("${logstrategy.request}")
     private boolean needRequestLog;
 
-    @Pointcut("execution(public * com.czxy.manage.*.controller..*(..))")
+    @Pointcut("execution(public * com.czxy.manage.controller..*(..))")
     public void declearJoinPointExpression() {
     }
 
