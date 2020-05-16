@@ -15,6 +15,8 @@ import com.czxy.manage.model.vo.plan.PlanUpdateInfo;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
 import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.model.vo.site.TypeInfo;
+import com.czxy.manage.model.vo.stock.StockInfo;
+import com.czxy.manage.model.vo.student.CustomerInfo;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentUpdateInfo;
@@ -186,6 +188,7 @@ public interface PojoMapper {
     List<GreetInfo> toGreetInfos(List<GreetEntity> greetEntityList);
 
     SubjectDetailDomainInfo toSubjectDetailDomainInfo(CourseSubjectDetailInfo courseInfos);
+
     List<SubjectDetailDomainInfo> toSubjectDetailDomainInfos(List<CourseSubjectDetailInfo> courseInfos);
 
     CustomerEntity toCustomerEntity(CustomerCreateInfo customerInfo);
@@ -197,4 +200,8 @@ public interface PojoMapper {
 
     PlanEntity planCreateInfoToPlanEntity(PlanCreateInfo planCreateInfo);
 
+
+    StockInfo toStockInfo(StockEntity stockEntity);
+
+    List<StockInfo> toStockInfos(List<StockEntity> stockEntityList);
 }
