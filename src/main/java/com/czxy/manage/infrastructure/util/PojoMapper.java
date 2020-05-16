@@ -163,6 +163,8 @@ public interface PojoMapper {
     @Mappings({@Mapping(ignore = true, target = "types")})
     SubjectByIdInfo toSubjectByIdInfo(SubjectEntity subjectEntity);
 
+    List<SubjectByIdInfo> toSubjectByIdInfos(List<SubjectEntity> subjectEntities);
+
     ClassEntity classUpdateInfoToClassEntity(ClassUpdateInfo classCreateInfo);
 
     ArrangeInfo toArrangeInfo(ArrangeEntity arrangeEntity);
@@ -194,4 +196,5 @@ public interface PojoMapper {
     PlanEntity toPlanEntity(PlanUpdateInfo planUpdateInfo);
 
     PlanEntity planCreateInfoToPlanEntity(PlanCreateInfo planCreateInfo);
+
 }

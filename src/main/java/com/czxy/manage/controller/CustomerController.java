@@ -12,26 +12,36 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/customer")
-@Api(tags = "平台客户管理",value = "平台客户管理")
+@Api(tags = "平台客户管理", value = "平台客户管理")
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
+
     @GetMapping("/page")
     @ApiOperation("分页获取客户信息")
-    public PageResponse<CustomerInfo> page(CustomerPageParam<String> pageParam){
-     return PageResponse.success(customerService.page(pageParam));
+    public PageResponse<CustomerInfo> page(CustomerPageParam<String> pageParam) {
+        return PageResponse.success(customerService.page(pageParam));
     }
+
     @PutMapping
     @ApiOperation("编辑")
-    public BaseResponse<Boolean> update(@RequestBody CustomerInfo customerInfo){
-     return ResponseUtil.success(customerService.update(customerInfo));
+    public BaseResponse<Boolean> update(@RequestBody CustomerInfo customerInfo) {
+        return ResponseUtil.success(customerService.update(customerInfo));
     }
 
     @PostMapping
     @ApiOperation("添加")
-    public BaseResponse<Boolean> add(@RequestBody CustomerCreateInfo customerInfo){
+    public BaseResponse<Boolean> add(@RequestBody CustomerCreateInfo customerInfo) {
         return ResponseUtil.success(customerService.add(customerInfo));
+    }
+
+    @DeleteMapping("/{ids}")
+    @ApiOperation("批量删除")
+    public BaseResponse<Boolean> delete(@PathVariable List<Integer> ids) {
+        return ResponseUtil.success(customerService.delete(ids));
     }
 }

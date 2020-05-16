@@ -91,6 +91,9 @@ public class UserService {
     }
     public String getGenderDesc(Integer gender) {
         String genderDesc = "";
+        if(gender==null){
+            return "未知";
+        }
         switch (gender) {
             case 0:
                 genderDesc = "男";

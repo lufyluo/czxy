@@ -9,6 +9,7 @@ import com.czxy.manage.model.entity.FileEntity;
 import com.czxy.manage.model.entity.SubjectDetailEntity;
 import com.czxy.manage.model.entity.SubjectEntity;
 import com.czxy.manage.model.entity.TypeEntity;
+import com.czxy.manage.model.vo.plan.PlanInfo;
 import com.czxy.manage.model.vo.site.TypeInfo;
 import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
 import com.czxy.manage.model.vo.subject.SubjectDetailInfo;
@@ -120,6 +121,29 @@ public class SubjectService {
         }
         subjectByIdInfo.setTypes(typeInfoList);
         return subjectByIdInfo;
+    }
+    public List<SubjectByIdInfo> getByTeacherId(Integer teacherId) {
+        List<SubjectEntity> subjectEntities = subjectMapper.getByTeacherId(teacherId);
+        if(subjectEntities==null||subjectEntities.size() ==0){
+            return null;
+        }
+        List<SubjectByIdInfo> subjectByIdInfo = PojoMapper.INSTANCE.toSubjectByIdInfos(subjectEntities);
+        String teacherName = teacherMapper.queryName(teacherId);
+        subjectByIdInfo.forEach(n->n.setTeacherName(teacherName));
+        fillTypes(subjectByIdInfo);
+        return subjectByIdInfo;
+    }
+
+    private void fillTypes(List<SubjectByIdInfo> planInfos){
+        planInfos.forEach(n->{
+            List<Integer> typeIds = Arrays.stream(n.getTypeIds().split(","))
+                    .map(item->Integer.parseInt(item))
+                    .distinct().collect(Collectors.toList());
+            List<TypeEntity> typeEntities = typeMapper.queryAll(typeIds);
+            if(typeEntities!=null){
+                n.setTypes(PojoMapper.INSTANCE.toTypeInfos(typeEntities));
+            }
+        });
     }
 
     @Transactional

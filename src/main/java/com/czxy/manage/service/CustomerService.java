@@ -48,4 +48,9 @@ public class CustomerService {
         customerMapper.insert(customerEntity);
         return true;
     }
+
+    public Boolean delete(List<Integer> ids) {
+        customerMapper.delete(ids);
+        return true;
+    }
 }

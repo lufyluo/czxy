@@ -60,12 +60,10 @@
         t.score,t.comment,t.user_id as userId,t.system,t.skill,t.star,t.area
         ,u.name,u.idcard as idCard,u.phone,u.gender,u.position,u.age,u.birthday,u.category
         ,u.wechat_id as wechatId,u.org_id as orgId,u.nation,u.nativeplace,u.education,u.politics
-        ,s.name as subjectName,s.content,s.types,s.files,s.teacher_id as teacherId
+        ,t.id as teacherId
         from teacher t
         left join user u
         on t.user_id=u.id
-        left join subject s
-        on t.id=s.teacher_id
         where t.id=#{teacherId}
     </select>
     <select id="queryName" resultType="java.lang.String">

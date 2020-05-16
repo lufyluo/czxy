@@ -26,6 +26,8 @@ public class TeacherService {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private SubjectService subjectService;
 
     public PageInfo<TeacherDetailInfo> page(TeacherPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -71,6 +73,8 @@ public class TeacherService {
     public TeacherInformationInfo query(Integer teacherId) {
         TeacherInformationEntity teacherInformationEntity = teacherMapper.queryAll(teacherId);
         TeacherInformationInfo teacherInformationInfo = PojoMapper.INSTANCE.toTeacherInformationInfo(teacherInformationEntity);
+        teacherInformationInfo.setSubjectByIdInfoList(
+                subjectService.getByTeacherId(teacherInformationInfo.getTeacherId()));
         return teacherInformationInfo;
     }
 }

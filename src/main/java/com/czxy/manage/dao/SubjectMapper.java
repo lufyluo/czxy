@@ -23,4 +23,6 @@ public interface SubjectMapper {
     Integer delete(@Param("subjectIds") List<Integer> subjectIds);
 
     List<CourseDetailEntity> queryByArrangeId(Integer arrangeId);
+
+    List<SubjectEntity> getByTeacherId(Integer teacherId);
 }
