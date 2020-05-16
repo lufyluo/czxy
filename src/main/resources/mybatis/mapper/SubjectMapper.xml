@@ -40,7 +40,7 @@
         <if test="category != null and category != ''">
             and s.category=#{category}
         </if>
-        order by id desc
+        order by s.id desc
     </select>
 
     <select id="queryByArrangeId" resultType="com.czxy.manage.model.entity.CourseDetailEntity">
@@ -70,5 +70,11 @@
         name, content, types, files, teacher_id as teacherId, category
         from subject
         where id=#{subjectId}
+    </select>
+    <select id="getByTeacherId" resultType="com.czxy.manage.model.entity.SubjectEntity">
+        select
+        name, content, types,types as typeIds, files, teacher_id as teacherId, category
+        from subject
+        where teacher_id=#{teacherId}
     </select>
 </mapper>

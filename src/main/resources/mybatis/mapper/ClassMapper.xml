@@ -87,7 +87,7 @@
         <if test="param != null and param != ''">
             where c.name like '%${param}%' or o.name like '%${param}%' or u.name like '%${param}%'
         </if>
-        order by id desc
+        order by c.id desc
     </select>
     <select id="query" resultType="com.czxy.manage.model.entity.ClassInformationEntity">
         select

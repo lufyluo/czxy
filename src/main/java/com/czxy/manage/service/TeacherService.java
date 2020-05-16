@@ -24,11 +24,21 @@ public class TeacherService {
     @Autowired
     private OrgService orgService;
 
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private SubjectService subjectService;
+
     public PageInfo<TeacherDetailInfo> page(TeacherPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<TeacherDetailEntity> teacherDetailEntities = teacherMapper.query(pageParam);
         PageInfo<TeacherDetailInfo> result = page.toPageInfo();
-        result.setList(PojoMapper.INSTANCE.toTeacherDetailInfos(teacherDetailEntities));
+        List<TeacherDetailInfo> teacherDetailInfos = PojoMapper.INSTANCE.toTeacherDetailInfos(teacherDetailEntities);
+        if (teacherDetailInfos != null) {
+            teacherDetailInfos.forEach(n -> n.setGenderDesc(userService.getGenderDesc(n.getGender())));
+        }
+
+        result.setList(teacherDetailInfos);
         return result;
     }
 
@@ -63,6 +73,8 @@ public class TeacherService {
     public TeacherInformationInfo query(Integer teacherId) {
         TeacherInformationEntity teacherInformationEntity = teacherMapper.queryAll(teacherId);
         TeacherInformationInfo teacherInformationInfo = PojoMapper.INSTANCE.toTeacherInformationInfo(teacherInformationEntity);
+        teacherInformationInfo.setSubjectByIdInfoList(
+                subjectService.getByTeacherId(teacherInformationInfo.getTeacherId()));
         return teacherInformationInfo;
     }
 }

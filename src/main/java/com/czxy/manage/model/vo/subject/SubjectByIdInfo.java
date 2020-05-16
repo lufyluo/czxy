@@ -2,6 +2,7 @@ package com.czxy.manage.model.vo.subject;
 
 import com.czxy.manage.model.entity.BaseEntity;
 import com.czxy.manage.model.vo.site.TypeInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -16,4 +17,7 @@ public class SubjectByIdInfo extends BaseEntity {
     @ApiModelProperty("类型")
     private List<TypeInfo> types;
     private Integer category;
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private String typeIds;
 }

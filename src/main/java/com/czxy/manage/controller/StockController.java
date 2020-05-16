@@ -38,7 +38,7 @@ public class StockController {
     }
     @GetMapping("/total")
     @ApiOperation("结存")
-    public BaseResponse<Integer> total(@RequestBody StockTotalInfo stockTotalInfo){
+    public BaseResponse<Integer> total(StockTotalInfo stockTotalInfo){
         return ResponseUtil.success(stockService.total(stockTotalInfo));
     }
 }

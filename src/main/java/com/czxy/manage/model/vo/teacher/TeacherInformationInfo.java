@@ -1,11 +1,13 @@
 package com.czxy.manage.model.vo.teacher;
 
 import com.czxy.manage.model.entity.TeacherEntity;
+import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class TeacherInformationInfo extends TeacherEntity {
@@ -32,14 +34,7 @@ public class TeacherInformationInfo extends TeacherEntity {
     private String education;
     @ApiModelProperty("政治面貌")
     private String politics;
-    @ApiModelProperty("课题名字")
-    private String subjectName;
-    @ApiModelProperty("课题描述")
-    private String content;
-    @ApiModelProperty("type表ID")
-    private String types;
-    @ApiModelProperty("files表ID")
-    private String files;
+    private List<SubjectByIdInfo> subjectByIdInfoList;
     @ApiModelProperty("teacher表ID")
     private Integer teacherId;
 }

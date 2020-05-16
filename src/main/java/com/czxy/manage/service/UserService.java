@@ -89,23 +89,28 @@ public class UserService {
         userInfos.setList(userInfoList);
         return userInfos;
     }
+    public String getGenderDesc(Integer gender) {
+        String genderDesc = "";
+        if(gender==null){
+            return "未知";
+        }
+        switch (gender) {
+            case 0:
+                genderDesc = "男";
+                break;
+            case 1:
+                genderDesc = "女";
+                break;
+            default:
+                genderDesc = "未知";
+                break;
+        }
+        return genderDesc;
+    }
 
     private void fillGender(List<UserInfo> userInfos) {
         if (userInfos != null) {
-            userInfos.forEach(n->{
-
-                switch (n.getGender()){
-                    case 0:
-                        n.setGenderDesc("男");
-                        break;
-                    case 1:
-                        n.setGenderDesc("女");
-                        break;
-                    default:
-                        n.setGenderDesc("未知");
-                        break;
-                }
-            });
+            userInfos.forEach(n-> n.setGenderDesc(getGenderDesc(n.getGender())));
         }
     }
 

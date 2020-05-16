@@ -39,6 +39,8 @@ public class StudentService {
     private StudentMapper studentMapper;
     @Resource
     private UserMapper userMapper;
+    @Autowired
+    private UserService userService;
     @Resource
     private ClassMapper classMapper;
     @Autowired
@@ -67,26 +69,12 @@ public class StudentService {
             }
 
             n.setStudentIdentity(getStudentIdentity(n.getType()));
-            n.setGenderDesc(getGenderDesc(n.getGender()));
+            n.setGenderDesc(userService.getGenderDesc(n.getGender()));
         });
         return toStudentDetailInfos;
     }
 
-    private String getGenderDesc(Integer gender) {
-        String genderDesc = "";
-        switch (gender) {
-            case 0:
-                genderDesc = "男";
-                break;
-            case 1:
-                genderDesc = "女";
-                break;
-            default:
-                genderDesc = "未知";
-                break;
-        }
-        return genderDesc;
-    }
+
 
     private String getStudentIdentity(Integer type) {
         //0（默认）-学员；1-班委干部；8-带班领导

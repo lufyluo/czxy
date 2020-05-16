@@ -1,10 +1,10 @@
-package com.czxy.manage.model.entity;
+package com.czxy.manage.model.vo.customer;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class CustomerEntity {
+public class CustomerCreateInfo {
     private Integer id;
     @ApiModelProperty("对接人姓名")
     private String contactorName;
@@ -14,9 +14,7 @@ public class CustomerEntity {
     private String contactorPosition;
     @ApiModelProperty("对接人电话")
     private String contactorPhone;
-    @ApiModelProperty("班级名称")
-    private String className;
-    @ApiModelProperty("客户星级")
+    @ApiModelProperty(value = "客户星级",hidden = true)
     private Integer orgStar;
     private Integer orgId;
 }
