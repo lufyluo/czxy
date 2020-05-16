@@ -15,4 +15,5 @@ public class SubjectByIdInfo extends BaseEntity {
     private String teacherName;
     @ApiModelProperty("类型")
     private List<TypeInfo> types;
+    private Integer category;
 }

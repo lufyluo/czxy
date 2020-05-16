@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface GreetMapper {
 
-    List<GreetEntity> page(String param);
+    List<GreetEntity> page(String param,String type);
 
     Integer add(GreetInfo greetInfo);
 

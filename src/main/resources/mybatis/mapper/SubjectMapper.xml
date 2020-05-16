@@ -24,7 +24,7 @@
 
     <select id="query" resultType="com.czxy.manage.model.entity.SubjectDetailEntity">
         select
-        s.name,u.name as teacherName,s.types,s.files
+        s.name,u.name as teacherName,s.types,s.files,s.id
         from subject s
         left join teacher t
         on s.teacher_id=t.id

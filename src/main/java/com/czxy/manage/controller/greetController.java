@@ -5,6 +5,7 @@ import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.GreetInfo;
+import com.czxy.manage.model.vo.GreetPageParam;
 import com.czxy.manage.service.GreetService;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.Api;
@@ -22,7 +23,7 @@ public class greetController {
     private GreetService greetService;
     @GetMapping
     @ApiOperation("问候语分页")
-    public PageResponse<GreetInfo> page(PageParam<String> pageParam){
+    public PageResponse<GreetInfo> page(GreetPageParam<String> pageParam){
         return PageResponse.success(greetService.page(pageParam));
     }
     @PostMapping

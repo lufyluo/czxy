@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class SubjectDetailInfo {
+    private Integer id;
     private String teacherName;
     private String typeName;
     private String name;

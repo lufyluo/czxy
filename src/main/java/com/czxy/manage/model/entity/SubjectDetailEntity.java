@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class SubjectDetailEntity {
+    private Integer id;
     private String teacherName;
     private String name;
     private String types;

@@ -5,6 +5,7 @@ import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.GreetEntity;
 import com.czxy.manage.model.vo.GreetInfo;
+import com.czxy.manage.model.vo.GreetPageParam;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,9 +19,9 @@ public class GreetService {
     @Resource
     private GreetMapper greetMapper;
 
-    public PageInfo<GreetInfo> page(PageParam<String> pageParam) {
+    public PageInfo<GreetInfo> page(GreetPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
-        List<GreetEntity> greetEntityList = greetMapper.page(pageParam.getParam());
+        List<GreetEntity> greetEntityList = greetMapper.page(pageParam.getParam(),pageParam.getType());
         PageInfo pageInfo = page.toPageInfo();
         pageInfo.setList(PojoMapper.INSTANCE.toGreetInfos(greetEntityList));
         return pageInfo;
