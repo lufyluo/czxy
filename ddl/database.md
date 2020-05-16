@@ -576,16 +576,24 @@ alter table subject
 create table greetings
 (
 	id int auto_increment,
-	type smallint null comment '类型',
+	type varchar(30) null comment '类型',
 	name varchar(50) null comment '节假日名称',
 	greet varchar(255) null comment '问候语',
-	date datetime null comment '问候语发送时间',
+	send_time datetime null comment '问候语发送时间',
 	constraint greetings_pk
 		primary key (id)
 )
 comment '问候语';
 alter table greetings modify type varchar(30) null comment '类型';
 alter table greetings change time send_time datetime null comment '问候语发送时间';
+
+
+alter table stock change goods_id goods_name varchar(20) null;
+
+alter table stock modify unit varchar(10) not null comment '单位';
+
+alter table stock modify total int null comment '本次操作后剩余总量';
+
 
 
 ```
