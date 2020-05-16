@@ -1,27 +1,26 @@
-package com.czxy.manage.model.entity;
+package com.czxy.manage.model.vo.stock;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
 @Data
-public class StockEntity {
+public class StockOutInfo {
+    @ApiModelProperty(hidden = true)
     private Integer id;
-    private String type;
     private String goodsName;
+    @ApiModelProperty("单位")
     private String unit;
+    @ApiModelProperty("规格")
     private String spec;
+    @ApiModelProperty("消耗")
     private Integer spend;
+    @ApiModelProperty("0-入库操作；1-出库操作")
     private Integer op;
-    private Integer originId;
     private Integer classId;
-    private Integer userId;
+    @ApiModelProperty("本次操作后剩余数量")
     private Integer total;
-    private String className;
-    private String classMasterName;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updatedTime;
 }

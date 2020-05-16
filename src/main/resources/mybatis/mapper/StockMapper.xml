@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.StockMapper">
+    <insert id="insert" parameterType="com.czxy.manage.model.vo.stock.StockOutInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into stock (goods_name, unit, spec, spend, op, class_id, total)
+        values (#{goodsName},#{unit},#{spec},#{spend},#{op},#{classId},#{total})
+    </insert>
+
+
+    <select id="page" resultType="com.czxy.manage.model.entity.StockEntity">
+        select
+        s.id,s.type,s.goods_name as goodsName,s.unit,s.spec,s.spend,s.op,
+        s.origin_id as originId,s.class_id as classId,s.user_id as userId,s.updated_time as updatedTime,
+        u.name as classMasterName,c.name as className,s.total
+        from stock s
+        left join class c
+        on s.class_id=c.id
+        left join class_master cm
+        on cm.class_id=c.id
+        left join user u
+        on u.id=cm.user_id
+        where 1=1
+        <if test="param != null and param != ''">
+            and s.goods_name=#{param}
+        </if>
+        <if test="beginTime != null  and endTime != null">
+            and s.updated_time <![CDATA[ >= ]]> #{beginTime} and s.updated_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+        order by id desc
+    </select>
+    <select id="selectTotal" resultType="java.lang.Integer">
+        select total from stock where goods_name=#{goodsName}
+        and updated_time <![CDATA[ >= ]]> #{beginTime} and updated_time <![CDATA[ <= ]]> #{endTime}
+        order by id desc
+        limit 1
+    </select>
+</mapper>
