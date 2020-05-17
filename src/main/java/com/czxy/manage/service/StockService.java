@@ -1,6 +1,8 @@
 package com.czxy.manage.service;
 
 import com.czxy.manage.dao.StockMapper;
+import com.czxy.manage.infrastructure.gloable.ManageException;
+import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.StockEntity;
 import com.czxy.manage.model.vo.StockPageParam;
@@ -31,10 +33,30 @@ public class StockService {
     }
     @Transactional
     public Boolean out(StockOutInfo stockOutInfo) {
-        stockMapper.insert(stockOutInfo);
+        Integer total = stockMapper.query(stockOutInfo.getGoodsName());
+        if (total>=stockOutInfo.getSpend()){
+            Integer newTotal=total-stockOutInfo.getSpend();
+            stockOutInfo.setTotal(newTotal);
+            stockMapper.insert(stockOutInfo);
+        }else {
+            throw new ManageException(ResponseStatus.FAILURE,"库存不足");
+        }
         return true;
     }
-
+    @Transactional
+    public Boolean in(StockOutInfo stockOutInfo) {
+        Integer total = stockMapper.query(stockOutInfo.getGoodsName());
+        if (total==null){
+            Integer newTotal=stockOutInfo.getSpend();
+            stockOutInfo.setTotal(newTotal);
+            stockMapper.insert(stockOutInfo);
+        }else {
+            Integer newTotal=total+stockOutInfo.getSpend();
+            stockOutInfo.setTotal(newTotal);
+            stockMapper.insert(stockOutInfo);
+        }
+        return true;
+    }
     public Integer total(StockTotalInfo stockTotalInfo) {
         Integer total = stockMapper.selectTotal(stockTotalInfo);
         return total;

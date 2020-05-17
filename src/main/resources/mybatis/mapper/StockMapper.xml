@@ -24,14 +24,27 @@
         <if test="param != null and param != ''">
             and s.goods_name=#{param}
         </if>
-        <if test="beginTime != null  and endTime != null">
-            and s.updated_time <![CDATA[ >= ]]> #{beginTime} and s.updated_time <![CDATA[ <= ]]> #{endTime}
+        <if test="beginTime != null ">
+            and s.updated_time <![CDATA[ >= ]]> #{beginTime}
+        </if>
+        <if test="endTime != null ">
+            and s.updated_time <![CDATA[ <= ]]> #{endTime}
         </if>
         order by id desc
     </select>
     <select id="selectTotal" resultType="java.lang.Integer">
         select total from stock where goods_name=#{goodsName}
-        and updated_time <![CDATA[ >= ]]> #{beginTime} and updated_time <![CDATA[ <= ]]> #{endTime}
+        <if test="beginTime != null ">
+            and updated_time <![CDATA[ >= ]]> #{beginTime}
+        </if>
+        <if test="endTime != null ">
+            and updated_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+        order by id desc
+        limit 1
+    </select>
+    <select id="query" resultType="java.lang.Integer">
+        select total from stock where goods_name=#{goodsName}
         order by id desc
         limit 1
     </select>

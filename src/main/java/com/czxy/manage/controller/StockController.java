@@ -34,7 +34,7 @@ public class StockController {
     @PostMapping("/in")
     @ApiOperation("入库")
     public BaseResponse<Boolean> in(@RequestBody StockOutInfo stockOutInfo){
-        return ResponseUtil.success(stockService.out(stockOutInfo));
+        return ResponseUtil.success(stockService.in(stockOutInfo));
     }
     @GetMapping("/total")
     @ApiOperation("结存")

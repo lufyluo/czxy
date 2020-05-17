@@ -684,6 +684,9 @@ create table w_paper_send
 		primary key (id)
 );
 
+rename table questionnaire to w_paper;
+rename table questionitem to w_stem;
+
 alter table w_paper change class_id description varchar(128) null;
 
 alter table w_stem

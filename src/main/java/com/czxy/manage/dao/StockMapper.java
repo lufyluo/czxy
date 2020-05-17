@@ -16,4 +16,6 @@ public interface StockMapper {
     Integer insert(StockOutInfo stockOutInfo);
 
     Integer selectTotal(StockTotalInfo stockTotalInfo);
+
+    Integer query(String goodsName);
 }
