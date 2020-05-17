@@ -3,7 +3,7 @@
 <mapper namespace="com.czxy.manage.dao.QuestionnaireMapper">
     <insert id="insert" parameterType="com.czxy.manage.model.vo.questionnaire.PaperCreateInfo" useGeneratedKeys="true"
             keyProperty="id">
-        insert into w_paper (name,description,type)values (#{name},#{description},0)
+        insert into w_paper (name,description,state)values (#{name},#{description},0)
     </insert>
     <update id="update">
         update w_paper set  name=#{name},description=#{description},updated_time=now()
@@ -17,7 +17,7 @@
 
     <select id="page" resultType="com.czxy.manage.model.entity.PaperEntity">
         select
-        id, name, description, updated_time as updatedTime, created_time as createdTime, type
+        id, name, description, updated_time as updatedTime, created_time as createdTime, state
         from w_paper
         where 1=1
         <if test="param != null and param != ''">

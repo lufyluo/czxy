@@ -9,7 +9,7 @@ public class PaperEntity {
     private Integer id;
     private String name;
     private String description;
-    private Integer type;
+    private Integer state;
     private Date updatedTime;
     private Date createdTime;
 }
