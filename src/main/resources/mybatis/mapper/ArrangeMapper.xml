@@ -38,15 +38,21 @@
         where c.id = #{classId}
     </select>
     <select id="page" resultType="com.czxy.manage.model.entity.ArrangeEntity">
-        select
-        id, name, description, updated_time as updatedTime, created_time as createdTime
-        from
-        arrange
+        select a.id,
+        a.name,
+        a.description,
+        c.begin_time   as beginTime,
+        c.end_time     as endTime,
+        a.updated_time as updatedTime,
+        a.created_time as createdTime
+        from arrange a
+        left join class c
+        on a.id = c.arrange_id
         where 1=1
         <if test="param != null and param != ''">
-            and (name like '%${param}%')
+            and (a.name like '%${param}%')
         </if>
-        order by id DESC
+        order by a.id DESC
     </select>
     <select id="getById" resultType="com.czxy.manage.model.entity.ClassArrangeWithTimeEntity">
         select a.id,

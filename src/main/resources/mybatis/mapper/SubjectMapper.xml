@@ -4,18 +4,17 @@
     <insert id="add" parameterType="com.czxy.manage.model.entity.SubjectEntity" useGeneratedKeys="true"
             keyProperty="id">
         insert into subject (name, content, types, files, teacher_id, category)
-        values (#{name},#{content},#{types},#{files},#{teacherId},#{category})
+        values (#{name}, #{content}, #{types}, #{files}, #{teacherId}, #{category})
     </insert>
     <update id="update">
         update subject
-        set
-        name = #{name}
-        ,content=#{content}
-        ,types=#{types}
-        ,teacher_id =#{teacherId}
-        ,category =#{category}
-        ,updated_time = now()
-        where id=#{id}
+        set name         = #{name}
+          , content=#{content}
+          , types=#{types}
+          , teacher_id   =#{teacherId}
+          , category     =#{category}
+          , updated_time = now()
+        where id = #{id}
     </update>
     <delete id="delete">
         delete from subject where id in
@@ -46,42 +45,55 @@
     </select>
 
     <select id="queryByArrangeId" resultType="com.czxy.manage.model.entity.CourseDetailEntity">
-        select
-        c.id,
-        c.name,
-        u.name as teacherName,
-        s.addr as address,
-        ca.category,
-        ca.begin_time as beginTime,
-        ca.end_time as endTime,
-        ca.offset,
-        ca.updated_time as updatedTime, ca.created_time as createdTime
+        select c.id,
+               c.name,
+               s.addr          as address,
+               ca.category,
+               ca.begin_time   as beginTime,
+               ca.end_time     as endTime,
+               ca.offset,
+               t.id            as teacherId,
+               u.name          as teacherName,
+               s.name          as siteName,
+               s.id            as siteId,
+               ca.updated_time as updatedTime,
+               ca.created_time as createdTime
         from course_arrange ca
-        left join subject c on ca.content_id = c.id
-        left join teacher t
-        on c.teacher_id = t.id
-        left  join user u
-        on t.user_id = u.id
-        left join site s
-        on ca.content_id = s.id
-        where  ca.arrange_id = #{arrangeId}
+                 left join subject c on ca.content_id = c.id
+                 left join teacher t
+                           on c.teacher_id = t.id
+                 left join user u
+                           on t.user_id = u.id
+                 left join site s
+                           on ca.content_id = s.id
+        where ca.arrange_id = #{arrangeId}
         order by ca.begin_time
     </select>
     <select id="queryById" resultType="com.czxy.manage.model.entity.SubjectEntity">
-        select
-        s.id,s.name, s.content, s.types, s.files, s.teacher_id as teacherId, s.category,
-        u.name as teacherName
+        select s.id,
+               s.name,
+               s.content,
+               s.types,
+               s.files,
+               s.teacher_id as teacherId,
+               s.category,
+               u.name       as teacherName
         from subject s
-         left join teacher t
-        on s.teacher_id = t.id
-         left  join user u
-        on t.user_id = u.id
-        where s.id=#{subjectId}
+                 left join teacher t
+                           on s.teacher_id = t.id
+                 left join user u
+                           on t.user_id = u.id
+        where s.id = #{subjectId}
     </select>
     <select id="getByTeacherId" resultType="com.czxy.manage.model.entity.SubjectEntity">
-        select
-        name, content, types,types as typeIds, files, teacher_id as teacherId, category
+        select name,
+               content,
+               types,
+               types      as typeIds,
+               files,
+               teacher_id as teacherId,
+               category
         from subject
-        where teacher_id=#{teacherId}
+        where teacher_id = #{teacherId}
     </select>
 </mapper>

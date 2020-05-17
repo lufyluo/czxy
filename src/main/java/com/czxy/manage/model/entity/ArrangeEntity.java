@@ -10,6 +10,8 @@ public class ArrangeEntity {
     private Integer id;
     private String name;
     private String description;
+    private Date beginTime;
+    private Date endTime;
     private Date updatedTime;
     private Date createdTime;
 }

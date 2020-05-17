@@ -15,4 +15,6 @@ public interface StemMapper {
     Integer delete(List<Integer> stemIds);
 
     List<StemEntity> query(PageParam<String> pageParam);
+
+    List<StemEntity> queryByPaperId(Integer paperId);
 }

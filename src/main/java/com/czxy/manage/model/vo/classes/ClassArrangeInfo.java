@@ -1,5 +1,6 @@
 package com.czxy.manage.model.vo.classes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

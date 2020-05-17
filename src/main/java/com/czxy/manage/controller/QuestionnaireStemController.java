@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Api(tags = "问卷-题目", value = "试卷-题目")
@@ -24,6 +25,12 @@ public class QuestionnaireStemController {
     @ApiOperation("分页获取")
     public PageResponse<StemInfo> page(PageParam<String> pageParam) {
         return PageResponse.success(questionnaireStemService.page(pageParam));
+    }
+
+    @GetMapping("/{paperId}}")
+    @ApiOperation("分页获取")
+    public BaseResponse<List<StemInfo>> get(@PathVariable @Min(value = 1) Integer paperId) {
+        return ResponseUtil.success(questionnaireStemService.get(paperId));
     }
 
     @PutMapping

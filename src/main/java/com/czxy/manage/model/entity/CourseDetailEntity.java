@@ -14,4 +14,6 @@ public class CourseDetailEntity extends CourseEntity {
     private Integer category;
     private Long beginTime;
     private Long endTime;
+    private Integer siteId;
+    private String siteName;
 }

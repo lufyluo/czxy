@@ -29,10 +29,10 @@ public class QuestionnaireStemService {
     public PageInfo<StemInfo> page(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<StemEntity> stemEntities = stemMapper.query(pageParam);
-        PageInfo<StemInfo> stemInfos = page.toPageInfo();
-        List<StemInfo> planInfos = PojoMapper.INSTANCE.toStemInfos(stemEntities);
-        stemInfos.setList(planInfos);
-        return stemInfos;
+        PageInfo<StemInfo> pageInfo = page.toPageInfo();
+        List<StemInfo> stemInfos = PojoMapper.INSTANCE.toStemInfos(stemEntities);
+        pageInfo.setList(stemInfos);
+        return pageInfo;
     }
 
     @Transactional
@@ -82,5 +82,11 @@ public class QuestionnaireStemService {
         if (updateOptions != null && updateOptions.size() > 0) {
             optionMapper.batchUpdate(updateOptions);
         }
+    }
+
+    public List<StemInfo> get(Integer paperId) {
+        List<StemEntity> stemEntities = stemMapper.queryByPaperId(paperId);
+        List<StemInfo> stemInfos = PojoMapper.INSTANCE.toStemInfos(stemEntities);
+        return stemInfos;
     }
 }

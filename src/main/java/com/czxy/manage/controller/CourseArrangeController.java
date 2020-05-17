@@ -37,13 +37,13 @@ public class CourseArrangeController {
     }
 
     @GetMapping("/getById/{id}")
-    @ApiOperation("根据班级获取课表（课表管理，查看页数据结构）")
+    @ApiOperation("根据课表id获取课表详情）")
     public BaseResponse<ClassArrangeInfo> getById(@PathVariable Integer id) {
         return ResponseUtil.success(classCourseService.getById(id));
     }
 
     @GetMapping("/tableById/{id}")
-    @ApiOperation("根据班级获取课表（课表管理，查看页数据结构）")
+    @ApiOperation("根据课表id获取课表数据（课表管理，查看页数据结构）")
     public BaseResponse<ClassArrangeTableInfo> tableById(@PathVariable Integer id) {
         return ResponseUtil.success(classCourseService.tableById(id));
     }

@@ -54,6 +54,10 @@ public class ClassCourseService {
 
         courseEntities.forEach(n -> {
             CourseSubjectDetailInfo subjectDetailInfo = PojoMapper.INSTANCE.toCourseInfo(n);
+            if (subjectDetailInfo.getCategory() == 1) {
+                subjectDetailInfo.setId(n.getSiteId());
+                subjectDetailInfo.setName(n.getSiteName());
+            }
             Long current = beginTime + +dayMiliSeconds * n.getOffset();
             temp.setTimeInMillis(current);
 
@@ -76,8 +80,8 @@ public class ClassCourseService {
         calendar.setTime(new Date());
         classArrangeInfo.setState(0);
         classArrangeInfo.setStateDesc("未使用");
-        if(calendar.after(classArrangeInfo.getBeginTime())
-                &&calendar.before(classArrangeInfo.getEndTime())){
+        if (calendar.after(classArrangeInfo.getBeginTime())
+                && calendar.before(classArrangeInfo.getEndTime())) {
             classArrangeInfo.setState(1);
             classArrangeInfo.setStateDesc("使用中");
         }
@@ -90,12 +94,17 @@ public class ClassCourseService {
             throw new ManageException(ResponseStatus.DATANOTEXIST);
         }
         ClassArrangeInfo classArrangeInfo = PojoMapper.INSTANCE.toClassArrangeInfo(classArrangeWithTimeEntity);
+        buildState(classArrangeInfo);
         List<CourseDetailEntity> courseEntities = subjectMapper.queryByArrangeId(classArrangeWithTimeEntity.getId());
         List<CourseSubjectDetailInfo> courseInfos = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
-
+        setDurantion(classArrangeInfo, courseEntities);
         courseEntities.forEach(n -> {
             CourseSubjectDetailInfo subjectDetailInfo = PojoMapper.INSTANCE.toCourseInfo(n);
+            if (subjectDetailInfo.getCategory() == 1) {
+                subjectDetailInfo.setId(n.getSiteId());
+                subjectDetailInfo.setName(n.getSiteName());
+            }
             calendar.setTimeInMillis(n.getBeginTime());
             subjectDetailInfo.setBeginTime(calendar.getTime());
             calendar.setTimeInMillis(n.getEndTime());
@@ -104,6 +113,18 @@ public class ClassCourseService {
         });
         classArrangeInfo.setCourseInfos(courseInfos);
         return classArrangeInfo;
+    }
+
+    private void setDurantion(ClassArrangeInfo classArrangeInfo, List<CourseDetailEntity> courseEntities) {
+        if (courseEntities != null && courseEntities.size() > 0) {
+            Calendar calendar = Calendar.getInstance();
+            Long begin = courseEntities.stream().map(n -> n.getBeginTime()).min(Long::compareTo).get();
+            calendar.setTimeInMillis(begin);
+            classArrangeInfo.setBeginTime(calendar.getTime());
+            Long end = courseEntities.stream().map(n -> n.getBeginTime()).max(Long::compareTo).get();
+            calendar.setTimeInMillis(end);
+            classArrangeInfo.setEndTime(calendar.getTime());
+        }
     }
 
     @Transactional
@@ -124,7 +145,21 @@ public class ClassCourseService {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<ArrangeEntity> arrangeEntities = arrangeMapper.page(pageParam.getParam());
         PageInfo<ArrangeInfo> result = page.toPageInfo();
-        result.setList(PojoMapper.INSTANCE.toArrangeInfos(arrangeEntities));
+        List<ArrangeInfo> arrangeInfos = PojoMapper.INSTANCE.toArrangeInfos(arrangeEntities);
+        Calendar calendar = Calendar.getInstance();
+        arrangeInfos.forEach(n -> {
+            n.setState(0);
+            n.setStateDesc("未使用");
+            if (n.getBeginTime() != null && n.getEndTime() != null) {
+                calendar.setTime(new Date());
+                if (calendar.after(n.getBeginTime())
+                        && calendar.before(n.getEndTime())) {
+                    n.setState(1);
+                    n.setStateDesc("使用中");
+                }
+            }
+        });
+        result.setList(arrangeInfos);
         return result;
     }
 
@@ -154,7 +189,7 @@ public class ClassCourseService {
     public ClassArrangeTableInfo table(Integer classId) {
         ClassArrangeInfo classArrangeInfo = get(classId);
         ClassArrangeTableInfo classArrangeTableInfo = new ClassArrangeTableInfo();
-        if(classArrangeInfo.getBeginTime()!=null){
+        if (classArrangeInfo.getBeginTime() != null) {
             classArrangeTableInfo.setHead(getHead(classArrangeInfo.getBeginTime(), classArrangeInfo.getEndTime()));
         }
         if (classArrangeInfo.getCourseInfos() == null
@@ -171,11 +206,11 @@ public class ClassCourseService {
     public ClassArrangeTableInfo tableById(Integer id) {
         ClassArrangeInfo classArrangeInfo = getById(id);
         ClassArrangeTableInfo classArrangeTableInfo = new ClassArrangeTableInfo();
-        if(classArrangeInfo.getBeginTime()!=null){
+        if (classArrangeInfo.getBeginTime() != null) {
             classArrangeTableInfo.setHead(getHead(classArrangeInfo.getBeginTime(), classArrangeInfo.getEndTime()));
         }
-        if (classArrangeInfo.getCourseInfos() == null
-                || classArrangeInfo.getCourseInfos().size() == 0) {
+        if (classArrangeInfo.getCourseInfos() != null
+                && classArrangeInfo.getCourseInfos().size() > 0) {
             classArrangeTableInfo.setBody(
                     getBody(classArrangeInfo.getCourseInfos(),
                             classArrangeTableInfo.getHead().size(),
@@ -191,6 +226,7 @@ public class ClassCourseService {
         Calendar endCalendar = Calendar.getInstance();
         endCalendar.setTime(end);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        head.add("班次日期");
         while (beginCalendar.before(end)) {
             head.add(dateFormat.format(beginCalendar.getTime()));
             beginCalendar.add(1, Calendar.DAY_OF_MONTH);
@@ -233,14 +269,16 @@ public class ClassCourseService {
         list.forEach(n -> {
             currentTime.setTime(n.getBeginTime());
             int currentDayNum = currentTime.get(Calendar.DAY_OF_YEAR);
-            if (currentDayNum - dayNum > 0 && currentDayNum - dayNum < arr.length) {
+            if (currentDayNum - dayNum >= 0 && currentDayNum - dayNum < arr.length) {
                 String content = "课题: " + n.getName();
                 if (n.getCategory() == 0) {
                     content = content + "\r\n授课老师: " + n.getTeacherName();
                 } else if (n.getCategory() == 1) {
-                    content = content + "\r\n点位: " + n.getTeacherName();
+                    content = content + "\r\n点位: " + n.getAddress();
                 }
-                arr[dayNum - currentDayNum] = content;
+                if (arr.length > dayNum - currentDayNum + 1) {
+                    arr[dayNum - currentDayNum + 1] = content;
+                }
             }
 
         });

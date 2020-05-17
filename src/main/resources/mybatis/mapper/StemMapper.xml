@@ -22,4 +22,12 @@
     <select id="query" resultType="com.czxy.manage.model.entity.questionnaire.stem.StemEntity">
 
     </select>
+    <select id="queryByPaperId" resultType="com.czxy.manage.model.entity.questionnaire.stem.StemEntity">
+        select id, title, score, `index`, required
+        from w_stem s
+        left join w_paper_stem ps
+        on s.id = ps.stem_id
+        where ps.paper_id = #{paperId}
+        order by `index`
+    </select>
 </mapper>
