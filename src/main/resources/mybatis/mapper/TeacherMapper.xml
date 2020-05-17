@@ -15,7 +15,7 @@
         update teacher
         set score=#{score},comment=#{comment},
         `system`=#{system},skill=#{skill},
-        star=#{star},area=#{area},pay=#{pay}
+        star=#{star},area=#{area},pay=#{pay},updated_time=now()
         where id=#{teacherId}
     </update>
     <delete id="delete">

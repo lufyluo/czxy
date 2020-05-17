@@ -6,7 +6,7 @@
         insert into greetings (type, name, greet, send_time) values (#{type},#{name},#{greet},#{sendTime})
     </insert>
     <update id="update">
-        update greetings set type=#{type},name=#{name},greet=#{greet},send_time=#{sendTime}
+        update greetings set type=#{type},name=#{name},greet=#{greet},send_time=#{sendTime},updated_time= now()
         where id=#{id}
     </update>
     <delete id="delete">

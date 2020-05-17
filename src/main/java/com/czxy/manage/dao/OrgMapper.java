@@ -22,4 +22,6 @@ public interface OrgMapper {
     Integer batchInsert(List<String> orgNames);
 
     Integer updateStarAndName(CustomerInfo customerInfo);
+
+    Integer updateStar(Integer orgId, Integer orgStar);
 }

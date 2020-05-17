@@ -67,10 +67,10 @@
         where id=#{userId}
     </update>
     <update id="updateWechat">
-        update user set wechat_id =#{openId} where id=#{userId}
+        update user set wechat_id =#{openId},updated_time=now() where id=#{userId}
     </update>
     <update id="updateByCustomer">
-        update user set name=#{name},position=#{position},phone=#{phone} where id=#{userId}
+        update user set name=#{name},position=#{position},phone=#{phone},updated_time=now() where id=#{userId}
     </update>
     <delete id="delete">
       delete from user where id in <foreach collection="id" item="item" index="index"

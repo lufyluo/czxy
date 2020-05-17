@@ -27,7 +27,7 @@
         on c.org_id=o.id
         where 1=1
         <if test="param != null and param != ''">
-            and (o.name like '%${param}%' or u.name like '%${param}%')
+            and (o.name like '%${param}%' or oc.contactor_name like '%${param}%')
         </if>
         <if test="star != null and star != ''">
             and o.star= #{star}
@@ -38,7 +38,7 @@
     <update id="update">
         update org_contactor set contactor_name = #{contactorName}
         ,contactor_phone = #{contactorPhone}
-        ,contactor_position = #{contactorPosition}
+        ,contactor_position = #{contactorPosition},updated_time= now()
         where id = #{id}
     </update>
 </mapper>

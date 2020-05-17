@@ -46,6 +46,7 @@ public class CustomerService {
         customerInfo.setOrgId(orgId);
         CustomerEntity customerEntity = PojoMapper.INSTANCE.toCustomerEntity(customerInfo);
         customerMapper.insert(customerEntity);
+        orgMapper.updateStar(customerEntity.getOrgId(),customerEntity.getOrgStar());
         return true;
     }
 

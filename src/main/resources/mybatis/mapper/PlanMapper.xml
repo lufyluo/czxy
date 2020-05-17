@@ -31,6 +31,7 @@
         ,files = #{files}
         ,types = #{types}
         ,description = #{description}
+        ,updated_time=now()
         where id = #{id}
     </update>
 </mapper>

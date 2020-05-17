@@ -77,10 +77,10 @@
         update student set class_id=#{classId}, type=#{type}, updated_time=now() where id=#{id}
     </update>
     <update id="clearLeader">
-        update student set type = 0 where class_id = #{classId} and type = 10
+        update student set type = 0,updated_time=now() where class_id = #{classId} and type = 10
     </update>
     <update id="setLeader">
-        update student set type = 10 where class_id = #{classId} and user_id = #{userId}
+        update student set type = 10,updated_time=now() where class_id = #{classId} and user_id = #{userId}
     </update>
     <update id="updateClass">
         <foreach collection="list" item="item" open="" close=";" separator=";">
@@ -92,10 +92,10 @@
         </foreach>
     </update>
     <update id="updateByUserId">
-        update student set sign_flag = 1 where user_id=#{userId}
+        update student set sign_flag = 1 ,updated_time=now()where user_id=#{userId}
     </update>
     <update id="updateStudentClass">
-        update student set class_id=#{classId} where id in <foreach collection="studentIds" item="item" index="index"
+        update student set class_id=#{classId},updated_time=now() where id in <foreach collection="studentIds" item="item" index="index"
                                                                     open="(" separator="," close=")">#{item}
                                                            </foreach>
     </update>

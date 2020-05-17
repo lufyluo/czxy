@@ -627,6 +627,11 @@ comment '信息发布';
 alter table message modify user_id varchar(255) null;
 
 alter table message modify class_id varchar(255) null;
+alter table greetings
+	add updated_time datetime default now() null;
+
+alter table greetings
+	add created_time datetime default now() null;
 
 
 

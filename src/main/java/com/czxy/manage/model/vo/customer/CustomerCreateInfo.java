@@ -14,7 +14,7 @@ public class CustomerCreateInfo {
     private String contactorPosition;
     @ApiModelProperty("对接人电话")
     private String contactorPhone;
-    @ApiModelProperty(value = "客户星级",hidden = true)
+    @ApiModelProperty(value = "客户星级")
     private Integer orgStar;
     private Integer orgId;
 }
