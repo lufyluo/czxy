@@ -1,10 +1,7 @@
 package com.czxy.manage.infrastructure.util;
 
 import com.czxy.manage.model.entity.*;
-import com.czxy.manage.model.vo.AddressInfo;
-import com.czxy.manage.model.vo.CompositionInfo;
-import com.czxy.manage.model.vo.GreetInfo;
-import com.czxy.manage.model.vo.OrgInfo;
+import com.czxy.manage.model.vo.*;
 import com.czxy.manage.model.vo.arrange.ArrangeInfo;
 import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.customer.CustomerCreateInfo;
@@ -208,4 +205,6 @@ public interface PojoMapper {
 
     FileInfo tiFileInfo(FileEntity fileEntities);
     List<FileInfo> tiFileInfos(List<FileEntity> fileEntities);
+
+    SendEntity toSendEntity(SendInfo sendInfo);
 }

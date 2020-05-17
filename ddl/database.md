@@ -612,6 +612,21 @@ alter table plan
 	add description varchar(255) null comment '描述' after topics;
 
 alter table plan change arrang_id arrange_id int null;
+create table message
+(
+	id int auto_increment,
+	user_id int null,
+	class_id int null,
+	message varchar(255) null comment '发送的消息内容',
+	updated_time datetime null,
+	created_time datetime null,
+	constraint message_pk
+		primary key (id)
+)
+comment '信息发布';
+alter table message modify user_id varchar(255) null;
+
+alter table message modify class_id varchar(255) null;
 
 
 

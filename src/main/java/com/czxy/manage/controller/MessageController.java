@@ -1,6 +1,7 @@
 package com.czxy.manage.controller;
 
 import com.czxy.manage.infrastructure.response.BaseResponse;
+import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.vo.SendInfo;
 import com.czxy.manage.service.MessageService;
 import io.swagger.annotations.Api;
@@ -21,6 +22,6 @@ public class MessageController {
     @PostMapping
     @ApiOperation("消息推送")
     public BaseResponse<Boolean> send(@RequestBody SendInfo sendInfo) {
-        return null;
+        return ResponseUtil.success(messageService.send(sendInfo));
     }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.MessageMapper">
+
+    <insert id="insertAll" useGeneratedKeys="true" parameterType="com.czxy.manage.model.entity.SendEntity"
+            keyProperty="id">
+        insert into message (message,is_to_all)values (#{message},1)
+    </insert>
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.czxy.manage.model.entity.SendEntity"
+            keyProperty="id">
+        insert into message(user_ids, class_ids, message, is_to_all) values (#{userIdsString},#{classIdsString},#{message},0)
+    </insert>
+</mapper>
