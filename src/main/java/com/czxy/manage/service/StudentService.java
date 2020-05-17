@@ -75,7 +75,6 @@ public class StudentService {
     }
 
 
-
     private String getStudentIdentity(Integer type) {
         //0（默认）-学员；1-班委干部；8-带班领导
         String identity = "-";
@@ -157,19 +156,32 @@ public class StudentService {
         if (studentAddInfos == null || studentAddInfos.size() == 0) {
             return true;
         }
-        List<UserEntity> userEntity = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos);
-        userMapper.batchInsert(
-                userEntity.stream().
-                        filter(n->ObjectUtils.nullSafeEquals(n.getId(),null)).collect(Collectors.toList()));
+        List<UserEntity> userEntity = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos).stream().
+                filter(n -> ObjectUtils.nullSafeEquals(n.getId(), null)).collect(Collectors.toList());
+        if (userEntity != null && userEntity.size() != 0) {
+            userMapper.batchInsert(userEntity);
+        }
+
         studentAddInfos.forEach(n -> {
-            Optional<UserEntity> user = userEntity.stream().filter(item -> item.getIdCard().equals(n.getIdCard())).findFirst();
+            Optional<UserEntity> user = userEntity.stream()
+                    .filter(item ->
+                            ObjectUtils.nullSafeEquals(item.getIdCard(), (n.getIdCard()))
+                                    || ObjectUtils.nullSafeEquals(item.getPhone(), (n.getPhone()))).findFirst();
             if (user.isPresent()) {
                 n.setUserId(user.get().getId());
             }
         });
+
         fillClassId(studentAddInfos);
         List<StudentEntity> studentEntities = PojoMapper.INSTANCE.toStudentEntities(studentAddInfos);
         studentMapper.batchInsert(studentEntities);
+        studentAddInfos.forEach(n -> {
+            Optional<StudentEntity> optionalStudentEntity = studentEntities.stream()
+                    .filter(item -> item.getUserId().equals(n.getUserId())).findFirst();
+            if (optionalStudentEntity.isPresent()) {
+                n.setStudentId(optionalStudentEntity.get().getId());
+            }
+        });
         return true;
     }
 

@@ -631,3 +631,61 @@ alter table message modify class_id varchar(255) null;
 
 
 ```
+
+问卷：
+```sql
+create table w_paper_stem
+(
+	id int auto_increment,
+	`index` int default 0 not null comment '题目序号',
+	paper_id int not null,
+	stem_id int not null,
+	updated_time datetime default now() null,
+	created_time datetime default now() null,
+	constraint w_paper_stem_pk
+		primary key (id)
+)
+comment '问卷试题关系表';
+
+create table w_option
+(
+	name varchar(60) not null,
+	score int null comment '选项分数',
+	type smallint default 0 null comment '0-无分数，1-有分数',
+	updated_time datetime default now() null,
+	created_time datetime default now() null
+)
+comment '问卷题目选项';
+
+create table w_answer
+(
+	user_id int null,
+	option_ids varchar(20) null,
+	content varchar(255) null comment '用户主观题答案（无选项）',
+	updated_time datetime default now() null,
+	created_time datetime default now() null
+)
+comment '用户提交答案';
+
+create table w_paper_send
+(
+	id int auto_increment,
+	is_to_all int default 0 null comment '0-不是，1-是',
+	user_id int not null comment '用户id',
+	paper_id int not null,
+	updated_time datetime default now() null,
+	created_time datetime default now() null,
+	constraint w_paper_send_pk
+		primary key (id)
+);
+
+alter table w_paper change class_id description varchar(128) null;
+
+alter table w_stem
+	add updated_time datetime default now() null;
+
+alter table w_stem
+	add created_time datetime default now() null;
+
+
+```

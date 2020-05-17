@@ -83,8 +83,12 @@
         update student set type = 10 where class_id = #{classId} and user_id = #{userId}
     </update>
     <update id="updateClass">
-        <foreach collection="list" item="item">
-            update student set class_id=#{classId}, type=#{type}, updated_time=now() where id=#{studentId};
+        <foreach collection="list" item="item" open="" close=";" separator=";">
+            update student set
+            class_id=#{item.classId},
+            type=#{item.type},
+            updated_time=now()
+            where id=#{item.studentId}
         </foreach>
     </update>
     <update id="updateByUserId">
