@@ -80,7 +80,7 @@ public class SubjectService {
                 if (StringUtil.isNotEmpty(n.getTypes())) {
                     List<String> idsTemp = Arrays.asList(
                             n.getTypes().split(","));
-                    n.setTypeName(typeEntities.stream()
+                    n.setTypeNames(typeEntities.stream()
                             .filter(item -> idsTemp.contains(item.getId() + ""))
                             .map(TypeEntity::getName)
                             .collect(Collectors.joining(",")));
@@ -95,6 +95,7 @@ public class SubjectService {
     public Boolean add(SubjectInfo subjectInfo) {
         List<TypeInfo> typeInfos = subjectInfo.getTypes();
         List<TypeEntity> typeEntityList = PojoMapper.INSTANCE.toTypeEntities(typeInfos);
+        typeEntityList.forEach(n->n.setCategory(0));
         typeService.batchInsertIfObsent(typeEntityList);
         SubjectEntity subjectEntity = PojoMapper.INSTANCE.toSubjectEntity(subjectInfo);
         String result = typeEntityList.stream().map(n -> n.getId().toString()).collect(Collectors.joining(","));
@@ -107,19 +108,30 @@ public class SubjectService {
         SubjectEntity subjectEntity = subjectMapper.queryById(subjectId);
         SubjectByIdInfo subjectByIdInfo = PojoMapper.INSTANCE.toSubjectByIdInfo(subjectEntity);
         subjectByIdInfo.setTeacherName(teacherMapper.queryName(subjectEntity.getTeacherId()));
-        String types = subjectEntity.getTypes();
-        String[] split = types.split(",");
-        List<TypeInfo> typeInfoList = new ArrayList<>();
-        for (int i = 0; i < split.length; i++) {
-            Integer typeInfoId = Integer.parseInt(split[i]);
-            TypeInfo typeInfo = new TypeInfo();
-            typeInfo.setId(typeInfoId);
-            typeInfo.setCategory(0);
-            String typeName = typeMapper.query(typeInfoId);
-            typeInfo.setName(typeName);
-            typeInfoList.add(typeInfo);
+        if(!StringUtils.isEmpty(subjectEntity.getTypes()))
+        {
+            String types = subjectEntity.getTypes();
+            String[] split = types.split(",");
+            List<TypeInfo> typeInfoList = new ArrayList<>();
+            for (int i = 0; i < split.length; i++) {
+                Integer typeInfoId = Integer.parseInt(split[i]);
+                TypeInfo typeInfo = new TypeInfo();
+                typeInfo.setId(typeInfoId);
+                typeInfo.setCategory(0);
+                String typeName = typeMapper.query(typeInfoId);
+                typeInfo.setName(typeName);
+                typeInfoList.add(typeInfo);
+            }
+            subjectByIdInfo.setTypes(typeInfoList);
         }
-        subjectByIdInfo.setTypes(typeInfoList);
+        if(!StringUtils.isEmpty(subjectEntity.getFiles())){
+            String files = subjectEntity.getFiles();
+            List<Integer> fileIds = new ArrayList<>();
+            Arrays.stream(files.split(",")).forEach(n -> fileIds.add(Integer.parseInt(n)));
+            List<FileEntity> fileEntities = fileMapper.query(fileIds);
+            subjectByIdInfo.setFileInfos(PojoMapper.INSTANCE.tiFileInfos(fileEntities));
+        }
+
         return subjectByIdInfo;
     }
     public List<SubjectByIdInfo> getByTeacherId(Integer teacherId) {

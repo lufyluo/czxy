@@ -10,4 +10,5 @@ public class PlanEntity extends BaseEntity {
     private String name;
     private String types;
     private String topics;
+    private String description;
 }

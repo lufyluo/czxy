@@ -3,7 +3,8 @@
 <mapper namespace="com.czxy.manage.dao.SubjectMapper">
     <insert id="add" parameterType="com.czxy.manage.model.entity.SubjectEntity" useGeneratedKeys="true"
             keyProperty="id">
-        insert into subject (name, content, types, files, teacher_id, category) values (#{name},#{content},#{types},#{files},#{teacherId},#{category})
+        insert into subject (name, content, types, files, teacher_id, category)
+        values (#{name},#{content},#{types},#{files},#{teacherId},#{category})
     </insert>
     <update id="update">
         update subject
@@ -17,14 +18,15 @@
         where id=#{id}
     </update>
     <delete id="delete">
-        delete from subject where id in <foreach collection="subjectIds" item="item" index="index"
-                                                 open="(" separator="," close=")">#{item}
-                                        </foreach>
+        delete from subject where id in
+        <foreach collection="subjectIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
     </delete>
 
     <select id="query" resultType="com.czxy.manage.model.entity.SubjectDetailEntity">
         select
-        s.name,u.name as teacherName,s.types,s.files,s.id
+        s.id,s.name,u.name as teacherName,s.types,s.files,s.content,s.category
         from subject s
         left join teacher t
         on s.teacher_id=t.id
@@ -67,9 +69,14 @@
     </select>
     <select id="queryById" resultType="com.czxy.manage.model.entity.SubjectEntity">
         select
-        name, content, types, files, teacher_id as teacherId, category
-        from subject
-        where id=#{subjectId}
+        s.id,s.name, s.content, s.types, s.files, s.teacher_id as teacherId, s.category,
+        u.name as teacherName
+        from subject s
+         left join teacher t
+        on s.teacher_id = t.id
+         left  join user u
+        on t.user_id = u.id
+        where s.id=#{subjectId}
     </select>
     <select id="getByTeacherId" resultType="com.czxy.manage.model.entity.SubjectEntity">
         select

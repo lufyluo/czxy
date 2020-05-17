@@ -158,7 +158,9 @@ public class StudentService {
             return true;
         }
         List<UserEntity> userEntity = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos);
-        userMapper.batchInsert(userEntity);
+        userMapper.batchInsert(
+                userEntity.stream().
+                        filter(n->ObjectUtils.nullSafeEquals(n.getId(),null)).collect(Collectors.toList()));
         studentAddInfos.forEach(n -> {
             Optional<UserEntity> user = userEntity.stream().filter(item -> item.getIdCard().equals(n.getIdCard())).findFirst();
             if (user.isPresent()) {

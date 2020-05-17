@@ -611,4 +611,8 @@ comment '单位对接人';
 alter table plan
 	add description varchar(255) null comment '描述' after topics;
 
+alter table plan change arrang_id arrange_id int null;
+
+
+
 ```

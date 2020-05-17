@@ -30,7 +30,7 @@ public class PlanService {
     @Autowired
     private TypeService typeService;
 
-    public PageInfo page(PlanPageParam<String> pageParam) {
+    public PageInfo<PlanInfo> page(PlanPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<PlanEntity> planEntities = planMapper.query(pageParam);
         PageInfo<PlanInfo> pageInfo = page.toPageInfo();

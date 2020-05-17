@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.PlanMapper">
     <insert id="insert">
-        insert into play (arrange_id,files,name,types,description)
+        insert into plan (arrange_id,files,name,types,description)
         values (#{arrangeId},#{files},#{name},#{types},#{description})
     </insert>
     <delete id="delete">

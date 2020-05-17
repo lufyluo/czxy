@@ -9,6 +9,7 @@ import com.czxy.manage.model.vo.arrange.ArrangeInfo;
 import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.customer.CustomerCreateInfo;
 import com.czxy.manage.model.vo.customer.CustomerInfo;
+import com.czxy.manage.model.vo.files.FileInfo;
 import com.czxy.manage.model.vo.plan.PlanCreateInfo;
 import com.czxy.manage.model.vo.plan.PlanInfo;
 import com.czxy.manage.model.vo.plan.PlanUpdateInfo;
@@ -90,6 +91,7 @@ public interface PojoMapper {
 
     List<StudentDetailInfo> toStudentDetailInfos(List<StudentDetailEntity> studentDetailEntities);
 
+    @Mappings({@Mapping(source = "userId", target = "id")})
     UserEntity studentAddToUserEntity(StudentAddInfo studentAddInfo);
 
     List<UserEntity> studentAddToUserEntities(List<StudentAddInfo> studentAddInfos);
@@ -203,4 +205,7 @@ public interface PojoMapper {
     StockInfo toStockInfo(StockEntity stockEntity);
 
     List<StockInfo> toStockInfos(List<StockEntity> stockEntityList);
+
+    FileInfo tiFileInfo(FileEntity fileEntities);
+    List<FileInfo> tiFileInfos(List<FileEntity> fileEntities);
 }

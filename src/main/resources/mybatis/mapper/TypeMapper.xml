@@ -14,7 +14,7 @@
         insert into type
         (name, category)
         VALUES
-        <foreach collection="list" separator=";" item="item">
+        <foreach collection="list" separator="," item="item">
             (#{item.name},#{item.category})
         </foreach>
     </insert>

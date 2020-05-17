@@ -101,7 +101,7 @@ public class ClassService {
             studentService.batchInsert(
                     classCreateInfo.getStudentAddInfos()
                             .stream()
-                            .filter(n->n.getStudentId()!=null)
+                            .filter(n->n.getStudentId()==null)
                             .collect(Collectors.toList()));
             studentService.batchUpdateClass(
                     classCreateInfo.getStudentAddInfos()
