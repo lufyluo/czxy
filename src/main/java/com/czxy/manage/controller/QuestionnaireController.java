@@ -3,6 +3,8 @@ package com.czxy.manage.controller;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
+import com.czxy.manage.model.PageParam;
+import com.czxy.manage.model.vo.PaperInfo;
 import com.czxy.manage.model.vo.plan.PlanInfo;
 import com.czxy.manage.model.vo.plan.PlanPageParam;
 import com.czxy.manage.model.vo.questionnaire.PaperCreateInfo;
@@ -24,13 +26,13 @@ public class QuestionnaireController {
 
     @GetMapping("/page")
     @ApiOperation("分页获取")
-    public PageResponse<PlanInfo> page(PlanPageParam<String> pageParam) {
+    public PageResponse<PaperInfo> page(PageParam<String> pageParam) {
         return PageResponse.success(questionnaireService.page(pageParam));
     }
 
     @PutMapping
     @ApiOperation("编辑")
-    public BaseResponse<Boolean> update(@RequestBody PaperUpdateInfo paperInfo) {
+    public BaseResponse<Boolean> update(@RequestBody PaperCreateInfo paperInfo) {
         return ResponseUtil.success(questionnaireService.update(paperInfo));
     }
 

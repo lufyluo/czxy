@@ -196,6 +196,7 @@ public interface PojoMapper {
     CustomerEntity toCustomerEntity(CustomerCreateInfo customerInfo);
 
     PlanInfo toPlanEntitys(PlanEntity planEntity);
+
     List<PlanInfo> toPlanEntitys(List<PlanEntity> planEntities);
 
     PlanEntity toPlanEntity(PlanUpdateInfo planUpdateInfo);
@@ -208,9 +209,14 @@ public interface PojoMapper {
     List<StockInfo> toStockInfos(List<StockEntity> stockEntityList);
 
     FileInfo tiFileInfo(FileEntity fileEntities);
+
     List<FileInfo> tiFileInfos(List<FileEntity> fileEntities);
 
     SendEntity toSendEntity(SendInfo sendInfo);
+
+    PaperInfo toPaperInfo(PaperInfo paperInfo);
+
+    List<PaperInfo> toPaperInfos(List<PaperEntity> paperEntityList);
 
     StemEntity toStemEntity(StemInfo stemCreateInfo);
 

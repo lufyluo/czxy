@@ -723,6 +723,8 @@ alter table w_stem
 
 alter table w_stem
 	add created_time datetime default now() null;
+	alter table w_paper
+    	add type smallint null comment '0-未发布，1-已发布，2-已下架';
 
 
 alter table w_stem

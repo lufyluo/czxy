@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.QuestionnaireMapper">
+    <insert id="insert" parameterType="com.czxy.manage.model.vo.questionnaire.PaperCreateInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into w_paper (name,description,type)values (#{name},#{description},0)
+    </insert>
+    <update id="update">
+        update w_paper set  name=#{name},description=#{description},updated_time=now()
+        where id=#{id}
+    </update>
+    <delete id="delete">
+        delete from w_paper where id in <foreach collection="paperIds" item="item" index="index"
+                                                 open="(" separator="," close=")">#{item}
+                                        </foreach>
+    </delete>
+
+    <select id="page" resultType="com.czxy.manage.model.entity.PaperEntity">
+        select
+        id, name, description, updated_time as updatedTime, created_time as createdTime, type
+        from w_paper
+        where 1=1
+        <if test="param != null and param != ''">
+            and name like '%${param}%'
+        </if>
+    </select>
+</mapper>
