@@ -30,10 +30,24 @@ public class CourseArrangeController {
     }
 
     @GetMapping("/table/{classId}")
-    @ApiOperation("根据班级获取课表（课表管理，查看页数据结构）")
+    @ApiOperation(value = "根据班级获取课表（课表管理，查看页数据结构）",hidden = true)
+    @Deprecated
     public BaseResponse<ClassArrangeTableInfo> table(@PathVariable Integer classId) {
         return ResponseUtil.success(classCourseService.table(classId));
     }
+
+    @GetMapping("/getById/{id}")
+    @ApiOperation("根据班级获取课表（课表管理，查看页数据结构）")
+    public BaseResponse<ClassArrangeInfo> getById(@PathVariable Integer id) {
+        return ResponseUtil.success(classCourseService.getById(id));
+    }
+
+    @GetMapping("/tableById/{id}")
+    @ApiOperation("根据班级获取课表（课表管理，查看页数据结构）")
+    public BaseResponse<ClassArrangeTableInfo> tableById(@PathVariable Integer id) {
+        return ResponseUtil.success(classCourseService.tableById(id));
+    }
+
     @PostMapping
     @ApiOperation("添加课表")
     public BaseResponse<Boolean> add(@RequestBody CourseArrangeAddInfo courseArrangeAddInfo){

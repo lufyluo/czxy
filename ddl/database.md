@@ -585,7 +585,6 @@ create table greetings
 )
 comment '问候语';
 alter table greetings modify type varchar(30) null comment '类型';
-alter table greetings change time send_time datetime null comment '问候语发送时间';
 
 
 alter table stock change goods_id goods_name varchar(20) null;
@@ -639,6 +638,33 @@ alter table greetings
 
 问卷：
 ```sql
+
+create table w_paper
+(
+	id int auto_increment
+		primary key,
+	name varchar(100) not null,
+	description varchar(128) null,
+	updated_time datetime default CURRENT_TIMESTAMP null,
+	created_time datetime default CURRENT_TIMESTAMP null
+)
+comment '问卷';
+
+
+create table w_stem
+(
+	id int auto_increment
+		primary key,
+	title varchar(100) not null,
+	score int null,
+	`index` int not null comment '试题在问卷中的唯一序号',
+	updated_time datetime default CURRENT_TIMESTAMP null,
+	created_time datetime default CURRENT_TIMESTAMP null,
+	required smallint default 0 null comment '0-非必选，1-必选'
+)
+comment '问卷问题';
+
+
 create table w_paper_stem
 (
 	id int auto_increment,
@@ -654,23 +680,29 @@ comment '问卷试题关系表';
 
 create table w_option
 (
+id int auto_increment,
 	name varchar(60) not null,
 	score int null comment '选项分数',
 	type smallint default 0 null comment '0-无分数，1-有分数',
 	updated_time datetime default now() null,
-	created_time datetime default now() null
+	created_time datetime default now() null,
+constraint w_option_pk
+		primary key (id)
 )
 comment '问卷题目选项';
 
 create table w_answer
 (
-	user_id int null,
-	option_ids varchar(20) null,
-	content varchar(255) null comment '用户主观题答案（无选项）',
-	updated_time datetime default now() null,
-	created_time datetime default now() null
+    id int auto_increment,
+    user_id int null,
+    option_ids varchar(20) null,
+    content varchar(255) null comment '用户主观题答案（无选项）',
+    updated_time datetime default now() null,
+    created_time datetime default now() null,
+    constraint w_answer_pk
+        primary key (id)
 )
-comment '用户提交答案';
+    comment '用户提交答案';
 
 create table w_paper_send
 (
@@ -684,16 +716,24 @@ create table w_paper_send
 		primary key (id)
 );
 
-rename table questionnaire to w_paper;
-rename table questionitem to w_stem;
 
-alter table w_paper change class_id description varchar(128) null;
 
 alter table w_stem
 	add updated_time datetime default now() null;
 
 alter table w_stem
 	add created_time datetime default now() null;
+
+
+alter table w_stem
+	add required smallint default 0 null comment '0-非必选，1-必选';
+
+alter table w_option
+	add `index` int null comment '选项顺序' after type;
+
+alter table w_option
+	add stem_id int not null after `index`;
+
 
 
 ```

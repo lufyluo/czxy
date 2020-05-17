@@ -69,6 +69,7 @@
         ,u.name as masterName
         ,u1.name as leaderName
         ,s.user_id  as leaderId
+        ,arr.name as arrangeName
         from class c
         left join org o
         on c.org_id = o.id
@@ -84,6 +85,8 @@
         on s.user_id = u1.id
         left join composition com
         on c.composition_id = com.id
+        left join arrange arr
+        on arr.id = c.arrange_id
         <if test="param != null and param != ''">
             where c.name like '%${param}%' or o.name like '%${param}%' or u.name like '%${param}%'
         </if>

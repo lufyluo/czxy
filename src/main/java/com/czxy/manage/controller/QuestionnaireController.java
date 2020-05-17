@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(tags = "问卷-试卷管理", value = "问卷管理")
+@Api(tags = "问卷-试卷管理", value = "试卷管理")
 @RestController
 @RequestMapping("/api/questionnaire")
 public class QuestionnaireController {

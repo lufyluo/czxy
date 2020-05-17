@@ -11,4 +11,5 @@ public class ClassOrgEntity extends ClassEntity{
     private String masterName;
     private String leaderName;
     private Integer leaderId;
+    private String arrangeName;
 }

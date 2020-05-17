@@ -13,5 +13,8 @@
         </foreach>
 
     </insert>
+    <delete id="deleteByArrangeId">
+        delete from course_arrange where arrange_id = #{arrangeId}
+    </delete>
 
 </mapper>

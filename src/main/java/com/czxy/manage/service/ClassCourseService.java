@@ -41,7 +41,9 @@ public class ClassCourseService {
         if (classArrangeWithTimeEntity == null) {
             throw new ManageException(ResponseStatus.DATANOTEXIST);
         }
+
         ClassArrangeInfo classArrangeInfo = PojoMapper.INSTANCE.toClassArrangeInfo(classArrangeWithTimeEntity);
+        buildState(classArrangeInfo);
         List<CourseDetailEntity> courseEntities = subjectMapper.queryByArrangeId(classArrangeWithTimeEntity.getId());
         List<CourseSubjectDetailInfo> courseInfos = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
@@ -63,6 +65,41 @@ public class ClassCourseService {
             Long endTemp = n.getEndTime() - n.getBeginTime() + temp.getTimeInMillis();
             temp.setTimeInMillis(endTemp);
             subjectDetailInfo.setEndTime(temp.getTime());
+            courseInfos.add(subjectDetailInfo);
+        });
+        classArrangeInfo.setCourseInfos(courseInfos);
+        return classArrangeInfo;
+    }
+
+    private void buildState(ClassArrangeInfo classArrangeInfo) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        classArrangeInfo.setState(0);
+        classArrangeInfo.setStateDesc("未使用");
+        if(calendar.after(classArrangeInfo.getBeginTime())
+                &&calendar.before(classArrangeInfo.getEndTime())){
+            classArrangeInfo.setState(1);
+            classArrangeInfo.setStateDesc("使用中");
+        }
+    }
+
+
+    public ClassArrangeInfo getById(Integer id) {
+        ClassArrangeWithTimeEntity classArrangeWithTimeEntity = arrangeMapper.getById(id);
+        if (classArrangeWithTimeEntity == null) {
+            throw new ManageException(ResponseStatus.DATANOTEXIST);
+        }
+        ClassArrangeInfo classArrangeInfo = PojoMapper.INSTANCE.toClassArrangeInfo(classArrangeWithTimeEntity);
+        List<CourseDetailEntity> courseEntities = subjectMapper.queryByArrangeId(classArrangeWithTimeEntity.getId());
+        List<CourseSubjectDetailInfo> courseInfos = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+
+        courseEntities.forEach(n -> {
+            CourseSubjectDetailInfo subjectDetailInfo = PojoMapper.INSTANCE.toCourseInfo(n);
+            calendar.setTimeInMillis(n.getBeginTime());
+            subjectDetailInfo.setBeginTime(calendar.getTime());
+            calendar.setTimeInMillis(n.getEndTime());
+            subjectDetailInfo.setEndTime(calendar.getTime());
             courseInfos.add(subjectDetailInfo);
         });
         classArrangeInfo.setCourseInfos(courseInfos);
@@ -96,8 +133,22 @@ public class ClassCourseService {
         return true;
     }
 
+    @Transactional
     public Boolean update(CourseArrangeUpdateInfo courseArrangeUpdateInfo) {
-        return null;
+        ArrangeEntity arrangeEntity = PojoMapper.INSTANCE.updateInfoToArrangeEntity(courseArrangeUpdateInfo);
+        arrangeMapper.update(arrangeEntity);
+
+        if (courseArrangeUpdateInfo.getCourseInfos() == null
+                || courseArrangeUpdateInfo.getCourseInfos().size() == 0) {
+            return true;
+        }
+        courseArrangeMapper.deleteByArrangeId(arrangeEntity.getId());
+        List<CourseArrangeEntity> courseArrangeEntities =
+                PojoMapper.INSTANCE.toCourseArrangeEntities(courseArrangeUpdateInfo.getCourseInfos());
+        courseArrangeEntities.forEach(n -> n.setArrangeId(arrangeEntity.getId()));
+        courseArrangeMapper.batchInsert(courseArrangeEntities);
+
+        return true;
     }
 
     public ClassArrangeTableInfo table(Integer classId) {
@@ -114,6 +165,22 @@ public class ClassCourseService {
                             classArrangeInfo.getBeginTime()));
         }
 
+        return classArrangeTableInfo;
+    }
+
+    public ClassArrangeTableInfo tableById(Integer id) {
+        ClassArrangeInfo classArrangeInfo = getById(id);
+        ClassArrangeTableInfo classArrangeTableInfo = new ClassArrangeTableInfo();
+        if(classArrangeInfo.getBeginTime()!=null){
+            classArrangeTableInfo.setHead(getHead(classArrangeInfo.getBeginTime(), classArrangeInfo.getEndTime()));
+        }
+        if (classArrangeInfo.getCourseInfos() == null
+                || classArrangeInfo.getCourseInfos().size() == 0) {
+            classArrangeTableInfo.setBody(
+                    getBody(classArrangeInfo.getCourseInfos(),
+                            classArrangeTableInfo.getHead().size(),
+                            classArrangeInfo.getBeginTime()));
+        }
         return classArrangeTableInfo;
     }
 

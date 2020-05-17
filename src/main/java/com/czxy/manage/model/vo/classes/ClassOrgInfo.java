@@ -16,4 +16,6 @@ public class ClassOrgInfo extends ClassInfo {
     private String composition;
     private Integer masterId;
     private String masterName;
+    @ApiModelProperty("课表名称")
+    private String arrangeName;
 }

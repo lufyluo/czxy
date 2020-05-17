@@ -1,6 +1,8 @@
 package com.czxy.manage.infrastructure.util;
 
 import com.czxy.manage.model.entity.*;
+import com.czxy.manage.model.entity.questionnaire.stem.OptionEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.StemEntity;
 import com.czxy.manage.model.vo.*;
 import com.czxy.manage.model.vo.arrange.ArrangeInfo;
 import com.czxy.manage.model.vo.classes.*;
@@ -10,6 +12,8 @@ import com.czxy.manage.model.vo.files.FileInfo;
 import com.czxy.manage.model.vo.plan.PlanCreateInfo;
 import com.czxy.manage.model.vo.plan.PlanInfo;
 import com.czxy.manage.model.vo.plan.PlanUpdateInfo;
+import com.czxy.manage.model.vo.questionnaire.stem.OptionInfo;
+import com.czxy.manage.model.vo.questionnaire.stem.StemInfo;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
 import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.model.vo.site.TypeInfo;
@@ -207,4 +211,14 @@ public interface PojoMapper {
     List<FileInfo> tiFileInfos(List<FileEntity> fileEntities);
 
     SendEntity toSendEntity(SendInfo sendInfo);
+
+    StemEntity toStemEntity(StemInfo stemCreateInfo);
+
+    OptionEntity toOptionEntities(OptionInfo options);
+    List<OptionEntity> toOptionEntities(List<OptionInfo> options);
+
+    StemInfo toStemInfo(StemEntity stemEntity);
+    List<StemInfo> toStemInfos(List<StemEntity> stemEntities);
+
+    ArrangeEntity updateInfoToArrangeEntity(CourseArrangeUpdateInfo courseArrangeUpdateInfo);
 }

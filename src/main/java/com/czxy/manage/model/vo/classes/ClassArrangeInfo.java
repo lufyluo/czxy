@@ -17,5 +17,9 @@ public class ClassArrangeInfo {
     private Date beginTime;
     @ApiModelProperty("班级结束时间")
     private Date endTime;
+    @ApiModelProperty("课表状态")
+    private String stateDesc;
+    @ApiModelProperty("0-未使用，1-使用中")
+    private Integer state;
     private List<CourseSubjectDetailInfo> courseInfos;
 }

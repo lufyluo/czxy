@@ -8,4 +8,6 @@ import java.util.List;
 @Mapper
 public interface CourseArrangeMapper {
     Integer batchInsert(List<CourseArrangeEntity> courseArrangeEntities);
+
+    Integer deleteByArrangeId(Integer arrangeId);
 }

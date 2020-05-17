@@ -16,4 +16,8 @@ public interface ArrangeMapper {
     List<ArrangeEntity> page(String param);
 
     Integer delete(@Param("arrangeIds") List<Integer> arrangeIds);
+
+    ClassArrangeWithTimeEntity getById(Integer id);
+
+    Integer update(ArrangeEntity arrangeEntity);
 }
