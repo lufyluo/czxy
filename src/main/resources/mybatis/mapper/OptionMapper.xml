@@ -10,12 +10,19 @@
         </foreach>
 
     </insert>
-    <update id="batchUpdate">
-        <foreach collection="list" item="item">
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";" close="" open="" index="index">
             update w_option set name =#{item.name}
             , score = #{item.score},`index` = #{item.index},stem_id = #{item.stemId},
-            updated_time = now() where id = #{item.id};
+            updated_time = now()
+            where id = #{item.id};
         </foreach>
+    </update>
+    <update id="update" parameterType="java.util.List">
+        update w_option set name =#{name}
+                , score = #{score},`index` = #{index},stem_id = #{stemId},
+                            updated_time = now()
+        where id = #{id};
     </update>
     <delete id="deleteByStemId">
         delete

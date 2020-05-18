@@ -12,4 +12,5 @@ public interface OptionMapper {
     Integer deleteByStemId(Integer stemId);
 
     Integer batchUpdate(List<OptionEntity> updateOptions);
+    Integer update(OptionEntity optionEntity);
 }

@@ -86,7 +86,10 @@ public class QuestionnaireStemService {
                 .filter(n -> n.getId() != null)
                 .collect(Collectors.toList());
         if (updateOptions != null && updateOptions.size() > 0) {
-            optionMapper.batchUpdate(updateOptions);
+            updateOptions.forEach(n->{
+                optionMapper.update(n);
+            });
+           // optionMapper.batchUpdate(updateOptions);
         }
     }
 
