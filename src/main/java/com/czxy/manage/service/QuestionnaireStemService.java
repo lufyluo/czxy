@@ -6,8 +6,12 @@ import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.PlanEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.OptionEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.PaperStemEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.StemEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.StemOptionEntity;
 import com.czxy.manage.model.vo.plan.PlanInfo;
+import com.czxy.manage.model.vo.questionnaire.stem.OptionInfo;
+import com.czxy.manage.model.vo.questionnaire.stem.PaperStemInfo;
 import com.czxy.manage.model.vo.questionnaire.stem.StemInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -16,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,10 +34,10 @@ public class QuestionnaireStemService {
 
     public PageInfo<StemInfo> page(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
-        List<StemEntity> stemEntities = stemMapper.query(pageParam);
+        List<StemOptionEntity> stemEntities = stemMapper.query(pageParam);
         PageInfo<StemInfo> pageInfo = page.toPageInfo();
-        List<StemInfo> stemInfos = PojoMapper.INSTANCE.toStemInfos(stemEntities);
-        pageInfo.setList(stemInfos);
+        List<StemInfo> stemInfos = PojoMapper.INSTANCE.toStemOptionInfos(stemEntities);
+        pageInfo.setList(distinctAndFilleOptions(stemInfos));
         return pageInfo;
     }
 
@@ -84,9 +90,42 @@ public class QuestionnaireStemService {
         }
     }
 
-    public List<StemInfo> get(Integer paperId) {
-        List<StemEntity> stemEntities = stemMapper.queryByPaperId(paperId);
-        List<StemInfo> stemInfos = PojoMapper.INSTANCE.toStemInfos(stemEntities);
+    public List<PaperStemInfo> get(Integer paperId) {
+        List<PaperStemEntity> stemEntities = stemMapper.queryByPaperId(paperId);
+        List<PaperStemInfo> stemInfos = PojoMapper.INSTANCE.toPaperStemInfos(stemEntities);
         return stemInfos;
+    }
+
+    private List<StemInfo>  distinctAndFilleOptions(List<StemInfo> stemInfos) {
+        List<StemInfo> result = new ArrayList<>();
+        stemInfos.forEach(n -> {
+            List<StemInfo> options = stemInfos
+                    .stream()
+                    .filter(op -> op.getStemId() == n.getId())
+                    .collect(Collectors.toList());
+            options.sort(Comparator.comparing(StemInfo::getIndex));
+            if (options != null&&!result.stream().anyMatch(temp->temp.getId()==n.getId())) {
+                n.setOptions(toOptionInfos(options));
+                result.add(n);
+            }
+
+        });
+        return result;
+    }
+
+    private void addIfAbsent(List<StemInfo> result ,StemInfo stemInfo){
+
+    }
+    private List<OptionInfo> toOptionInfos(List<StemInfo> options) {
+        List<OptionInfo> optionInfos = new ArrayList<>();
+        options.forEach(n -> {
+            OptionInfo optionInfo = new OptionInfo();
+            optionInfo.setId(n.getOptionId());
+            optionInfo.setIndex(n.getOptionIndex());
+            optionInfo.setName(n.getOptionName());
+            optionInfo.setScore(n.getOptionScore());
+            optionInfos.add(optionInfo);
+        });
+        return optionInfos;
     }
 }

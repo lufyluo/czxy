@@ -4,6 +4,7 @@ import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
+import com.czxy.manage.model.vo.questionnaire.stem.PaperStemInfo;
 import com.czxy.manage.model.vo.questionnaire.stem.StemInfo;
 import com.czxy.manage.service.QuestionnaireStemService;
 import io.swagger.annotations.Api;
@@ -28,8 +29,8 @@ public class QuestionnaireStemController {
     }
 
     @GetMapping("/{paperId}}")
-    @ApiOperation("分页获取")
-    public BaseResponse<List<StemInfo>> get(@PathVariable @Min(value = 1) Integer paperId) {
+    @ApiOperation("根据问卷id获取所有题目")
+    public BaseResponse<List<PaperStemInfo>> get(@PathVariable @Min(value = 1) Integer paperId) {
         return ResponseUtil.success(questionnaireStemService.get(paperId));
     }
 

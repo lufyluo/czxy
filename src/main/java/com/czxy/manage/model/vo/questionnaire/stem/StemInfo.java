@@ -1,5 +1,6 @@
 package com.czxy.manage.model.vo.questionnaire.stem;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -16,6 +17,27 @@ public class StemInfo {
     private Integer required;
     @ApiModelProperty("题目总分数（非分数则不传）")
     private Integer score;
+    @ApiModelProperty("0-普通题目，1-分数题目")
+    private Integer category;
     @ApiModelProperty("选项,选项没有编辑，保存后只能删了再建")
     private List<OptionInfo> options;
+
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private Integer optionId;
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private String optionName;
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private Integer optionScore;
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private Integer optionIndex;
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private Integer stemId;
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private Integer index;
 }

@@ -121,7 +121,7 @@ public class ClassCourseService {
             Long begin = courseEntities.stream().map(n -> n.getBeginTime()).min(Long::compareTo).get();
             calendar.setTimeInMillis(begin);
             classArrangeInfo.setBeginTime(calendar.getTime());
-            Long end = courseEntities.stream().map(n -> n.getBeginTime()).max(Long::compareTo).get();
+            Long end = courseEntities.stream().map(n -> n.getEndTime()).max(Long::compareTo).get();
             calendar.setTimeInMillis(end);
             classArrangeInfo.setEndTime(calendar.getTime());
         }
@@ -250,8 +250,8 @@ public class ClassCourseService {
         List<String[]> body = new ArrayList<>();
         for (Map.Entry<String, List<SubjectDetailDomainInfo>> entry : maps.entrySet()) {
             String[] arr = new String[size];
-            arr[0] = entry.getKey();
             setValue(begin, arr, entry.getValue());
+            arr[0] = entry.getKey();
             body.add(arr);
         }
         return body;
@@ -277,7 +277,8 @@ public class ClassCourseService {
                     content = content + "\r\n点位: " + n.getAddress();
                 }
                 if (arr.length > dayNum - currentDayNum + 1) {
-                    arr[dayNum - currentDayNum + 1] = content;
+                    int arrIndex = dayNum - currentDayNum+1;
+                    arr[arrIndex] = content;
                 }
             }
 

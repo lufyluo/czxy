@@ -1,7 +1,9 @@
 package com.czxy.manage.dao;
 
 import com.czxy.manage.model.PageParam;
+import com.czxy.manage.model.entity.questionnaire.stem.PaperStemEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.StemEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.StemOptionEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -14,7 +16,7 @@ public interface StemMapper {
 
     Integer delete(List<Integer> stemIds);
 
-    List<StemEntity> query(PageParam<String> pageParam);
+    List<StemOptionEntity> query(PageParam<String> pageParam);
 
-    List<StemEntity> queryByPaperId(Integer paperId);
+    List<PaperStemEntity> queryByPaperId(Integer paperId);
 }

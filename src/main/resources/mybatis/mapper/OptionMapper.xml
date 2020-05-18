@@ -3,10 +3,10 @@
 <mapper namespace="com.czxy.manage.dao.OptionMapper">
     <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id">
         insert into w_option
-        (name, score, `index`, type,stem_id)
+        (name, score, `index`,stem_id)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.name},#{item.score},#{item.index},#{item.type},#{item.stemId})
+            (#{item.name},#{item.score},#{item.index},#{item.stemId})
         </foreach>
 
     </insert>

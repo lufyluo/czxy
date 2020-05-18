@@ -3,14 +3,15 @@
 <mapper namespace="com.czxy.manage.dao.StemMapper">
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into w_stem
-            (title, score, `index`, required)
-        values (#{title}, #{score}, #{required})
+            (title, score, required, category)
+        values (#{title}, #{score}, #{required}, #{category})
     </insert>
     <update id="update">
         update w_stem
         set title        = #{title},
             score        = #{score},
             required     = #{required},
+            category     = #{category},
             updated_time = now()
     </update>
     <delete id="delete">
@@ -19,15 +20,24 @@
             #{item}
         </foreach>
     </delete>
-    <select id="query" resultType="com.czxy.manage.model.entity.questionnaire.stem.StemEntity">
-
-    </select>
-    <select id="queryByPaperId" resultType="com.czxy.manage.model.entity.questionnaire.stem.StemEntity">
-        select id, title, score, `index`, required
+    <select id="query" resultType="com.czxy.manage.model.entity.questionnaire.stem.StemOptionEntity">
+        select s.id, s.title, s.score, s.required,s.category,
+        wo.name as optionName,wo.score as optionScore,
+        wo.`index` as optionIndex,wo.stem_id,wo.id as optionId,
+        wo.stem_id as stemId
         from w_stem s
-        left join w_paper_stem ps
-        on s.id = ps.stem_id
+        left join w_option wo on s.id = wo.stem_id
+        <if test="param !=null and param != ''">
+            where s.title like '%${param}%'
+        </if>
+        order by s.id desc,wo.`index`
+    </select>
+    <select id="queryByPaperId" resultType="com.czxy.manage.model.entity.questionnaire.stem.PaperStemEntity">
+        select s.id, s.title, s.score, ps.`index`, s.required, s.category
+        from w_stem s
+                 left join w_paper_stem ps
+                           on s.id = ps.stem_id
         where ps.paper_id = #{paperId}
-        order by `index`
+        order by ps.`index`
     </select>
 </mapper>
