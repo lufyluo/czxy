@@ -45,9 +45,9 @@ public class ClassService {
     @Resource
     private StudentMapper studentMapper;
 
-    public PageInfo<ClassOrgInfo> page(PageParam<String> pageParam) {
+    public PageInfo<ClassOrgInfo> page(ClassPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
-        List<ClassOrgEntity> classEntities = classMapper.queryAll(pageParam.getParam());
+        List<ClassOrgEntity> classEntities = classMapper.queryAll(pageParam);
         PageInfo<ClassOrgInfo> result = page.toPageInfo();
         result.setList(PojoMapper.INSTANCE.toClassOrgInfos(classEntities));
         //fetchTopics(userAccountPageInfo.getList());

@@ -11,9 +11,15 @@
 
     </insert>
     <update id="batchUpdate">
-
+        <foreach collection="list" item="item">
+            update w_option set name =#{item.name}
+            , score = #{item.score},`index` = #{item.index},stem_id = #{item.stemId},
+            updated_time = now() where id = #{item.id};
+        </foreach>
     </update>
     <delete id="deleteByStemId">
-        delete from w_option where stem_id = #{stemId}
+        delete
+        from w_option
+        where stem_id = #{stemId}
     </delete>
 </mapper>

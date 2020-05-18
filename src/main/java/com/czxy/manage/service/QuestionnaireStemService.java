@@ -103,7 +103,7 @@ public class QuestionnaireStemService {
                     .stream()
                     .filter(op -> op.getStemId() == n.getId())
                     .collect(Collectors.toList());
-            options.sort(Comparator.comparing(StemInfo::getIndex));
+            options.sort(Comparator.comparing(StemInfo::getOptionIndex));
             if (options != null&&!result.stream().anyMatch(temp->temp.getId()==n.getId())) {
                 n.setOptions(toOptionInfos(options));
                 result.add(n);

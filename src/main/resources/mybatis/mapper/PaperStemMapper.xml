@@ -3,7 +3,7 @@
 <mapper namespace="com.czxy.manage.dao.PaperStemMapper">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into w_paper_stem  (`index`, paper_id, stem_id) VALUES (#{index},#{paperId},#{stemId})
+        insert into w_paper_stem  (`index`, paper_id, stem_id) VALUES (#{index},#{paperId},#{id})
     </insert>
     <delete id="delete">
         delete from w_paper_stem where paper_id=#{id}

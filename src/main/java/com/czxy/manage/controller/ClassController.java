@@ -26,7 +26,7 @@ public class ClassController {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页获取班级", notes = "分页获取班级")
-    public PageResponse<ClassOrgInfo> page(PageParam<String> pageParam) {
+    public PageResponse<ClassOrgInfo> page(ClassPageParam<String> pageParam) {
         return PageResponse.success(classService.page(pageParam));
     }
 

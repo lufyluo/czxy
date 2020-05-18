@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.ClassMapper">
-    <sql id="base_column">
-               id
-        ,name
-        ,province_id as provinceId
-        ,city_id as cityId
-        ,county_id as countyId
-        ,org_id as orgId
-        ,begin_time as beginTime
-        ,end_time as endTime
-        ,arrange_id as arrangeId
-        updated_time as updatedTime, created_time as createdTime
-    </sql>
     <insert id="insert" useGeneratedKeys="true"
             keyProperty="id">
         insert into class(
@@ -87,8 +75,12 @@
         on c.composition_id = com.id
         left join arrange arr
         on arr.id = c.arrange_id
+        where 1=1
         <if test="param != null and param != ''">
-            where c.name like '%${param}%' or o.name like '%${param}%' or u.name like '%${param}%'
+            and c.name like '%${param}%' or o.name like '%${param}%' or u.name like '%${param}%'
+        </if>
+        <if test="compositionId !=null and compositionId>0">
+            and com.id = #{compositionId}
         </if>
         order by c.id desc
     </select>
