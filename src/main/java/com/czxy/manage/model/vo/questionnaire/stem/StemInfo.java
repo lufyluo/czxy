@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class StemInfo {
+public class StemInfo extends OptionStemFetchInfo{
     private Integer id;
     @ApiModelProperty("题目类型，单选、多选、问答")
     private String type;
@@ -21,23 +21,4 @@ public class StemInfo {
     private Integer category;
     @ApiModelProperty("选项,选项没有编辑，保存后只能删了再建")
     private List<OptionInfo> options;
-
-    @ApiModelProperty(hidden = true)
-    @JsonIgnore
-    private Integer optionId;
-    @ApiModelProperty(hidden = true)
-    @JsonIgnore
-    private String optionName;
-    @ApiModelProperty(hidden = true)
-    @JsonIgnore
-    private Integer optionScore;
-    @ApiModelProperty(hidden = true)
-    @JsonIgnore
-    private Integer optionIndex;
-    @ApiModelProperty(hidden = true)
-    @JsonIgnore
-    private Integer stemId;
-    @ApiModelProperty(hidden = true)
-    @JsonIgnore
-    private Integer index;
 }

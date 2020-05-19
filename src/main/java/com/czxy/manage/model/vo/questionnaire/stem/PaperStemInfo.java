@@ -1,12 +1,13 @@
 package com.czxy.manage.model.vo.questionnaire.stem;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class PaperStemInfo {
+public class PaperStemInfo extends OptionStemFetchInfo{
     private Integer id;
     @ApiModelProperty("题目类型，单选、多选、问答")
     private String type;
@@ -20,6 +21,4 @@ public class PaperStemInfo {
     private Integer score;
     @ApiModelProperty("0-普通题目，1-分数题目")
     private Integer category;
-    @ApiModelProperty("选项,选项没有编辑，保存后只能删了再建")
-    private List<OptionInfo> options;
 }

@@ -3,16 +3,18 @@
 <mapper namespace="com.czxy.manage.dao.StemMapper">
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into w_stem
-            (title, score, required, category)
-        values (#{title}, #{score}, #{required}, #{category})
+            (title, score, required, type, category)
+        values (#{title}, #{score}, #{required}, #{type}, #{category})
     </insert>
     <update id="update">
         update w_stem
         set title        = #{title},
             score        = #{score},
             required     = #{required},
+            type         = #{type},
             category     = #{category},
             updated_time = now()
+        where id = #{id}
     </update>
     <delete id="delete">
         delete from w_option where id in
@@ -21,7 +23,7 @@
         </foreach>
     </delete>
     <select id="query" resultType="com.czxy.manage.model.entity.questionnaire.stem.StemOptionEntity">
-        select s.id, s.title, s.score, s.required,s.category,
+        select s.id, s.title, s.score, s.required,s.category,s.type,
         wo.name as optionName,wo.score as optionScore,
         wo.`index` as optionIndex,wo.stem_id,wo.id as optionId,
         wo.stem_id as stemId
@@ -33,8 +35,12 @@
         order by s.id desc,wo.`index`
     </select>
     <select id="queryByPaperId" resultType="com.czxy.manage.model.entity.questionnaire.stem.PaperStemEntity">
-        select s.id, s.title, s.score, ps.`index`, s.required, s.category
+        select s.id, s.title, s.score, s.required,s.category,s.type,ps.`index`,
+               wo.name as optionName,wo.score as optionScore,
+               wo.`index` as optionIndex,wo.stem_id,wo.id as optionId,
+               wo.stem_id as stemId
         from w_stem s
+                 left join w_option wo on s.id = wo.stem_id
                  left join w_paper_stem ps
                            on s.id = ps.stem_id
         where ps.paper_id = #{paperId}

@@ -28,7 +28,7 @@ public class QuestionnaireStemController {
         return PageResponse.success(questionnaireStemService.page(pageParam));
     }
 
-    @GetMapping("/{paperId}}")
+    @GetMapping("/{paperId}")
     @ApiOperation("根据问卷id获取所有题目")
     public BaseResponse<List<PaperStemInfo>> get(@PathVariable @Min(value = 1) Integer paperId) {
         return ResponseUtil.success(questionnaireStemService.get(paperId));

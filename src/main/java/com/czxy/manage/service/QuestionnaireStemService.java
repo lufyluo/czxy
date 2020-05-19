@@ -86,20 +86,51 @@ public class QuestionnaireStemService {
                 .filter(n -> n.getId() != null)
                 .collect(Collectors.toList());
         if (updateOptions != null && updateOptions.size() > 0) {
-            updateOptions.forEach(n->{
+            updateOptions.forEach(n -> {
                 optionMapper.update(n);
             });
-           // optionMapper.batchUpdate(updateOptions);
+            // optionMapper.batchUpdate(updateOptions);
         }
     }
 
     public List<PaperStemInfo> get(Integer paperId) {
         List<PaperStemEntity> stemEntities = stemMapper.queryByPaperId(paperId);
         List<PaperStemInfo> stemInfos = PojoMapper.INSTANCE.toPaperStemInfos(stemEntities);
-        return stemInfos;
+
+        return distinctAndFilleOptions1(stemInfos);
     }
 
-    private List<StemInfo>  distinctAndFilleOptions(List<StemInfo> stemInfos) {
+    private List<PaperStemInfo> distinctAndFilleOptions1(List<PaperStemInfo> stemInfos) {
+        List<PaperStemInfo> result = new ArrayList<>();
+        stemInfos.forEach(n -> {
+            List<PaperStemInfo> options = stemInfos
+                    .stream()
+                    .filter(op -> op.getStemId() == n.getId())
+                    .collect(Collectors.toList());
+            options.sort(Comparator.comparing(PaperStemInfo::getOptionIndex));
+            if (options != null && !result.stream().anyMatch(temp -> temp.getId() == n.getId())) {
+                n.setOptions(toOptionInfos1(options));
+                result.add(n);
+            }
+
+        });
+        return result;
+    }
+
+    private List<OptionInfo> toOptionInfos1(List<PaperStemInfo> options) {
+        List<OptionInfo> optionInfos = new ArrayList<>();
+        options.forEach(n -> {
+            OptionInfo optionInfo = new OptionInfo();
+            optionInfo.setId(n.getOptionId());
+            optionInfo.setIndex(n.getOptionIndex());
+            optionInfo.setName(n.getOptionName());
+            optionInfo.setScore(n.getOptionScore());
+            optionInfos.add(optionInfo);
+        });
+        return optionInfos;
+    }
+
+    private List<StemInfo> distinctAndFilleOptions(List<StemInfo> stemInfos) {
         List<StemInfo> result = new ArrayList<>();
         stemInfos.forEach(n -> {
             List<StemInfo> options = stemInfos
@@ -107,7 +138,7 @@ public class QuestionnaireStemService {
                     .filter(op -> op.getStemId() == n.getId())
                     .collect(Collectors.toList());
             options.sort(Comparator.comparing(StemInfo::getOptionIndex));
-            if (options != null&&!result.stream().anyMatch(temp->temp.getId()==n.getId())) {
+            if (options != null && !result.stream().anyMatch(temp -> temp.getId() == n.getId())) {
                 n.setOptions(toOptionInfos(options));
                 result.add(n);
             }
@@ -116,9 +147,10 @@ public class QuestionnaireStemService {
         return result;
     }
 
-    private void addIfAbsent(List<StemInfo> result ,StemInfo stemInfo){
+    private void addIfAbsent(List<StemInfo> result, StemInfo stemInfo) {
 
     }
+
     private List<OptionInfo> toOptionInfos(List<StemInfo> options) {
         List<OptionInfo> optionInfos = new ArrayList<>();
         options.forEach(n -> {

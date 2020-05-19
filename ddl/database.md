@@ -736,6 +736,8 @@ alter table w_option
 alter table w_option
 	add stem_id int not null after `index`;
 
+alter table w_stem
+	add type VARCHAR(24) null after category;
 
 
 ```
