@@ -6,6 +6,10 @@
         insert into w_paper (name, description, state)
         values (#{name}, #{description}, 0)
     </insert>
+    <insert id="insertBySubmit" useGeneratedKeys="true" keyProperty="id" >
+        insert into w_paper_submit (paper_id, stem_id, option_id, user_id, answer_text)
+        values (#{paperId},#{stemId},#{optionId},#{userId},#{answerText})
+    </insert>
     <update id="update">
         update w_paper
         set name=#{name},
@@ -19,6 +23,9 @@
         <foreach collection="paperIds" item="item" index="index"
                  open="(" separator="," close=")">#{item}
         </foreach>
+    </update>
+    <update id="updateSend">
+        update w_paper_send set state=1 where user_id=#{userId} and paper_id=#{paperId}
     </update>
     <delete id="delete">
         delete from w_paper where id in
@@ -34,6 +41,22 @@
         where 1=1
         <if test="param != null and param != ''">
             and name like '%${param}%'
+        </if>
+    </select>
+    <select id="getPaperId" resultType="java.lang.Integer">
+        select paper_id from  w_paper_send where user_id=#{userId}
+    </select>
+    <select id="get" resultType="com.czxy.manage.model.entity.PaperPageEntity">
+        select
+        p.id,p.name,p.description,s.created_time as createdTime,s.state
+        from w_paper p
+        left join w_paper_send s
+        on p.id=s.paper_id
+        where s.paper_id in <foreach collection="paperIds" item="item" index="index"
+                                     open="(" separator="," close=")">#{item}
+                            </foreach>
+        <if test="param != null and param != ''">
+            and p.name like '%${param}%'
         </if>
     </select>
 </mapper>
