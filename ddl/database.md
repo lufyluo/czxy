@@ -800,5 +800,19 @@ alter table contact_log
 alter table student modify org_name varchar(40) null;
 
 
+create table w_paper_submit
+(
+	id bigint auto_increment,
+	paper_id int not null,
+	stem_id int not null,
+	option_id int null,
+	answer_text varchar(255) null,
+	updated_time timestamp default now() null,
+	created_time timestamp default now() null,
+	constraint w_paper_submit_pk
+		primary key (id)
+)
+comment '问卷提交';
+
 
 ```
