@@ -26,6 +26,7 @@ public class ClassStudentEntity extends ClassEntity{
     private String userWechatId;
     @ApiModelProperty("工作单位")
     private Integer userOrgId;
+    private String userOrgName;
     @ApiModelProperty("民族")
     private String userNation;
     @ApiModelProperty("籍贯")

@@ -3,35 +3,33 @@
 <mapper namespace="com.czxy.manage.dao.ClassMapper">
     <insert id="insert" useGeneratedKeys="true"
             keyProperty="id">
-        insert into class(
-        name,province_id,city_id,county_id,org_id,arrange_id,recommend_org_id,composition_id,
-        begin_time,end_time,duration,addr
-        )values(
-        #{name},#{provinceId},#{cityId},#{countyId},#{orgId},#{arrangeId},#{recommendOrgId},#{compositionId},
-        #{beginTime},#{endTime},#{duration},#{addr}
-        )
+        insert into class(name, province_id, city_id, county_id, org_id, arrange_id, recommend_org_id, composition_id,
+                          begin_time, end_time, duration, addr)
+        values (#{name}, #{provinceId}, #{cityId}, #{countyId}, #{orgId}, #{arrangeId}, #{recommendOrgId},
+                #{compositionId},
+                #{beginTime}, #{endTime}, #{duration}, #{addr})
     </insert>
     <update id="update">
         update class
-        set
-        name = #{name}
-        ,province_id = #{provinceId}
-        ,city_id = #{cityId}
-        ,county_id = #{countyId}
-        ,org_id = #{orgId}
-        ,begin_time = #{beginTime}
-        ,end_time = #{endTime}
-        ,arrange_id = #{arrangeId}
-        ,recommend_org_id = #{recommendOrgId}
-        ,duration = #{duration}
-        ,composition_id = #{compositionId}
-        ,updated_time = now()
-        where id =#{id}
+        set name             = #{name}
+          , province_id      = #{provinceId}
+          , city_id          = #{cityId}
+          , county_id        = #{countyId}
+          , org_id           = #{orgId}
+          , begin_time       = #{beginTime}
+          , end_time         = #{endTime}
+          , arrange_id       = #{arrangeId}
+          , recommend_org_id = #{recommendOrgId}
+          , duration         = #{duration}
+          , composition_id   = #{compositionId}
+          , updated_time     = now()
+        where id = #{id}
     </update>
     <delete id="delete">
-        delete from class where id in <foreach collection="id" item="item" index="index"
-                                               open="(" separator="," close=")">#{item}
-                                      </foreach>
+        delete from class where id in
+        <foreach collection="id" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
     </delete>
 
     <select id="queryAll" resultType="com.czxy.manage.model.entity.ClassOrgEntity">
@@ -56,7 +54,7 @@
         ,cm.user_id as masterId
         ,u.name as masterName
         ,u1.name as leaderName
-        ,s.user_id  as leaderId
+        ,s.user_id as leaderId
         ,arr.name as arrangeName
         from class c
         left join org o
@@ -85,43 +83,42 @@
         order by c.id desc
     </select>
     <select id="query" resultType="com.czxy.manage.model.entity.ClassInformationEntity">
-        select
-        c.id,
-        c.name,
-        c.province_id as provinceId,
-        c.city_id as cityId,
-        c.county_id as countyId,
-        c.org_id as orgId,
-        c.begin_time as beginTime,
-        c.end_time as endTime,
-        c.arrange_id as arrangeId,
-        c.recommend_org_id as recommendOrgId,
-        c.composition_id as compositionId,
-        c.updated_time as updatedTime,
-        c.created_time as createdTime,
-        c.appellation,
+        select c.id,
+               c.name,
+               c.province_id      as provinceId,
+               c.city_id          as cityId,
+               c.county_id        as countyId,
+               c.org_id           as orgId,
+               c.begin_time       as beginTime,
+               c.end_time         as endTime,
+               c.arrange_id       as arrangeId,
+               c.recommend_org_id as recommendOrgId,
+               c.composition_id   as compositionId,
+               c.updated_time     as updatedTime,
+               c.created_time     as createdTime,
+               c.appellation,
 
-        c.duration as duration,
-        o.name as orgName,
-        a.path as addressName,
-        u.name as masterName,
-        ul.name as leaderName,
-        og.name as recommendOrgName
+               c.duration         as duration,
+               o.name             as orgName,
+               a.path             as addressName,
+               u.name             as masterName,
+               ul.name            as leaderName,
+               og.name            as recommendOrgName
         from class c
-        left join org o
-        on c.org_id = o.id
-        left join address a
-        on c.county_id = a.id
-        left join class_master cm
-        on c.id = cm.class_id
-        left join user u
-        on cm.user_id = u.id
-        left join student s
-        on  s.class_id = c.id and s.type = 10
-        left join user ul
-        on ul.id = s.user_id
-        left join org og
-        on c.recommend_org_id = og.id
+                 left join org o
+                           on c.org_id = o.id
+                 left join address a
+                           on c.county_id = a.id
+                 left join class_master cm
+                           on c.id = cm.class_id
+                 left join user u
+                           on cm.user_id = u.id
+                 left join student s
+                           on s.class_id = c.id and s.type = 10
+                 left join user ul
+                           on ul.id = s.user_id
+                 left join org og
+                           on c.recommend_org_id = og.id
         where c.id = #{id}
     </select>
     <select id="queryAllStudent" resultType="com.czxy.manage.model.entity.ClassStudentEntity">
@@ -143,8 +140,9 @@
         u.nativeplace as userNativeplace,
         s.type as StudentType,
         s.id as studentId,
-        s.id as id
-        from  student s
+        s.id as id,
+        s.org_name as userOrgName
+        from student s
         left join user u
         on s.user_id = u.id
         <if test="classId != null">
@@ -153,12 +151,27 @@
         order by s.id desc
     </select>
     <select id="queryByName" resultType="java.lang.Integer">
-        select id from class where name = #{name} order by id desc limit 1
+        select id
+        from class
+        where name = #{name}
+        order by id desc
+        limit 1
     </select>
     <select id="queryClass" resultType="com.czxy.manage.model.entity.ClassEntity">
-        select  id, name,
-        org_id as orgId, begin_time as beginTime, end_time as endTime, arrange_id as arrangeId, recommend_org_id as recommendOrgId,
-        composition_id as compostionId, duration, province_id as provinceId, city_id as cityId, county_id as countyId, addr
-        from class where id=#{classId}
+        select id,
+               name,
+               org_id           as orgId,
+               begin_time       as beginTime,
+               end_time         as endTime,
+               arrange_id       as arrangeId,
+               recommend_org_id as recommendOrgId,
+               composition_id   as compostionId,
+               duration,
+               province_id      as provinceId,
+               city_id          as cityId,
+               county_id        as countyId,
+               addr
+        from class
+        where id = #{classId}
     </select>
 </mapper>

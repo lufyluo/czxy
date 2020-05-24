@@ -3,6 +3,8 @@ package com.czxy.manage.model.vo.customerContacts;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class CustomerContactsCreateInfo {
     @ApiModelProperty("需求培训方")
@@ -35,4 +37,6 @@ public class CustomerContactsCreateInfo {
 
     @ApiModelProperty("课表id")
     private Integer arrangeId;
+    @ApiModelProperty("附件id")
+    private List<Integer> fileIds;
 }

@@ -1,7 +1,10 @@
 package com.czxy.manage.model.vo.customerContacts;
 
+import com.czxy.manage.model.vo.files.FileInfo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class CustomerContactsInfo {
@@ -38,4 +41,6 @@ public class CustomerContactsInfo {
     private String state;
     @ApiModelProperty("课表id")
     private Integer arrangeId;
+    @ApiModelProperty("附件")
+    private List<FileInfo> files;
 }

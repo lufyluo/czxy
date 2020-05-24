@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerContactsService {
@@ -54,6 +55,7 @@ public class CustomerContactsService {
 
     private void updatePlan(CustomerContactsUpdateInfo customerInfo) {
         PlanEntity planEntity = PojoMapper.INSTANCE.toPlanEntity(customerInfo);
+        planEntity.setFiles(getFiles(customerInfo.getFileIds()));
         planMapper.update(planEntity);
     }
 
@@ -88,6 +90,7 @@ public class CustomerContactsService {
 
     private void insertPlan(CustomerContactsCreateInfo customerContactsCreateInfo) {
         PlanEntity planEntity = PojoMapper.INSTANCE.toPlanEntity(customerContactsCreateInfo);
+        planEntity.setFiles(getFiles(customerContactsCreateInfo.getFileIds()));
         planMapper.insert(planEntity);
     }
 
@@ -109,5 +112,12 @@ public class CustomerContactsService {
         orgEntity.setCityId(customerContactsCreateInfo.getCityId());
         orgEntity.setCountyId(customerContactsCreateInfo.getCountyId());
         return orgEntity;
+    }
+
+    private String getFiles(List<Integer> fileIds) {
+        if (fileIds != null && fileIds.size() > 0) {
+            return fileIds.stream().map(n -> n.toString()).collect(Collectors.joining(","));
+        }
+        return null;
     }
 }

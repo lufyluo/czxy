@@ -23,8 +23,10 @@ public class ClassStudentInfo {
     @ApiModelProperty("用户类型-0：普通用户，1：学员，2：讲师，3：班主任，4：公职人员，5：其它")
     private Integer userCategory;
     private String userWechatId;
-    @ApiModelProperty("工作单位")
+    @ApiModelProperty("工作单位唯一标识")
     private Integer userOrgId;
+    @ApiModelProperty("工作单位")
+    private Integer userOrgName;
     @ApiModelProperty("民族")
     private String userNation;
     @ApiModelProperty("籍贯")
