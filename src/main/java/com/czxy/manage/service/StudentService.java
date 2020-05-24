@@ -100,12 +100,7 @@ public class StudentService {
     public Boolean add(StudentAddInfo studentAddInfo) {
         Integer orgId = orgService.insertIfAbsentOrg(studentAddInfo.getOrgName(), studentAddInfo.getOrgId());
         studentAddInfo.setOrgId(orgId);
-        UserEntity userEntity = PojoMapper.INSTANCE.studentAddToUserEntity(studentAddInfo);
-        userMapper.insert(userEntity);
-        studentAddInfo.setUserId(userEntity.getId());
-        StudentEntity studentEntity = PojoMapper.INSTANCE.toStudentEntity(studentAddInfo);
-        studentMapper.insert(studentEntity);
-        return true;
+        return batchInsert(Arrays.asList(studentAddInfo));
     }
 
     public Boolean importExcel(List<StudentAddInfo> studentAddInfos) {
@@ -184,6 +179,11 @@ public class StudentService {
                     .map(UserEntity::getPhone)
                     .filter(n -> !StringUtils.isEmpty(n))
                     .collect(Collectors.toList()));
+
+            existUserEntities
+                    .stream()
+                    .collect(Collectors.toCollection(()->new TreeSet<>(Comparator.comparing(UserEntity::getPhone))));
+
             if (existUserEntities == null || existUserEntities.size() == 0) {
                 userMapper.batchInsert(userEntities);
             } else if (existUserEntities.size() == userEntities.size()) {

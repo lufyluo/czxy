@@ -143,6 +143,8 @@
                  left join token t
                            on t.user_id = u.id
         where t.token = #{token}
+        order by id desc
+        limit 1
     </select>
     <select id="queryMaster" resultType="com.czxy.manage.model.entity.UserEntity">
         select
@@ -184,5 +186,10 @@
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
+    </select>
+    <select id="queryByWechatId" resultType="com.czxy.manage.model.entity.UserEntity">
+        select
+        <include refid="base_column"/>
+        from user where wechat_id=#{openId}
     </select>
 </mapper>

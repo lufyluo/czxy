@@ -122,5 +122,10 @@ public class UserService {
         userInfos.setList(userInfoList);
         return userInfos;
     }
+
+    public UserInfo queryByWechatId(String openId) {
+        UserEntity userEntity = userMapper.queryByWechatId(openId);
+        return PojoMapper.INSTANCE.toUserInfo(userEntity);
+    }
 }
 

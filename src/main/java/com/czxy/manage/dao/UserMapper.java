@@ -42,4 +42,6 @@ public interface UserMapper {
     Integer updateByCustomer(CustomerInfo customerInfo);
 
     List<UserEntity> queryByPhones(List<String> phones);
+
+    UserEntity queryByWechatId(String openId);
 }

@@ -10,4 +10,6 @@ public interface CourseArrangeMapper {
     Integer batchInsert(List<CourseArrangeEntity> courseArrangeEntities);
 
     Integer deleteByArrangeId(Integer arrangeId);
+
+    Integer queryByUserId(Integer userId);
 }

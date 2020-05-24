@@ -7,12 +7,14 @@
         ,p.name
         ,p.state
         ,p.composition_id as compositionId
+        ,c.name as compositionName
         ,p.description
         ,p.files
         ,p.num
         ,p.topics
         ,p.train_time as trainTime
         ,p.selfContactorName
+        ,p.arrange_id as arrangeId
         ,oc.contactor_position as contactorPosition
         ,oc.contactor_phone as contactorPhone
         ,oc.contactor_name as contactorName

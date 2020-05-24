@@ -284,4 +284,9 @@ public class ClassCourseService {
 
         });
     }
+
+    public ClassArrangeInfo getByUserId(Integer userId) {
+        Integer classId = courseArrangeMapper.queryByUserId(userId);
+        return get(classId);
+    }
 }

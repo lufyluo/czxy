@@ -48,6 +48,12 @@ public class CourseArrangeController {
         return ResponseUtil.success(classCourseService.tableById(id));
     }
 
+    @GetMapping("/getByUserId/{userId}")
+    @ApiOperation("根据用户id获取最近课表数据")
+    public BaseResponse<ClassArrangeInfo> getByUserId(@PathVariable Integer userId) {
+        return ResponseUtil.success(classCourseService.getByUserId(userId));
+    }
+
     @PostMapping
     @ApiOperation("添加课表")
     public BaseResponse<Boolean> add(@RequestBody CourseArrangeAddInfo courseArrangeAddInfo){

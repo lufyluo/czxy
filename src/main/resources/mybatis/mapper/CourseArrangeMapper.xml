@@ -14,7 +14,15 @@
 
     </insert>
     <delete id="deleteByArrangeId">
-        delete from course_arrange where arrange_id = #{arrangeId}
+        delete
+        from course_arrange
+        where arrange_id = #{arrangeId}
     </delete>
+    <select id="queryByUserId" resultType="java.lang.Integer">
+        select c.id
+        from student s
+                 left join class c on s.class_id = c.id
+        where s.user_id = #{userId}
+    </select>
 
 </mapper>

@@ -1,9 +1,6 @@
 package com.czxy.manage.service;
 
-import com.czxy.manage.dao.PaperSendMapper;
-import com.czxy.manage.dao.PaperStemMapper;
-import com.czxy.manage.dao.QuestionnaireMapper;
-import com.czxy.manage.dao.StudentMapper;
+import com.czxy.manage.dao.*;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.PaperEntity;
@@ -34,7 +31,8 @@ public class QuestionnaireService {
     private PaperStemMapper paperStemMapper;
     @Resource
     private PaperSendMapper paperSendMapper;
-
+    @Resource
+    private PaperMapper paperMapper;
     @Autowired
     private StudentService studentService;
 
@@ -82,17 +80,18 @@ public class QuestionnaireService {
     }
 
     public Boolean publish(PaperPublisInfo paperPublisInfo) {
-        Integer pageId = paperPublisInfo.getPaperId();
+        Integer paperId = paperPublisInfo.getPaperId();
         GetAllParam param = PojoMapper.INSTANCE.toGetAllParam(paperPublisInfo);
         List<StudentDetailEntity> studentDetailEntities = studentService.getAllUser(param);
         List<PaperSendEntity> collect = studentDetailEntities.stream().map(n -> {
             PaperSendEntity paperSendEntityTemp = new PaperSendEntity();
             paperSendEntityTemp.setUserId(n.getUserId());
-            paperSendEntityTemp.setPaperId(pageId);
+            paperSendEntityTemp.setPaperId(paperId);
             paperSendEntityTemp.setIsToAll(paperPublisInfo.getIsToAll());
             return paperSendEntityTemp;
         }).collect(Collectors.toList());
         batchInsert(collect);
+        paperMapper.updateState(paperId,1);
         return true;
     }
 

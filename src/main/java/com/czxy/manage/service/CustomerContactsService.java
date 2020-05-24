@@ -80,7 +80,7 @@ public class CustomerContactsService {
     public Boolean add(CustomerContactsCreateInfo customerInfo) {
         OrgEntity orgEntitytemp = orgMapper.queryByNames(customerInfo.getOrgName());
         if(orgEntitytemp!=null){
-            throw new ManageException(ResponseStatus.DATAEXIST,"班级已存在");
+            throw new ManageException(ResponseStatus.DATAEXIST,"客户已存在");
         }
         Integer orgId = insertOrg(customerInfo);
         customerInfo.setOrgId(orgId);

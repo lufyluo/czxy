@@ -8,6 +8,7 @@ import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.user.AccountInfo;
 import com.czxy.manage.model.vo.user.ChangePwdInfo;
 import com.czxy.manage.model.vo.user.UserAccountInfo;
+import com.czxy.manage.model.vo.user.UserInfo;
 import com.czxy.manage.service.AccountService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -35,6 +36,13 @@ public class AccountController {
     @Anonymous
     public BaseResponse<String> login(@RequestBody AccountInfo accountInfo, @ApiIgnore @RequestHeader String timestamp) {
         return ResponseUtil.success(accountService.login(accountInfo, timestamp));
+    }
+
+    @PutMapping("/wechat/login")
+    @ApiOperation("微信登陆")
+    @Anonymous
+    public BaseResponse<String> wechatLogin(@RequestParam("code") String code){
+        return ResponseUtil.success(accountService.wechatLogin(code));
     }
 
     @PutMapping

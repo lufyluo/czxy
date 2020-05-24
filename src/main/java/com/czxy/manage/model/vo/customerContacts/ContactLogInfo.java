@@ -14,6 +14,6 @@ public class ContactLogInfo {
     @ApiModelProperty("内容")
     private String content;
     @ApiModelProperty("联系时间")
-    @JsonFormat(pattern = "yyyy年MM月dd日 hh点mm分")
-    private Date createdTime;
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    private Date contactTime;
 }

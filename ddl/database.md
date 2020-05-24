@@ -777,20 +777,27 @@ alter table plan
 	add selfContactorName varchar(32) null;
 
 alter table student
-	add org_name int null after org_id;
+	add org_name varchar(40) null after org_id;
 
 create table contact_log
 (
 	id int auto_increment,
 	content varchar(255) null,
 	plan_id int null,
-    del_flg smallint default 0,
+    del_flag smallint default 0,
 	updated_time datetime default now() null,
 	created_time datetime default now() null,
 	constraint contact_log_pk
 		primary key (id)
 )
 comment '客户通讯录联系日志';
+
+alter table contact_log
+	add contact_time datetime null;
+
+
+======================
+alter table student modify org_name varchar(40) null;
 
 
 

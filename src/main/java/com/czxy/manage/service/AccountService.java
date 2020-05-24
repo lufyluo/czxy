@@ -7,6 +7,7 @@ import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
+import com.czxy.manage.infrastructure.util.wechat.WechatUtil;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.AccountEntity;
 import com.czxy.manage.model.entity.TokenEntity;
@@ -47,6 +48,8 @@ public class AccountService {
     public Long expire;
     @Autowired
     public UserService userService;
+    @Autowired
+    private WechatUtil wechatUtil;
 
     public String login(AccountInfo accountInfo, String timestamp) {
         String pwd = decodePassword(accountInfo.getPassword(), timestamp);
@@ -120,5 +123,17 @@ public class AccountService {
                 }
             });
         }
+    }
+
+    public String wechatLogin(String code) {
+        String openId = wechatUtil.getOpenId(code);
+        UserInfo userInfo = userService.queryByWechatId(openId);
+        if(userInfo == null){
+            throw new ManageException(ResponseStatus.DATANOTEXIST,"用户暂无权限");
+        }
+        String token = UUID.randomUUID().toString();
+        tokenMapper.delete(userInfo.getPhone());
+        tokenMapper.insert(userInfo.getId(), userInfo.getPhone(), token, expire);
+        return token;
     }
 }
