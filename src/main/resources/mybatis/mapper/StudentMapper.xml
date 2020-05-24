@@ -44,7 +44,9 @@
         on s.user_id = u.id
         left join class c
         on s.class_id = c.id
-        where s.user_id in ( select max(id) as id from user u group by u.phone )
+        where
+        s.user_id in ( select max(id) as id from user u group by u.phone )
+        AND s.id in ( select max(id) as id from student group by user_id )
         <if test="param != null and param != '' ">and u.name like '%${param}%'</if>
         <if test="provinceId != null and provinceId>0 ">and c.province_id = #{provinceId}</if>
         <if test="cityId != null and cityId>0 ">and c.city_id = #{cityId}</if>
