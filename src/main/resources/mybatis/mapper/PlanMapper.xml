@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.PlanMapper">
     <insert id="insert">
-        insert into plan (arrange_id,files,name,types,description)
-        values (#{arrangeId},#{files},#{name},#{types},#{description})
+        insert into plan (arrange_id, files, name, types, description)
+        values (#{arrangeId}, #{files}, #{name}, #{types}, #{description})
     </insert>
     <delete id="delete">
         delete from plan
@@ -14,24 +14,32 @@
     </delete>
 
     <select id="query" resultType="com.czxy.manage.model.entity.PlanEntity">
-        select id,name,types,description
+        select id,name,types,description,arrange_id as arrangeId
         from plan
         where 1=1
         <if test="param != null and param != ''">
             and name like '%${param}%'
         </if>
         <if test="typeId != null and typeId != ''">
-            and (types like '${typeId},%' or types like '%,${typeId}' or types like '%,${typeId},%' or types = #{typeId})
+            and (types like '${typeId},%' or types like '%,${typeId}' or types like '%,${typeId},%' or types =
+            #{typeId})
         </if>
         order by id desc
     </select>
 
     <update id="update">
-        update plan set arrange_id = #{arrangeId}
-        ,files = #{files}
-        ,types = #{types}
-        ,description = #{description}
-        ,updated_time=now()
+        update plan
+        set arrange_id        = #{arrangeId}
+          , files             = #{files}
+          , types             = #{types}
+          , description       = #{description}
+          , name              = #{name}
+          , num=#{num}
+          , composition_id    = #{compositionId}
+          , train_time=#{trainTime}
+          , state=#{state}
+          , selfContactorName = #{selfContactorName}
+          , updated_time=now()
         where id = #{id}
     </update>
 </mapper>

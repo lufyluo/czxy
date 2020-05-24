@@ -24,4 +24,8 @@ public interface OrgMapper {
     Integer updateStarAndName(CustomerInfo customerInfo);
 
     Integer updateStar(Integer orgId, Integer orgStar);
+
+    OrgEntity queryByNames(String orgName);
+
+    Integer updateAll(OrgEntity orgEntity);
 }

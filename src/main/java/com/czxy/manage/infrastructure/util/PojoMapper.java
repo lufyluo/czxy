@@ -10,10 +10,15 @@ import com.czxy.manage.model.vo.arrange.ArrangeInfo;
 import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.customer.CustomerCreateInfo;
 import com.czxy.manage.model.vo.customer.CustomerInfo;
+import com.czxy.manage.model.vo.customerContacts.ContactLogInfo;
+import com.czxy.manage.model.vo.customerContacts.CustomerContactsCreateInfo;
+import com.czxy.manage.model.vo.customerContacts.CustomerContactsInfo;
+import com.czxy.manage.model.vo.customerContacts.CustomerContactsUpdateInfo;
 import com.czxy.manage.model.vo.files.FileInfo;
 import com.czxy.manage.model.vo.plan.PlanCreateInfo;
 import com.czxy.manage.model.vo.plan.PlanInfo;
 import com.czxy.manage.model.vo.plan.PlanUpdateInfo;
+import com.czxy.manage.model.vo.questionnaire.PaperPublisInfo;
 import com.czxy.manage.model.vo.questionnaire.stem.OptionInfo;
 import com.czxy.manage.model.vo.questionnaire.stem.PaperStemInfo;
 import com.czxy.manage.model.vo.questionnaire.stem.StemInfo;
@@ -21,6 +26,7 @@ import com.czxy.manage.model.vo.site.SiteAddInfo;
 import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.model.vo.site.TypeInfo;
 import com.czxy.manage.model.vo.stock.StockInfo;
+import com.czxy.manage.model.vo.student.GetAllParam;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentUpdateInfo;
@@ -236,4 +242,22 @@ public interface PojoMapper {
 
     StemInfo toStemOptionInfo(StemOptionEntity stemEntities);
     List<StemInfo> toStemOptionInfos(List<StemOptionEntity> stemEntities);
+
+    GetAllParam toGetAllParam(PaperPublisInfo paperPublisInfo);
+
+    GetAllParam toGetAllParam(SendInfo sendInfo);
+
+    CustomerContactsInfo toCustomerContactsInfo(CustomerContactsEntity customerEntityList);
+    List<CustomerContactsInfo> toCustomerContactsInfos(List<CustomerContactsEntity> customerEntityList);
+
+    CustomerEntity toCustomerEntity(CustomerContactsCreateInfo customerContactsCreateInfo);
+
+    PlanEntity toPlanEntity(CustomerContactsCreateInfo customerContactsCreateInfo);
+
+    CustomerEntity toCustomerEntity(CustomerContactsUpdateInfo customerInfo);
+
+    PlanEntity toPlanEntity(CustomerContactsUpdateInfo customerInfo);
+
+    ContactLogInfo toContactLogInfo(ContactLogEntity entities);
+    List<ContactLogInfo> toContactLogInfo(List<ContactLogEntity> entities);
 }

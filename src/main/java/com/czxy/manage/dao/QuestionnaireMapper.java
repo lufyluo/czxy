@@ -18,4 +18,6 @@ public interface QuestionnaireMapper {
     Integer update(PaperCreateInfo paperInfo);
 
     Integer delete(@Param("paperIds") List<Integer> paperIds);
+
+    void updateState(@Param("paperIds") List<Integer> paperIds, @Param("state") int state);
 }

@@ -7,18 +7,16 @@
     </sql>
     <insert id="insert" parameterType="com.czxy.manage.model.entity.StudentEntity" useGeneratedKeys="true"
             keyProperty="id">
-        insert into
-        student (sign_flag, class_id, user_id, type, org_id)
-        VALUES
-        (0,#{classId},#{userId},#{type},#{orgId})
+        insert into student (sign_flag, class_id, user_id, type, org_id)
+        VALUES (0, #{classId}, #{userId}, #{type}, #{orgId})
     </insert>
     <insert id="batchInsert" parameterType="com.czxy.manage.model.entity.StudentEntity" useGeneratedKeys="true"
             keyProperty="id">
         insert into
-        student (sign_flag, class_id, user_id, type, org_id)
+        student (sign_flag, class_id, user_id, type, org_name)
         VALUES
         <foreach collection="list" item="item" separator=",">
-            (0,#{item.classId},#{item.userId},#{item.type},#{item.orgId})
+            (0,#{item.classId},#{item.userId},#{item.type},#{item.orgName})
         </foreach>
     </insert>
     <delete id="delete">
@@ -29,26 +27,24 @@
     </delete>
     <select id="query" resultType="com.czxy.manage.model.entity.StudentDetailEntity">
         select
-        s.id as id ,s.id as studentId ,sign_flag as signFlag, s.user_id as userId,s.class_id  as classId,type,
+        s.id as id ,s.id as studentId ,sign_flag as signFlag,
+        s.user_id as userId,s.class_id as classId,type, s.org_name as orgName,
         u.id as userId, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
         u.education,
         u.wechat_id as wechatId,
         u.org_id as orgId,
-        o.name as orgName,
         u.nation,
         u.nativeplace as nativePlace,
         u.politics,
         c.name as className,c.begin_time as beginTime,c.end_time as endTime,
         c.duration
-         from
+        from
         student s
         left join user u
         on s.user_id = u.id
         left join class c
         on s.class_id = c.id
-        left join org o
-        on u.org_id = o.id
-        where 1=1
+        where s.user_id in ( select max(id) as id from user u group by u.phone )
         <if test="param != null and param != '' ">and u.name like '%${param}%'</if>
         <if test="provinceId != null and provinceId>0 ">and c.province_id = #{provinceId}</if>
         <if test="cityId != null and cityId>0 ">and c.city_id = #{cityId}</if>
@@ -58,14 +54,21 @@
         order by s.id desc
     </select>
     <select id="queryByStudentId" resultType="com.czxy.manage.model.entity.StudentUpdateEntity">
-        select sign_flag as signFlag, class_id as classId, user_id as userId, type from student where id=#{id}
+        select sign_flag as signFlag, class_id as classId, user_id as userId, type
+        from student
+        where id = #{id}
     </select>
     <select id="queryByUserId" resultType="java.lang.Boolean">
-        select id from student where user_id=#{userId}
+        select id
+        from student
+        where user_id = #{userId}
     </select>
     <select id="queryStudent" resultType="com.czxy.manage.model.entity.StudentEntity">
         select id, sign_flag as signFlag, class_id as classId, user_id as userId, type, org_id as orgId
-        from student where user_id=#{userId} order by id desc limit 1
+        from student
+        where user_id = #{userId}
+        order by id desc
+        limit 1
     </select>
     <update id="sign">
         update student set sign_flag = 1 , updated_time=now() where id in
@@ -74,13 +77,25 @@
         </foreach>
     </update>
     <update id="update">
-        update student set class_id=#{classId}, type=#{type}, updated_time=now() where id=#{id}
+        update student
+        set class_id=#{classId},
+            type=#{type},
+            updated_time=now()
+        where id = #{id}
     </update>
     <update id="clearLeader">
-        update student set type = 0,updated_time=now() where class_id = #{classId} and type = 10
+        update student
+        set type        = 0,
+            updated_time=now()
+        where class_id = #{classId}
+          and type = 10
     </update>
     <update id="setLeader">
-        update student set type = 10,updated_time=now() where class_id = #{classId} and user_id = #{userId}
+        update student
+        set type        = 10,
+            updated_time=now()
+        where class_id = #{classId}
+          and user_id = #{userId}
     </update>
     <update id="updateClass">
         <foreach collection="list" item="item" open="" close=";" separator=";">
@@ -92,11 +107,15 @@
         </foreach>
     </update>
     <update id="updateByUserId">
-        update student set sign_flag = 1 ,updated_time=now()where user_id=#{userId}
+        update student
+        set sign_flag   = 1,
+            updated_time=now()
+        where user_id = #{userId}
     </update>
     <update id="updateStudentClass">
-        update student set class_id=#{classId},updated_time=now() where id in <foreach collection="studentIds" item="item" index="index"
-                                                                    open="(" separator="," close=")">#{item}
-                                                           </foreach>
+        update student set class_id=#{classId},updated_time=now() where id in
+        <foreach collection="studentIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
     </update>
 </mapper>

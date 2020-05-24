@@ -30,7 +30,11 @@ public class CompositionService {
 
     public Integer insertIfAbsent(Integer compositionId,String composition){
         if (compositionId == null && !StringUtils.isEmpty(composition)) {
-            CompositionEntity compositionEntity = new CompositionEntity();
+            CompositionEntity compositionEntity = compositionMapper.queryByName(composition);
+            if(compositionEntity!=null){
+                return compositionEntity.getId();
+            }
+            compositionEntity = new CompositionEntity();
             compositionEntity.setName(composition);
             compositionMapper.insertEntity(compositionEntity);
             return compositionEntity.getId();

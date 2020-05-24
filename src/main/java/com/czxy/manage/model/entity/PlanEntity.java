@@ -11,4 +11,10 @@ public class PlanEntity extends BaseEntity {
     private String types;
     private String topics;
     private String description;
+    private Integer num;
+    private Integer orgId;
+    private Integer compositionId;
+    private String trainTime;
+    private String state;
+    private String selfContactorName;
 }

@@ -41,4 +41,10 @@
         ,contactor_position = #{contactorPosition},updated_time= now()
         where id = #{id}
     </update>
+    <update id="updateAll">
+        update org_contactor set contactor_name = #{contactorName}
+                               ,contactor_phone = #{contactorPhone}
+                               ,contactor_position = #{contactorPosition},updated_time= now()
+        where org_id = #{orgId}
+    </update>
 </mapper>

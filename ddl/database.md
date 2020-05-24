@@ -625,7 +625,7 @@ create table message
 comment '信息发布';
 alter table message modify user_id varchar(255) null;
 
-alter table message modify class_id varchar(255) null;
+alter table message modify class_ids varchar(255) null;
 alter table greetings
 	add updated_time datetime default now() null;
 
@@ -738,6 +738,60 @@ alter table w_option
 
 alter table w_stem
 	add type VARCHAR(24) null after category;
+-------------------------------------------------------
+
+alter table message modify id bigint auto_increment;
+
+alter table message change user_ids user_id int null;
+
+alter table w_paper modify id bigint auto_increment;
+
+alter table plan comment '通讯录部分字段';
+
+alter table org
+	add province_id int null after star;
+
+alter table org
+	add city_id int null after province_id;
+
+alter table org
+	add county_id int null after city_id;
+
+alter table plan
+	add state varchar(20) null after topics;
+
+alter table plan
+	add org_id int null comment '主办方id' after description;
+
+alter table plan
+	add num int null comment '人数' after org_id;
+
+alter table plan
+	add composition_id int null comment '培训对象' after num;
+alter table plan
+	add train_time int null comment '培训时间描述' after updated_time;
+
+alter table plan modify train_time varchar(60) null comment '培训时间描述';
+
+alter table plan
+	add selfContactorName varchar(32) null;
+
+alter table student
+	add org_name int null after org_id;
+
+create table contact_log
+(
+	id int auto_increment,
+	content varchar(255) null,
+	plan_id int null,
+    del_flg smallint default 0,
+	updated_time datetime default now() null,
+	created_time datetime default now() null,
+	constraint contact_log_pk
+		primary key (id)
+)
+comment '客户通讯录联系日志';
+
 
 
 ```

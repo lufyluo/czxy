@@ -23,12 +23,24 @@ public class OrgService {
     private OrgMapper orgMapper;
     public Integer insertIfAbsentOrg(String orgName,Integer orgId) {
         if (orgId == null && !StringUtils.isEmpty(orgName)) {
-            OrgEntity orgEntity = new OrgEntity();
+            OrgEntity orgEntity =orgMapper.queryByNames(orgName);
+            if(orgEntity!=null){
+                return orgEntity.getId();
+            }
+            orgEntity = new OrgEntity();
             orgEntity.setName(orgName);
             orgMapper.insertOrg(orgEntity);
             return orgEntity.getId();
         }
         return orgId;
+    }
+
+    public Integer insertIfAbsentOrg(OrgEntity orgEntity) {
+        if (orgEntity.getId() == null && !StringUtils.isEmpty(orgEntity.getName())) {
+            orgMapper.insertOrg(orgEntity);
+            return orgEntity.getId();
+        }
+        return orgEntity.getId();
     }
 
     public PageInfo<OrgInfo> page(PageParam<String> pageParam) {

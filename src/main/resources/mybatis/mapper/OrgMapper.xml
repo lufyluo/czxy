@@ -3,7 +3,10 @@
 <mapper namespace="com.czxy.manage.dao.OrgMapper">
     <insert id="insertOrg" parameterType="com.czxy.manage.model.entity.OrgEntity" useGeneratedKeys="true"
             keyProperty="id">
-        insert into org (name, address_id) values (#{name},#{addressId});
+        insert
+        into org
+            (name, address_id, province_id, city_id, county_id)
+        values (#{name}, #{addressId}, #{provinceId}, #{cityId}, #{countyId});
     </insert>
     <insert id="batchInsert">
         insert into org (name) values
@@ -12,16 +15,38 @@
         </foreach>
     </insert>
     <update id="update">
-        update org set  name=#{name}, address_id=#{addressId},updated_time= now() where id=#{id}
+        update org
+        set name=#{name},
+            address_id=#{addressId},
+            updated_time= now()
+        where id = #{id}
     </update>
     <update id="updateStarAndName">
-        update org set star=#{orgStar},name=#{orgName},updated_time= now() where id=#{orgId}
+        update org
+        set star=#{orgStar},
+            name=#{orgName},
+            updated_time= now()
+        where id = #{orgId}
     </update>
     <update id="updateStar">
-        update org set star=#{orgStar},updated_time= now() where id=#{orgId}
+        update org
+        set star=#{orgStar},
+            updated_time= now()
+        where id = #{orgId}
+    </update>
+    <update id="updateAll">
+        update org
+        set province_id=#{provinceId},
+            city_id=#{cityId},
+            county_id=#{countyId},
+            name=#{orgName},
+            updated_time= now()
+        where id = #{orgId}
     </update>
     <select id="query" resultType="com.czxy.manage.model.entity.OrgEntity">
-        select name from org where id = #{orgId}
+        select name
+        from org
+        where id = #{orgId}
     </select>
     <select id="queryAll" resultType="com.czxy.manage.model.entity.OrgEntity">
         select id,name from org
@@ -35,5 +60,11 @@
         <foreach collection="list" item="item" close=")" open="(" separator=",">
             #{item}
         </foreach>
+    </select>
+    <select id="queryByNames" resultType="com.czxy.manage.model.entity.OrgEntity">
+        select id, name
+        from org
+        where name = #{orgName}
+        limit 1
     </select>
 </mapper>

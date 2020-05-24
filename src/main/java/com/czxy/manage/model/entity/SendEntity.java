@@ -7,12 +7,8 @@ import java.util.List;
 
 @Data
 public class SendEntity {
-    private Integer id;
-    @NotBlank
+    private Long id;
     private String message;
-    private List<Integer> userIds;
-    private List<Integer> classIds;
     private Integer isToAll;
-    private String userIdsString;
-    private String classIdsString;
+    private Integer userId;
 }

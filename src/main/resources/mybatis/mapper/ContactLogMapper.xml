@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.ContactLogMapper">
+    <insert id="insert">
+        insert into contact_log
+            (content, plan_id)
+        values (#{content}, #{planId})
+    </insert>
+    <select id="query" resultType="com.czxy.manage.model.entity.ContactLogEntity">
+        select id, content, plan_id as planId, del_flag,
+               updated_time as updatedTime, created_time as createdTime
+        from contact_log where plan_id = #{planId} and del_flag = 0
+    </select>
+</mapper>

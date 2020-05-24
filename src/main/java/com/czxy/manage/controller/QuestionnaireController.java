@@ -6,6 +6,7 @@ import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.PaperInfo;
 import com.czxy.manage.model.vo.questionnaire.PaperCreateInfo;
+import com.czxy.manage.model.vo.questionnaire.PaperPublisInfo;
 import com.czxy.manage.service.QuestionnaireService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,5 +44,17 @@ public class QuestionnaireController {
     @ApiOperation("批量删除")
     public BaseResponse<Boolean> delete(@PathVariable List<Integer> paperIds) {
         return ResponseUtil.success(questionnaireService.delete(paperIds));
+    }
+
+    @DeleteMapping("/down/{paperIds}")
+    @ApiOperation("批量下架")
+    public BaseResponse<Boolean> down(@PathVariable List<Integer> paperIds) {
+        return ResponseUtil.success(questionnaireService.down(paperIds));
+    }
+
+    @PostMapping("/publish")
+    @ApiOperation("发布")
+    public BaseResponse<Boolean> publish(@RequestBody PaperPublisInfo paperPublisInfo) {
+        return ResponseUtil.success(questionnaireService.publish(paperPublisInfo));
     }
 }

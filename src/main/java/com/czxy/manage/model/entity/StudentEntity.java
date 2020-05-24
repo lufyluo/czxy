@@ -9,5 +9,5 @@ public class StudentEntity extends BaseEntity {
     private Integer classId;
     private Integer userId;
     private Integer type;
-    private Integer orgId;
+    private String orgName;
 }

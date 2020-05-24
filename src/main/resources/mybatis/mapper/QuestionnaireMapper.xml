@@ -3,16 +3,28 @@
 <mapper namespace="com.czxy.manage.dao.QuestionnaireMapper">
     <insert id="insert" parameterType="com.czxy.manage.model.vo.questionnaire.PaperCreateInfo" useGeneratedKeys="true"
             keyProperty="id">
-        insert into w_paper (name,description,state)values (#{name},#{description},0)
+        insert into w_paper (name, description, state)
+        values (#{name}, #{description}, 0)
     </insert>
     <update id="update">
-        update w_paper set  name=#{name},description=#{description},updated_time=now()
-        where id=#{id}
+        update w_paper
+        set name=#{name},
+            description=#{description},
+            updated_time=now()
+        where id = #{id}
+    </update>
+    <update id="updateState">
+        update w_paper set state=#{state}
+        where id in
+        <foreach collection="paperIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
     </update>
     <delete id="delete">
-        delete from w_paper where id in <foreach collection="paperIds" item="item" index="index"
-                                                 open="(" separator="," close=")">#{item}
-                                        </foreach>
+        delete from w_paper where id in
+        <foreach collection="paperIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
     </delete>
 
     <select id="page" resultType="com.czxy.manage.model.entity.PaperEntity">

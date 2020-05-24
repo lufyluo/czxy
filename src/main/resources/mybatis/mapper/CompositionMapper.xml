@@ -14,4 +14,7 @@
         <if test="param != null and param != ''">where name like '%$param}%'</if>
         order by name,id desc
     </select>
+    <select id="queryByName" resultType="com.czxy.manage.model.entity.CompositionEntity">
+        select id,name from composition where name = #{composition} limit 1
+    </select>
 </mapper>

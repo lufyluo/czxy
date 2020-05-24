@@ -21,4 +21,6 @@ public class PlanInfo {
     private String typeNames;
     @ApiModelProperty("描述")
     private String description;
+    @ApiModelProperty("课表id")
+    private Integer arrangeId;
 }

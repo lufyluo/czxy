@@ -11,4 +11,6 @@ public interface CompositionMapper {
     List<CompositionEntity> queryAll(String param);
 
     Integer insertEntity(CompositionEntity compositionEntity);
+
+    CompositionEntity queryByName(String composition);
 }

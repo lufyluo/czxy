@@ -15,4 +15,6 @@ public interface CustomerMapper {
     void insert(CustomerEntity customerEntity);
 
     Integer delete(List<Integer> ids);
+
+    Integer updateAll(CustomerEntity customerEntity);
 }

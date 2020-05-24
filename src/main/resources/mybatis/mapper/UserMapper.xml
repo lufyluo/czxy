@@ -14,17 +14,17 @@
             keyProperty="id">
         insert into user
         (name, idcard, phone, gender, position, age,
-        birthday, category, wechat_id,org_id,nation,
-        nativeplace,education,politics)
-        values(#{name}, #{idCard}, #{phone},
-         #{gender}, #{position}, #{age},
-         #{birthday},2, #{wechatId},
-         #{orgId}, #{nation}, #{nativePlace},
-         #{education},#{politics});
+         birthday, category, wechat_id, org_id, nation,
+         nativeplace, education, politics)
+        values (#{name}, #{idCard}, #{phone},
+                #{gender}, #{position}, #{age},
+                #{birthday}, 2, #{wechatId},
+                #{orgId}, #{nation}, #{nativePlace},
+                #{education}, #{politics});
     </insert>
     <insert id="batchInsert" useGeneratedKeys="true"
             keyProperty="id">
-         insert into user
+        insert into user
         (name, idcard, phone, gender,
         position, age, birthday,
         category, wechat_id,org_id,
@@ -34,48 +34,88 @@
         <foreach collection="list" item="item" separator=",">
             (#{item.name}, #{item.idCard}, #{item.phone}, #{item.gender},
             #{item.position}, #{item.age}, #{item.birthday}, #{item.category},
-             #{item.wechatId}, #{item.orgId}, #{item.nation}, #{item.nativePlace},
-             #{item.education},#{item.politics})
+            #{item.wechatId}, #{item.orgId}, #{item.nation}, #{item.nativePlace},
+            #{item.education},#{item.politics})
         </foreach>
 
     </insert>
     <update id="update">
         update user
-        set name=#{name}, idcard=#{idCard}, phone=#{phone},
-        gender=#{gender}, position=#{position},
-        age=#{age}, birthday=#{birthday}, category=#{category},
-        wechat_id=#{wechatId}, updated_time=now(), politics=#{politics},
-        org_id=#{orgId},nation=#{nation},nativeplace=#{nativePlace},education=#{education}
-        where id=#{id}
+        set name=#{name},
+            idcard=#{idCard},
+            phone=#{phone},
+            gender=#{gender},
+            position=#{position},
+            age=#{age},
+            birthday=#{birthday},
+            category=#{category},
+            wechat_id=#{wechatId},
+            updated_time=now(),
+            politics=#{politics},
+            org_id=#{orgId},
+            nation=#{nation},
+            nativeplace=#{nativePlace},
+            education=#{education}
+        where id = #{id}
     </update>
     <update id="updateByStudent">
         update user
-        set name=#{name}, idcard=#{idCard}, phone=#{phone},
-        gender=#{gender}, position=#{position}, age=#{age},
-        birthday=#{birthday}, category=#{category}, wechat_id=#{wechatId},
-        updated_time=now(), org_id=#{orgId},nation=#{nation}
-        ,nativeplace=#{nativePlace},education=#{education},politics=#{politics}
-        where id=#{userId}
+        set name=#{name},
+            idcard=#{idCard},
+            phone=#{phone},
+            gender=#{gender},
+            position=#{position},
+            age=#{age},
+            birthday=#{birthday},
+            category=#{category},
+            wechat_id=#{wechatId},
+            updated_time=now(),
+            org_id=#{orgId},
+            nation=#{nation}
+                ,
+            nativeplace=#{nativePlace},
+            education=#{education},
+            politics=#{politics}
+        where id = #{userId}
     </update>
     <update id="updateByTeacher">
         update user
-        set name=#{name}, idcard=#{idCard}, phone=#{phone},
-        gender=#{gender}, position=#{position}, age=#{age},
-        birthday=#{birthday}, category=#{category}, wechat_id=#{wechatId},
-         updated_time=now(), org_id=#{orgId},nation=#{nation},
-         nativeplace=#{nativePlace},education=#{education},politics=#{politics}
-        where id=#{userId}
+        set name=#{name},
+            idcard=#{idCard},
+            phone=#{phone},
+            gender=#{gender},
+            position=#{position},
+            age=#{age},
+            birthday=#{birthday},
+            category=#{category},
+            wechat_id=#{wechatId},
+            updated_time=now(),
+            org_id=#{orgId},
+            nation=#{nation},
+            nativeplace=#{nativePlace},
+            education=#{education},
+            politics=#{politics}
+        where id = #{userId}
     </update>
     <update id="updateWechat">
-        update user set wechat_id =#{openId},updated_time=now() where id=#{userId}
+        update user
+        set wechat_id   =#{openId},
+            updated_time=now()
+        where id = #{userId}
     </update>
     <update id="updateByCustomer">
-        update user set name=#{name},position=#{position},phone=#{phone},updated_time=now() where id=#{userId}
+        update user
+        set name=#{name},
+            position=#{position},
+            phone=#{phone},
+            updated_time=now()
+        where id = #{userId}
     </update>
     <delete id="delete">
-      delete from user where id in <foreach collection="id" item="item" index="index"
-                                            open="(" separator="," close=")">#{item}
-                                   </foreach>
+        delete from user where id in
+        <foreach collection="id" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
     </delete>
 
     <select id="query" resultType="com.czxy.manage.model.entity.UserEntity">
@@ -84,17 +124,24 @@
         from user
     </select>
     <select id="queryByToken" resultType="com.czxy.manage.model.entity.UserEntity">
-        select
-        u.id, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
-        u.wechat_id as wechatId,
-        u.updated_time as updatedTime,
-        u.created_time as createdTime,
-        u.org_id as orgId,
-        u.nation,
-        u.nativeplace as nativePlace
+        select u.id,
+               u.name,
+               u.idcard,
+               u.phone,
+               u.gender,
+               u.position,
+               u.age,
+               u.birthday,
+               u.category,
+               u.wechat_id    as wechatId,
+               u.updated_time as updatedTime,
+               u.created_time as createdTime,
+               u.org_id       as orgId,
+               u.nation,
+               u.nativeplace  as nativePlace
         from user u
-        left join token t
-        on t.user_id = u.id
+                 left join token t
+                           on t.user_id = u.id
         where t.token = #{token}
     </select>
     <select id="queryMaster" resultType="com.czxy.manage.model.entity.UserEntity">
@@ -107,7 +154,7 @@
         order by id desc
     </select>
     <select id="queryClassLeader" resultType="com.czxy.manage.model.entity.UserEntity">
-         select
+        select
         u.id, u.name, u.idcard, u.phone, u.gender, u.position, u.age, u.birthday, u.category,
         u.wechat_id as wechatId,
         u.updated_time as updatedTime,
@@ -125,6 +172,17 @@
         order by id desc
     </select>
     <select id="queryId" resultType="java.lang.Integer">
-        select id from user where phone=#{phone}
+        select id
+        from user
+        where phone = #{phone}
+    </select>
+    <select id="queryByPhones" resultType="com.czxy.manage.model.entity.UserEntity">
+        select id, name, phone
+        from user
+        where phone
+        in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
     </select>
 </mapper>

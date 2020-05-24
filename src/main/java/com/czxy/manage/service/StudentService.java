@@ -7,13 +7,10 @@ import com.czxy.manage.dao.UserMapper;
 import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
-import com.czxy.manage.infrastructure.util.wechat.WechatAccessTokenResponse;
 import com.czxy.manage.infrastructure.util.wechat.WechatUtil;
 import com.czxy.manage.model.entity.*;
-import com.czxy.manage.model.vo.student.StudentAddInfo;
-import com.czxy.manage.model.vo.student.StudentDetailInfo;
-import com.czxy.manage.model.vo.student.StudentPageParam;
-import com.czxy.manage.model.vo.student.StudentUpdateInfo;
+import com.czxy.manage.model.vo.questionnaire.PaperPublisInfo;
+import com.czxy.manage.model.vo.student.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -26,10 +23,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -156,14 +150,12 @@ public class StudentService {
         if (studentAddInfos == null || studentAddInfos.size() == 0) {
             return true;
         }
-        List<UserEntity> userEntity = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos).stream().
+        List<UserEntity> userEntities = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos).stream().
                 filter(n -> ObjectUtils.nullSafeEquals(n.getId(), null)).collect(Collectors.toList());
-        if (userEntity != null && userEntity.size() != 0) {
-            userMapper.batchInsert(userEntity);
-        }
+        fillUserId(userEntities);
 
         studentAddInfos.forEach(n -> {
-            Optional<UserEntity> user = userEntity.stream()
+            Optional<UserEntity> user = userEntities.stream()
                     .filter(item ->
                             ObjectUtils.nullSafeEquals(item.getIdCard(), (n.getIdCard()))
                                     || ObjectUtils.nullSafeEquals(item.getPhone(), (n.getPhone()))).findFirst();
@@ -183,6 +175,43 @@ public class StudentService {
             }
         });
         return true;
+    }
+
+    private void fillUserId(List<UserEntity> userEntities) {
+        if (userEntities != null && userEntities.size() != 0) {
+            List<UserEntity> existUserEntities = userMapper.queryByPhones(userEntities
+                    .stream()
+                    .map(UserEntity::getPhone)
+                    .filter(n -> !StringUtils.isEmpty(n))
+                    .collect(Collectors.toList()));
+            if (existUserEntities == null || existUserEntities.size() == 0) {
+                userMapper.batchInsert(userEntities);
+            } else if (existUserEntities.size() == userEntities.size()) {
+                copyUserId(userEntities, existUserEntities);
+
+            } else {
+                List<UserEntity> newUserEntities = userEntities
+                        .stream()
+                        .filter(n -> !existUserEntities
+                                .stream()
+                                .anyMatch(m -> ObjectUtils.nullSafeEquals(m.getPhone(), n.getPhone())))
+                        .collect(Collectors.toList());
+                userMapper.batchInsert(newUserEntities);
+                existUserEntities.addAll(newUserEntities);
+                copyUserId(userEntities, existUserEntities);
+            }
+        }
+    }
+
+    private void copyUserId(List<UserEntity> target, List<UserEntity> source) {
+        target.forEach(n -> {
+            Optional<UserEntity> userEntity = source
+                    .stream()
+                    .filter(m -> ObjectUtils.nullSafeEquals(n.getPhone(), m.getPhone())).findFirst();
+            if (userEntity.isPresent()) {
+                n.setId(userEntity.get().getId());
+            }
+        });
     }
 
     private void fillClassId(List<StudentAddInfo> studentAddInfos) {
@@ -255,5 +284,42 @@ public class StudentService {
         }
         studentMapper.updateClass(studentAddInfos);
         return true;
+    }
+
+    //根据特殊条件获取所有学员
+    public List<StudentDetailEntity> getAllUser(GetAllParam paperPublisInfo) {
+        if (paperPublisInfo.getIsToAll()==1) {
+            paperPublisInfo = new GetAllParam();
+        }
+        List<StudentDetailEntity> studentDetailEntities = new ArrayList<>();
+        StudentPageParam studentPageParam = new StudentPageParam();
+        studentPageParam.setCityId(paperPublisInfo.getCityId());
+        studentPageParam.setCountyId(paperPublisInfo.getCountyId());
+        studentPageParam.setProvinceId(paperPublisInfo.getProvinceId());
+        if (paperPublisInfo.getClassIds() != null && paperPublisInfo.getClassIds().size() > 0) {
+            List<StudentDetailEntity> finalStudentDetailEntities = studentDetailEntities;
+            paperPublisInfo.getClassIds().forEach(n -> {
+                studentPageParam.setClassId(n);
+                finalStudentDetailEntities.addAll(studentMapper.query(studentPageParam));
+            });
+        } else if (paperPublisInfo.getUserIds() != null && paperPublisInfo.getUserIds().size() > 0) {
+            return paperPublisInfo.getUserIds().stream().map(n -> {
+                StudentDetailEntity studentDetailEntityTemp = new StudentDetailEntity();
+                studentDetailEntityTemp.setUserId(n);
+                return studentDetailEntityTemp;
+            }).collect(Collectors.toList());
+        } else {
+            studentDetailEntities = studentMapper.query(studentPageParam);
+        }
+        return distinctStudent(studentDetailEntities);
+    }
+
+    private List<StudentDetailEntity> distinctStudent(List<StudentDetailEntity> studentDetailEntities) {
+        if (studentDetailEntities != null) {
+            studentDetailEntities
+                    .stream()
+                    .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(StudentDetailEntity::getPhone))));
+        }
+        return studentDetailEntities;
     }
 }

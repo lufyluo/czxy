@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.CustomerContactsMapper">
+    <select id="query" resultType="com.czxy.manage.model.entity.CustomerContactsEntity">
+        select
+        p.id
+        ,p.name
+        ,p.state
+        ,p.composition_id as compositionId
+        ,p.description
+        ,p.files
+        ,p.num
+        ,p.topics
+        ,p.train_time as trainTime
+        ,oc.contactor_position as contactorPosition
+        ,oc.contactor_phone as contactorPhone
+        ,oc.contactor_name as contactorName
+        ,o.name as orgName
+        ,o.star as orgStar
+        ,o.id as orgId
+        ,o.province_id as provinceId
+        ,o.city_id as cityId
+        ,o.county_id as countyId
+        ,c.name as compositionName
+        from plan p
+        left join org o
+        on p.org_id = o.id
+        left join
+        org_contactor oc
+        on o.id = oc.org_id
+        left join composition c on p.composition_id = c.id
+        where 1=1
+        <if test="param != null and param != ''">
+            and (o.name like '%${param}%' or oc.contactor_name like '%${param}%')
+        </if>
+        <if test="star != null and star != ''">
+            and o.star= #{star}
+        </if>
+        order by id desc
+    </select>
+</mapper>
