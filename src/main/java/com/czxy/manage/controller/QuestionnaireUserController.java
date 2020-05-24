@@ -28,9 +28,10 @@ public class QuestionnaireUserController {
     public PageResponse<PaperPageInfo> page(PaperPageParam<String> pageParam) {
         return PageResponse.success(questionnaireUserService.page(pageParam));
     }
+
     @PostMapping
     @ApiOperation("批量提交答案")
-    public BaseResponse<Boolean> submit(@RequestBody List<PaperSubmitInfo> paperSubmitInfo){
-     return ResponseUtil.success(questionnaireUserService.submit(paperSubmitInfo));
+    public BaseResponse<Boolean> submit(@RequestBody List<PaperSubmitInfo> paperSubmitInfo) {
+        return ResponseUtil.success(questionnaireUserService.submit(paperSubmitInfo));
     }
 }

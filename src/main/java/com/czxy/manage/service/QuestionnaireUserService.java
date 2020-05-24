@@ -10,6 +10,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -32,10 +33,11 @@ public class QuestionnaireUserService {
         return pageInfo;
     }
 
+    @Transactional
     public Boolean submit(List<PaperSubmitInfo> paperSubmitInfo) {
-        paperSubmitInfo.forEach(n ->questionnaireMapper.insertBySubmit(n));
+        paperSubmitInfo.forEach(n -> questionnaireMapper.insertBySubmit(n));
         PaperSubmitInfo paperSubmitInfo1 = paperSubmitInfo.get(0);
-        questionnaireMapper.updateSend(paperSubmitInfo1.getUserId(),paperSubmitInfo1.getPaperId());
+        questionnaireMapper.updateSend(paperSubmitInfo1.getUserId(), paperSubmitInfo1.getPaperId());
         return true;
     }
 }
