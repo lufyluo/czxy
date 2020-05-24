@@ -55,7 +55,7 @@ public class CourseArrangeController {
     }
 
     @PostMapping
-    @ApiOperation("添加课表")
+    @ApiOperation("添加课表，成功返回课表id")
     public BaseResponse<Integer> add(@RequestBody CourseArrangeAddInfo courseArrangeAddInfo){
         return ResponseUtil.success(classCourseService.add(courseArrangeAddInfo));
     }
