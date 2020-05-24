@@ -18,11 +18,13 @@
         from course_arrange
         where arrange_id = #{arrangeId}
     </delete>
-    <select id="queryByUserId" resultType="java.lang.Integer">
+    <select id="queryRecentClassIdByUserId" resultType="java.lang.Integer">
         select c.id
         from student s
                  left join class c on s.class_id = c.id
         where s.user_id = #{userId}
+        order by c.id desc
+        limit 1
     </select>
 
 </mapper>

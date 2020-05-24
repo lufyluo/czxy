@@ -7,8 +7,8 @@
     </sql>
     <insert id="insert" parameterType="com.czxy.manage.model.entity.StudentEntity" useGeneratedKeys="true"
             keyProperty="id">
-        insert into student (sign_flag, class_id, user_id, type, org_id)
-        VALUES (0, #{classId}, #{userId}, #{type}, #{orgId})
+        insert into student (sign_flag, class_id, user_id, type, org_name)
+        VALUES (0, #{classId}, #{userId}, #{type}, #{org_name})
     </insert>
     <insert id="batchInsert" parameterType="com.czxy.manage.model.entity.StudentEntity" useGeneratedKeys="true"
             keyProperty="id">

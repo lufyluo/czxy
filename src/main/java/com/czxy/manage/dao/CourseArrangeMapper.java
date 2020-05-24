@@ -11,5 +11,5 @@ public interface CourseArrangeMapper {
 
     Integer deleteByArrangeId(Integer arrangeId);
 
-    Integer queryByUserId(Integer userId);
+    Integer queryRecentClassIdByUserId(Integer userId);
 }

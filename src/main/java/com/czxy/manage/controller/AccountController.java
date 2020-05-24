@@ -38,7 +38,7 @@ public class AccountController {
         return ResponseUtil.success(accountService.login(accountInfo, timestamp));
     }
 
-    @PutMapping("/wechat/login")
+    @GetMapping("/wechat/login")
     @ApiOperation("微信登陆")
     @Anonymous
     public BaseResponse<String> wechatLogin(@RequestParam("code") String code){

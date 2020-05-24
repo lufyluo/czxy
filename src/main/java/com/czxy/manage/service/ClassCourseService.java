@@ -19,7 +19,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -128,17 +127,17 @@ public class ClassCourseService {
     }
 
     @Transactional
-    public Boolean add(CourseArrangeAddInfo classCourseInfo) {
+    public Integer add(CourseArrangeAddInfo classCourseInfo) {
         ArrangeEntity arrangeEntity = PojoMapper.INSTANCE.toArrangeEntity(classCourseInfo);
         arrangeMapper.insert(arrangeEntity);
         if (classCourseInfo.getCourseInfos() == null || classCourseInfo.getCourseInfos().size() == 0) {
-            return true;
+            return arrangeEntity.getId();
         }
         List<CourseArrangeEntity> courseArrangeEntities =
                 PojoMapper.INSTANCE.toCourseArrangeEntities(classCourseInfo.getCourseInfos());
         courseArrangeEntities.forEach(n -> n.setArrangeId(arrangeEntity.getId()));
         courseArrangeMapper.batchInsert(courseArrangeEntities);
-        return true;
+        return arrangeEntity.getId();
     }
 
     public PageInfo<ArrangeInfo> page(PageParam<String> pageParam) {
@@ -286,7 +285,7 @@ public class ClassCourseService {
     }
 
     public ClassArrangeInfo getByUserId(Integer userId) {
-        Integer classId = courseArrangeMapper.queryByUserId(userId);
+        Integer classId = courseArrangeMapper.queryRecentClassIdByUserId(userId);
         return get(classId);
     }
 }
