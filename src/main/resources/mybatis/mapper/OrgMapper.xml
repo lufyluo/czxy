@@ -39,9 +39,9 @@
         set province_id=#{provinceId},
             city_id=#{cityId},
             county_id=#{countyId},
-            name=#{orgName},
+            name=#{name},
             updated_time= now()
-        where id = #{orgId}
+        where id = #{id}
     </update>
     <select id="query" resultType="com.czxy.manage.model.entity.OrgEntity">
         select name

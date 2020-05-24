@@ -34,6 +34,11 @@
         </if>
         order by id desc
     </select>
+    <select id="countContactor" resultType="java.lang.Integer">
+        select
+        count(1)
+        from org_contactor where org_id = #{orgId}
+    </select>
 
     <update id="update">
         update org_contactor set contactor_name = #{contactorName}

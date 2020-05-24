@@ -12,6 +12,7 @@
         ,p.num
         ,p.topics
         ,p.train_time as trainTime
+        ,p.selfContactorName
         ,oc.contactor_position as contactorPosition
         ,oc.contactor_phone as contactorPhone
         ,oc.contactor_name as contactorName
@@ -32,9 +33,6 @@
         where 1=1
         <if test="param != null and param != ''">
             and (o.name like '%${param}%' or oc.contactor_name like '%${param}%')
-        </if>
-        <if test="star != null and star != ''">
-            and o.star= #{star}
         </if>
         order by id desc
     </select>

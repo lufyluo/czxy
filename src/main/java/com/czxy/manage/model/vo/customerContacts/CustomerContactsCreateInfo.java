@@ -23,7 +23,7 @@ public class CustomerContactsCreateInfo {
     private String contactorPhone;
     @ApiModelProperty("培训对象")
     private String compositionName;
-    private String compositionId;
+    private Integer compositionId;
     @ApiModelProperty("培训时间描述")
     private String trainTime;
     @ApiModelProperty("培训人数")

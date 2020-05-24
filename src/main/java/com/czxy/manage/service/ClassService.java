@@ -50,7 +50,6 @@ public class ClassService {
         List<ClassOrgEntity> classEntities = classMapper.queryAll(pageParam);
         PageInfo<ClassOrgInfo> result = page.toPageInfo();
         result.setList(PojoMapper.INSTANCE.toClassOrgInfos(classEntities));
-        //fetchTopics(userAccountPageInfo.getList());
         return result;
     }
 

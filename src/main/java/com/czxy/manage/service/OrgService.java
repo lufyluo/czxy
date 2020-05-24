@@ -21,10 +21,11 @@ import java.util.List;
 public class OrgService {
     @Resource
     private OrgMapper orgMapper;
-    public Integer insertIfAbsentOrg(String orgName,Integer orgId) {
+
+    public Integer insertIfAbsentOrg(String orgName, Integer orgId) {
         if (orgId == null && !StringUtils.isEmpty(orgName)) {
-            OrgEntity orgEntity =orgMapper.queryByNames(orgName);
-            if(orgEntity!=null){
+            OrgEntity orgEntity = orgMapper.queryByNames(orgName);
+            if (orgEntity != null) {
                 return orgEntity.getId();
             }
             orgEntity = new OrgEntity();
@@ -37,6 +38,10 @@ public class OrgService {
 
     public Integer insertIfAbsentOrg(OrgEntity orgEntity) {
         if (orgEntity.getId() == null && !StringUtils.isEmpty(orgEntity.getName())) {
+            OrgEntity orgEntitytemp = orgMapper.queryByNames(orgEntity.getName());
+            if (orgEntitytemp != null) {
+                return orgEntitytemp.getId();
+            }
             orgMapper.insertOrg(orgEntity);
             return orgEntity.getId();
         }

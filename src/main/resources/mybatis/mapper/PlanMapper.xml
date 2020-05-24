@@ -2,8 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.PlanMapper">
     <insert id="insert">
-        insert into plan (arrange_id, files, name, types, description)
-        values (#{arrangeId}, #{files}, #{name}, #{types}, #{description})
+        insert into plan
+        (arrange_id, files, name, types, description, org_id, state, train_time, selfContactorName,num)
+        values (#{arrangeId}, #{files}, #{name}, #{types}, #{description},
+                #{orgId}, #{state}, #{trainTime}, #{selfContactorName},#{num})
     </insert>
     <delete id="delete">
         delete from plan

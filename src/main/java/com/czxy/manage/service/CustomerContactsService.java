@@ -4,6 +4,8 @@ import com.czxy.manage.dao.CustomerContactsMapper;
 import com.czxy.manage.dao.CustomerMapper;
 import com.czxy.manage.dao.OrgMapper;
 import com.czxy.manage.dao.PlanMapper;
+import com.czxy.manage.infrastructure.gloable.ManageException;
+import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.CustomerContactsEntity;
@@ -76,6 +78,10 @@ public class CustomerContactsService {
 
     @Transactional
     public Boolean add(CustomerContactsCreateInfo customerInfo) {
+        OrgEntity orgEntitytemp = orgMapper.queryByNames(customerInfo.getOrgName());
+        if(orgEntitytemp!=null){
+            throw new ManageException(ResponseStatus.DATAEXIST,"班级已存在");
+        }
         Integer orgId = insertOrg(customerInfo);
         customerInfo.setOrgId(orgId);
         insertContactor(customerInfo);
@@ -95,7 +101,12 @@ public class CustomerContactsService {
     }
 
     private void insertContactor(CustomerContactsCreateInfo customerContactsCreateInfo) {
+        Integer count = customerMapper.countContactor(customerContactsCreateInfo.getOrgId());
         CustomerEntity customerEntity = PojoMapper.INSTANCE.toCustomerEntity(customerContactsCreateInfo);
+        if(count>0){
+            customerMapper.updateAll(customerEntity);
+            return;
+        }
         customerMapper.insert(customerEntity);
     }
 

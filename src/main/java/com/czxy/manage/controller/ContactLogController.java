@@ -18,13 +18,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/contact/log")
-@Api(tags = "客户通讯录", value = "客户通讯录")
+@Api(tags = "客户通讯录联系日志", value = "客户通讯录联系日志")
 public class ContactLogController {
     @Autowired
     private ContactLogService contactLogService;
 
-    @GetMapping("/{planId}}")
-    @ApiOperation("分页获取客户通讯录信息")
+    @GetMapping("/{planId}")
+    @ApiOperation("获取客户通讯录联系日志信息")
     public BaseResponse<List<ContactLogInfo>> get(@PathVariable Integer planId) {
         return ResponseUtil.success(contactLogService.get(planId));
     }

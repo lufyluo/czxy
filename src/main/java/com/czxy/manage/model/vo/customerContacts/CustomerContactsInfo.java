@@ -1,6 +1,7 @@
 package com.czxy.manage.model.vo.customerContacts;
 
 import com.czxy.manage.model.vo.files.FileInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -26,8 +27,11 @@ public class CustomerContactsInfo {
     private String contactorPosition;
     @ApiModelProperty("主办方对接人电话")
     private String contactorPhone;
-    @ApiModelProperty("培训对象")
+    @ApiModelProperty(value = "培训对象",hidden = true)
+    @JsonIgnore
     private String compositionName;
+    @ApiModelProperty(value = "培训对象",hidden = true)
+    @JsonIgnore
     private String compositionId;
     @ApiModelProperty("培训时间描述")
     private String trainTime;

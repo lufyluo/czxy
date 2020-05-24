@@ -18,6 +18,7 @@ public enum ResponseStatus implements BaseEnum {
     UNAUTHORIZED("00000002", "鉴权失败"),
     ARGUMENTNOTVALID("00000003", "参数异常"),
     DATANOTEXIST("00000004", "数据不存在"),
+    DATAEXIST("00000005", "数据已存在存在"),
     ORIGINPWDERROR("00000006", "原密码错误"),
     LOGINERROR("00000008", "账号密码错误");
     private String code;

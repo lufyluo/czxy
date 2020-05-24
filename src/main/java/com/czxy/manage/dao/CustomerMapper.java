@@ -17,4 +17,6 @@ public interface CustomerMapper {
     Integer delete(List<Integer> ids);
 
     Integer updateAll(CustomerEntity customerEntity);
+
+    Integer countContactor(Integer orgId);
 }
