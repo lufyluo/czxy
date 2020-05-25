@@ -47,4 +47,9 @@ public class TeacherController {
     public BaseResponse<TeacherInformationInfo> query(@RequestParam Integer teacherId){
         return ResponseUtil.success(teacherService.query(teacherId));
     }
+    @GetMapping("/wechatGet")
+    @ApiOperation("师资推荐")
+    public BaseResponse<List<TeacherWechatInfo>> get(){
+        return ResponseUtil.success(teacherService.get());
+    }
 }

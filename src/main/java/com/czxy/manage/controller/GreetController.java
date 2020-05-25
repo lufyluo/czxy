@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/greet")
 @Api(tags = "问候语配置", value = "问候语配置")
-public class greetController {
+public class GreetController {
     @Autowired
     private GreetService greetService;
     @GetMapping

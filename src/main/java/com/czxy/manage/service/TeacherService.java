@@ -77,4 +77,8 @@ public class TeacherService {
                 subjectService.getByTeacherId(teacherInformationInfo.getTeacherId()));
         return teacherInformationInfo;
     }
+
+    public List<TeacherWechatInfo> get() {
+        return teacherMapper.get();
+    }
 }

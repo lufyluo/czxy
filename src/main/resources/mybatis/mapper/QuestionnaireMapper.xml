@@ -43,18 +43,13 @@
             and name like '%${param}%'
         </if>
     </select>
-    <select id="getPaperId" resultType="java.lang.Integer">
-        select paper_id from  w_paper_send where user_id=#{userId}
-    </select>
     <select id="get" resultType="com.czxy.manage.model.entity.PaperPageEntity">
         select
         p.id,p.name,p.description,s.created_time as createdTime,s.state
         from w_paper p
         left join w_paper_send s
         on p.id=s.paper_id
-        where s.paper_id in <foreach collection="paperIds" item="item" index="index"
-                                     open="(" separator="," close=")">#{item}
-                            </foreach>
+        where s.user_id=#{userId}
         <if test="param != null and param != ''">
             and p.name like '%${param}%'
         </if>

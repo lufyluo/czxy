@@ -73,4 +73,17 @@
         on t.user_id = u.id
         where t.id=#{teacherId}
     </select>
+    <select id="get" resultType="com.czxy.manage.model.vo.teacher.TeacherWechatInfo">
+        select
+        t.id,t.comment,t.skill,t.system,t.star,t.area
+        ,o.name as orgName,u.name,u.phone,u.gender,u.position,u.age
+        ,u.nation,u.nativeplace as nativePlace,u.education,u.politics
+        from teacher t
+        left join user u
+        on t.user_id=u.id
+        left join org o
+        on o.id=u.org_id
+        order by t.star desc
+        limit 8
+    </select>
 </mapper>

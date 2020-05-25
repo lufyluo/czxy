@@ -5,6 +5,7 @@ import com.czxy.manage.model.entity.TeacherEntity;
 import com.czxy.manage.model.entity.TeacherInformationEntity;
 import com.czxy.manage.model.vo.teacher.TeacherInformationInfo;
 import com.czxy.manage.model.vo.teacher.TeacherPageParam;
+import com.czxy.manage.model.vo.teacher.TeacherWechatInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,4 +26,6 @@ public interface TeacherMapper {
     TeacherInformationEntity queryAll(@Param("teacherId") Integer teacherId);
 
     String queryName(@Param("teacherId") Integer teacherId);
+
+    List<TeacherWechatInfo> get();
 }

@@ -21,13 +21,8 @@ public class QuestionnaireUserService {
     private QuestionnaireMapper questionnaireMapper;
 
     public PageInfo page(PaperPageParam<String> pageParam) {
-        List<PaperPageEntity> paperPageEntities = null;
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
-        List<Integer> paperIds = questionnaireMapper.getPaperId(pageParam.getUserId());
-        if (paperIds.isEmpty()) {
-            throw new ManageException(ResponseStatus.FAILURE, "用户没有收到过问卷");
-        }
-        paperPageEntities = questionnaireMapper.get(pageParam.getParam(), paperIds);
+        List<PaperPageEntity> paperPageEntities = questionnaireMapper.get(pageParam.getParam(),pageParam.getUserId());
         PageInfo pageInfo = page.toPageInfo();
         pageInfo.setList(paperPageEntities);
         return pageInfo;

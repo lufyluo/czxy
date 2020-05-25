@@ -23,9 +23,7 @@ public interface QuestionnaireMapper {
 
     void updateState(@Param("paperIds") List<Integer> paperIds, @Param("state") int state);
 
-    List<Integer> getPaperId(Integer userId);
-
-    List<PaperPageEntity> get(String param, @Param("paperIds") List<Integer> paperIds);
+    List<PaperPageEntity> get(String param,Integer userId);
 
     Boolean insertBySubmit(PaperSubmitInfo n);
 

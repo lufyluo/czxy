@@ -26,7 +26,7 @@ public class ClassStudentInfo {
     @ApiModelProperty("工作单位唯一标识")
     private Integer userOrgId;
     @ApiModelProperty("工作单位")
-    private Integer userOrgName;
+    private String userOrgName;
     @ApiModelProperty("民族")
     private String userNation;
     @ApiModelProperty("籍贯")
