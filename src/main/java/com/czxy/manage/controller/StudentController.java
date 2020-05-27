@@ -4,6 +4,8 @@ import com.czxy.manage.infrastructure.aop.Anonymous;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
+import com.czxy.manage.model.vo.classes.ClassOrgInfo;
+import com.czxy.manage.model.vo.classes.ClassPageParam;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentDetailInfo;
 import com.czxy.manage.model.vo.student.StudentPageParam;
@@ -12,6 +14,7 @@ import com.czxy.manage.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,7 +46,7 @@ public class StudentController {
 
     @PostMapping("/add")
     @ApiOperation("新增学员")
-    public BaseResponse<Boolean> add(@RequestBody StudentAddInfo studentAddInfo) {
+    public BaseResponse<Boolean> add(@Validated @RequestBody StudentAddInfo studentAddInfo) {
         return ResponseUtil.success(studentService.add(studentAddInfo));
     }
 
@@ -65,4 +68,5 @@ public class StudentController {
     public BaseResponse<Boolean> signByWechat(@RequestParam("phone") String phone, @RequestParam("code") String code) {
         return ResponseUtil.success(studentService.signByWechat(phone, code));
     }
+
 }

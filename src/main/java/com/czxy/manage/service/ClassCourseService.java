@@ -17,6 +17,7 @@ import com.czxy.manage.model.vo.subject.SubjectDetailDomainInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ClassCourseService {
 
     @Resource
@@ -46,28 +48,17 @@ public class ClassCourseService {
         List<CourseDetailEntity> courseEntities = subjectMapper.queryByArrangeId(classArrangeWithTimeEntity.getId());
         List<CourseSubjectDetailInfo> courseInfos = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
-        Long dayMiliSeconds = 86400000L;
         calendar.setTime(classArrangeWithTimeEntity.getBeginTime());
-        Long beginTime = calendar.getTimeInMillis();
-        Calendar temp = Calendar.getInstance();
-
         courseEntities.forEach(n -> {
             CourseSubjectDetailInfo subjectDetailInfo = PojoMapper.INSTANCE.toCourseInfo(n);
             if (subjectDetailInfo.getCategory() == 1) {
                 subjectDetailInfo.setId(n.getSiteId());
                 subjectDetailInfo.setName(n.getSiteName());
             }
-            Long current = beginTime + +dayMiliSeconds * n.getOffset();
-            temp.setTimeInMillis(current);
-
             calendar.setTimeInMillis(n.getBeginTime());
-            temp.add(Calendar.HOUR_OF_DAY, calendar.getTime().getHours());
-            temp.add(Calendar.MINUTE, calendar.getTime().getMinutes());
-
-            subjectDetailInfo.setBeginTime(temp.getTime());
-            Long endTemp = n.getEndTime() - n.getBeginTime() + temp.getTimeInMillis();
-            temp.setTimeInMillis(endTemp);
-            subjectDetailInfo.setEndTime(temp.getTime());
+            subjectDetailInfo.setBeginTime(calendar.getTime());
+            calendar.setTimeInMillis(n.getEndTime());
+            subjectDetailInfo.setEndTime(calendar.getTime());
             courseInfos.add(subjectDetailInfo);
         });
         classArrangeInfo.setCourseInfos(courseInfos);
@@ -92,6 +83,7 @@ public class ClassCourseService {
         if (classArrangeWithTimeEntity == null) {
             throw new ManageException(ResponseStatus.DATANOTEXIST);
         }
+
         ClassArrangeInfo classArrangeInfo = PojoMapper.INSTANCE.toClassArrangeInfo(classArrangeWithTimeEntity);
         buildState(classArrangeInfo);
         List<CourseDetailEntity> courseEntities = subjectMapper.queryByArrangeId(classArrangeWithTimeEntity.getId());
@@ -226,9 +218,10 @@ public class ClassCourseService {
         endCalendar.setTime(end);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
         head.add("班次日期");
-        while (beginCalendar.before(end)) {
+        while (beginCalendar.getTimeInMillis() < end.getTime()
+                && beginCalendar.getTime().getDate() != end.getDate()) {
             head.add(dateFormat.format(beginCalendar.getTime()));
-            beginCalendar.add(1, Calendar.DAY_OF_MONTH);
+            beginCalendar.add(Calendar.DATE, 1);
         }
         head.add(dateFormat.format(endCalendar.getTime()));
         head.stream().distinct();
@@ -276,7 +269,7 @@ public class ClassCourseService {
                     content = content + "\r\n点位: " + n.getAddress();
                 }
                 if (arr.length > dayNum - currentDayNum + 1) {
-                    int arrIndex = dayNum - currentDayNum+1;
+                    int arrIndex = currentDayNum - dayNum + 1;
                     arr[arrIndex] = content;
                 }
             }

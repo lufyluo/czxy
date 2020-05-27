@@ -6,9 +6,16 @@
         insert into w_paper (name, description, state)
         values (#{name}, #{description}, 0)
     </insert>
-    <insert id="insertBySubmit" useGeneratedKeys="true" keyProperty="id" >
+    <insert id="insertBySubmit" useGeneratedKeys="true" keyProperty="id">
         insert into w_paper_submit (paper_id, stem_id, option_id, user_id, answer_text)
-        values (#{paperId},#{stemId},#{optionId},#{userId},#{answerText})
+        values (#{paperId}, #{stemId}, #{optionId}, #{userId}, #{answerText})
+    </insert>
+    <insert id="batchInsert">
+        insert into w_paper_submit (paper_id, stem_id, option_id, user_id, answer_text)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.paperId},#{item.stemId},#{item.optionId},#{item.userId},#{item.answerText})
+        </foreach>
     </insert>
     <update id="update">
         update w_paper
@@ -25,7 +32,10 @@
         </foreach>
     </update>
     <update id="updateSend">
-        update w_paper_send set state=1 where user_id=#{userId} and paper_id=#{paperId}
+        update w_paper_send
+        set state=1
+        where user_id = #{userId}
+          and paper_id = #{paperId}
     </update>
     <delete id="delete">
         delete from w_paper where id in
@@ -53,5 +63,33 @@
         <if test="param != null and param != ''">
             and p.name like '%${param}%'
         </if>
+    </select>
+    <select id="queryPaperDetail" resultType="com.czxy.manage.model.entity.PaperDetailEntity">
+        select p.id,
+               p.name,
+               p.description,
+
+               ws.id         as stemId,
+               ws.type,
+               ws.score,
+               ws.title,
+               ws.required,
+               ws.category,
+               wps.`index`   as `index`,
+
+               wo.id         as optionId,
+               wo.score      as optionScore,
+               wo.name       as optionName,
+               wo.`index`    as optionIndex,
+
+               w.answer_text as answerText,
+               w.id          as answerId
+        from w_paper p
+                 left join w_paper_stem wps on p.id = wps.paper_id
+                 left join w_stem ws on wps.stem_id = ws.id
+                 left join w_option wo on ws.id = wo.stem_id
+                 left join w_paper_submit w on wo.id = w.stem_id and w.user_id = #{userId}
+        where p.id = #{paperId}
+        order by wps.index, wo.index
     </select>
 </mapper>

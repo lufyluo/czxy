@@ -15,10 +15,13 @@ import com.czxy.manage.model.vo.customerContacts.CustomerContactsCreateInfo;
 import com.czxy.manage.model.vo.customerContacts.CustomerContactsInfo;
 import com.czxy.manage.model.vo.customerContacts.CustomerContactsUpdateInfo;
 import com.czxy.manage.model.vo.files.FileInfo;
+import com.czxy.manage.model.vo.message.MessageInfo;
 import com.czxy.manage.model.vo.plan.PlanCreateInfo;
 import com.czxy.manage.model.vo.plan.PlanInfo;
 import com.czxy.manage.model.vo.plan.PlanUpdateInfo;
+import com.czxy.manage.model.vo.questionnaire.PaperDetailInfo;
 import com.czxy.manage.model.vo.questionnaire.PaperPublisInfo;
+import com.czxy.manage.model.vo.questionnaire.StemDetailInfo;
 import com.czxy.manage.model.vo.questionnaire.stem.OptionInfo;
 import com.czxy.manage.model.vo.questionnaire.stem.PaperStemInfo;
 import com.czxy.manage.model.vo.questionnaire.stem.StemInfo;
@@ -260,4 +263,12 @@ public interface PojoMapper {
 
     ContactLogInfo toContactLogInfo(ContactLogEntity entities);
     List<ContactLogInfo> toContactLogInfo(List<ContactLogEntity> entities);
+
+
+    MessageInfo toMessageInfo(MessageInfo messageEntities);
+    List<MessageInfo> toMessageInfos(List<MessageEntity> messageEntities);
+
+    PaperDetailInfo toPaperDetailInfo(PaperDetailEntity paperDetailEntity);
+
+    StemDetailInfo toStemDetailInfo(PaperDetailEntity stemInfo);
 }

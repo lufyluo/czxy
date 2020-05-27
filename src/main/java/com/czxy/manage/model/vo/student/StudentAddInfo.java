@@ -12,9 +12,9 @@ import java.util.Date;
 public class StudentAddInfo extends UserInfo {
     @ApiModelProperty("中文主办方，推荐单位")
     private String orgName;
-    @ApiModelProperty("0-学员；1-班委干部；8-带班领导")
+    @ApiModelProperty("学生类型不能为空:0-学员；1-班委干部；8-带班领导；10-对接人")
     @NotNull(message = "学生类型不能为空:0-学员；1-班委干部；8-带班领导；10-对接人")
-    private Integer type;
+    private int type;
     private Integer classId;
     @ApiModelProperty("班级名称，若有班级id则不用，无班级id，会根据name自动关联班级")
     private String className;

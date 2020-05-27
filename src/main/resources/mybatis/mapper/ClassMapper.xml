@@ -25,6 +25,9 @@
           , updated_time     = now()
         where id = #{id}
     </update>
+    <update id="clearStudent">
+        update student set class_id = null where class_id = #{classId}
+    </update>
     <delete id="delete">
         delete from class where id in
         <foreach collection="id" item="item" index="index"
@@ -173,5 +176,8 @@
                addr
         from class
         where id = #{classId}
+    </select>
+    <select id="queryRecentByStudentUserId" resultType="java.lang.Integer">
+        select class_id from student s where user_id = #{userId} order by id desc limit 1
     </select>
 </mapper>

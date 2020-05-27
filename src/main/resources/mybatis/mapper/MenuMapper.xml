@@ -5,7 +5,7 @@
         id,parent_id as parentId,name,icon,code,url,updated_time as updatedTime,created_time as createdTime
     </sql>
     <select id="get" resultType="com.czxy.manage.model.entity.MenusEntity">
-        select <include refid="base_column"/> from menus
+        select <include refid="base_column"/> from menus order by `order`
     </select>
 
 </mapper>

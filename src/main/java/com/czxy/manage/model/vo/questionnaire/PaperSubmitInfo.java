@@ -15,6 +15,4 @@ public class PaperSubmitInfo {
     private Integer optionId;
     private Integer userId;
     private String answerText;
-    private Date updatedTime;
-    private Date createdTime;
 }

@@ -152,8 +152,7 @@ public class StudentService {
         studentAddInfos.forEach(n -> {
             Optional<UserEntity> user = userEntities.stream()
                     .filter(item ->
-                            ObjectUtils.nullSafeEquals(item.getIdCard(), (n.getIdCard()))
-                                    || ObjectUtils.nullSafeEquals(item.getPhone(), (n.getPhone()))).findFirst();
+                            ObjectUtils.nullSafeEquals(item.getPhone(), (n.getPhone()))).findFirst();
             if (user.isPresent()) {
                 n.setUserId(user.get().getId());
             }
@@ -258,6 +257,9 @@ public class StudentService {
             throw new ManageException(ResponseStatus.FAILURE, "已签到，请勿重复签到");
         }
         ClassEntity classEntity = classMapper.queryClass(studentEntity.getClassId());
+        if(classEntity == null){
+            throw new ManageException(ResponseStatus.FAILURE, "尚未加入班级");
+        }
         Calendar c2 = Calendar.getInstance();
         c2.setTime(new Date());
         if (c2.before(classEntity.getBeginTime())) {

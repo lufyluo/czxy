@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @RestController
-@Api(tags = "班级管理",value = "班级管理" )
+@Api(tags = "班级管理", value = "班级管理")
 @RequestMapping("/api/class")
 public class ClassController {
     @Autowired
@@ -50,17 +50,25 @@ public class ClassController {
 
     @PostMapping
     @ApiOperation(value = "创建班级", notes = "创建班级")
-    public BaseResponse<Boolean> create(@RequestBody ClassCreateInfo classCreateInfo) {
+    public BaseResponse<Boolean> create(@Validated @RequestBody ClassCreateInfo classCreateInfo) {
         return ResponseUtil.success(classService.create(classCreateInfo));
     }
+
     @PutMapping
     @ApiOperation(value = "编辑班级", notes = "编辑班级")
     public BaseResponse<Boolean> update(@RequestBody ClassUpdateInfo classUpdateInfo) {
         return ResponseUtil.success(classService.update(classUpdateInfo));
     }
+
     @PutMapping("/studentClass")
     @ApiOperation("根据classID设置学生班级信息")
-    public BaseResponse<Boolean> updateStudentClass(@RequestBody StudentClassInfo studentClassInfo){
+    public BaseResponse<Boolean> updateStudentClass(@RequestBody StudentClassInfo studentClassInfo) {
         return ResponseUtil.success(classService.updateStudentClass(studentClassInfo));
+    }
+
+    @GetMapping("/students/{userId}")
+    @ApiOperation(value = "根据用户获取班级学员", notes = "根据用户获取班级学员")
+    public BaseResponse<List<ClassStudentInfo>> getStudents(@PathVariable Integer userId) {
+        return ResponseUtil.success(classService.getStudents(userId));
     }
 }

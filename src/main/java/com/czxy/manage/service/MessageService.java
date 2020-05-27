@@ -2,12 +2,18 @@ package com.czxy.manage.service;
 
 import com.czxy.manage.dao.MessageMapper;
 import com.czxy.manage.infrastructure.util.PojoMapper;
+import com.czxy.manage.model.entity.MessageEntity;
 import com.czxy.manage.model.entity.SendEntity;
 import com.czxy.manage.model.entity.StudentDetailEntity;
 import com.czxy.manage.model.entity.questionnaire.PaperSendEntity;
 import com.czxy.manage.model.vo.SendInfo;
+import com.czxy.manage.model.vo.message.MessageInfo;
+import com.czxy.manage.model.vo.message.UserPageParam;
 import com.czxy.manage.model.vo.student.GetAllParam;
 import com.czxy.manage.model.vo.student.StudentPageParam;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -73,4 +79,12 @@ public class MessageService {
 
     }
 
+    public PageInfo<MessageInfo> get(UserPageParam<String> pageParam) {
+        Page page =  PageHelper.startPage(pageParam.getPageIndex(),pageParam.getPageSize());
+        List<MessageEntity> messageEntities = messageMapper.query(pageParam);
+        PageInfo<MessageInfo> pageInfo = page.toPageInfo();
+        pageInfo.setList(PojoMapper.INSTANCE.toMessageInfos(messageEntities));
+        pageInfo.getList().forEach(n->n.setTitle("系统消息"));
+        return pageInfo;
+    }
 }

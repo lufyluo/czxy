@@ -109,7 +109,9 @@ public class AccountService {
     private void fillGender(List<UserAccountInfo> userAccountInfos) {
         if (userAccountInfos != null) {
             userAccountInfos.forEach(n -> {
-
+                if(n.getGender()==null){
+                    n.setGender(2);
+                }
                 switch (n.getGender()) {
                     case 0:
                         n.setGenderDesc("男");

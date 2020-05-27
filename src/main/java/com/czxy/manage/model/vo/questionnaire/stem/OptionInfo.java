@@ -12,4 +12,6 @@ public class OptionInfo {
     private Integer score;
     @ApiModelProperty("选项顺序")
     private Integer index;
+    @ApiModelProperty("简答提答案")
+    private String answerText;
 }

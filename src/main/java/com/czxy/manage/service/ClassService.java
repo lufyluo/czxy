@@ -141,7 +141,23 @@ public class ClassService {
                 getLeaderId(classCreateInfo.getLeaderName(), classCreateInfo.getStudentAddInfos()
                 )
                 , classEntity.getId());
+        updateStudents(classCreateInfo);
         return true;
+    }
+
+    private void updateStudents(ClassUpdateInfo classCreateInfo) {
+        classMapper.clearStudent(classCreateInfo.getId());
+        if(classCreateInfo.getStudentAddInfos()!=null&&classCreateInfo.getStudentAddInfos().size()>0){
+            classCreateInfo.getStudentAddInfos().forEach(n->{
+                n.setClassId(classCreateInfo.getId());
+                n.setClassName(classCreateInfo.getName());
+            });
+        studentService.batchInsert(
+                classCreateInfo.getStudentAddInfos()
+                        .stream()
+                        .filter(n -> n.getClassId() != null||n.getStudentId() == null)
+                        .collect(Collectors.toList()));
+        }
     }
 
     private void buildData(ClassUpdateInfo classCreateInfo) {
@@ -161,5 +177,14 @@ public class ClassService {
     public Boolean updateStudentClass(StudentClassInfo studentClassInfo) {
         studentMapper.updateStudentClass(studentClassInfo.getClassId(), studentClassInfo.getStudentIds());
         return true;
+    }
+
+    public List<ClassStudentInfo> getStudents(Integer userId) {
+        Integer classId = classMapper.queryRecentByStudentUserId(userId);
+        if(classId == null){
+            return null;
+        }
+        List<ClassStudentEntity> classStudentEntities = classMapper.queryAllStudent(classId);
+        return PojoMapper.INSTANCE.toClassStudentInfos(classStudentEntities);
     }
 }

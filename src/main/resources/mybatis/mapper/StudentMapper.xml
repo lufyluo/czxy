@@ -52,7 +52,7 @@
         <if test="cityId != null and cityId>0 ">and c.city_id = #{cityId}</if>
         <if test="countyId != null and countyId>0 ">and c.county_id = #{countyId}</if>
         <if test="classId != null and classId >0 ">and s.class_id= #{classId}</if>
-        <if test="excludeClassId != null and excludeClassId >0 ">and s.class_id != #{excludeClassId}</if>
+        <if test="excludeClassId != null and excludeClassId >0 ">and (s.class_id != #{excludeClassId} or s.class_id is NULL)</if>
         order by s.id desc
     </select>
     <select id="queryByStudentId" resultType="com.czxy.manage.model.entity.StudentUpdateEntity">
@@ -68,7 +68,7 @@
     <select id="queryStudent" resultType="com.czxy.manage.model.entity.StudentEntity">
         select id, sign_flag as signFlag, class_id as classId, user_id as userId, type, org_id as orgId
         from student
-        where user_id = #{userId}
+        where user_id = #{userId} AND class_id is not NULL
         order by id desc
         limit 1
     </select>

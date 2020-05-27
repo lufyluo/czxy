@@ -8,4 +8,11 @@
             (#{item.userId},#{item.message},#{item.isToAll},now())
         </foreach>
     </insert>
+    <select id="query" resultType="com.czxy.manage.model.entity.MessageEntity">
+        select message ,created_time as createdTime from message where user_id = #{userId}
+        <if test="param!=null and param !=''">
+            message like '%${param}%'
+        </if>
+        order by created_time desc
+    </select>
 </mapper>

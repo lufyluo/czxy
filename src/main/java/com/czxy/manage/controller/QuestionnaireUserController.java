@@ -3,8 +3,7 @@ package com.czxy.manage.controller;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
-import com.czxy.manage.model.PageParam;
-import com.czxy.manage.model.vo.PaperInfo;
+import com.czxy.manage.model.vo.questionnaire.PaperDetailInfo;
 import com.czxy.manage.model.vo.questionnaire.PaperPageInfo;
 import com.czxy.manage.model.vo.questionnaire.PaperPageParam;
 import com.czxy.manage.model.vo.questionnaire.PaperSubmitInfo;
@@ -27,6 +26,12 @@ public class QuestionnaireUserController {
     @ApiOperation("根据userId模糊查询试卷")
     public PageResponse<PaperPageInfo> page(PaperPageParam<String> pageParam) {
         return PageResponse.success(questionnaireUserService.page(pageParam));
+    }
+
+    @GetMapping("/paper_answer")
+    @ApiOperation("获取用户问卷详细信息")
+    public BaseResponse<PaperDetailInfo> paperDetail(@RequestParam Integer userId, @RequestParam Integer paperId) {
+        return ResponseUtil.success(questionnaireUserService.paperDetail(userId,paperId));
     }
 
     @PostMapping

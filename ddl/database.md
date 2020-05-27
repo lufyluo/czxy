@@ -814,5 +814,12 @@ create table w_paper_submit
 )
 comment '问卷提交';
 
+alter table w_paper_submit
+	add user_id int null after option_id;
+
+alter table w_paper_send
+	add state int null comment '0-用户未提交，1-用户已提交' after paper_id;
+
+
 
 ```

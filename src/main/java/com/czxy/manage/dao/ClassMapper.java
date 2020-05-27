@@ -30,4 +30,8 @@ public interface ClassMapper {
     Integer queryByName(String className);
 
     ClassEntity queryClass(Integer classId);
+
+    Integer queryRecentByStudentUserId(Integer userId);
+
+    Integer clearStudent(Integer classId);
 }

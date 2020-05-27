@@ -22,8 +22,8 @@ public class CourseSubjectDetailInfo extends CourseInfo {
     private Integer offset;
     @ApiModelProperty("课程类型 0-课程，1-点位，2-其他")
     private Integer category;
-    @JsonFormat(pattern = "yyyy.MM.dd hh:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy.MM.dd HH:mm", timezone = "GMT+8")
     private Date beginTime;
-    @JsonFormat(pattern = "yyyy.MM.dd hh:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy.MM.dd HH:mm", timezone = "GMT+8")
     private Date endTime;
 }
