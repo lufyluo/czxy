@@ -57,4 +57,5 @@ public class QuestionnaireController {
     public BaseResponse<Boolean> publish(@RequestBody PaperPublisInfo paperPublisInfo) {
         return ResponseUtil.success(questionnaireService.publish(paperPublisInfo));
     }
+
 }

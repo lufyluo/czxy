@@ -20,6 +20,7 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -264,7 +265,12 @@ public class ClassCourseService {
             if (currentDayNum - dayNum >= 0 && currentDayNum - dayNum < arr.length) {
                 String content = "课题: " + n.getName();
                 if (n.getCategory() == 0) {
-                    content = content + "\r\n授课老师: " + n.getTeacherName();
+                    if (!StringUtils.isEmpty(n.getTeacherName())) {
+                        content = content + "\r\n授课老师: " + n.getTeacherName();
+                    }
+                    if (!StringUtils.isEmpty(n.getDescription())) {
+                        content = content + "\r\n描述:" + n.getDescription();
+                    }
                 } else if (n.getCategory() == 1) {
                     content = content + "\r\n点位: " + n.getAddress();
                 }

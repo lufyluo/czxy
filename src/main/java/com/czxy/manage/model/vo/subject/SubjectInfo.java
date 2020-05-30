@@ -21,4 +21,5 @@ public class SubjectInfo extends BaseEntity {
     private Integer category;
     @ApiModelProperty("课题简述")
     private String content;
+    private String description;
 }

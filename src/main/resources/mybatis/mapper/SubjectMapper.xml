@@ -3,8 +3,8 @@
 <mapper namespace="com.czxy.manage.dao.SubjectMapper">
     <insert id="add" parameterType="com.czxy.manage.model.entity.SubjectEntity" useGeneratedKeys="true"
             keyProperty="id">
-        insert into subject (name, content, types, files, teacher_id, category)
-        values (#{name}, #{content}, #{types}, #{files}, #{teacherId}, #{category})
+        insert into subject (name, content, types, files, teacher_id, category,description)
+        values (#{name}, #{content}, #{types}, #{files}, #{teacherId}, #{category},#{description})
     </insert>
     <update id="update">
         update subject
@@ -13,6 +13,7 @@
           , types=#{types}
           , teacher_id   =#{teacherId}
           , category     =#{category}
+          , description  = #{description}
           , updated_time = now()
         where id = #{id}
     </update>
@@ -25,7 +26,7 @@
 
     <select id="query" resultType="com.czxy.manage.model.entity.SubjectDetailEntity">
         select
-        s.id,s.name,u.name as teacherName,s.types,s.files,s.content,s.category
+        s.id,s.name,u.name as teacherName,s.types,s.files,s.content,s.category,s.description
         from subject s
         left join teacher t
         on s.teacher_id=t.id
@@ -47,6 +48,7 @@
     <select id="queryByArrangeId" resultType="com.czxy.manage.model.entity.CourseDetailEntity">
         select c.id,
                c.name,
+               c.description,
                s.addr          as address,
                ca.category,
                ca.begin_time   as beginTime,
@@ -77,6 +79,7 @@
                s.files,
                s.teacher_id as teacherId,
                s.category,
+               s.description,
                u.name       as teacherName
         from subject s
                  left join teacher t
@@ -92,7 +95,8 @@
                types      as typeIds,
                files,
                teacher_id as teacherId,
-               category
+               category,
+               description
         from subject
         where teacher_id = #{teacherId}
     </select>

@@ -820,6 +820,19 @@ alter table w_paper_submit
 alter table w_paper_send
 	add state int null comment '0-用户未提交，1-用户已提交' after paper_id;
 
+alter table subject
+	add description int null after category;
+
+create table class_activity
+(
+    id bigint auto_increment primary key,
+    name varchar(128) null,
+    description varchar(255) null,
+    updated_time timestamp default now() null,
+    created_time timestamp default now() null
+)
+    comment '班级活动，类似开班典礼';
+
 
 
 ```

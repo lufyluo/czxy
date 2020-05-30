@@ -11,4 +11,5 @@ public class SubjectDetailEntity {
     private String types;
     private String files;
     private Integer category;
+    private String description;
 }
