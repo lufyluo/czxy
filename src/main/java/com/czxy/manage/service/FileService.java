@@ -32,12 +32,12 @@ public class FileService {
          */
         public Boolean upload(MultipartFile file) throws Exception {
 
-            String endpoint = " oss-cn-chengdu.aliyuncs.com";
+            String endpoint = "";
             // 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建RAM账号。
-            String accessKeyId = "LTAI4GHW7PLW9f99oqsDwiXc";
-            String accessKeySecret = "2c76bVyzCBMV92p08q6liG43oP3Bj9";
+            String accessKeyId = "";
+            String accessKeySecret = "";
             //创建的bucket名
-            String bucketName = "dev-czxy";
+            String bucketName = "";
             //获取文件名
             String originalFilename = file.getOriginalFilename();
             //获取文件后缀名
