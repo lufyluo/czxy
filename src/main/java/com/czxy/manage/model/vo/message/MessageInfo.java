@@ -11,6 +11,6 @@ public class MessageInfo {
     private String title;
     private String message;
     @ApiModelProperty("发送时间")
-    @JsonFormat(pattern = "yyyy-MM-dd hh:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date createdTime;
 }

@@ -192,4 +192,33 @@
         <include refid="base_column"/>
         from user where wechat_id=#{openId}
     </select>
+    <select id="queryclassName" resultType="com.czxy.manage.model.entity.StudentClassNameEntity">
+        select
+               u.id,
+               u.name,
+               u.idcard,
+               u.phone,
+               u.gender,
+               u.position,
+               u.age,
+               u.birthday,
+               u.category,
+               u.wechat_id    as wechatId,
+               u.org_id       as orgId,
+               u.nation,
+               u.nativeplace  as nativePlace,
+               u.education,
+               u.politics,
+               c.name as className,
+               c.begin_time as beginTime,
+               c.end_time as endTime
+        from user u
+        left join student s
+        on u.id=s.user_id
+        left join class c
+        on c.id=s.class_id
+        where u.id=#{userId}
+        order by c.begin_time desc
+        limit 1
+    </select>
 </mapper>

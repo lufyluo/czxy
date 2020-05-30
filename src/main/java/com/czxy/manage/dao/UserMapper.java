@@ -44,4 +44,6 @@ public interface UserMapper {
     List<UserEntity> queryByPhones(List<String> phones);
 
     UserEntity queryByWechatId(String openId);
+
+    StudentClassNameEntity queryclassName(Integer userId);
 }

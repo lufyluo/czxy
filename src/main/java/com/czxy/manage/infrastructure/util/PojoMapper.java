@@ -29,10 +29,7 @@ import com.czxy.manage.model.vo.site.SiteAddInfo;
 import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.model.vo.site.TypeInfo;
 import com.czxy.manage.model.vo.stock.StockInfo;
-import com.czxy.manage.model.vo.student.GetAllParam;
-import com.czxy.manage.model.vo.student.StudentAddInfo;
-import com.czxy.manage.model.vo.student.StudentDetailInfo;
-import com.czxy.manage.model.vo.student.StudentUpdateInfo;
+import com.czxy.manage.model.vo.student.*;
 import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
 import com.czxy.manage.model.vo.subject.SubjectDetailDomainInfo;
 import com.czxy.manage.model.vo.subject.SubjectInfo;
@@ -265,10 +262,12 @@ public interface PojoMapper {
     List<ContactLogInfo> toContactLogInfo(List<ContactLogEntity> entities);
 
 
-    MessageInfo toMessageInfo(MessageInfo messageEntities);
+    MessageInfo toMessageInfo(MessageEntity messageEntity);
     List<MessageInfo> toMessageInfos(List<MessageEntity> messageEntities);
 
     PaperDetailInfo toPaperDetailInfo(PaperDetailEntity paperDetailEntity);
 
     StemDetailInfo toStemDetailInfo(PaperDetailEntity stemInfo);
+
+    StudentClassNameInfo toStudentClassNameInfo(StudentClassNameEntity studentClassNameEntity);
 }

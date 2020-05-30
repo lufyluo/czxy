@@ -31,4 +31,9 @@ public class MessageController {
     public PageResponse<MessageInfo> get(UserPageParam<String> pageParam) {
         return PageResponse.success(messageService.get(pageParam));
     }
+    @GetMapping("/{userId}")
+    @ApiOperation("获取最新消息")
+    public BaseResponse<MessageInfo> getNews(@PathVariable Integer userId){
+        return ResponseUtil.success(messageService.getNews(userId));
+    }
 }

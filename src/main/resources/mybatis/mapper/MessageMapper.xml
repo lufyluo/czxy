@@ -15,4 +15,14 @@
         </if>
         order by created_time desc
     </select>
+    <select id="queryByUserId" resultType="com.czxy.manage.model.entity.MessageEntity">
+        select
+        m.message,m.created_time as createdTime
+        from user u
+        left join message m
+        on u.id=m.user_id
+        where u.id=#{userId}
+        order by m.created_time desc
+        limit 1
+    </select>
 </mapper>

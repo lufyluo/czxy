@@ -12,4 +12,6 @@ public interface MessageMapper {
     Integer batchInsert(List<SendEntity> list);
 
     List<MessageEntity> query(UserPageParam<String> pageParam);
+
+    MessageEntity queryByUserId(Integer userId);
 }

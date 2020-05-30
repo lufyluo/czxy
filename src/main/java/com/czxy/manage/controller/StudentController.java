@@ -6,10 +6,7 @@ import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.vo.classes.ClassOrgInfo;
 import com.czxy.manage.model.vo.classes.ClassPageParam;
-import com.czxy.manage.model.vo.student.StudentAddInfo;
-import com.czxy.manage.model.vo.student.StudentDetailInfo;
-import com.czxy.manage.model.vo.student.StudentPageParam;
-import com.czxy.manage.model.vo.student.StudentUpdateInfo;
+import com.czxy.manage.model.vo.student.*;
 import com.czxy.manage.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -67,6 +64,11 @@ public class StudentController {
     @Anonymous
     public BaseResponse<Boolean> signByWechat(@RequestParam("phone") String phone, @RequestParam("code") String code) {
         return ResponseUtil.success(studentService.signByWechat(phone, code));
+    }
+    @GetMapping("/{userId}")
+    @ApiOperation("获取学员信息")
+    public BaseResponse<StudentClassNameInfo> get(@PathVariable Integer userId){
+        return ResponseUtil.success(studentService.get(userId));
     }
 
 }

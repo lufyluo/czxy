@@ -324,4 +324,21 @@ public class StudentService {
         }
         return studentDetailEntities;
     }
+
+    public StudentClassNameInfo get(Integer userId) {
+        StudentClassNameEntity studentClassNameEntity = userMapper.queryclassName(userId);
+        Date date= new Date();
+        Date beginTime = studentClassNameEntity.getBeginTime();
+        Date endTime = studentClassNameEntity.getEndTime();
+        if (date.after(beginTime)&&date.after(endTime)){
+            studentClassNameEntity.setClassState("班级正在进行");
+        }
+        if (date.after(endTime)){
+            studentClassNameEntity.setClassState("班级已经结束");
+        }
+        if (date.before(beginTime)){
+            studentClassNameEntity.setClassState("班级还未开始");
+        }
+        return PojoMapper.INSTANCE.toStudentClassNameInfo(studentClassNameEntity);
+    }
 }
