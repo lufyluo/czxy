@@ -245,7 +245,7 @@ public class StudentService {
     }
 
     public Boolean signByWechat(String phone, String code) {
-        Integer userId = userMapper.queryId(phone);
+        Integer userId = userMapper.queryId(phone,null);
         if (userId == null || userId == 0) {
             throw new ManageException(ResponseStatus.FAILURE, "学员不存在");
         }
@@ -340,5 +340,26 @@ public class StudentService {
             studentClassNameEntity.setClassState("班级还未开始");
         }
         return PojoMapper.INSTANCE.toStudentClassNameInfo(studentClassNameEntity);
+    }
+
+    public Boolean authentication(String phone, String name, String code) {
+        Integer userId = userMapper.queryId(phone,name);
+        if (userId == null || userId == 0) {
+            throw new ManageException(ResponseStatus.FAILURE, "学员不存在");
+        }
+        StudentEntity studentEntity = studentMapper.queryStudent(userId);
+        if (studentEntity.getClassId() == null || studentEntity.getClassId() == 0) {
+            throw new ManageException(ResponseStatus.FAILURE, "学生没有班级");
+        }
+        log.info("==================================》");
+        String openId = wechatUtil.getOpenId(code);
+        log.info("《==================================");
+        if (StringUtils.isEmpty(openId)) {
+            throw new ManageException(ResponseStatus.FAILURE, "认证失败，请重试！");
+        }
+        log.info("学生id: " + userId);
+        studentMapper.updateByUserId(userId);
+        userMapper.updateWechat(userId, openId);
+        return true;
     }
 }

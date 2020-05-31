@@ -177,6 +177,9 @@
         select id
         from user
         where phone = #{phone}
+        <if test="name != null and name != ''">
+            and name =#{name}
+        </if>
     </select>
     <select id="queryByPhones" resultType="com.czxy.manage.model.entity.UserEntity">
         select id, name, phone

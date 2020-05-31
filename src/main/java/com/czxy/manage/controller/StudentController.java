@@ -70,5 +70,10 @@ public class StudentController {
     public BaseResponse<StudentClassNameInfo> get(@PathVariable Integer userId){
         return ResponseUtil.success(studentService.get(userId));
     }
-
+    @PutMapping("/authentication")
+    @ApiOperation("身份认证")
+    @Anonymous
+    public BaseResponse<Boolean> authentication(@RequestParam("phone") String phone,@RequestParam("name") String name ,@RequestParam("code") String code) {
+        return ResponseUtil.success(studentService.authentication(phone, name,code));
+    }
 }
