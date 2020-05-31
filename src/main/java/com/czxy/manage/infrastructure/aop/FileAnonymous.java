@@ -1,0 +1,12 @@
+package com.czxy.manage.infrastructure.aop;
+
+import org.springframework.stereotype.Component;
+
+import java.lang.annotation.*;
+
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Component
+public @interface FileAnonymous {
+}

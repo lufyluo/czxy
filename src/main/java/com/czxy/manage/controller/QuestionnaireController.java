@@ -5,7 +5,9 @@ import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.PaperInfo;
+import com.czxy.manage.model.vo.questionnaire.PaperAnalysisDetailInfo;
 import com.czxy.manage.model.vo.questionnaire.PaperCreateInfo;
+import com.czxy.manage.model.vo.questionnaire.PaperDetailInfo;
 import com.czxy.manage.model.vo.questionnaire.PaperPublisInfo;
 import com.czxy.manage.service.QuestionnaireService;
 import io.swagger.annotations.Api;
@@ -56,6 +58,13 @@ public class QuestionnaireController {
     @ApiOperation("发布")
     public BaseResponse<Boolean> publish(@RequestBody PaperPublisInfo paperPublisInfo) {
         return ResponseUtil.success(questionnaireService.publish(paperPublisInfo));
+    }
+
+
+    @GetMapping("/analysis/{paperId}")
+    @ApiOperation("问卷分析")
+    public BaseResponse<PaperAnalysisDetailInfo> analysis(@PathVariable Integer paperId) {
+        return ResponseUtil.success(questionnaireService.analysis(paperId));
     }
 
 }

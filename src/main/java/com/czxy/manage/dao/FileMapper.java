@@ -9,4 +9,6 @@ import java.util.List;
 @Mapper
 public interface FileMapper {
     List<FileEntity> query(@Param("fileIds") List<Integer> fileIds);
+
+    Integer insert(FileEntity fileEntity);
 }

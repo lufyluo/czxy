@@ -13,3 +13,10 @@ czxy:
     appId: wx657fdaf188aec6b1
     secret: df7522936b9653b37b8feae7a940514d
     accessTokenUrl: https://api.weixin.qq.com/sns/oauth2/access_token?appid=${czxy.wechat.appId}&secret=${czxy.wechat.secret}&code=%s&grant_type=authorization_code
+aliyun:
+  oss:
+    endPoint: YjNOekxXTnVMV05vWlc1blpIVXVZV3hwZVhWdVkzTXVZMjl0
+#    accessKey: VEZSQlNUUkhOVFZ5YjNkdFJtRk9NVGhaVkhGdE5IUlQ=
+    accessKey: VEZSQlNUUkhORFF5TVZjM1l6bEROMXBMT0VGUlUzRlg=
+    accessKeySecret: UTBkMVN6RTJWV294U0dGeVJrczFjRnBhTWtGdk5Ia3liVVZvVUU5cQ==
+    bucket: WkdWMkxXTjZlSGs9

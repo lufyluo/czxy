@@ -833,6 +833,4 @@ create table class_activity
 )
     comment '班级活动，类似开班典礼';
 
-
-
 ```

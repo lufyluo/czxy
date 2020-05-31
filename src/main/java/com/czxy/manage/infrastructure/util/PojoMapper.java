@@ -1,6 +1,7 @@
 package com.czxy.manage.infrastructure.util;
 
 import com.czxy.manage.model.entity.*;
+import com.czxy.manage.model.entity.questionnaire.PaperSubmitEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.OptionEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.PaperStemEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.StemEntity;
@@ -19,9 +20,7 @@ import com.czxy.manage.model.vo.message.MessageInfo;
 import com.czxy.manage.model.vo.plan.PlanCreateInfo;
 import com.czxy.manage.model.vo.plan.PlanInfo;
 import com.czxy.manage.model.vo.plan.PlanUpdateInfo;
-import com.czxy.manage.model.vo.questionnaire.PaperDetailInfo;
-import com.czxy.manage.model.vo.questionnaire.PaperPublisInfo;
-import com.czxy.manage.model.vo.questionnaire.StemDetailInfo;
+import com.czxy.manage.model.vo.questionnaire.*;
 import com.czxy.manage.model.vo.questionnaire.stem.OptionInfo;
 import com.czxy.manage.model.vo.questionnaire.stem.PaperStemInfo;
 import com.czxy.manage.model.vo.questionnaire.stem.StemInfo;
@@ -270,4 +269,12 @@ public interface PojoMapper {
     StemDetailInfo toStemDetailInfo(PaperDetailEntity stemInfo);
 
     StudentClassNameInfo toStudentClassNameInfo(StudentClassNameEntity studentClassNameEntity);
+
+    PaperSubmitEntity toPaperSubmitEntity(PaperSubmitInfo paperSubmitInfo);
+
+    StemAnalysisDetailInfo toPaperDetailEntity(PaperDetailEntity stemInfo);
+
+    PaperAnalysisDetailInfo toPaperAnalysisDetailInfo(PaperDetailEntity paperDetailEntity);
+
+    OptionAnalysisDetailInfo toOptionAnalysisDetailInfo(PaperDetailEntity paperDetailEntity);
 }

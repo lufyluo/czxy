@@ -24,4 +24,5 @@ public class PaperDetailEntity {
 
     private Integer answerId;
     private String answerText;
+    private String optionIds;
 }

@@ -6,6 +6,7 @@ import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.PaperDetailEntity;
 import com.czxy.manage.model.entity.PaperPageEntity;
+import com.czxy.manage.model.entity.questionnaire.PaperSubmitEntity;
 import com.czxy.manage.model.vo.questionnaire.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -34,10 +35,29 @@ public class QuestionnaireUserService {
 
     @Transactional
     public Boolean submit(List<PaperSubmitInfo> paperSubmitInfo) {
-        questionnaireMapper.batchInsert(paperSubmitInfo);
+        if (paperSubmitInfo == null || paperSubmitInfo.size() == 0) {
+            return true;
+        }
+        questionnaireMapper.clearAnswers(paperSubmitInfo.get(0).getPaperId(),paperSubmitInfo.get(0).getUserId());
+        List<PaperSubmitEntity> entities = toPaperSubmitEntities(paperSubmitInfo);
+        questionnaireMapper.batchInsert(entities);
         PaperSubmitInfo paperSubmitInfo1 = paperSubmitInfo.get(0);
         questionnaireMapper.updateSend(paperSubmitInfo1.getUserId(), paperSubmitInfo1.getPaperId());
         return true;
+    }
+
+    private List<PaperSubmitEntity> toPaperSubmitEntities(List<PaperSubmitInfo> paperSubmitInfo) {
+        List<PaperSubmitEntity> entities = new ArrayList<>();
+        paperSubmitInfo.forEach(n -> {
+            if (n.getOptionIds() != null && n.getOptionIds().size() > 0) {
+                n.getOptionIds().forEach(op -> {
+                    PaperSubmitEntity entity = PojoMapper.INSTANCE.toPaperSubmitEntity(n);
+                    entity.setOptionId(op);
+                    entities.add(entity);
+                });
+            }
+        });
+        return entities;
     }
 
     public PaperDetailInfo paperDetail(Integer userId, Integer paperId) {

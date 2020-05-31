@@ -1,4 +1,10 @@
 spring:
+  servlet:
+    multipart:
+      #设置单个文件上传大小
+      max-file-size: 10MB
+      #设置总上传的数据大小
+      max-request-size: 50MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
@@ -8,6 +14,7 @@ logstrategy:
   request: true
 token:
   expire: 6000
+
 czxy:
   wechat:
     appId: wx657fdaf188aec6b1

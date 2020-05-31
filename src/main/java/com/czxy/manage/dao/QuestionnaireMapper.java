@@ -3,6 +3,7 @@ package com.czxy.manage.dao;
 import com.czxy.manage.model.entity.PaperDetailEntity;
 import com.czxy.manage.model.entity.PaperEntity;
 import com.czxy.manage.model.entity.PaperPageEntity;
+import com.czxy.manage.model.entity.questionnaire.PaperSubmitEntity;
 import com.czxy.manage.model.vo.questionnaire.PaperCreateInfo;
 import com.czxy.manage.model.vo.questionnaire.PaperSubmitInfo;
 import org.apache.ibatis.annotations.Mapper;
@@ -28,7 +29,9 @@ public interface QuestionnaireMapper {
 
     Boolean updateSend(Integer userId, Integer paperId);
 
-    Integer batchInsert(List<PaperSubmitInfo> paperSubmitInfo);
+    Integer batchInsert(List<PaperSubmitEntity> paperSubmitInfo);
 
     List<PaperDetailEntity> queryPaperDetail(Integer userId, Integer paperId);
+
+    Integer clearAnswers(Integer paperId, Integer userId);
 }

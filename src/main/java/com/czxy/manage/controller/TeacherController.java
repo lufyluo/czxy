@@ -1,5 +1,6 @@
 package com.czxy.manage.controller;
 
+import com.czxy.manage.infrastructure.aop.Anonymous;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
@@ -49,6 +50,7 @@ public class TeacherController {
     }
     @GetMapping("/wechatGet")
     @ApiOperation("师资推荐")
+    @Anonymous
     public BaseResponse<List<TeacherWechatInfo>> get(){
         return ResponseUtil.success(teacherService.get());
     }

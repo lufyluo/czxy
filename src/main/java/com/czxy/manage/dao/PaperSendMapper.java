@@ -9,4 +9,6 @@ import java.util.List;
 public interface PaperSendMapper {
 
     Integer batchInsert(List<PaperSendEntity> asList);
+
+    int countByPaperId(Integer paperId);
 }

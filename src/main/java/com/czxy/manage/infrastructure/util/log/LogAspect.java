@@ -1,11 +1,14 @@
 package com.czxy.manage.infrastructure.util.log;
 
 import com.alibaba.fastjson.JSON;
+import com.czxy.manage.infrastructure.aop.Anonymous;
+import com.czxy.manage.infrastructure.aop.FileAnonymous;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -13,8 +16,10 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 
 /**
  * @Author lufy
@@ -36,7 +41,13 @@ public class LogAspect {
 
     @Around(value = "declearJoinPointExpression()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        String args = JSON.toJSONString(joinPoint.getArgs());
+        String args = "";
+        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+        if (method.getAnnotation(FileAnonymous.class) != null) {
+            args = "file";
+        } else {
+            args = JSON.toJSONString(joinPoint.getArgs());
+        }
         try {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
@@ -47,7 +58,7 @@ public class LogAspect {
             }
             return result;
         } catch (Throwable throwable) {
-            log.error(buildLog(args, throwable.getMessage()));
+            log.error(buildLog("", throwable.getMessage()));
             throw throwable;
         }
 

@@ -43,6 +43,12 @@
                  open="(" separator="," close=")">#{item}
         </foreach>
     </delete>
+    <delete id="clearAnswers">
+        delete
+        from w_paper_submit
+        where paper_id = #{paperId}
+          and user_id = #{userId}
+    </delete>
 
     <select id="page" resultType="com.czxy.manage.model.entity.PaperEntity">
         select
@@ -52,6 +58,7 @@
         <if test="param != null and param != ''">
             and name like '%${param}%'
         </if>
+        order by id desc
     </select>
     <select id="get" resultType="com.czxy.manage.model.entity.PaperPageEntity">
         select
@@ -65,31 +72,40 @@
         </if>
     </select>
     <select id="queryPaperDetail" resultType="com.czxy.manage.model.entity.PaperDetailEntity">
-        select p.id,
-               p.name,
-               p.description,
-
-               ws.id         as stemId,
-               ws.type,
-               ws.score,
-               ws.title,
-               ws.required,
-               ws.category,
-               wps.`index`   as `index`,
-
-               wo.id         as optionId,
-               wo.score      as optionScore,
-               wo.name       as optionName,
-               wo.`index`    as optionIndex,
-
-               w.answer_text as answerText,
-               w.id          as answerId
+        select p.id, p.name, p.description,
+        ws.id as stemId, ws.type, ws.score, ws.title, ws.required, ws.category,
+        wps.`index` as `index`,
+        wo.id as optionId, wo.score as optionScore, wo.name as optionName, wo.`index` as optionIndex,
+        w.answer_text as answerText, w.id as answerId ,
+        w.id as submitId
         from w_paper p
-                 left join w_paper_stem wps on p.id = wps.paper_id
-                 left join w_stem ws on wps.stem_id = ws.id
-                 left join w_option wo on ws.id = wo.stem_id
-                 left join w_paper_submit w on wo.id = w.stem_id and w.user_id = #{userId}
-        where p.id = #{paperId}
-        order by wps.index, wo.index
+        left join w_paper_stem wps on p.id = wps.paper_id
+        left join w_stem ws on wps.stem_id = ws.id
+        left join w_option wo on ws.id = wo.stem_id
+        left join w_paper_submit w on w.paper_id = p.id and w.option_id = wo.id
+        <if test="userId != null and userId != ''">
+            and w.user_id = #{userId}
+        </if>
+        where p.id = #{paperId} and w.option_id is not NULL
+        UNION ALL
+
+        select p.id, p.name, p.description,
+        ws.id as stemId, ws.type, ws.score, ws.title, ws.required, ws.category,
+        wps.`index` as `index`,
+        wo.id as optionId, wo.score as optionScore, wo.name as optionName, wo.`index` as optionIndex,
+        w.answer_text as answerText, w.id as answerId ,
+        w.id as submitId
+        from w_paper p
+        left join w_paper_stem wps on p.id = wps.paper_id
+        left join w_stem ws on wps.stem_id = ws.id
+        left join w_option wo on ws.id = wo.stem_id
+        left join w_paper_submit w on w.paper_id = p.id and w.stem_id = ws.id
+        <if test="userId != null and userId != ''">
+            and w.user_id = #{userId}
+        </if>
+        where p.id = #{paperId} and w.option_id is NULL
+
+        order by `index`,optionIndex
+
     </select>
 </mapper>
