@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.IndexMapper">
+
+    <select id="getUrl" resultType="java.lang.String">
+        select
+        f.url
+        from picture p
+        left join file f
+        on p.file_id=f.id
+        where f.id in
+        <foreach collection="ids" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
+    </select>
+</mapper>
