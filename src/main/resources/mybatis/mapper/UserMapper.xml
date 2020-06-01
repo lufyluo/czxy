@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.UserMapper">
     <sql id="base_column">
-        id, name, idcard, phone, gender, position, age, birthday, category,
+        id, name, idcard, phone, gender, position, age, birthday, category,head_img as headImg
         wechat_id as wechatId,
         updated_time as updatedTime,
         created_time as createdTime,
@@ -15,12 +15,12 @@
         insert into user
         (name, idcard, phone, gender, position, age,
          birthday, category, wechat_id, org_id, nation,
-         nativeplace, education, politics)
+         nativeplace, education, politics, head_img)
         values (#{name}, #{idCard}, #{phone},
                 #{gender}, #{position}, #{age},
                 #{birthday}, 2, #{wechatId},
                 #{orgId}, #{nation}, #{nativePlace},
-                #{education}, #{politics});
+                #{education}, #{politics}, #{headImg});
     </insert>
     <insert id="batchInsert" useGeneratedKeys="true"
             keyProperty="id">
@@ -29,13 +29,13 @@
         position, age, birthday,
         category, wechat_id,org_id,
         nation,nativeplace,education,
-        politics)
+        politics,head_img)
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.name}, #{item.idCard}, #{item.phone}, #{item.gender},
             #{item.position}, #{item.age}, #{item.birthday}, #{item.category},
             #{item.wechatId}, #{item.orgId}, #{item.nation}, #{item.nativePlace},
-            #{item.education},#{item.politics})
+            #{item.education},#{item.politics},#{headImg})
         </foreach>
 
     </insert>
@@ -55,7 +55,8 @@
             org_id=#{orgId},
             nation=#{nation},
             nativeplace=#{nativePlace},
-            education=#{education}
+            education=#{education},
+            head_img = #{headImg}
         where id = #{id}
     </update>
     <update id="updateByStudent">
@@ -71,11 +72,11 @@
             wechat_id=#{wechatId},
             updated_time=now(),
             org_id=#{orgId},
-            nation=#{nation}
-                ,
+            nation=#{nation},
             nativeplace=#{nativePlace},
             education=#{education},
-            politics=#{politics}
+            politics=#{politics},
+            head_img = #{headImg}
         where id = #{userId}
     </update>
     <update id="updateByTeacher">
@@ -94,7 +95,8 @@
             nation=#{nation},
             nativeplace=#{nativePlace},
             education=#{education},
-            politics=#{politics}
+            politics=#{politics},
+            head_img = #{headImg}
         where id = #{userId}
     </update>
     <update id="updateWechat">
@@ -138,7 +140,8 @@
                u.created_time as createdTime,
                u.org_id       as orgId,
                u.nation,
-               u.nativeplace  as nativePlace
+               u.nativeplace  as nativePlace,
+               u.head_img     as headImg
         from user u
                  left join token t
                            on t.user_id = u.id
@@ -163,7 +166,8 @@
         u.created_time as createdTime,
         u.org_id as orgId,
         u.nation,
-        u.nativeplace as nativePlace
+        u.nativeplace as nativePlace,
+        u.head_img as headImg
         from user u
         left join student s
         on s.user_id = u.id
@@ -182,7 +186,7 @@
         </if>
     </select>
     <select id="queryByPhones" resultType="com.czxy.manage.model.entity.UserEntity">
-        select id, name, phone
+        select id, name, phone ,head_img as headImg
         from user
         where phone
         in
@@ -196,8 +200,7 @@
         from user where wechat_id=#{openId}
     </select>
     <select id="queryclassName" resultType="com.czxy.manage.model.entity.StudentClassNameEntity">
-        select
-               u.id,
+        select u.id,
                u.name,
                u.idcard,
                u.phone,
@@ -206,21 +209,22 @@
                u.age,
                u.birthday,
                u.category,
-               u.wechat_id    as wechatId,
-               u.org_id       as orgId,
+               u.wechat_id   as wechatId,
+               u.org_id      as orgId,
                u.nation,
-               u.nativeplace  as nativePlace,
+               u.nativeplace as nativePlace,
                u.education,
                u.politics,
-               c.name as className,
-               c.begin_time as beginTime,
-               c.end_time as endTime
+               u.head_img as headImg,
+               c.name        as className,
+               c.begin_time  as beginTime,
+               c.end_time    as endTime
         from user u
-        left join student s
-        on u.id=s.user_id
-        left join class c
-        on c.id=s.class_id
-        where u.id=#{userId}
+                 left join student s
+                           on u.id = s.user_id
+                 left join class c
+                           on c.id = s.class_id
+        where u.id = #{userId}
         order by c.begin_time desc
         limit 1
     </select>

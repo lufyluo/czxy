@@ -4,6 +4,7 @@ import com.czxy.manage.infrastructure.aop.Anonymous;
 import com.czxy.manage.infrastructure.aop.FileAnonymous;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
+import com.czxy.manage.model.vo.files.FileInfo;
 import com.czxy.manage.service.FileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +26,7 @@ public class FileController {
     @PostMapping("/upload/oss")
     @FileAnonymous
     @Anonymous
-    public BaseResponse<Integer> upload(@RequestParam("file") MultipartFile file) {
+    public BaseResponse<FileInfo> upload(@RequestParam("file") MultipartFile file) {
         return ResponseUtil.success(fileService.upload(file));
     }
 }

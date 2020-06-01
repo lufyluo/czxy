@@ -11,7 +11,9 @@ import com.czxy.manage.dao.FileMapper;
 import com.czxy.manage.infrastructure.config.AliyunOssConfig;
 import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
+import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.FileEntity;
+import com.czxy.manage.model.vo.files.FileInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +39,7 @@ public class FileService {
      * @return
      * @throws Exception
      */
-    public Integer upload(MultipartFile file) {
+    public FileInfo upload(MultipartFile file) {
 
         //获取文件名
         String originalFilename = file.getOriginalFilename();
@@ -70,7 +72,7 @@ public class FileService {
                 fileEntity.setSize(file.getSize());
                 fileEntity.setName(file.getOriginalFilename());
                 fileMapper.insert(fileEntity);
-                return fileEntity.getId();
+                return PojoMapper.INSTANCE.tiFileInfo(fileEntity);
             }
         } catch (OSSException oe) {
             log.error(oe.getMessage());
@@ -82,7 +84,7 @@ public class FileService {
             //关闭
             ossClient.shutdown();
         }
-        return -1;
+        return null;
     }
 
     /**

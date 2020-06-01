@@ -37,4 +37,6 @@ public class TeacherInformationInfo extends TeacherEntity {
     private List<SubjectByIdInfo> subjectByIdInfoList;
     @ApiModelProperty("teacher表ID")
     private Integer teacherId;
+    @ApiModelProperty("头像")
+    private String headImg;
 }

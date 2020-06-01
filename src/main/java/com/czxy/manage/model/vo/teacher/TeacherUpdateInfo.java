@@ -34,4 +34,6 @@ public class TeacherUpdateInfo extends TeacherEntity {
     private String politics;
     @ApiModelProperty("中文推荐单位名字")
     private String orgName;
+    @ApiModelProperty("头像")
+    private String headImg;
 }

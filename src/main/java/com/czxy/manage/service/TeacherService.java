@@ -44,8 +44,9 @@ public class TeacherService {
 
     @Transactional
     public Boolean add(TeacherInfo teacherInfo) {
-        orgService.insertIfAbsentOrg(teacherInfo.getOrgName(), teacherInfo.getOrgId());
+        Integer orgId = orgService.insertIfAbsentOrg(teacherInfo.getOrgName(), teacherInfo.getOrgId());
         UserEntity userEntity = PojoMapper.INSTANCE.teacherInfoToUserEntity(teacherInfo);
+        userEntity.setOrgId(orgId);
         userMapper.insert(userEntity);
         teacherInfo.setUserId(userEntity.getId());
         TeacherEntity teacherEntity = PojoMapper.INSTANCE.toTeacherEntity(teacherInfo);
@@ -60,12 +61,13 @@ public class TeacherService {
 
     @Transactional
     public Boolean update(TeacherUpdateInfo teacherUpdateInfo) {
-        orgService.insertIfAbsentOrg(teacherUpdateInfo.getOrgName(), teacherUpdateInfo.getOrgId());
+        Integer orgId = orgService.insertIfAbsentOrg(teacherUpdateInfo.getOrgName(), teacherUpdateInfo.getOrgId());
         TeacherEntity teacherEntity = PojoMapper.INSTANCE.TeacherUpdateToTeacherEntity(teacherUpdateInfo);
         teacherMapper.update(teacherEntity);
         Integer userId = teacherMapper.queryUserId(teacherEntity);
         teacherUpdateInfo.setUserId(userId);
         UserUpdateEntity userUpdateEntity = PojoMapper.INSTANCE.teacherUpdateToUserUpdateEnity(teacherUpdateInfo);
+        userUpdateEntity.setOrgId(orgId);
         userMapper.updateByTeacher(userUpdateEntity);
         return true;
     }
