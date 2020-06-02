@@ -8,10 +8,6 @@
         from picture p
         left join file f
         on p.file_id=f.id
-        where f.id in
-        <foreach collection="ids" item="item" index="index"
-                 open="(" separator="," close=")">#{item}
-        </foreach>
     </select>
     <select id="queryNewMessage" resultType="java.lang.String">
         select

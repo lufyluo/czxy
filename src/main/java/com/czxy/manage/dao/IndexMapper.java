@@ -7,7 +7,7 @@ import java.util.List;
 @Mapper
 public interface IndexMapper {
 
-    List<String> getUrl(List<Integer> ids);
+    List<String> getUrl();
 
     String queryNewMessage();
 }

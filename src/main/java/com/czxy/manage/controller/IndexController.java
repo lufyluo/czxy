@@ -21,9 +21,9 @@ public class IndexController {
     @Autowired
     private IndexService indexService;
 
-    @GetMapping("/{ids}")
+    @GetMapping("/{userId}")
     @ApiOperation("获取首页轮播图url")
-    public BaseResponse<IndexInfo> get(@PathVariable List<Integer> ids) {
-        return ResponseUtil.success(indexService.get(ids));
+    public BaseResponse<IndexInfo> get(@PathVariable Integer userId) {
+        return ResponseUtil.success(indexService.get(userId));
     }
 }

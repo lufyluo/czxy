@@ -36,4 +36,5 @@ public class TeacherInformationEntity extends TeacherEntity{
     private String types;
     private String files;
     private Integer teacherId;
+    private String headImg;
 }

@@ -90,6 +90,9 @@ public class MessageService {
 
     public MessageInfo getNews(Integer userId) {
         MessageEntity messageEntity = messageMapper.queryByUserId(userId);
+        if(messageEntity==null){
+            return null;
+        }
         MessageInfo messageInfo = PojoMapper.INSTANCE.toMessageInfo(messageEntity);
         messageInfo.setTitle("最新系统通知");
         return messageInfo;

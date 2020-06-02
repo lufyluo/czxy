@@ -823,15 +823,6 @@ alter table w_paper_send
 alter table subject
 	add description int null after category;
 
-create table class_activity
-(
-    id bigint auto_increment primary key,
-    name varchar(128) null,
-    description varchar(255) null,
-    updated_time timestamp default now() null,
-    created_time timestamp default now() null
-)
-    comment '班级活动，类似开班典礼';
 ===================================
 create table picture
 (
