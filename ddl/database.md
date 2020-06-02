@@ -836,5 +836,7 @@ comment '首页轮播图';
 alter table user
 	add head_img varchar(180) null comment '头像' after education;
 
+alter table site
+	add star smallint null after fee;
 
 ```
