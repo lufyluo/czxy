@@ -2,6 +2,7 @@ package com.czxy.manage.controller;
 
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
+import com.czxy.manage.model.vo.IndexInfo;
 import com.czxy.manage.service.IndexService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +23,7 @@ public class IndexController {
 
     @GetMapping("/{ids}")
     @ApiOperation("获取首页轮播图url")
-    public BaseResponse<List<String>> get(@PathVariable List<Integer> ids) {
+    public BaseResponse<IndexInfo> get(@PathVariable List<Integer> ids) {
         return ResponseUtil.success(indexService.get(ids));
     }
 }

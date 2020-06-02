@@ -1,6 +1,7 @@
 package com.czxy.manage.service;
 
 import com.czxy.manage.dao.IndexMapper;
+import com.czxy.manage.model.vo.IndexInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -11,8 +12,12 @@ public class IndexService {
     @Resource
     private IndexMapper indexMapper;
 
-    public List<String> get(List<Integer> ids) {
+    public IndexInfo get(List<Integer> ids) {
         List<String> url = indexMapper.getUrl(ids);
-        return url;
+        String s = indexMapper.queryNewMessage();
+        IndexInfo indexInfo = new IndexInfo();
+        indexInfo.setUrl(url);
+        indexInfo.setMessage(s);
+        return indexInfo;
     }
 }

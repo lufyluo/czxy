@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
 
 @RestController
 @Api(tags = "文件上传下载",value = "文件上传下载")
@@ -28,5 +32,12 @@ public class FileController {
     @Anonymous
     public BaseResponse<FileInfo> upload(@RequestParam("file") MultipartFile file) {
         return ResponseUtil.success(fileService.upload(file));
+    }
+    @ApiOperation("文件下载")
+    @GetMapping("/{ids}")
+    @FileAnonymous
+    @Anonymous
+    public BaseResponse<Boolean> download(@PathVariable List<Integer> ids, HttpServletResponse response) throws IOException {
+        return ResponseUtil.success(fileService.download(ids,response));
     }
 }

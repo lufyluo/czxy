@@ -8,4 +8,6 @@ import java.util.List;
 public interface IndexMapper {
 
     List<String> getUrl(List<Integer> ids);
+
+    String queryNewMessage();
 }

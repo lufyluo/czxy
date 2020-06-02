@@ -2,6 +2,8 @@ package com.czxy.manage.service;
 
 import com.czxy.manage.dao.TeacherMapper;
 import com.czxy.manage.dao.UserMapper;
+import com.czxy.manage.infrastructure.gloable.ManageException;
+import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.teacher.*;
@@ -74,6 +76,9 @@ public class TeacherService {
 
     public TeacherInformationInfo query(Integer teacherId) {
         TeacherInformationEntity teacherInformationEntity = teacherMapper.queryAll(teacherId);
+        if (teacherInformationEntity==null){
+            throw new ManageException(ResponseStatus.FAILURE,"错误教师ID");
+        }
         TeacherInformationInfo teacherInformationInfo = PojoMapper.INSTANCE.toTeacherInformationInfo(teacherInformationEntity);
         teacherInformationInfo.setSubjectByIdInfoList(
                 subjectService.getByTeacherId(teacherInformationInfo.getTeacherId()));

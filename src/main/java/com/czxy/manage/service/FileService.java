@@ -3,10 +3,7 @@ package com.czxy.manage.service;
 import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
-import com.aliyun.oss.model.CannedAccessControlList;
-import com.aliyun.oss.model.CreateBucketRequest;
-import com.aliyun.oss.model.PutObjectRequest;
-import com.aliyun.oss.model.PutObjectResult;
+import com.aliyun.oss.model.*;
 import com.czxy.manage.dao.FileMapper;
 import com.czxy.manage.infrastructure.config.AliyunOssConfig;
 import com.czxy.manage.infrastructure.gloable.ManageException;
@@ -17,11 +14,14 @@ import com.czxy.manage.model.vo.files.FileInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -72,7 +72,7 @@ public class FileService {
                 fileEntity.setSize(file.getSize());
                 fileEntity.setName(file.getOriginalFilename());
                 fileMapper.insert(fileEntity);
-                return PojoMapper.INSTANCE.tiFileInfo(fileEntity);
+                return PojoMapper.INSTANCE.toFileInfo(fileEntity);
             }
         } catch (OSSException oe) {
             log.error(oe.getMessage());
@@ -100,4 +100,47 @@ public class FileService {
         }
     }
 
+    public Boolean download(List<Integer> ids, HttpServletResponse response) throws IOException {
+        List<FileEntity> fileEntityList = fileMapper.query(ids);
+        for (FileEntity f : fileEntityList) {
+            if (f != null && !StringUtils.isEmpty(f)) {
+                String url = f.getUrl();
+                String fileName = url.substring(url.lastIndexOf("/") + 1);
+                String fileRealName = f.getName();
+                String extension = f.getExtension();
+                OSSClient ossClient = new OSSClient(aliyunOssConfig.getEndPoint(), aliyunOssConfig.getAccessKey(), aliyunOssConfig.getAccessKeySecret());
+                if (ossClient != null) {
+                    OSSObject ossObject = ossClient.getObject(new GetObjectRequest(aliyunOssConfig.getBucket(), fileName));
+                    BufferedInputStream bis = null;
+                    OutputStream toClient = null;
+                    try {
+                        //*获取ossObject的流*
+                        bis = new BufferedInputStream(ossObject.getObjectContent(), 512);
+                        response.reset();
+                        toClient = new BufferedOutputStream(response.getOutputStream());
+                        response.setContentType("application/octet-stream");
+                        //处理文件名为中文的情况
+                        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileRealName, "UTF-8"));
+                        //*处理oss文件流传输*
+                        int number;
+                        byte[] buffer = new byte[512];
+                        while ((number = bis.read(buffer)) != -1) {
+                            toClient.write(buffer, 0, number);
+                        }
+                        toClient.flush();
+                        toClient.close();
+                    } finally {
+                        if (toClient != null) {
+                            toClient.close();
+                        }
+                        if (bis != null) {
+                            bis.close();
+                        }
+                    }
+
+                }
+            }
+        }
+        return true;
+    }
 }

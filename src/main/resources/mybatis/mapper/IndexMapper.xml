@@ -13,4 +13,12 @@
                  open="(" separator="," close=")">#{item}
         </foreach>
     </select>
+    <select id="queryNewMessage" resultType="java.lang.String">
+        select
+        message
+        from message
+        where 1=1
+        order by created_time desc
+        limit 1
+    </select>
 </mapper>

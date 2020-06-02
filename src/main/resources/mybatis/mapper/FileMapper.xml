@@ -9,7 +9,7 @@
 
     <select id="query" resultType="com.czxy.manage.model.entity.FileEntity">
         select
-        id, name, code, extension, "size", updated_time, created_time, url
+        id, name, code, extension, updated_time, created_time, url
         from
         file
         where id in <foreach collection="fileIds" item="item" index="index"

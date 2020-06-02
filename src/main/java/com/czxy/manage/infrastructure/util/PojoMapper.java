@@ -216,7 +216,7 @@ public interface PojoMapper {
 
     List<StockInfo> toStockInfos(List<StockEntity> stockEntityList);
 
-    FileInfo tiFileInfo(FileEntity fileEntities);
+    FileInfo toFileInfo(FileEntity fileEntities);
 
     List<FileInfo> tiFileInfos(List<FileEntity> fileEntities);
 
