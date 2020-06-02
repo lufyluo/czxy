@@ -100,14 +100,12 @@ public class FileService {
         }
     }
 
-    public Boolean download(List<Integer> ids, HttpServletResponse response) throws IOException {
-        List<FileEntity> fileEntityList = fileMapper.query(ids);
-        for (FileEntity f : fileEntityList) {
-            if (f != null && !StringUtils.isEmpty(f)) {
-                String url = f.getUrl();
+    public Boolean download(Integer id, HttpServletResponse response) throws IOException {
+        FileEntity fileEntity = fileMapper.queryUrl(id);
+            if (fileEntity != null && !StringUtils.isEmpty(fileEntity)) {
+                String url = fileEntity.getUrl();
                 String fileName = url.substring(url.lastIndexOf("/") + 1);
-                String fileRealName = f.getName();
-                String extension = f.getExtension();
+                String fileRealName = fileEntity.getName();
                 OSSClient ossClient = new OSSClient(aliyunOssConfig.getEndPoint(), aliyunOssConfig.getAccessKey(), aliyunOssConfig.getAccessKeySecret());
                 if (ossClient != null) {
                     OSSObject ossObject = ossClient.getObject(new GetObjectRequest(aliyunOssConfig.getBucket(), fileName));
@@ -115,7 +113,7 @@ public class FileService {
                     OutputStream toClient = null;
                     try {
                         //*获取ossObject的流*
-                        bis = new BufferedInputStream(ossObject.getObjectContent(), 512);
+                        bis = new BufferedInputStream(ossObject.getObjectContent(), 1024*1024);
                         response.reset();
                         toClient = new BufferedOutputStream(response.getOutputStream());
                         response.setContentType("application/octet-stream");
@@ -140,7 +138,6 @@ public class FileService {
 
                 }
             }
-        }
         return true;
     }
 }

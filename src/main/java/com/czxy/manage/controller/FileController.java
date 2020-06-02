@@ -34,10 +34,10 @@ public class FileController {
         return ResponseUtil.success(fileService.upload(file));
     }
     @ApiOperation("文件下载")
-    @GetMapping("/{ids}")
+    @GetMapping("/{id}")
     @FileAnonymous
     @Anonymous
-    public BaseResponse<Boolean> download(@PathVariable List<Integer> ids, HttpServletResponse response) throws IOException {
-        return ResponseUtil.success(fileService.download(ids,response));
+    public BaseResponse<Boolean> download(@PathVariable Integer id, HttpServletResponse response) throws IOException {
+        return ResponseUtil.success(fileService.download(id,response));
     }
 }

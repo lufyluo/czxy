@@ -11,4 +11,6 @@ public interface FileMapper {
     List<FileEntity> query(@Param("fileIds") List<Integer> fileIds);
 
     Integer insert(FileEntity fileEntity);
+
+    FileEntity queryUrl(Integer id);
 }

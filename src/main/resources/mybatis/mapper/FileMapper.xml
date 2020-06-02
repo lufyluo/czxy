@@ -17,4 +17,10 @@
     </foreach>
 
     </select>
+    <select id="queryUrl" resultType="com.czxy.manage.model.entity.FileEntity">
+        select
+        url,name
+        from file
+        where id=#{id}
+    </select>
 </mapper>
