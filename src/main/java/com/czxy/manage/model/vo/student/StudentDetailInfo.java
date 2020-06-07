@@ -32,5 +32,6 @@ public class StudentDetailInfo extends UserInfo {
     private Integer type;
     @ApiModelProperty("工作单位中文名称")
     private String orgName;
-
+    @ApiModelProperty("用户id")
+    private Integer userId;
 }

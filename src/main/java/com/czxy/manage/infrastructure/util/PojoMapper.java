@@ -32,10 +32,7 @@ import com.czxy.manage.model.vo.student.*;
 import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
 import com.czxy.manage.model.vo.subject.SubjectDetailDomainInfo;
 import com.czxy.manage.model.vo.subject.SubjectInfo;
-import com.czxy.manage.model.vo.teacher.TeacherDetailInfo;
-import com.czxy.manage.model.vo.teacher.TeacherInfo;
-import com.czxy.manage.model.vo.teacher.TeacherInformationInfo;
-import com.czxy.manage.model.vo.teacher.TeacherUpdateInfo;
+import com.czxy.manage.model.vo.teacher.*;
 import com.czxy.manage.model.vo.user.UserAccountInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserInfo;
@@ -119,6 +116,9 @@ public interface PojoMapper {
 
     @Mappings({@Mapping(ignore = true, target = "types"), @Mapping(ignore = true, target = "topicId")})
     SiteEntity toSiteEntity(SiteAddInfo siteAddInfo);
+
+
+    List<SiteEntity> toSiteEntities(List<SiteAddInfo> siteInfos);
 
     TypeEntity toTypeEntity(TypeInfo types);
 
@@ -277,4 +277,14 @@ public interface PojoMapper {
     PaperAnalysisDetailInfo toPaperAnalysisDetailInfo(PaperDetailEntity paperDetailEntity);
 
     OptionAnalysisDetailInfo toOptionAnalysisDetailInfo(PaperDetailEntity paperDetailEntity);
+
+    UserEntity importTeacherInfosToUserEntity(ImportTeacherInfo teacherInfos);
+    List<UserEntity> importTeacherInfosToUserEntities(List<ImportTeacherInfo> teacherInfos);
+
+    @Mappings({
+            @Mapping(target = "score",ignore = true)
+    })
+    TeacherEntity importTeacherInfoToTeacherEntity(ImportTeacherInfo teacherInfos);
+    List<TeacherEntity> importTeacherInfoToTeacherEntity(List<ImportTeacherInfo> teacherInfos);
+
 }

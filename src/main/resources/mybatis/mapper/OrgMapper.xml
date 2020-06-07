@@ -8,7 +8,7 @@
             (name, address_id, province_id, city_id, county_id)
         values (#{name}, #{addressId}, #{provinceId}, #{cityId}, #{countyId});
     </insert>
-    <insert id="batchInsert">
+    <insert id="batchInsert" keyProperty="id" useGeneratedKeys="true">
         insert into org (name) values
         <foreach collection="list" item="item" separator=",">
             (#{item})

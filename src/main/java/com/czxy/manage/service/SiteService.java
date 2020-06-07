@@ -1,15 +1,17 @@
 package com.czxy.manage.service;
 
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.czxy.manage.dao.SiteMapper;
 import com.czxy.manage.dao.TypeMapper;
+import com.czxy.manage.infrastructure.gloable.ManageException;
+import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.SiteEntity;
 import com.czxy.manage.model.entity.TypeEntity;
-import com.czxy.manage.model.vo.site.SiteAddInfo;
-import com.czxy.manage.model.vo.site.SiteInfo;
-import com.czxy.manage.model.vo.site.SitePageAddInfo;
-import com.czxy.manage.model.vo.site.SitePageParam;
+import com.czxy.manage.model.vo.site.*;
+import com.czxy.manage.model.vo.teacher.ImportTeacherInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -17,6 +19,7 @@ import org.apache.logging.log4j.core.util.ArrayUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -95,5 +98,22 @@ public class SiteService {
             siteEntity.setTopicId(typeEntity.getId());
         }
         return siteEntity;
+    }
+
+    public Boolean batchImport(MultipartFile file) {
+        ImportParams params = new ImportParams();
+        params.setStartRows(0);
+        try {
+            List<SiteAddInfo> siteInfos = ExcelImportUtil.importExcel(file.getInputStream(), SiteAddInfo.class, params);
+            if(siteInfos == null || siteInfos.size()==0){
+                throw new ManageException(ResponseStatus.ARGUMENTNOTVALID,"数据为空！");
+            }
+            List<SiteEntity> siteEntities = PojoMapper.INSTANCE.toSiteEntities(siteInfos);
+            siteMapper.batchInsert(siteEntities);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

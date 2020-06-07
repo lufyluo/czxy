@@ -1,6 +1,7 @@
 package com.czxy.manage.controller;
 
 import com.czxy.manage.infrastructure.aop.Anonymous;
+import com.czxy.manage.infrastructure.aop.FileAnonymous;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
@@ -11,9 +12,12 @@ import com.czxy.manage.model.vo.teacher.*;
 import com.czxy.manage.service.TeacherService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -53,5 +57,14 @@ public class TeacherController {
     @Anonymous
     public BaseResponse<List<TeacherWechatInfo>> get(){
         return ResponseUtil.success(teacherService.get());
+    }
+
+    @ApiOperation("导入")
+    @RequestMapping(path = "/import/{system}", method = RequestMethod.POST)
+    @ApiImplicitParams({@ApiImplicitParam(name = "system",value = "0-党校系统，1-领导干部系统，2-高校系统")})
+    @FileAnonymous
+    public BaseResponse<List<ImportTeacherInfo>> batchImport(@PathVariable("system") Integer system,
+                                                             @RequestParam(value = "file") MultipartFile file){
+        return ResponseUtil.success(teacherService.batchImport(system,file));
     }
 }

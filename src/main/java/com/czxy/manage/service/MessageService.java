@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,7 +88,11 @@ public class MessageService {
     public MessageInfo getNews(Integer userId) {
         MessageEntity messageEntity = messageMapper.queryByUserId(userId);
         if(messageEntity==null){
-            return null;
+            MessageInfo messageInfo =new MessageInfo();
+            messageInfo.setTitle("最新系统通知");
+            messageInfo.setMessage("目前暂无消息！");
+            messageInfo.setCreatedTime(new Date());
+            return messageInfo;
         }
         MessageInfo messageInfo = PojoMapper.INSTANCE.toMessageInfo(messageEntity);
         messageInfo.setTitle("最新系统通知");

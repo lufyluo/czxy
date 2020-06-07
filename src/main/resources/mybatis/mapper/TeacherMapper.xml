@@ -2,25 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.TeacherMapper">
     <sql id="base_column">
-        id, score, user_id as userId,comment,system,
-        skill,star,area
+        id, score, user_id as userId,`comment`,`system`,
+        skill,star,area,
         updated_time as updatedTime, created_time as createdTime
     </sql>
     <insert id="insert" parameterType="com.czxy.manage.model.entity.TeacherEntity" useGeneratedKeys="true"
             keyProperty="id">
+        insert into teacher (score, comment, user_id, `system`, skill, star, area, pay)
+        VALUES (#{score}, #{comment}, #{userId}, #{system}, #{skill}, #{star}, #{area}, #{pay})
+    </insert>
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id">
         insert into teacher (score, comment, user_id, `system`, skill, star, area,pay) VALUES
-        (#{score},#{comment},#{userId},#{system},#{skill},#{star},#{area},#{pay})
+        <foreach collection="list" item="item" separator=",">
+            (#{item.score},#{item.comment},#{item.userId},#{item.system},#{item.skill},#{item.star},#{item.area},#{item.pay})
+        </foreach>
     </insert>
     <update id="update">
         update teacher
-        set score=#{score},comment=#{comment},
-        `system`=#{system},skill=#{skill},
-        star=#{star},area=#{area},pay=#{pay},updated_time=now()
-        where id=#{teacherId}
+        set score=#{score},
+            comment=#{comment},
+            `system`=#{system},
+            skill=#{skill},
+            star=#{star},
+            area=#{area},
+            pay=#{pay},
+            updated_time=now()
+        where id = #{teacherId}
     </update>
     <delete id="delete">
         delete from teacher where id in
         <foreach collection="teacherIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
+    </delete>
+    <delete id="deleteByUserIds">
+        delete from teacher where user_id in
+        <foreach collection="list" item="item" index="index"
                  open="(" separator="," close=")">#{item}
         </foreach>
     </delete>
@@ -53,37 +70,83 @@
         order by t.id desc
     </select>
     <select id="queryUserId" resultType="java.lang.Integer">
-        select user_id as userId from teacher where id=#{teacherId}
+        select user_id as userId
+        from teacher
+        where id = #{teacherId}
     </select>
     <select id="queryAll" resultType="com.czxy.manage.model.entity.TeacherInformationEntity">
-        select
-        t.score,t.comment,t.user_id as userId,t.system,t.skill,t.star,t.area
-        ,u.name,u.idcard as idCard,u.phone,u.gender,u.position,u.age,u.birthday,u.category,u.head_img as headImg
-        ,u.wechat_id as wechatId,u.org_id as orgId,u.nation,u.nativeplace,u.education,u.politics
-        ,t.id as teacherId
+        select t.score
+             , t.comment
+             , t.user_id   as userId
+             , t.system
+             , t.skill
+             , t.star
+             , t.area
+             , u.name
+             , u.idcard    as idCard
+             , u.phone
+             , u.gender
+             , u.position
+             , u.age
+             , u.birthday
+             , u.category
+             , u.head_img  as headImg
+             , u.wechat_id as wechatId
+             , u.org_id    as orgId
+             , u.nation
+             , u.nativeplace
+             , u.education
+             , u.politics
+             , t.id        as teacherId
         from teacher t
-        left join user u
-        on t.user_id=u.id
-        where t.id=#{teacherId}
+                 left join user u
+                           on t.user_id = u.id
+        where t.id = #{teacherId}
     </select>
     <select id="queryName" resultType="java.lang.String">
-        select  u.name
+        select u.name
         from teacher t
-        left join user u
-        on t.user_id = u.id
-        where t.id=#{teacherId}
+                 left join user u
+                           on t.user_id = u.id
+        where t.id = #{teacherId}
     </select>
     <select id="get" resultType="com.czxy.manage.model.vo.teacher.TeacherWechatInfo">
-        select
-        t.id,t.comment,t.skill,t.system,t.star,t.area
-        ,o.name as orgName,u.name,u.phone,u.gender,u.position,u.age,u.head_img as headImg
-        ,u.nation,u.nativeplace as nativePlace,u.education,u.politics
+        select t.id
+             , t.comment
+             , t.skill
+             , t.system
+             , t.star
+             , t.area
+             , o.name        as orgName
+             , u.name
+             , u.phone
+             , u.gender
+             , u.position
+             , u.age
+             , u.head_img    as headImg
+             , u.nation
+             , u.nativeplace as nativePlace
+             , u.education
+             , u.politics
         from teacher t
-        left join user u
-        on t.user_id=u.id
-        left join org o
-        on o.id=u.org_id
-        order by t.star desc
+                 left join user u
+                           on t.user_id = u.id
+                 left join org o
+                           on o.id = u.org_id
+        order by t.star, t.score desc
         limit 8
+    </select>
+    <select id="queryByUserId" resultType="com.czxy.manage.model.entity.TeacherEntity">
+        select
+        <include refid="base_column"></include>
+        from teacher where user_id = #{userId}
+    </select>
+    <select id="queryByUserIds" resultType="com.czxy.manage.model.entity.TeacherEntity">
+        select
+        <include refid="base_column"></include>
+        from teacher where user_id in
+                           <foreach collection="list" separator="," item="item" close=")" open="(">
+                               #{item}
+                           </foreach>
     </select>
 </mapper>

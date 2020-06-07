@@ -73,7 +73,7 @@ public class StudentController {
     @PutMapping("/authentication")
     @ApiOperation("身份认证")
     @Anonymous
-    public BaseResponse<Boolean> authentication(@RequestParam("phone") String phone,@RequestParam("name") String name ,@RequestParam("code") String code) {
-        return ResponseUtil.success(studentService.authentication(phone, name,code));
+    public BaseResponse<Boolean> authentication(@RequestParam("phone") String phone,@RequestParam("name") String name ,@RequestParam("code") String code,@RequestParam("openId") String openId) {
+        return ResponseUtil.success(studentService.authentication(phone, name,code,openId));
     }
 }

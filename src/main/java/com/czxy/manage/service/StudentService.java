@@ -1,9 +1,6 @@
 package com.czxy.manage.service;
 
-import com.czxy.manage.dao.ClassMapper;
-import com.czxy.manage.dao.OrgMapper;
-import com.czxy.manage.dao.StudentMapper;
-import com.czxy.manage.dao.UserMapper;
+import com.czxy.manage.dao.*;
 import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
@@ -43,6 +40,8 @@ public class StudentService {
     private OrgMapper orgMapper;
     @Autowired
     private WechatUtil wechatUtil;
+    @Resource
+    private TeacherMapper teacherMapper;
 
     public PageInfo<StudentDetailInfo> page(StudentPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -113,6 +112,9 @@ public class StudentService {
                 .filter(n -> !StringUtils.isEmpty(n.getOrgName()))
                 .map(StudentAddInfo::getOrgName)
                 .collect(Collectors.toList());
+        if (orgNames == null || orgNames.size() == 0) {
+            return;
+        }
         List<OrgEntity> orgs = getOrgEntities(orgNames);
 
         for (int i = 0; i < studentAddInfos.size(); i++) {
@@ -147,7 +149,7 @@ public class StudentService {
         }
         List<UserEntity> userEntities = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos).stream().
                 filter(n -> ObjectUtils.nullSafeEquals(n.getId(), null)).collect(Collectors.toList());
-        fillUserId(userEntities);
+        userService.fillUserId(userEntities);
 
         studentAddInfos.forEach(n -> {
             Optional<UserEntity> user = userEntities.stream()
@@ -171,47 +173,6 @@ public class StudentService {
         return true;
     }
 
-    private void fillUserId(List<UserEntity> userEntities) {
-        if (userEntities != null && userEntities.size() != 0) {
-            List<UserEntity> existUserEntities = userMapper.queryByPhones(userEntities
-                    .stream()
-                    .map(UserEntity::getPhone)
-                    .filter(n -> !StringUtils.isEmpty(n))
-                    .collect(Collectors.toList()));
-
-            existUserEntities
-                    .stream()
-                    .collect(Collectors.toCollection(()->new TreeSet<>(Comparator.comparing(UserEntity::getPhone))));
-
-            if (existUserEntities == null || existUserEntities.size() == 0) {
-                userMapper.batchInsert(userEntities);
-            } else if (existUserEntities.size() == userEntities.size()) {
-                copyUserId(userEntities, existUserEntities);
-
-            } else {
-                List<UserEntity> newUserEntities = userEntities
-                        .stream()
-                        .filter(n -> !existUserEntities
-                                .stream()
-                                .anyMatch(m -> ObjectUtils.nullSafeEquals(m.getPhone(), n.getPhone())))
-                        .collect(Collectors.toList());
-                userMapper.batchInsert(newUserEntities);
-                existUserEntities.addAll(newUserEntities);
-                copyUserId(userEntities, existUserEntities);
-            }
-        }
-    }
-
-    private void copyUserId(List<UserEntity> target, List<UserEntity> source) {
-        target.forEach(n -> {
-            Optional<UserEntity> userEntity = source
-                    .stream()
-                    .filter(m -> ObjectUtils.nullSafeEquals(n.getPhone(), m.getPhone())).findFirst();
-            if (userEntity.isPresent()) {
-                n.setId(userEntity.get().getId());
-            }
-        });
-    }
 
     private void fillClassId(List<StudentAddInfo> studentAddInfos) {
         if (studentAddInfos.get(0).getClassId() == null && !StringUtils.isEmpty(studentAddInfos.get(0).getClassName())) {
@@ -245,7 +206,7 @@ public class StudentService {
     }
 
     public Boolean signByWechat(String phone, String code) {
-        Integer userId = userMapper.queryId(phone,null);
+        Integer userId = userMapper.queryId(phone, null);
         if (userId == null || userId == 0) {
             throw new ManageException(ResponseStatus.FAILURE, "学员不存在");
         }
@@ -257,7 +218,7 @@ public class StudentService {
             throw new ManageException(ResponseStatus.FAILURE, "已签到，请勿重复签到");
         }
         ClassEntity classEntity = classMapper.queryClass(studentEntity.getClassId());
-        if(classEntity == null){
+        if (classEntity == null) {
             throw new ManageException(ResponseStatus.FAILURE, "尚未加入班级");
         }
         Calendar c2 = Calendar.getInstance();
@@ -290,7 +251,7 @@ public class StudentService {
 
     //根据特殊条件获取所有学员
     public List<StudentDetailEntity> getAllUser(GetAllParam paperPublisInfo) {
-        if (paperPublisInfo.getIsToAll()==1) {
+        if (paperPublisInfo.getIsToAll() != null && paperPublisInfo.getIsToAll() == 1) {
             paperPublisInfo = new GetAllParam();
         }
         List<StudentDetailEntity> studentDetailEntities = new ArrayList<>();
@@ -327,32 +288,34 @@ public class StudentService {
 
     public StudentClassNameInfo get(Integer userId) {
         StudentClassNameEntity studentClassNameEntity = userMapper.queryclassName(userId);
-        Date date= new Date();
+        Date date = new Date();
         Date beginTime = studentClassNameEntity.getBeginTime();
         Date endTime = studentClassNameEntity.getEndTime();
-        if (date.after(beginTime)&&date.after(endTime)){
+        if (date.after(beginTime) && date.after(endTime)) {
             studentClassNameEntity.setClassState("班级正在进行");
         }
-        if (date.after(endTime)){
+        if (date.after(endTime)) {
             studentClassNameEntity.setClassState("班级已经结束");
         }
-        if (date.before(beginTime)){
+        if (date.before(beginTime)) {
             studentClassNameEntity.setClassState("班级还未开始");
         }
         return PojoMapper.INSTANCE.toStudentClassNameInfo(studentClassNameEntity);
     }
 
-    public Boolean authentication(String phone, String name, String code) {
-        Integer userId = userMapper.queryId(phone,name);
+    public Boolean authentication(String phone, String name, String code, String openId) {
+        Integer userId = userMapper.queryId(phone, name);
         if (userId == null || userId == 0) {
             throw new ManageException(ResponseStatus.FAILURE, "学员不存在");
         }
-        StudentEntity studentEntity = studentMapper.queryStudent(userId);
-        if (studentEntity.getClassId() == null || studentEntity.getClassId() == 0) {
-            throw new ManageException(ResponseStatus.FAILURE, "学生没有班级");
-        }
+//        StudentEntity studentEntity = studentMapper.queryStudent(userId);
+//        if (studentEntity.getClassId() == null || studentEntity.getClassId() == 0) {
+//            throw new ManageException(ResponseStatus.FAILURE, "学生没有班级");
+//        }
         log.info("==================================》");
-        String openId = wechatUtil.getOpenId(code);
+        if (StringUtils.isEmpty(openId)) {
+            openId = wechatUtil.getOpenId(code);
+        }
         log.info("《==================================");
         if (StringUtils.isEmpty(openId)) {
             throw new ManageException(ResponseStatus.FAILURE, "认证失败，请重试！");

@@ -14,9 +14,15 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * @Author lufy
@@ -126,6 +132,48 @@ public class UserService {
     public UserInfo queryByWechatId(String openId) {
         UserEntity userEntity = userMapper.queryByWechatId(openId);
         return PojoMapper.INSTANCE.toUserInfo(userEntity);
+    }
+
+    public void fillUserId(List<UserEntity> userEntities) {
+        if (userEntities != null && userEntities.size() != 0) {
+            List<UserEntity> existUserEntities = userMapper.queryByPhones(userEntities
+                    .stream()
+                    .map(UserEntity::getPhone)
+                    .filter(n -> !StringUtils.isEmpty(n))
+                    .collect(Collectors.toList()));
+
+            existUserEntities
+                    .stream()
+                    .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(UserEntity::getPhone))));
+
+            if (existUserEntities == null || existUserEntities.size() == 0) {
+                userMapper.batchInsert(userEntities);
+            } else if (existUserEntities.size() == userEntities.size()) {
+                copyUserId(userEntities, existUserEntities);
+
+            } else {
+                List<UserEntity> newUserEntities = userEntities
+                        .stream()
+                        .filter(n -> !existUserEntities
+                                .stream()
+                                .anyMatch(m -> ObjectUtils.nullSafeEquals(m.getPhone(), n.getPhone())))
+                        .collect(Collectors.toList());
+                userMapper.batchInsert(newUserEntities);
+                existUserEntities.addAll(newUserEntities);
+                copyUserId(userEntities, existUserEntities);
+            }
+        }
+    }
+
+    private void copyUserId(List<UserEntity> target, List<UserEntity> source) {
+        target.forEach(n -> {
+            Optional<UserEntity> userEntity = source
+                    .stream()
+                    .filter(m -> ObjectUtils.nullSafeEquals(n.getPhone(), m.getPhone())).findFirst();
+            if (userEntity.isPresent()) {
+                n.setId(userEntity.get().getId());
+            }
+        });
     }
 }
 

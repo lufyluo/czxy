@@ -1,23 +1,36 @@
 package com.czxy.manage.service;
 
+import cn.afterturn.easypoi.excel.entity.ImportParams;
+import com.czxy.manage.dao.OrgMapper;
 import com.czxy.manage.dao.TeacherMapper;
 import com.czxy.manage.dao.UserMapper;
 import com.czxy.manage.infrastructure.gloable.ManageException;
+import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.*;
+import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.teacher.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
 
 @Service
+@Slf4j
 public class TeacherService {
     @Resource
     private TeacherMapper teacherMapper;
@@ -30,6 +43,8 @@ public class TeacherService {
     private UserService userService;
     @Autowired
     private SubjectService subjectService;
+    @Resource
+    private OrgMapper orgMapper;
 
     public PageInfo<TeacherDetailInfo> page(TeacherPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -76,8 +91,8 @@ public class TeacherService {
 
     public TeacherInformationInfo query(Integer teacherId) {
         TeacherInformationEntity teacherInformationEntity = teacherMapper.queryAll(teacherId);
-        if (teacherInformationEntity==null){
-            throw new ManageException(ResponseStatus.FAILURE,"错误教师ID");
+        if (teacherInformationEntity == null) {
+            throw new ManageException(ResponseStatus.FAILURE, "错误教师ID");
         }
         TeacherInformationInfo teacherInformationInfo = PojoMapper.INSTANCE.toTeacherInformationInfo(teacherInformationEntity);
         teacherInformationInfo.setSubjectByIdInfoList(
@@ -86,6 +101,102 @@ public class TeacherService {
     }
 
     public List<TeacherWechatInfo> get() {
-        return teacherMapper.get();
+        return null;
+//        return teacherMapper.get();
     }
+
+    @Transactional
+    public List<ImportTeacherInfo> batchImport(Integer system, MultipartFile file) {
+        ImportParams params = new ImportParams();
+        params.setStartRows(0);
+        try {
+            List<ImportTeacherInfo> teacherInfos = ExcelImportUtil.importExcel(file.getInputStream(), ImportTeacherInfo.class, params);
+            if (teacherInfos == null || teacherInfos.size() == 0) {
+                throw new ManageException(ResponseStatus.DATANOTEXIST, "无数据！");
+            }
+            teacherInfos = teacherInfos.stream().filter(n -> !StringUtils.isEmpty(n.getPhone())).collect(Collectors.toList());
+            fillOrgIds(teacherInfos);
+            fillUserIds(teacherInfos);
+            teacherInfos.forEach(n -> {
+                n.setSystem(system);
+            });
+            List<TeacherEntity> teacherEntities = PojoMapper.INSTANCE.importTeacherInfoToTeacherEntity(teacherInfos);
+            teacherEntities = clearExistTeacher(teacherEntities);
+            if (teacherEntities != null && teacherEntities.size() > 0) {
+                teacherMapper.batchInsert(teacherEntities);
+            }
+            return teacherInfos;
+        } catch (Exception e) {
+            log.error("导入教师失败！");
+            throw new ManageException(ResponseStatus.FAILURE, "导入教师失败");
+        }
+    }
+
+    private List<TeacherEntity> clearExistTeacher(List<TeacherEntity> teacherEntities) {
+        List<Integer> userIds = teacherEntities.stream().map(TeacherEntity::getUserId).collect(Collectors.toList());
+        if(userIds == null|| userIds.size() == 0){
+            return teacherEntities;
+        }
+        List<TeacherEntity> teacherExistEntities = teacherMapper.queryByUserIds(userIds);
+        if (teacherExistEntities != null) {
+            teacherEntities = teacherEntities
+                    .stream()
+                    .filter(
+                            n -> !teacherExistEntities
+                                    .stream()
+                                    .anyMatch(item -> item.getUserId().equals(n.getUserId())))
+                    .collect(Collectors.toList());
+
+        }
+        return teacherEntities;
+    }
+
+    private void fillUserIds(List<ImportTeacherInfo> teacherInfos) {
+        List<UserEntity> userEntities = PojoMapper.INSTANCE.importTeacherInfosToUserEntities(teacherInfos).stream().collect(Collectors.toList());
+        userService.fillUserId(userEntities);
+        teacherInfos.forEach(n -> {
+            Optional<UserEntity> user = userEntities.stream()
+                    .filter(item ->
+                            ObjectUtils.nullSafeEquals(item.getPhone(), (n.getPhone()))).findFirst();
+            if (user.isPresent()) {
+                n.setUserId(user.get().getId());
+            }
+        });
+    }
+
+    private void fillOrgIds(List<ImportTeacherInfo> importTeacherInfos) {
+        List<String> orgNames = importTeacherInfos.stream()
+                .filter(n -> !StringUtils.isEmpty(n.getOrgName()))
+                .map(ImportTeacherInfo::getOrgName)
+                .collect(Collectors.toList());
+        if (orgNames == null || orgNames.size() == 0) {
+            return;
+        }
+        List<OrgEntity> orgs = getOrgEntities(orgNames);
+
+        for (int i = 0; i < importTeacherInfos.size(); i++) {
+            ImportTeacherInfo importTeacherInfo = importTeacherInfos.get(i);
+            Optional<OrgEntity> first = orgs.stream()
+                    .filter(item -> item.getName().equals(importTeacherInfo.getOrgName()))
+                    .findFirst();
+            if (first.isPresent()) {
+                importTeacherInfo.setOrgId(first.get().getId());
+            }
+        }
+    }
+
+    private List<OrgEntity> getOrgEntities(List<String> orgNames) {
+        List<OrgEntity> orgs = orgMapper.getByNames(orgNames);
+        if (orgs == null || orgs.size() == 0) {
+            orgMapper.batchInsert(orgNames);
+            orgs = orgMapper.getByNames(orgNames);
+        } else if (orgs.size() < orgNames.size()) {
+            List<String> orgExists = orgs.stream().map(OrgEntity::getName).collect(Collectors.toList());
+            orgNames.removeAll(orgExists);
+            orgMapper.batchInsert(orgNames);
+            orgs = orgMapper.getByNames(orgNames);
+        }
+        return orgs;
+    }
+
 }

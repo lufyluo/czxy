@@ -4,6 +4,13 @@ spring:
     username: root
     password: 123456
     url: jdbc:mysql://localhost:3306/czxy?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 500MB
+      max-request-size: 500MB
+  main:
+    allow-bean-definition-overriding: true
 logstrategy:
   request: true
 token:

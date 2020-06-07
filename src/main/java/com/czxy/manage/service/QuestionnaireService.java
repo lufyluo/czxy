@@ -95,7 +95,7 @@ public class QuestionnaireService {
             return paperSendEntityTemp;
         }).collect(Collectors.toList());
         batchInsert(collect);
-        paperMapper.updateState(paperId,1);
+        paperMapper.updateState(paperId, 1);
         return true;
     }
 
@@ -106,7 +106,7 @@ public class QuestionnaireService {
         int batchNum = 400;
         for (int i = 0; i < list.size() / batchNum + 1; i++) {
             int pageSize =
-                    batchNum + i * batchNum >= list.size() ? list.size()  : batchNum + i * batchNum;
+                    batchNum + i * batchNum >= list.size() ? list.size() : batchNum + i * batchNum;
             paperSendMapper.batchInsert(list.subList(i, pageSize));
             if (i * batchNum >= list.size()) {
                 break;
@@ -121,6 +121,9 @@ public class QuestionnaireService {
             throw new ManageException(ResponseStatus.DATANOTEXIST, "问卷不存在");
         }
         PaperAnalysisDetailInfo paperDetailInfo = PojoMapper.INSTANCE.toPaperAnalysisDetailInfo(entities.get(0));
+        if (!entities.stream().anyMatch(n -> n.getStemId() != null)) {
+            return paperDetailInfo;
+        }
         Map<Integer, List<PaperDetailEntity>> items = entities.stream().collect(Collectors.groupingBy(n -> n.getStemId()));
         List<StemAnalysisDetailInfo> stemDetailInfos = new ArrayList<>();
         int totalSend = paperSendMapper.countByPaperId(paperId);
@@ -129,7 +132,7 @@ public class QuestionnaireService {
                 PaperDetailEntity stemInfo = entry.getValue().get(0);
                 StemAnalysisDetailInfo stemDetailInfo = PojoMapper.INSTANCE.toPaperDetailEntity(stemInfo);
                 stemDetailInfo.setId(entry.getKey());
-                stemDetailInfo.setAnswers(getOptions(entry.getValue(),totalSend));
+                stemDetailInfo.setAnswers(getOptions(entry.getValue(), totalSend));
                 stemDetailInfos.add(stemDetailInfo);
             }
 
@@ -138,13 +141,14 @@ public class QuestionnaireService {
         return paperDetailInfo;
     }
 
-    private List<OptionAnalysisDetailInfo> getOptions(List<PaperDetailEntity> options,int total) {
+    private List<OptionAnalysisDetailInfo> getOptions(List<PaperDetailEntity> options, int total) {
         List<OptionAnalysisDetailInfo> optionAnalysisDetailInfos = new ArrayList<>();
-        if(ObjectUtils.nullSafeEquals("问答题",options.get(0).getType())){
+        if (ObjectUtils.nullSafeEquals("问答题", options.get(0).getType())) {
             OptionAnalysisDetailInfo optionAnalysisDetailInfo = PojoMapper.INSTANCE.toOptionAnalysisDetailInfo(options.get(0));
+
             Long collect = options.stream().filter(n -> n.getAnswerId() != null).collect(Collectors.counting());
-            float percent = (int) ((new BigDecimal((float) collect/total).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue())*100);
-            optionAnalysisDetailInfo.setPercent(percent+"%");
+            float percent = (int) ((new BigDecimal((float) collect / total).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()) * 100);
+            optionAnalysisDetailInfo.setPercent(percent + "%");
             optionAnalysisDetailInfos.add(optionAnalysisDetailInfo);
             return optionAnalysisDetailInfos;
         }
@@ -154,9 +158,13 @@ public class QuestionnaireService {
             if (entry.getValue() != null && entry.getValue().size() > 0) {
                 OptionAnalysisDetailInfo optionAnalysisDetailInfo = PojoMapper.INSTANCE.toOptionAnalysisDetailInfo(entry.getValue().get(0));
                 optionAnalysisDetailInfo.setCount(entry.getValue().size());
-                Long count = options.stream().filter(n -> n.getAnswerId() != null).collect(Collectors.counting());
-                float percent = (int) ((new BigDecimal((float) count/total).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue())*100);
-                optionAnalysisDetailInfo.setPercent(percent+"%");
+                optionAnalysisDetailInfo.setName(entry.getValue().get(0).getOptionName());
+                optionAnalysisDetailInfo.setId(entry.getValue().get(0).getOptionId());
+                optionAnalysisDetailInfo.setScore(entry.getValue().get(0).getOptionScore());
+                optionAnalysisDetailInfo.setIndex(entry.getValue().get(0).getOptionIndex());
+                Long count = entry.getValue().stream().filter(n -> n.getAnswerId() != null).collect(Collectors.counting());
+                float percent = (int) ((new BigDecimal((float) count / total).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()) * 100);
+                optionAnalysisDetailInfo.setPercent(percent + "%");
                 optionAnalysisDetailInfos.add(optionAnalysisDetailInfo);
             }
 

@@ -19,6 +19,8 @@ public interface TeacherMapper {
 
     Integer delete(@Param("teacherIds") List<Integer> teacherIds);
 
+    Integer deleteByUserIds(List<Integer> userIds);
+
     Integer update(TeacherEntity teacherEntity);
 
     Integer queryUserId(TeacherEntity teacherEntity);
@@ -28,4 +30,11 @@ public interface TeacherMapper {
     String queryName(@Param("teacherId") Integer teacherId);
 
     List<TeacherWechatInfo> get();
+
+    Integer batchInsert(List<TeacherEntity> teacherEntities);
+
+
+    TeacherEntity queryByUserId(Integer userId);
+
+    List<TeacherEntity> queryByUserIds(List<Integer> userIds);
 }

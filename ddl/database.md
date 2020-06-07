@@ -839,4 +839,12 @@ alter table user
 alter table site
 	add star smallint null after fee;
 
+
+insert into address(id,name,parent_id,sname,category,citycode,`code`,path,pinyin)
+VALUES(
+510185,'高新区',510100,'高新区',3,'028','610041','中国,四川省,成都市,高新区','gaoxinqu'
+),
+(
+510186,'天府新区',510100,'天府新区',3,'028','610000','中国,四川省,成都市,天府新区','tianfuxinqu'
+)
 ```

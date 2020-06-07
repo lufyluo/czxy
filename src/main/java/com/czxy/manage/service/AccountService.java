@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Base64;
@@ -129,9 +130,12 @@ public class AccountService {
 
     public String wechatLogin(String code) {
         String openId = wechatUtil.getOpenId(code);
+        if(StringUtils.isEmpty(openId)){
+            throw new ManageException(ResponseStatus.FAILURE,"获取认证失败！");
+        }
         UserInfo userInfo = userService.queryByWechatId(openId);
         if(userInfo == null){
-            throw new ManageException(ResponseStatus.DATANOTEXIST,"用户暂无权限");
+            throw new ManageException(ResponseStatus.FAILURE,openId);
         }
         String token = UUID.randomUUID().toString();
         tokenMapper.delete(userInfo.getPhone());

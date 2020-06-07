@@ -86,7 +86,7 @@
         <if test="userId != null and userId != ''">
             and w.user_id = #{userId}
         </if>
-        where p.id = #{paperId} and w.option_id is not NULL
+        where p.id = #{paperId} and wo.id is not null
         UNION ALL
 
         select p.id, p.name, p.description,

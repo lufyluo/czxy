@@ -9,6 +9,18 @@
      VALUES
      (#{name},#{types},#{contactorName},#{contactorPhone},#{topicId},#{driveTime},#{addr},#{description},#{pics},#{attachFiles},#{provinceId},#{cityId},#{countyId},#{fee})
     </insert>
+    <insert id="batchInsert">
+        insert into site
+        (name, types, contactor_name, contactor_phone, topic_id, drive_time, addr, description, pics, attach_files, province_id, city_id, county_id, fee)
+        VALUES
+               <foreach collection="list" item="item" open="(" close=")" separator=",">
+                   #{item.name},#{item.types},#{item.contactorName}
+                   ,#{item.contactorPhone},#{item.topicId},#{item.driveTime}
+                   ,#{item.addr},#{item.description},#{item.pics},#{item.attachFiles}
+                   ,#{item.provinceId},#{item.cityId},#{item.countyId},#{item.fee}
+               </foreach>
+
+    </insert>
     <update id="update">
         update site set name=#{name}, types=#{types},contactor_name=#{contactorName},contactor_phone=#{contactorPhone},
         topic_id=#{topicId},
@@ -51,6 +63,6 @@
         <if test="typeId != null and typeId != ''">
             and (s.types like '${typeId},%' or s.types like '%,${typeId}' or s.types like '%,${typeId},%' or s.types = #{typeId})
         </if>
-        order  by id desc
+        order  by star,id desc
     </select>
 </mapper>

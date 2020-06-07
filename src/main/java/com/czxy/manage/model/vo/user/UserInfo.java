@@ -1,5 +1,6 @@
 package com.czxy.manage.model.vo.user;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.czxy.manage.model.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;

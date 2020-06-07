@@ -11,4 +11,7 @@
         insert into class_master(user_id,type,class_id)
         values(#{userId},0,#{classId})
     </insert>
+    <select id="queryClass" resultType="java.lang.Integer">
+        select class_id from class_master where user_id  =#{userId} order by id desc limit 1
+    </select>
 </mapper>

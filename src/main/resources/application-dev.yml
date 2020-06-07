@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   servlet:
     multipart:
       #设置单个文件上传大小

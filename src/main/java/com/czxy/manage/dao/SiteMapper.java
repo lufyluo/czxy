@@ -18,4 +18,6 @@ public interface SiteMapper {
     List<SiteEntity> query( SitePageParam sitePageParam);
 
     Integer update(SiteEntity siteEntity);
+
+    Integer batchInsert(List<SiteEntity> siteEntities);
 }

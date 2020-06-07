@@ -105,7 +105,7 @@ public class ClassService {
             studentService.batchInsert(
                     classCreateInfo.getStudentAddInfos()
                             .stream()
-                            .filter(n -> n.getClassId() != null||n.getStudentId() == null)
+                            .filter(n -> n.getClassId() != null || n.getStudentId() == null)
                             .collect(Collectors.toList()));
             studentService.setClassLeader(
                     getLeaderId(classCreateInfo.getLeaderName(), classCreateInfo.getStudentAddInfos()
@@ -147,16 +147,16 @@ public class ClassService {
 
     private void updateStudents(ClassUpdateInfo classCreateInfo) {
         classMapper.clearStudent(classCreateInfo.getId());
-        if(classCreateInfo.getStudentAddInfos()!=null&&classCreateInfo.getStudentAddInfos().size()>0){
-            classCreateInfo.getStudentAddInfos().forEach(n->{
+        if (classCreateInfo.getStudentAddInfos() != null && classCreateInfo.getStudentAddInfos().size() > 0) {
+            classCreateInfo.getStudentAddInfos().forEach(n -> {
                 n.setClassId(classCreateInfo.getId());
                 n.setClassName(classCreateInfo.getName());
             });
-        studentService.batchInsert(
-                classCreateInfo.getStudentAddInfos()
-                        .stream()
-                        .filter(n -> n.getClassId() != null||n.getStudentId() == null)
-                        .collect(Collectors.toList()));
+            studentService.batchInsert(
+                    classCreateInfo.getStudentAddInfos()
+                            .stream()
+                            .filter(n -> n.getClassId() != null || n.getStudentId() == null)
+                            .collect(Collectors.toList()));
         }
     }
 
@@ -181,6 +181,9 @@ public class ClassService {
 
     public List<ClassStudentInfo> getStudents(Integer userId) {
         Integer classId = classMapper.queryRecentByStudentUserId(userId);
+        if (classId == null) {
+            classId = classMasterMapper.queryClass(userId);
+        }
         if(classId == null){
             return null;
         }

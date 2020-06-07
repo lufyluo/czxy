@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.UserMapper">
     <sql id="base_column">
-        id, name, idcard, phone, gender, position, age, birthday, category,head_img as headImg
+        id, name, idcard, phone, gender, position, age, birthday, category,head_img as headImg,
         wechat_id as wechatId,
         updated_time as updatedTime,
         created_time as createdTime,
@@ -35,7 +35,7 @@
             (#{item.name}, #{item.idCard}, #{item.phone}, #{item.gender},
             #{item.position}, #{item.age}, #{item.birthday}, #{item.category},
             #{item.wechatId}, #{item.orgId}, #{item.nation}, #{item.nativePlace},
-            #{item.education},#{item.politics},#{headImg})
+            #{item.education},#{item.politics},#{item.headImg})
         </foreach>
 
     </insert>

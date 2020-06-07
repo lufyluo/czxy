@@ -1,6 +1,7 @@
 package com.czxy.manage.service;
 
 import com.czxy.manage.dao.ArrangeMapper;
+import com.czxy.manage.dao.ClassMasterMapper;
 import com.czxy.manage.dao.CourseArrangeMapper;
 import com.czxy.manage.dao.SubjectMapper;
 import com.czxy.manage.infrastructure.gloable.ManageException;
@@ -37,6 +38,8 @@ public class ClassCourseService {
     private SubjectMapper subjectMapper;
     @Resource
     private CourseArrangeMapper courseArrangeMapper;
+    @Resource
+    ClassMasterMapper classMasterMapper;
 
     public ClassArrangeInfo get(Integer classId) {
         ClassArrangeWithTimeEntity classArrangeWithTimeEntity = arrangeMapper.get(classId);
@@ -285,6 +288,12 @@ public class ClassCourseService {
 
     public ClassArrangeInfo getByUserId(Integer userId) {
         Integer classId = courseArrangeMapper.queryRecentClassIdByUserId(userId);
+        if (classId == null) {
+            classId = classMasterMapper.queryClass(userId);
+        }
+        if(classId ==null){
+            return null;
+        }
         return get(classId);
     }
 }
