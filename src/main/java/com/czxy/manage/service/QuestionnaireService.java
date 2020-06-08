@@ -12,6 +12,7 @@ import com.czxy.manage.model.entity.questionnaire.PaperSendEntity;
 import com.czxy.manage.model.vo.PaperAddInfo;
 import com.czxy.manage.model.vo.PaperInfo;
 import com.czxy.manage.model.vo.questionnaire.*;
+import com.czxy.manage.model.vo.questionnaire.stem.PaperStemInfo;
 import com.czxy.manage.model.vo.student.GetAllParam;
 import com.czxy.manage.model.vo.student.StudentPageParam;
 import com.github.pagehelper.Page;
@@ -137,6 +138,7 @@ public class QuestionnaireService {
             }
 
         }
+        stemDetailInfos.sort(Comparator.comparing(StemAnalysisDetailInfo::getIndex));
         paperDetailInfo.setStemDetailInfos(stemDetailInfos);
         return paperDetailInfo;
     }
@@ -157,7 +159,7 @@ public class QuestionnaireService {
         for (Map.Entry<Integer, List<PaperDetailEntity>> entry : collect.entrySet()) {
             if (entry.getValue() != null && entry.getValue().size() > 0) {
                 OptionAnalysisDetailInfo optionAnalysisDetailInfo = PojoMapper.INSTANCE.toOptionAnalysisDetailInfo(entry.getValue().get(0));
-                optionAnalysisDetailInfo.setCount(entry.getValue().size());
+
                 optionAnalysisDetailInfo.setName(entry.getValue().get(0).getOptionName());
                 optionAnalysisDetailInfo.setId(entry.getValue().get(0).getOptionId());
                 optionAnalysisDetailInfo.setScore(entry.getValue().get(0).getOptionScore());
@@ -165,6 +167,7 @@ public class QuestionnaireService {
                 Long count = entry.getValue().stream().filter(n -> n.getAnswerId() != null).collect(Collectors.counting());
                 float percent = (int) ((new BigDecimal((float) count / total).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()) * 100);
                 optionAnalysisDetailInfo.setPercent(percent + "%");
+                optionAnalysisDetailInfo.setCount(count.intValue());
                 optionAnalysisDetailInfos.add(optionAnalysisDetailInfo);
             }
 

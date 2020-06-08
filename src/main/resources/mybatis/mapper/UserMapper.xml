@@ -215,7 +215,7 @@
                u.nativeplace as nativePlace,
                u.education,
                u.politics,
-               u.head_img as headImg,
+               u.head_img    as headImg,
                c.name        as className,
                c.begin_time  as beginTime,
                c.end_time    as endTime
@@ -226,6 +226,31 @@
                            on c.id = s.class_id
         where u.id = #{userId}
         order by c.begin_time desc
+        limit 1
+    </select>
+    <select id="queryByUserId" resultType="com.czxy.manage.model.entity.UserEntity">
+        select u.id,
+               u.name,
+               u.idcard,
+               u.phone,
+               u.gender,
+               u.position,
+               u.age,
+               u.birthday,
+               u.category,
+               u.wechat_id   as wechatId,
+               u.org_id      as orgId,
+               o.name        as orgName,
+               u.nation,
+               u.nativeplace as nativePlace,
+               u.education,
+               u.politics,
+               u.head_img    as headImg
+        from user u
+                 left join org o
+                           on u.org_id = o.id
+        where u.id = #{userId}
+        order by u.id desc
         limit 1
     </select>
 </mapper>

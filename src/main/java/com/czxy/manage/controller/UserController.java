@@ -7,6 +7,7 @@ import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.classes.ClassOrgInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserInfo;
+import com.czxy.manage.model.vo.user.UserPartInfo;
 import com.czxy.manage.service.OrgService;
 import com.czxy.manage.service.UserService;
 import io.swagger.annotations.Api;
@@ -32,6 +33,12 @@ public class UserController {
     @ApiOperation("根据token获取用户信息")
     public BaseResponse<UserInfo> query(@RequestHeader String token) {
         return ResponseUtil.success(userService.query(token));
+    }
+
+    @GetMapping("/{userId}")
+    @ApiOperation("根据userId获取用户信息")
+    public BaseResponse<UserPartInfo> queryById(@PathVariable Integer userId) {
+        return ResponseUtil.success(userService.queryById(userId));
     }
 
     @PostMapping("/add")

@@ -8,6 +8,7 @@ import com.czxy.manage.model.entity.AccountEntity;
 import com.czxy.manage.model.entity.UserEntity;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserInfo;
+import com.czxy.manage.model.vo.user.UserPartInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -174,6 +175,12 @@ public class UserService {
                 n.setId(userEntity.get().getId());
             }
         });
+    }
+
+    public UserPartInfo queryById(Integer userId) {
+        UserEntity userEntity = userMapper.queryByUserId(userId);
+        UserPartInfo userInfo = PojoMapper.INSTANCE.toUserPartInfo(userEntity);
+        return userInfo;
     }
 }
 

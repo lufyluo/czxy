@@ -33,10 +33,7 @@ import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
 import com.czxy.manage.model.vo.subject.SubjectDetailDomainInfo;
 import com.czxy.manage.model.vo.subject.SubjectInfo;
 import com.czxy.manage.model.vo.teacher.*;
-import com.czxy.manage.model.vo.user.UserAccountInfo;
-import com.czxy.manage.model.vo.user.UserCreateInfo;
-import com.czxy.manage.model.vo.user.UserInfo;
-import com.czxy.manage.model.vo.user.UserMenuInfo;
+import com.czxy.manage.model.vo.user.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -287,4 +284,5 @@ public interface PojoMapper {
     TeacherEntity importTeacherInfoToTeacherEntity(ImportTeacherInfo teacherInfos);
     List<TeacherEntity> importTeacherInfoToTeacherEntity(List<ImportTeacherInfo> teacherInfos);
 
+    UserPartInfo toUserPartInfo(UserEntity userEntity);
 }
