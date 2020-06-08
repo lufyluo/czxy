@@ -12,4 +12,5 @@ public class ClassOrgEntity extends ClassEntity{
     private String leaderName;
     private Integer leaderId;
     private String arrangeName;
+    private Integer studentCount;
 }

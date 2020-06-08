@@ -8,10 +8,7 @@ import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
-import com.czxy.manage.model.entity.ClassEntity;
-import com.czxy.manage.model.entity.ClassInformationEntity;
-import com.czxy.manage.model.entity.ClassOrgEntity;
-import com.czxy.manage.model.entity.ClassStudentEntity;
+import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.github.pagehelper.Page;
@@ -48,6 +45,15 @@ public class ClassService {
     public PageInfo<ClassOrgInfo> page(ClassPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<ClassOrgEntity> classEntities = classMapper.queryAll(pageParam);
+        List<Integer> collect = classEntities.stream().map(n -> n.getId()).collect(Collectors.toList());
+        List<CountEntity> countEntities = classMapper.queryCount(collect);
+        for (ClassOrgEntity classOrgEntity:classEntities){
+            for (CountEntity countEntity:countEntities){
+                if (classOrgEntity.getId()==countEntity.getClassId()){
+                    classOrgEntity.setStudentCount(countEntity.getStudentCount());
+                }
+            }
+        }
         PageInfo<ClassOrgInfo> result = page.toPageInfo();
         result.setList(PojoMapper.INSTANCE.toClassOrgInfos(classEntities));
         return result;

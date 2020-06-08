@@ -19,4 +19,7 @@ public class ClassOrgInfo extends ClassInfo {
     private String masterName;
     @ApiModelProperty("课表名称")
     private String arrangeName;
+    @ApiModelProperty("班级总人数")
+    private Integer studentCount;
+
 }

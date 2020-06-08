@@ -2,10 +2,7 @@ package com.czxy.manage.dao;
 
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.model.PageParam;
-import com.czxy.manage.model.entity.ClassEntity;
-import com.czxy.manage.model.entity.ClassInformationEntity;
-import com.czxy.manage.model.entity.ClassOrgEntity;
-import com.czxy.manage.model.entity.ClassStudentEntity;
+import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.classes.ClassInfo;
 import com.czxy.manage.model.vo.classes.ClassPageParam;
 import org.apache.ibatis.annotations.Mapper;
@@ -34,4 +31,6 @@ public interface ClassMapper {
     Integer queryRecentByStudentUserId(Integer userId);
 
     Integer clearStudent(Integer classId);
+
+    List<CountEntity> queryCount(@Param("collect") List<Integer> collect);
 }
