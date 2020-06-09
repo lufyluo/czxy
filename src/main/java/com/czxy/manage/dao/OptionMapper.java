@@ -2,6 +2,7 @@ package com.czxy.manage.dao;
 
 import com.czxy.manage.model.entity.questionnaire.stem.OptionEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface OptionMapper {
 
     Integer batchUpdate(List<OptionEntity> updateOptions);
     Integer update(OptionEntity optionEntity);
+
+    Integer deleteOptions(@Param("optionIds") List<Integer> optionIds, Integer stemId);
 }

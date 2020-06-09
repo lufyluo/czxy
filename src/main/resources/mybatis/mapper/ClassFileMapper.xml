@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.ClassFileMapper">
+    <insert id="insert" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into class_file(class_id, file_id)
+        values (#{classId}, #{fileId})
+    </insert>
+    <delete id="delete">
+        delete
+        from class_file
+        where class_id = #{classId}
+          and file_id = #{fileId}
+    </delete>
+
+    <select id="query" resultType="com.czxy.manage.model.entity.FileEntity">
+        select f.name,
+               f.extension,
+               f.size,
+               f.updated_time as updatedTime,
+               f.created_time as createTime,
+               f.url
+        from class c
+                 left join class_file cf on c.id = cf.class_id
+                 left join file f on cf.file_id = f.id
+        where c.id = #{classId}
+        <if test="param != null and param !=''">
+            f.name like '%${param}%'
+        </if>
+        order by c.id desc
+    </select>
+</mapper>

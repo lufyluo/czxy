@@ -49,6 +49,10 @@ public class QuestionnaireStemService {
             List<OptionEntity> optionEntities = PojoMapper.INSTANCE.toOptionEntities(stemUpdateInfo.getOptions());
             optionEntities.forEach(n -> n.setStemId(stemEntity.getId()));
             insertOrUpdate(optionEntities);
+           List<Integer> optionIds = optionEntities.stream().filter(n->n.getId()!=null).map(OptionEntity::getId).collect(Collectors.toList());
+            optionMapper.deleteOptions(optionIds,stemEntity.getId());
+        }else{
+            optionMapper.deleteByStemId(stemEntity.getId());
         }
         return true;
     }

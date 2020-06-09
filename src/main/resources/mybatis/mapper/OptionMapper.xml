@@ -19,14 +19,24 @@
         </foreach>
     </update>
     <update id="update" parameterType="java.util.List">
-        update w_option set name =#{name}
-                , score = #{score},`index` = #{index},stem_id = #{stemId},
-                            updated_time = now()
+        update w_option
+        set name         =#{name}
+                ,
+            score        = #{score},
+            `index`      = #{index},
+            stem_id      = #{stemId},
+            updated_time = now()
         where id = #{id};
     </update>
     <delete id="deleteByStemId">
         delete
         from w_option
         where stem_id = #{stemId}
+    </delete>
+    <delete id="deleteOptions">
+        delete from w_option where stem_id = #{stemId} and id not in
+        <foreach collection="optionIds" separator="," close=")" open="(" item="item">
+            #{item}
+        </foreach>
     </delete>
 </mapper>

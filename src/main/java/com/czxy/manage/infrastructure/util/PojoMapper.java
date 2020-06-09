@@ -1,6 +1,7 @@
 package com.czxy.manage.infrastructure.util;
 
 import com.czxy.manage.model.entity.*;
+import com.czxy.manage.model.entity.classFile.ClassFileEntity;
 import com.czxy.manage.model.entity.questionnaire.PaperSubmitEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.OptionEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.PaperStemEntity;
@@ -9,6 +10,7 @@ import com.czxy.manage.model.entity.questionnaire.stem.StemOptionEntity;
 import com.czxy.manage.model.vo.*;
 import com.czxy.manage.model.vo.arrange.ArrangeInfo;
 import com.czxy.manage.model.vo.classes.*;
+import com.czxy.manage.model.vo.classes.files.ClassFileCreateInfo;
 import com.czxy.manage.model.vo.customer.CustomerCreateInfo;
 import com.czxy.manage.model.vo.customer.CustomerInfo;
 import com.czxy.manage.model.vo.customerContacts.ContactLogInfo;
@@ -285,4 +287,6 @@ public interface PojoMapper {
     List<TeacherEntity> importTeacherInfoToTeacherEntity(List<ImportTeacherInfo> teacherInfos);
 
     UserPartInfo toUserPartInfo(UserEntity userEntity);
+
+    ClassFileEntity toClassFileEntity(ClassFileCreateInfo classCreateInfo);
 }

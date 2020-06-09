@@ -846,5 +846,19 @@ VALUES(
 ),
 (
 510186,'天府新区',510100,'天府新区',3,'028','610000','中国,四川省,成都市,天府新区','tianfuxinqu'
+
+create table class_file
+(
+	id int auto_increment,
+	class_id int not null,
+	file_id int not null,
+	updated_time datetime default now() null,
+	created_time datetime default now() null,
+	constraint class_file_pk
+		primary key (id)
+)
+comment '班级附件';
+
+
 )
 ```

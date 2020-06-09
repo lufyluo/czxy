@@ -14,7 +14,7 @@ spring:
 logstrategy:
   request: true
 token:
-  expire: 6000
+  expire: 30000
 czxy:
   wechat:
     appId: wx657fdaf188aec6b1
