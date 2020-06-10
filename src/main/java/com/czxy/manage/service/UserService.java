@@ -2,10 +2,14 @@ package com.czxy.manage.service;
 
 import com.czxy.manage.dao.AccountMapper;
 import com.czxy.manage.dao.UserMapper;
+import com.czxy.manage.infrastructure.gloable.ManageException;
+import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.AccountEntity;
+import com.czxy.manage.model.entity.ClassEntity;
 import com.czxy.manage.model.entity.UserEntity;
+import com.czxy.manage.model.vo.files.FileInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserInfo;
 import com.czxy.manage.model.vo.user.UserPartInfo;
@@ -181,6 +185,18 @@ public class UserService {
         UserEntity userEntity = userMapper.queryByUserId(userId);
         UserPartInfo userInfo = PojoMapper.INSTANCE.toUserPartInfo(userEntity);
         return userInfo;
+    }
+
+    public List<FileInfo> get(Integer id) {
+        List<ClassEntity> classEntities = userMapper.queryClassId(id);
+        for (ClassEntity classEntity:classEntities){
+            if (classEntity.getId()==null&&!StringUtils.isEmpty(classEntity.getId())){
+                throw new ManageException(ResponseStatus.FAILURE,"您还不是班级学生，请先加入班级");
+            }
+        }
+        List<Integer> classIds = classEntities.stream().map(n -> n.getId()).collect(Collectors.toList());
+        List<FileInfo> fileInfos = userMapper.queryFile(classIds);
+        return fileInfos;
     }
 }
 

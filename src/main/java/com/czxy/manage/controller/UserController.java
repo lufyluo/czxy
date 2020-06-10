@@ -4,11 +4,10 @@ import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
-import com.czxy.manage.model.vo.classes.ClassOrgInfo;
+import com.czxy.manage.model.vo.files.FileInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserInfo;
 import com.czxy.manage.model.vo.user.UserPartInfo;
-import com.czxy.manage.service.OrgService;
 import com.czxy.manage.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -69,5 +68,10 @@ public class UserController {
     @ApiOperation(value = "分页获取班级对接人", notes = "分页获取班级对接人")
     public PageResponse<UserInfo> pageClassLeader(PageParam<String> pageParam) {
         return PageResponse.success(userService.pageClassLeader(pageParam));
+    }
+    @GetMapping("/{id}")
+    @ApiOperation("根据用户ID获取他所在班级的附件信息")
+    public BaseResponse<List<FileInfo>> get(@PathVariable Integer id){
+        return ResponseUtil.success(userService.get(id));
     }
 }

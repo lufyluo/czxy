@@ -2,6 +2,7 @@ package com.czxy.manage.dao;
 
 import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.customer.CustomerInfo;
+import com.czxy.manage.model.vo.files.FileInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -48,4 +49,8 @@ public interface UserMapper {
     StudentClassNameEntity queryclassName(Integer userId);
 
     UserEntity queryByUserId(Integer userId);
+
+    List<ClassEntity> queryClassId(Integer id);
+
+    List<FileInfo> queryFile(@Param("classIds") List<Integer> classIds);
 }
