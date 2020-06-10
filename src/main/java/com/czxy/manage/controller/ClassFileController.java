@@ -43,4 +43,16 @@ public class ClassFileController {
     public BaseResponse<Boolean> create(@Validated @RequestBody ClassFileCreateInfo classCreateInfo) {
         return ResponseUtil.success(classFileService.create(classCreateInfo));
     }
+
+    @PostMapping("/batch")
+    @ApiOperation(value = "批量创建班级附件", notes = "批量创建班级附件",hidden = true)
+    public BaseResponse<Boolean> batchInsert(@Validated @RequestBody List<Integer> fileIds,@RequestParam Integer classId) {
+        return ResponseUtil.success(classFileService.batchInsert(fileIds,classId));
+    }
+
+    @PutMapping("/batch")
+    @ApiOperation(value = "批量更新班级附件", notes = "批量更新班级附件",hidden = true)
+    public BaseResponse<Boolean> batchUpdate(@Validated @RequestBody List<Integer> fileIds,@RequestParam Integer classId) {
+        return ResponseUtil.success(classFileService.batchUpdate(classId,fileIds));
+    }
 }

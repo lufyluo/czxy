@@ -6,24 +6,37 @@
         insert into class_file(class_id, file_id)
         values (#{classId}, #{fileId})
     </insert>
+    <insert id="batchInsert">
+        insert into class_file(class_id, file_id)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.classId}, #{item.fileId})
+        </foreach>
+    </insert>
     <delete id="delete">
         delete
         from class_file
         where class_id = #{classId}
           and file_id = #{fileId}
     </delete>
+    <delete id="deleteAll">
+        delete
+        from class_file
+        where class_id = #{classId}
+    </delete>
 
     <select id="query" resultType="com.czxy.manage.model.entity.FileEntity">
-        select f.name,
-               f.extension,
-               f.size,
-               f.updated_time as updatedTime,
-               f.created_time as createTime,
-               f.url
+        select f.id,
+        f.name,
+        f.extension,
+        f.size,
+        f.updated_time as updatedTime,
+        f.created_time as createTime,
+        f.url
         from class c
-                 left join class_file cf on c.id = cf.class_id
-                 left join file f on cf.file_id = f.id
-        where c.id = #{classId}
+        left join class_file cf on c.id = cf.class_id
+        left join file f on cf.file_id = f.id
+        where c.id = #{classId} and f.id is not null
         <if test="param != null and param !=''">
             f.name like '%${param}%'
         </if>

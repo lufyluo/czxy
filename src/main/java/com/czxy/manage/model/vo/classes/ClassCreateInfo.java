@@ -15,4 +15,6 @@ public class ClassCreateInfo extends ClassOrgInfo{
     @ApiModelProperty("培训对象(班级成分id)")
     private Integer compositionId;
     private List<StudentAddInfo> studentAddInfos;
+    @ApiModelProperty("班级附件")
+    private List<Integer> fileIds;
 }

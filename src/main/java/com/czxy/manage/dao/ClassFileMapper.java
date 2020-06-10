@@ -15,4 +15,7 @@ public interface ClassFileMapper {
 
     Integer insert(ClassFileEntity classFileEntity);
 
+    Integer batchInsert(List<ClassFileEntity> fileEntities);
+
+    Integer deleteAll(Integer classId);
 }

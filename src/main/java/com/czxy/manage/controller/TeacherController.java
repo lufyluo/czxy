@@ -44,8 +44,8 @@ public class TeacherController {
     }
     @PutMapping
     @ApiOperation("编辑教师")
-    public BaseResponse<Boolean> update(@RequestBody TeacherUpdateInfo teacherUpdateInfo){
-        return ResponseUtil.success(teacherService.update(teacherUpdateInfo));
+    public BaseResponse<Boolean> update(@RequestBody TeacherUpdateInfo teacherUpdateInfo,@RequestParam Integer teacherId){
+        return ResponseUtil.success(teacherService.update(teacherUpdateInfo,teacherId));
     }
     @GetMapping
     @ApiOperation("教师详情")

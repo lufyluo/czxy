@@ -77,9 +77,12 @@ public class TeacherService {
     }
 
     @Transactional
-    public Boolean update(TeacherUpdateInfo teacherUpdateInfo) {
+    public Boolean update(TeacherUpdateInfo teacherUpdateInfo, Integer teacherId) {
         Integer orgId = orgService.insertIfAbsentOrg(teacherUpdateInfo.getOrgName(), teacherUpdateInfo.getOrgId());
         TeacherEntity teacherEntity = PojoMapper.INSTANCE.TeacherUpdateToTeacherEntity(teacherUpdateInfo);
+        if(teacherUpdateInfo.getTeacherId() == null){
+            teacherUpdateInfo.setTeacherId(teacherId);
+        }
         teacherMapper.update(teacherEntity);
         Integer userId = teacherMapper.queryUserId(teacherEntity);
         teacherUpdateInfo.setUserId(userId);

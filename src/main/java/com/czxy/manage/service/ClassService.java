@@ -11,6 +11,7 @@ import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
+import com.czxy.manage.service.classFile.ClassFileService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -41,15 +42,17 @@ public class ClassService {
     private CompositionService compositionService;
     @Resource
     private StudentMapper studentMapper;
+    @Autowired
+    private ClassFileService classFileService;
 
     public PageInfo<ClassOrgInfo> page(ClassPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<ClassOrgEntity> classEntities = classMapper.queryAll(pageParam);
         List<Integer> collect = classEntities.stream().map(n -> n.getId()).collect(Collectors.toList());
         List<CountEntity> countEntities = classMapper.queryCount(collect);
-        for (ClassOrgEntity classOrgEntity:classEntities){
-            for (CountEntity countEntity:countEntities){
-                if (classOrgEntity.getId()==countEntity.getClassId()){
+        for (ClassOrgEntity classOrgEntity : classEntities) {
+            for (CountEntity countEntity : countEntities) {
+                if (classOrgEntity.getId() == countEntity.getClassId()) {
                     classOrgEntity.setStudentCount(countEntity.getStudentCount());
                 }
             }
@@ -101,6 +104,7 @@ public class ClassService {
         Integer compositionId = compositionService.insertIfAbsent(classCreateInfo.getCompositionId(), classCreateInfo.getComposition());
         classEntity.setCompositionId(compositionId);
         classMapper.insert(classEntity);
+        classFileService.batchInsert(classCreateInfo.getFileIds(),classEntity.getId());
         if (classCreateInfo.getMasterId() != null && classCreateInfo.getMasterId() > 0) {
             classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId());
         }
@@ -148,6 +152,7 @@ public class ClassService {
                 )
                 , classEntity.getId());
         updateStudents(classCreateInfo);
+        classFileService.batchUpdate(classCreateInfo.getId(),classCreateInfo.getFileIds());
         return true;
     }
 
@@ -190,7 +195,7 @@ public class ClassService {
         if (classId == null) {
             classId = classMasterMapper.queryClass(userId);
         }
-        if(classId == null){
+        if (classId == null) {
             return null;
         }
         List<ClassStudentEntity> classStudentEntities = classMapper.queryAllStudent(classId);
