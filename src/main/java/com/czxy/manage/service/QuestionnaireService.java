@@ -8,6 +8,7 @@ import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.PaperDetailEntity;
 import com.czxy.manage.model.entity.PaperEntity;
 import com.czxy.manage.model.entity.StudentDetailEntity;
+import com.czxy.manage.model.entity.UserEntity;
 import com.czxy.manage.model.entity.questionnaire.PaperSendEntity;
 import com.czxy.manage.model.vo.PaperAddInfo;
 import com.czxy.manage.model.vo.PaperInfo;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -36,6 +38,8 @@ public class QuestionnaireService {
     private PaperStemMapper paperStemMapper;
     @Resource
     private PaperSendMapper paperSendMapper;
+    @Resource
+    private PaperSubmitMapper paperSubmitMapper;
     @Resource
     private PaperMapper paperMapper;
     @Autowired
@@ -125,15 +129,16 @@ public class QuestionnaireService {
         if (!entities.stream().anyMatch(n -> n.getStemId() != null)) {
             return paperDetailInfo;
         }
-        Map<Integer, List<PaperDetailEntity>> items = entities.stream().collect(Collectors.groupingBy(n -> n.getStemId()));
+        Map<Integer, List<PaperDetailEntity>> items = entities.stream()
+                .collect(Collectors.groupingBy(n -> n.getStemId()));
         List<StemAnalysisDetailInfo> stemDetailInfos = new ArrayList<>();
-        int totalSend = paperSendMapper.countByPaperId(paperId);
+        int total = paperSendMapper.countByPaperId(paperId);
         for (Map.Entry<Integer, List<PaperDetailEntity>> entry : items.entrySet()) {
             if (entry.getValue() != null && entry.getValue().size() > 0) {
                 PaperDetailEntity stemInfo = entry.getValue().get(0);
                 StemAnalysisDetailInfo stemDetailInfo = PojoMapper.INSTANCE.toPaperDetailEntity(stemInfo);
                 stemDetailInfo.setId(entry.getKey());
-                stemDetailInfo.setAnswers(getOptions(entry.getValue(), totalSend));
+                stemDetailInfo.setAnswers(getOptions(entry.getValue(), total));
                 stemDetailInfos.add(stemDetailInfo);
             }
 
@@ -147,10 +152,12 @@ public class QuestionnaireService {
         List<OptionAnalysisDetailInfo> optionAnalysisDetailInfos = new ArrayList<>();
         if (ObjectUtils.nullSafeEquals("问答题", options.get(0).getType())) {
             OptionAnalysisDetailInfo optionAnalysisDetailInfo = PojoMapper.INSTANCE.toOptionAnalysisDetailInfo(options.get(0));
-
-            Long collect = options.stream().filter(n -> n.getAnswerId() != null).collect(Collectors.counting());
-            float percent = (int) ((new BigDecimal((float) collect / total).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()) * 100);
-            optionAnalysisDetailInfo.setPercent(percent + "%");
+            List<PaperDetailEntity> collect = options.stream().filter(n -> !StringUtils.isEmpty(n.getAnswerText())).collect(Collectors.toList());
+            if(collect!=null&&collect.size()>0){
+                optionAnalysisDetailInfo.setCount(collect.size());
+                List<String> AnswerTexts = options.stream().map(n -> n.getUserName() + ":" + n.getAnswerText()).collect(Collectors.toList());
+                optionAnalysisDetailInfo.setAnswers(AnswerTexts);
+            }
             optionAnalysisDetailInfos.add(optionAnalysisDetailInfo);
             return optionAnalysisDetailInfos;
         }

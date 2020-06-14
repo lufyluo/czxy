@@ -11,6 +11,6 @@
         </foreach>
     </insert>
     <select id="countByPaperId" resultType="java.lang.Integer">
-        select count(1) from w_paper_send where paper_id  =#{paperId}
+        select count(1) from w_paper_send where paper_id  =#{paperId} and state =1
     </select>
 </mapper>

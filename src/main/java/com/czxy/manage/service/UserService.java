@@ -189,11 +189,9 @@ public class UserService {
 
     public List<FileInfo> get(Integer id) {
         List<ClassEntity> classEntities = userMapper.queryClassId(id);
-        for (ClassEntity classEntity:classEntities){
-            if (classEntity.getId()==null&&!StringUtils.isEmpty(classEntity.getId())){
+            if (classEntities==null||classEntities.size() == 0){
                 throw new ManageException(ResponseStatus.FAILURE,"您还不是班级学生，请先加入班级");
             }
-        }
         List<Integer> classIds = classEntities.stream().map(n -> n.getId()).collect(Collectors.toList());
         List<FileInfo> fileInfos = userMapper.queryFile(classIds);
         return fileInfos;

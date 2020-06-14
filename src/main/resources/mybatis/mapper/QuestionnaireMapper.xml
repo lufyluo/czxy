@@ -77,7 +77,7 @@
         wps.`index` as `index`,
         wo.id as optionId, wo.score as optionScore, wo.name as optionName, wo.`index` as optionIndex,
         w.answer_text as answerText, w.id as answerId ,
-        w.id as submitId
+        w.id as submitId,w.user_id as userId,u.name as userName
         from w_paper p
         left join w_paper_stem wps on p.id = wps.paper_id
         left join w_stem ws on wps.stem_id = ws.id
@@ -86,6 +86,7 @@
         <if test="userId != null and userId != ''">
             and w.user_id = #{userId}
         </if>
+        left join user u on w.user_id = u.id
         where p.id = #{paperId} and wo.id is not null
         UNION ALL
 
@@ -94,12 +95,13 @@
         wps.`index` as `index`,
         wo.id as optionId, wo.score as optionScore, wo.name as optionName, wo.`index` as optionIndex,
         w.answer_text as answerText, w.id as answerId ,
-        w.id as submitId
+        w.id as submitId,w.user_id as userId,u.name as userName
         from w_paper p
         left join w_paper_stem wps on p.id = wps.paper_id
         left join w_stem ws on wps.stem_id = ws.id
         left join w_option wo on ws.id = wo.stem_id
         left join w_paper_submit w on w.paper_id = p.id and w.stem_id = ws.id
+        left join user u on w.user_id = u.id
         <if test="userId != null and userId != ''">
             and w.user_id = #{userId}
         </if>

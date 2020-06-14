@@ -263,17 +263,17 @@
         on u.id=s.user_id
         left join class c
         on s.class_id=c.id
-        where u.id=#{id}
+        where u.id=#{id} and c.id is not null
     </select>
     <select id="queryFile" resultType="com.czxy.manage.model.vo.files.FileInfo">
         select
-        f.name,f.code,f.extension,f.size,f.url
+        f.name,f.code,f.extension,f.size,f.url,f.id,f.created_time as createdTime
         from class c
         left join class_file cf
         on c.id=cf.class_id
         left join file f
         on cf.file_id=f.id
-        where c.id in <foreach collection="classIds" item="item" index="index"
+        where f.id is not null and  c.id in <foreach collection="classIds" item="item" index="index"
                                open="(" separator="," close=")">#{item}
                       </foreach>
     </select>

@@ -69,7 +69,7 @@ public class UserController {
     public PageResponse<UserInfo> pageClassLeader(PageParam<String> pageParam) {
         return PageResponse.success(userService.pageClassLeader(pageParam));
     }
-    @GetMapping("/{id}")
+    @GetMapping("/files/{id}")
     @ApiOperation("根据用户ID获取他所在班级的附件信息")
     public BaseResponse<List<FileInfo>> get(@PathVariable Integer id){
         return ResponseUtil.success(userService.get(id));
