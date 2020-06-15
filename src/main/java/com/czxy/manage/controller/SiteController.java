@@ -1,5 +1,6 @@
 package com.czxy.manage.controller;
 
+import com.czxy.manage.infrastructure.aop.Anonymous;
 import com.czxy.manage.infrastructure.aop.FileAnonymous;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
@@ -37,6 +38,7 @@ public class SiteController {
     }
 
     @GetMapping("/page")
+    @Anonymous
     @ApiOperation("分页获取点位")
     public PageResponse<SiteInfo> page(SitePageParam<String> pageParam) {
         return PageResponse.success(siteService.page(pageParam));

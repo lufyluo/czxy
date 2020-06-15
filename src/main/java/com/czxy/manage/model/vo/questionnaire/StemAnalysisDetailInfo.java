@@ -20,6 +20,8 @@ public class StemAnalysisDetailInfo {
     private Integer score;
     @ApiModelProperty("0-普通题目，1-分数题目")
     private Integer category;
+    @ApiModelProperty("该题平均分")
+    private int avgScore;
     @ApiModelProperty("用户答案")
     private List<OptionAnalysisDetailInfo> answers;
 }

@@ -8,14 +8,11 @@ import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.PaperDetailEntity;
 import com.czxy.manage.model.entity.PaperEntity;
 import com.czxy.manage.model.entity.StudentDetailEntity;
-import com.czxy.manage.model.entity.UserEntity;
 import com.czxy.manage.model.entity.questionnaire.PaperSendEntity;
 import com.czxy.manage.model.vo.PaperAddInfo;
 import com.czxy.manage.model.vo.PaperInfo;
 import com.czxy.manage.model.vo.questionnaire.*;
-import com.czxy.manage.model.vo.questionnaire.stem.PaperStemInfo;
 import com.czxy.manage.model.vo.student.GetAllParam;
-import com.czxy.manage.model.vo.student.StudentPageParam;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -138,6 +135,10 @@ public class QuestionnaireService {
                 PaperDetailEntity stemInfo = entry.getValue().get(0);
                 StemAnalysisDetailInfo stemDetailInfo = PojoMapper.INSTANCE.toPaperDetailEntity(stemInfo);
                 stemDetailInfo.setId(entry.getKey());
+                if (stemDetailInfo.getCategory() == 1) {
+                    int avg = entry.getValue().stream().filter(n -> n.getOptionSelected() == 1).collect(Collectors.summingInt(n -> n.getOptionScore()));
+                    stemDetailInfo.setAvgScore(avg/total);
+                }
                 stemDetailInfo.setAnswers(getOptions(entry.getValue(), total));
                 stemDetailInfos.add(stemDetailInfo);
             }
@@ -153,10 +154,11 @@ public class QuestionnaireService {
         if (ObjectUtils.nullSafeEquals("问答题", options.get(0).getType())) {
             OptionAnalysisDetailInfo optionAnalysisDetailInfo = PojoMapper.INSTANCE.toOptionAnalysisDetailInfo(options.get(0));
             List<PaperDetailEntity> collect = options.stream().filter(n -> !StringUtils.isEmpty(n.getAnswerText())).collect(Collectors.toList());
-            if(collect!=null&&collect.size()>0){
+            if (collect != null && collect.size() > 0) {
                 optionAnalysisDetailInfo.setCount(collect.size());
                 List<String> AnswerTexts = options.stream().map(n -> n.getUserName() + ":" + n.getAnswerText()).collect(Collectors.toList());
-                optionAnalysisDetailInfo.setAnswers(AnswerTexts);
+                optionAnalysisDetailInfo.setAnswersTexts(AnswerTexts);
+                optionAnalysisDetailInfo.setCount(AnswerTexts.size());
             }
             optionAnalysisDetailInfos.add(optionAnalysisDetailInfo);
             return optionAnalysisDetailInfos;

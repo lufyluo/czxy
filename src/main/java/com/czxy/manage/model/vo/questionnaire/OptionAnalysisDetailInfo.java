@@ -8,5 +8,5 @@ import java.util.List;
 public class OptionAnalysisDetailInfo extends OptionDetailInfo{
     private int count;
     private String percent;
-    private List<String> answers;
+    private List<String> answersTexts;
 }

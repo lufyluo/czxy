@@ -77,7 +77,8 @@
         wps.`index` as `index`,
         wo.id as optionId, wo.score as optionScore, wo.name as optionName, wo.`index` as optionIndex,
         w.answer_text as answerText, w.id as answerId ,
-        w.id as submitId,w.user_id as userId,u.name as userName
+        w.stem_id as submitId,w.user_id as userId,u.name as userName,
+        case when w.id is null THEN 0 ELSE 1 END as optionSelected
         from w_paper p
         left join w_paper_stem wps on p.id = wps.paper_id
         left join w_stem ws on wps.stem_id = ws.id
@@ -95,7 +96,8 @@
         wps.`index` as `index`,
         wo.id as optionId, wo.score as optionScore, wo.name as optionName, wo.`index` as optionIndex,
         w.answer_text as answerText, w.id as answerId ,
-        w.id as submitId,w.user_id as userId,u.name as userName
+        w.id as submitId,w.user_id as userId,u.name as userName,
+        case when w.id is null THEN 0 ELSE 1 END as optionSelected
         from w_paper p
         left join w_paper_stem wps on p.id = wps.paper_id
         left join w_stem ws on wps.stem_id = ws.id
