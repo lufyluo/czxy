@@ -135,9 +135,9 @@ public class QuestionnaireService {
                 PaperDetailEntity stemInfo = entry.getValue().get(0);
                 StemAnalysisDetailInfo stemDetailInfo = PojoMapper.INSTANCE.toPaperDetailEntity(stemInfo);
                 stemDetailInfo.setId(entry.getKey());
-                if (stemDetailInfo.getCategory() == 1) {
+                if (stemDetailInfo.getCategory() == 1 && total > 0) {
                     int avg = entry.getValue().stream().filter(n -> n.getOptionSelected() == 1).collect(Collectors.summingInt(n -> n.getOptionScore()));
-                    stemDetailInfo.setAvgScore(avg/total);
+                    stemDetailInfo.setAvgScore(avg / total);
                 }
                 stemDetailInfo.setAnswers(getOptions(entry.getValue(), total));
                 stemDetailInfos.add(stemDetailInfo);
@@ -174,9 +174,11 @@ public class QuestionnaireService {
                 optionAnalysisDetailInfo.setScore(entry.getValue().get(0).getOptionScore());
                 optionAnalysisDetailInfo.setIndex(entry.getValue().get(0).getOptionIndex());
                 Long count = entry.getValue().stream().filter(n -> n.getAnswerId() != null).collect(Collectors.counting());
-                float percent = (int) ((new BigDecimal((float) count / total).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()) * 100);
-                optionAnalysisDetailInfo.setPercent(percent + "%");
-                optionAnalysisDetailInfo.setCount(count.intValue());
+                if (count != null && count > 0) {
+                    float percent = (int) ((new BigDecimal((float) count / total).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()) * 100);
+                    optionAnalysisDetailInfo.setPercent(percent + "%");
+                    optionAnalysisDetailInfo.setCount(count.intValue());
+                }
                 optionAnalysisDetailInfos.add(optionAnalysisDetailInfo);
             }
 

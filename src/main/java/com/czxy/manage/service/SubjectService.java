@@ -9,7 +9,6 @@ import com.czxy.manage.model.entity.FileEntity;
 import com.czxy.manage.model.entity.SubjectDetailEntity;
 import com.czxy.manage.model.entity.SubjectEntity;
 import com.czxy.manage.model.entity.TypeEntity;
-import com.czxy.manage.model.vo.plan.PlanInfo;
 import com.czxy.manage.model.vo.site.TypeInfo;
 import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
 import com.czxy.manage.model.vo.subject.SubjectDetailInfo;
@@ -129,7 +128,7 @@ public class SubjectService {
             List<Integer> fileIds = new ArrayList<>();
             Arrays.stream(files.split(",")).forEach(n -> fileIds.add(Integer.parseInt(n)));
             List<FileEntity> fileEntities = fileMapper.query(fileIds);
-            subjectByIdInfo.setFileInfos(PojoMapper.INSTANCE.tiFileInfos(fileEntities));
+            subjectByIdInfo.setFileInfos(PojoMapper.INSTANCE.toFileInfos(fileEntities));
         }
 
         return subjectByIdInfo;

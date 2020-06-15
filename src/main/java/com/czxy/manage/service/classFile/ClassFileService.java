@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +26,7 @@ public class ClassFileService {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<FileEntity> files = classFileMapper.query(pageParam);
         PageInfo pageInfo = page.toPageInfo();
-        List<FileInfo> fileInfos = PojoMapper.INSTANCE.tiFileInfos(files);
+        List<FileInfo> fileInfos = PojoMapper.INSTANCE.toFileInfos(files);
         pageInfo.setList(fileInfos);
         return pageInfo;
     }

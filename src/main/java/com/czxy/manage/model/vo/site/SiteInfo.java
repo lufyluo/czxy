@@ -1,6 +1,7 @@
 package com.czxy.manage.model.vo.site;
 
 import com.czxy.manage.model.entity.BaseEntity;
+import com.czxy.manage.model.vo.files.FileInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -18,8 +19,14 @@ public class SiteInfo extends BaseEntity {
     private String driveTime;
     private String addr;
     private String description;
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
     private String pics;
+    private List<FileInfo> pictureFileInfos;
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
     private String attachFiles;
+    private List<FileInfo> attachFileInfos;
     private Integer provinceId;
     private Integer cityId;
     private Integer countyId;

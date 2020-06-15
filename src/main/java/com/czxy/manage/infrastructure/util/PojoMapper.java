@@ -217,7 +217,7 @@ public interface PojoMapper {
 
     FileInfo toFileInfo(FileEntity fileEntities);
 
-    List<FileInfo> tiFileInfos(List<FileEntity> fileEntities);
+    List<FileInfo> toFileInfos(List<FileEntity> fileEntities);
 
     SendEntity toSendEntity(SendInfo sendInfo);
 

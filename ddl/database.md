@@ -859,6 +859,18 @@ create table class_file
 )
 comment '班级附件';
 
+create table site_topic
+(
+	id int auto_increment,
+	site_id int null,
+	topic VARCHAR(100) null comment '主题名称',
+	updated_time timestamp default now() null,
+	created_time timestamp default now() null,
+	constraint site_topic_pk
+		primary key (id)
+)
+comment '点位主题';
+
 
 )
 ```
