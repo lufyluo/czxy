@@ -61,6 +61,7 @@ public class SiteController {
     @ApiOperation("导入")
     @RequestMapping(path = "/import", method = RequestMethod.POST)
     @FileAnonymous
+    @Anonymous
     public BaseResponse<Boolean> batchImport(@RequestParam(value = "file") MultipartFile file) {
         return ResponseUtil.success(siteService.batchImport(file));
     }

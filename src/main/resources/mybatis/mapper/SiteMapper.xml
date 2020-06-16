@@ -2,23 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.SiteMapper">
 
-    <insert id="insert"  parameterType="com.czxy.manage.model.entity.SiteEntity" useGeneratedKeys="true"
+    <insert id="insert" parameterType="com.czxy.manage.model.entity.SiteEntity" useGeneratedKeys="true"
             keyProperty="id">
-    insert into site
-    (name, types, contactor_name, contactor_phone, topic_id, drive_time, addr, description, pics, attach_files, province_id, city_id, county_id, fee)
-     VALUES
-     (#{name},#{types},#{contactorName},#{contactorPhone},#{topicId},#{driveTime},#{addr},#{description},#{pics},#{attachFiles},#{provinceId},#{cityId},#{countyId},#{fee})
+        insert into site
+        (name, types, contactor_name, contactor_phone, topic_id, drive_time, addr, description, pics, attach_files,
+         province_id, city_id, county_id, fee)
+        VALUES (#{name}, #{types}, #{contactorName}, #{contactorPhone}, #{topicId}, #{driveTime}, #{addr},
+                #{description}, #{pics}, #{attachFiles}, #{provinceId}, #{cityId}, #{countyId}, #{fee})
     </insert>
     <insert id="batchInsert">
         insert into site
-        (name, types, contactor_name, contactor_phone, topic_id, drive_time, addr, description, pics, attach_files, province_id, city_id, county_id, fee)
+        (name, types, contactor_name, contactor_phone, topic_id, drive_time, addr, description, pics, attach_files,
+        province_id, city_id, county_id, fee)
         VALUES
-               <foreach collection="list" item="item"  separator=",">
-                   (#{item.name},#{item.types},#{item.contactorName}
-                   ,#{item.contactorPhone},#{item.topicId},#{item.driveTime}
-                   ,#{item.addr},#{item.description},#{item.pics},#{item.attachFiles}
-                   ,#{item.provinceId},#{item.cityId},#{item.countyId},#{item.fee})
-               </foreach>
+        <foreach collection="list" item="item" separator=",">
+            (#{item.name},#{item.types},#{item.contactorName}
+            ,#{item.contactorPhone},#{item.topicId},#{item.driveTime}
+            ,#{item.addr},#{item.description},#{item.pics},#{item.attachFiles}
+            ,#{item.provinceId},#{item.cityId},#{item.countyId},#{item.fee})
+        </foreach>
 
     </insert>
     <insert id="insertTopic">
@@ -30,20 +32,33 @@
         </foreach>
     </insert>
     <insert id="insertTopics" useGeneratedKeys="true" keyProperty="id">
-        insert into site_topic (site_id, topic) values (#{siteId},#{topic})
+        insert into site_topic (site_id, topic)
+        values (#{siteId}, #{topic})
     </insert>
 
     <update id="update">
-        update site set name=#{name}, types=#{types},contactor_name=#{contactorName},contactor_phone=#{contactorPhone},
-        topic_id=#{topicId},
-        drive_time=#{driveTime},addr=#{addr},description=#{description},
-        pics=#{pics},attach_files=#{attachFiles},province_id=#{provinceId},
-        city_id=#{cityId},county_id=#{countyId},fee=#{fee},updated_time=now()
-        where
-        id=#{id}
+        update site
+        set name=#{name},
+            types=#{types},
+            contactor_name=#{contactorName},
+            contactor_phone=#{contactorPhone},
+            topic_id=#{topicId},
+            drive_time=#{driveTime},
+            addr=#{addr},
+            description=#{description},
+            pics=#{pics},
+            attach_files=#{attachFiles},
+            province_id=#{provinceId},
+            city_id=#{cityId},
+            county_id=#{countyId},
+            fee=#{fee},
+            updated_time=now()
+        where id = #{id}
     </update>
     <update id="updateTopic">
-        update site_topic set topic=#{topic} where id=#{id}
+        update site_topic
+        set topic=#{topic}
+        where id = #{id}
     </update>
 
     <delete id="delete">
@@ -59,9 +74,10 @@
         </foreach>
     </delete>
     <delete id="deleteTopicById">
-        delete from site_topic where id in <foreach collection="integers" item="item" index="index"
-                                                    open="(" separator="," close=")">#{item}
-                                          </foreach>
+        delete from site_topic where id in
+        <foreach collection="integers" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
     </delete>
 
     <select id="query" resultType="com.czxy.manage.model.entity.SiteEntity">
@@ -70,40 +86,56 @@
         s.contactor_name as contactorName,
         s.contactor_phone as contactorPhone,
         s.topic_id as topicId,
-        t.name as topicName,
         s.drive_time as driveTime,s.addr,
         a.path,
         s.description,s.pics,s.attach_files as attachFiles,
         s.province_id as provinceId,
         s.city_id as cityId,
         s.county_id as countyId,
-        s.updated_time as updatedTime,s.created_time as  createdTime,s.fee
+        s.updated_time as updatedTime,s.created_time as createdTime,s.fee
         from
         site s
-        left join type t
-        on t.id = s.topic_id
         left join address a
         on s.county_id = a.id
         where 1=1
         <if test="param != null and param != ''">
-            and (s.name like '%${param}%' or t.name like '%${param}%')
+            and s.name like '%${param}%'
         </if>
         <if test="typeId != null and typeId != ''">
-            and (s.types like '${typeId},%' or s.types like '%,${typeId}' or s.types like '%,${typeId},%' or s.types = #{typeId})
+            and (s.types like '${typeId},%' or s.types like '%,${typeId}' or s.types like '%,${typeId},%' or s.types =
+            #{typeId})
         </if>
-        order  by star,id desc
+        order by star,id desc
     </select>
     <select id="queryTopicId" resultType="java.lang.Integer">
-        select id from site_topic where site_id=#{id}
+        select id
+        from site_topic
+        where site_id = #{id}
     </select>
     <select id="queryTopicsBySiteId" resultType="com.czxy.manage.model.vo.site.TopicInfo">
         select id, site_id as siteId, topic, updated_time as updatedTime, created_time as createdTime
-        from site_topic where site_id = #{siteId};
+        from site_topic
+        where site_id = #{siteId};
     </select>
     <select id="queryById" resultType="com.czxy.manage.model.entity.SiteEntity">
-        select
-        id, name, types, contactor_name, contactor_phone, topic_id, drive_time, addr, province_id, city_id, county_id, description, pics, attach_files, fee, star, updated_time, created_time
-from site
+        select id,
+               name,
+               types,
+               contactor_name as contactorName,
+               contactor_phone as contactorPhone,
+               drive_time as driveTime,
+               addr,
+               province_id as provinceId,
+               city_id as cityId,
+               county_id as countyId,
+               description,
+               pics,
+               attach_files as attachFiles,
+               fee,
+               star,
+               updated_time as updatedTime,
+               created_time as createdTime
+        from site
         where id = #{id};
     </select>
 </mapper>
