@@ -2,20 +2,20 @@ package com.czxy.manage.service;
 
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
+import com.czxy.manage.dao.FileMapper;
 import com.czxy.manage.dao.SiteMapper;
 import com.czxy.manage.dao.TypeMapper;
 import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
-import com.czxy.manage.model.PageParam;
+import com.czxy.manage.model.entity.FileEntity;
 import com.czxy.manage.model.entity.SiteEntity;
 import com.czxy.manage.model.entity.TypeEntity;
+import com.czxy.manage.model.vo.files.FileInfo;
 import com.czxy.manage.model.vo.site.*;
-import com.czxy.manage.model.vo.teacher.ImportTeacherInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.logging.log4j.core.util.ArrayUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -35,6 +35,8 @@ public class SiteService {
     private TypeService typeService;
     @Resource
     private TypeMapper typeMapper;
+    @Resource
+    FileMapper fileMapper;
 
     @Transactional
     public Boolean add(SiteAddInfo siteAddInfo) {
@@ -143,9 +145,48 @@ public class SiteService {
         return false;
     }
 
-    public SiteInfo get(Integer id) {
+    public SiteDetailInfo get(Integer id) {
         SiteEntity siteEntity = siteMapper.queryById(id);
-        List<TopicInfo> topicInfos = siteMapper.queryTopicsBySiteId(id);
-        return null;
+        if (siteEntity == null) {
+            throw new ManageException(ResponseStatus.DATANOTEXIST);
+        }
+        SiteDetailInfo siteInfo = PojoMapper.INSTANCE.toSiteDetailInfo(siteEntity);
+        fillTypes(siteEntity, siteInfo);
+        fillTopics(siteInfo);
+        fillPics(siteEntity,siteInfo);
+        fillAttachFiles(siteEntity,siteInfo);
+        return siteInfo;
+    }
+
+    private void fillAttachFiles(SiteEntity siteEntity,SiteDetailInfo siteInfo) {
+        String attachFiles = siteEntity.getAttachFiles();
+        if (!StringUtils.isEmpty(attachFiles)) {
+            List<Integer> fileIds = Arrays.asList(attachFiles.split(",")).stream().map(n -> Integer.parseInt(n)).collect(Collectors.toList());
+            List<FileEntity> fileInfos = fileMapper.query(fileIds);
+            siteInfo.setAttachFiles(PojoMapper.INSTANCE.tiFileInfos(fileInfos));
+        }
+    }
+
+    private void fillPics(SiteEntity siteEntity,SiteDetailInfo siteInfo) {
+        String pics = siteEntity.getPics();
+        if (!StringUtils.isEmpty(pics)) {
+            List<Integer> fileIds = Arrays.asList(pics.split(",")).stream().map(n -> Integer.parseInt(n)).collect(Collectors.toList());
+            List<FileEntity> fileInfos = fileMapper.query(fileIds);
+            siteInfo.setPics(PojoMapper.INSTANCE.tiFileInfos(fileInfos));
+        }
+    }
+
+    private void fillTopics(SiteDetailInfo siteInfo) {
+        List<TopicInfo> topicInfos = siteMapper.queryTopicsBySiteId(siteInfo.getId());
+        siteInfo.setTopics(topicInfos);
+    }
+
+    private void fillTypes(SiteEntity siteEntity, SiteDetailInfo siteInfo) {
+        String types = siteEntity.getTypes();
+        if (!StringUtils.isEmpty(types)) {
+            List<Integer> typeIds = Arrays.asList(types.split(",")).stream().map(n -> Integer.parseInt(n)).collect(Collectors.toList());
+            List<TypeEntity> typeEntities = typeMapper.queryAll(typeIds);
+            siteInfo.setTypes(PojoMapper.INSTANCE.toTypeInfos(typeEntities));
+        }
     }
 }

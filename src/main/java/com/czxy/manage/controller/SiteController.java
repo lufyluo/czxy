@@ -6,6 +6,7 @@ import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
+import com.czxy.manage.model.vo.site.SiteDetailInfo;
 import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.model.vo.site.SitePageParam;
 import com.czxy.manage.service.SiteService;
@@ -46,8 +47,8 @@ public class SiteController {
 
     @GetMapping("/{id}")
     @Anonymous
-    @ApiOperation("分页获取点位")
-    public BaseResponse<SiteInfo> get(@PathVariable Integer id) {
+    @ApiOperation("获取点位详情")
+    public BaseResponse<SiteDetailInfo> get(@PathVariable Integer id) {
         return ResponseUtil.success(siteService.get(id));
     }
 
