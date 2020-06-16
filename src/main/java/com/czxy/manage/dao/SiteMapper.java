@@ -34,4 +34,8 @@ public interface SiteMapper {
     Integer insertTopics(TopicInfo topicInfo);
 
     Integer deleteTopicById(@Param("integers") List<Integer> integers);
+
+    List<TopicInfo> queryTopicsBySiteId(Integer id);
+
+    SiteEntity queryById(Integer id);
 }

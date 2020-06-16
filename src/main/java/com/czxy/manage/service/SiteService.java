@@ -123,11 +123,6 @@ public class SiteService {
             typeService.batchInsertIfObsent(typeEntityList);
             siteEntity.setTypes(typeEntityList.stream().map(n -> n.getId().toString()).collect(Collectors.joining(",")));
         }
-        if (siteAddInfo.getTopic() != null) {
-            TypeEntity typeEntity = PojoMapper.INSTANCE.toTypeEntity(siteAddInfo.getTopic());
-            typeService.batchInsertIfObsent(Arrays.asList(typeEntity));
-            siteEntity.setTopicId(typeEntity.getId());
-        }
         return siteEntity;
     }
 
@@ -146,5 +141,11 @@ public class SiteService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public SiteInfo get(Integer id) {
+        SiteEntity siteEntity = siteMapper.queryById(id);
+        List<TopicInfo> topicInfos = siteMapper.queryTopicsBySiteId(id);
+        return null;
     }
 }

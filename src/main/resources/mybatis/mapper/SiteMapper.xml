@@ -96,4 +96,14 @@
     <select id="queryTopicId" resultType="java.lang.Integer">
         select id from site_topic where site_id=#{id}
     </select>
+    <select id="queryTopicsBySiteId" resultType="com.czxy.manage.model.vo.site.TopicInfo">
+        select id, site_id as siteId, topic, updated_time as updatedTime, created_time as createdTime
+        from site_topic where site_id = #{siteId};
+    </select>
+    <select id="queryById" resultType="com.czxy.manage.model.entity.SiteEntity">
+        select
+        id, name, types, contactor_name, contactor_phone, topic_id, drive_time, addr, province_id, city_id, county_id, description, pics, attach_files, fee, star, updated_time, created_time
+from site
+        where id = #{id};
+    </select>
 </mapper>

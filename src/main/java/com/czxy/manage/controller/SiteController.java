@@ -44,6 +44,13 @@ public class SiteController {
         return PageResponse.success(siteService.page(pageParam));
     }
 
+    @GetMapping("/{id}")
+    @Anonymous
+    @ApiOperation("分页获取点位")
+    public BaseResponse<SiteInfo> get(@PathVariable Integer id) {
+        return ResponseUtil.success(siteService.get(id));
+    }
+
     @PutMapping
     @ApiOperation("编辑点位")
     public BaseResponse<Boolean> update(@RequestBody SiteAddInfo siteAddInfo) {
