@@ -13,14 +13,26 @@
         insert into site
         (name, types, contactor_name, contactor_phone, topic_id, drive_time, addr, description, pics, attach_files, province_id, city_id, county_id, fee)
         VALUES
-               <foreach collection="list" item="item" open="(" close=")" separator=",">
-                   #{item.name},#{item.types},#{item.contactorName}
+               <foreach collection="list" item="item"  separator=",">
+                   (#{item.name},#{item.types},#{item.contactorName}
                    ,#{item.contactorPhone},#{item.topicId},#{item.driveTime}
                    ,#{item.addr},#{item.description},#{item.pics},#{item.attachFiles}
-                   ,#{item.provinceId},#{item.cityId},#{item.countyId},#{item.fee}
+                   ,#{item.provinceId},#{item.cityId},#{item.countyId},#{item.fee})
                </foreach>
 
     </insert>
+    <insert id="insertTopic">
+        insert into site_topic
+        (site_id , topic)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.siteId},#{item.topic})
+        </foreach>
+    </insert>
+    <insert id="insertTopics" useGeneratedKeys="true" keyProperty="id">
+        insert into site_topic (site_id, topic) values (#{siteId},#{topic})
+    </insert>
+
     <update id="update">
         update site set name=#{name}, types=#{types},contactor_name=#{contactorName},contactor_phone=#{contactorPhone},
         topic_id=#{topicId},
@@ -30,12 +42,28 @@
         where
         id=#{id}
     </update>
+    <update id="updateTopic">
+        update site_topic set topic=#{topic} where id=#{id}
+    </update>
+
     <delete id="delete">
         delete from site where id in
         <foreach collection="siteIds" item="item" index="index"
                  open="(" separator="," close=")">#{item}
         </foreach>
     </delete>
+    <delete id="deleteTopic">
+        delete from site_topic where site_id in
+        <foreach collection="siteIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
+    </delete>
+    <delete id="deleteTopicById">
+        delete from site_topic where id in <foreach collection="integers" item="item" index="index"
+                                                    open="(" separator="," close=")">#{item}
+                                          </foreach>
+    </delete>
+
     <select id="query" resultType="com.czxy.manage.model.entity.SiteEntity">
         select
         s.id,s.name,s.types,
@@ -64,5 +92,8 @@
             and (s.types like '${typeId},%' or s.types like '%,${typeId}' or s.types like '%,${typeId},%' or s.types = #{typeId})
         </if>
         order  by star,id desc
+    </select>
+    <select id="queryTopicId" resultType="java.lang.Integer">
+        select id from site_topic where site_id=#{id}
     </select>
 </mapper>

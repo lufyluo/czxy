@@ -40,13 +40,19 @@ public class SiteService {
     public Boolean add(SiteAddInfo siteAddInfo) {
         SiteEntity siteEntity = prepare(siteAddInfo);
         siteMapper.insert(siteEntity);
-
+        List<TopicInfo> topics = siteAddInfo.getTopics();
+        Integer id = siteEntity.getId();
+        for (TopicInfo t : topics) {
+            t.setSiteId(id);
+        }
+        siteMapper.insertTopic(topics);
         return true;
     }
 
     public Boolean delete(List<Integer> siteIds) {
-        Boolean delete = siteMapper.delete(siteIds);
-        return delete;
+        siteMapper.delete(siteIds);
+        siteMapper.deleteTopic(siteIds);
+        return true;
     }
 
     public PageInfo<SiteInfo> page(SitePageParam<String> pageParam) {
@@ -57,7 +63,7 @@ public class SiteService {
             SiteEntity siteEntity = siteEntities.get(i);
             String types = siteEntity.getTypes();
             String[] split = types.split(",");
-            List<String> typeNames= new ArrayList<>();
+            List<String> typeNames = new ArrayList<>();
             for (int j = 0; j < split.length; j++) {
                 Integer m = Integer.parseInt(split[j]);
                 String typeName = typeMapper.query(m);
@@ -68,20 +74,45 @@ public class SiteService {
         }
         PageInfo<SiteInfo> result = page.toPageInfo();
         result.setList(PojoMapper.INSTANCE.toSiteInfo(siteEntities));
-        result.getList().forEach(n->{
-            if(StringUtils.isEmpty(n.getPath())){
+        result.getList().forEach(n -> {
+            if (StringUtils.isEmpty(n.getPath())) {
                 n.setAddress(n.getAddr());
-            }else{
-                n.setAddress(n.getPath().replace(",","")+n.getAddr());
+            } else {
+                n.setAddress(n.getPath().replace(",", "") + n.getAddr());
             }
 
         });
         return result;
     }
 
+    @Transactional
     public Boolean update(SiteAddInfo siteAddInfo) {
         SiteEntity siteEntity = prepare(siteAddInfo);
         siteMapper.update(siteEntity);
+        List<TopicInfo> topics = siteAddInfo.getTopics();
+        Integer id = siteEntity.getId();
+        List<Integer> integers = siteMapper.queryTopicId(id);
+        List<TopicInfo> collect = topics.stream().filter(n -> n.getId() != null).collect(Collectors.toList());
+        if (!collect.isEmpty()) {
+            List<Integer> listids = collect.stream().map(n -> n.getId()).collect(Collectors.toList());
+            integers.removeAll(listids);
+            if (!integers.isEmpty()) {
+                siteMapper.deleteTopicById(integers);
+            }
+        }
+        if (collect.isEmpty()) {
+            siteMapper.deleteTopicById(integers);
+        }
+        if (!topics.isEmpty()) {
+            for (TopicInfo topicInfo : topics) {
+                if (topicInfo.getId() != null) {
+                    siteMapper.updateTopic(topicInfo);
+                }
+                if (topicInfo.getId() == null) {
+                    siteMapper.insertTopics(topicInfo);
+                }
+            }
+        }
         return true;
     }
 
@@ -105,8 +136,8 @@ public class SiteService {
         params.setStartRows(0);
         try {
             List<SiteAddInfo> siteInfos = ExcelImportUtil.importExcel(file.getInputStream(), SiteAddInfo.class, params);
-            if(siteInfos == null || siteInfos.size()==0){
-                throw new ManageException(ResponseStatus.ARGUMENTNOTVALID,"数据为空！");
+            if (siteInfos == null || siteInfos.size() == 0) {
+                throw new ManageException(ResponseStatus.ARGUMENTNOTVALID, "数据为空！");
             }
             List<SiteEntity> siteEntities = PojoMapper.INSTANCE.toSiteEntities(siteInfos);
             siteMapper.batchInsert(siteEntities);

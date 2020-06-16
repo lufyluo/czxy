@@ -21,8 +21,6 @@ public class SiteAddInfo extends BaseEntity {
     @ApiModelProperty("联系人电话")
     @Excel(name = "联系人电话")
     private String contactorPhone;
-    @ApiModelProperty("点位主题")
-    private TypeInfo topic;
     @ApiModelProperty("参观时间")
     @Excel(name = "参观时间")
     private String driveTime;
@@ -40,4 +38,6 @@ public class SiteAddInfo extends BaseEntity {
     private Integer fee;
 //    @Excel(name = "点位类型")
     private String typeName;
+    @ApiModelProperty("点位课堂名称")
+    private List<TopicInfo> topics;
 }
