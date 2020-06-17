@@ -282,7 +282,8 @@
         with temp as (
         select count(ca.id) as amount ,c.id from class c
         left join course_arrange ca on c.arrange_id = ca.arrange_id
-        where c.id = #{userId}
+        left join student s on s.class_id = c.id
+        where s.user_id = #{userId}
         group by c.id
        )
         select
