@@ -79,6 +79,9 @@
                  open="(" separator="," close=")">#{item}
         </foreach>
     </delete>
+    <delete id="clear">
+        delete from site_topic where site_id = #{id}
+    </delete>
 
     <select id="query" resultType="com.czxy.manage.model.entity.SiteEntity">
         select

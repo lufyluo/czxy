@@ -67,4 +67,9 @@ public class QuestionnaireController {
         return ResponseUtil.success(questionnaireService.analysis(paperId));
     }
 
+    @GetMapping("/copy")
+    @ApiOperation("问卷复制")
+    public BaseResponse<Boolean> copy(@RequestParam Integer paperId, @RequestParam String paperName) {
+        return ResponseUtil.success(questionnaireService.copy(paperId, paperName));
+    }
 }
