@@ -64,6 +64,9 @@ public class SiteService {
         for (int i = 0; i < siteEntities.size(); i++) {
             SiteEntity siteEntity = siteEntities.get(i);
             String types = siteEntity.getTypes();
+            if(StringUtils.isEmpty(types)){
+                continue;
+            }
             String[] split = types.split(",");
             List<String> typeNames = new ArrayList<>();
             for (int j = 0; j < split.length; j++) {
@@ -103,7 +106,7 @@ public class SiteService {
             }
         }
         if (collect.isEmpty()) {
-            siteMapper.deleteTopicById(integers);
+            siteMapper.clear(id);
         }
         if (!topics.isEmpty()) {
             for (TopicInfo topicInfo : topics) {

@@ -183,4 +183,8 @@ public class QuestionnaireService {
         }
         return optionAnalysisDetailInfos;
     }
+
+    public Boolean copy(Integer paperId, String paperName) {
+        return null;
+    }
 }

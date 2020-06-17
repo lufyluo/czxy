@@ -38,4 +38,6 @@ public interface SiteMapper {
     List<TopicInfo> queryTopicsBySiteId(Integer id);
 
     SiteEntity queryById(Integer id);
+
+    Integer clear(Integer id);
 }
