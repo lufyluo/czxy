@@ -285,10 +285,15 @@
         left join student s on s.class_id = c.id
         where s.user_id = #{userId}
         group by c.id
+       ),
+       studentNumber as (
+        select count(s.id) as number ,c.id from student s
+        left join class c on s.class_id = c.id
+        group by c.id
        )
         select
         c.name,c.id,c.begin_time as beginTime,c.end_time as endTime
-        ,c.created_time as createdTime,cm.name as compositionName,t.amount
+        ,c.created_time as createdTime,cm.name as compositionName,t.amount,sn.number
         from class c
         left join student s
         on c.id=s.class_id
@@ -298,6 +303,8 @@
         on c.composition_id=cm.id
         left join temp t
         on t.id=c.id
+        left join studentNumber sn
+        on sn.id=c.id
         where u.id=#{userId}
         order by c.created_time desc
     </select>

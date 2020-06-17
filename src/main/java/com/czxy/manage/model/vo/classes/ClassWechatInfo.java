@@ -19,4 +19,6 @@ public class ClassWechatInfo {
     private String compositionName;
     @ApiModelProperty("创建时间")
     private Date createdTime;
+    @ApiModelProperty("学生数量")
+    private Integer number;
 }
