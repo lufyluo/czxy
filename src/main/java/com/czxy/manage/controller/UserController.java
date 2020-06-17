@@ -4,6 +4,7 @@ import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
+import com.czxy.manage.model.vo.classes.ClassWechatInfo;
 import com.czxy.manage.model.vo.files.FileInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserInfo;
@@ -73,5 +74,10 @@ public class UserController {
     @ApiOperation("根据用户ID获取他所在班级的附件信息")
     public BaseResponse<List<FileInfo>> get(@PathVariable Integer id){
         return ResponseUtil.success(userService.get(id));
+    }
+    @GetMapping("/class/{userId}")
+    @ApiOperation("根据userID返回用户参加的所有班级信息")
+    public BaseResponse<List<ClassWechatInfo>> getClass(@PathVariable Integer userId){
+        return ResponseUtil.success(userService.gerClass(userId));
     }
 }

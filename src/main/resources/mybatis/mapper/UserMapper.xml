@@ -273,8 +273,32 @@
         on c.id=cf.class_id
         left join file f
         on cf.file_id=f.id
-        where f.id is not null and  c.id in <foreach collection="classIds" item="item" index="index"
-                               open="(" separator="," close=")">#{item}
-                      </foreach>
+        where f.id is not null and c.id in
+        <foreach collection="classIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
     </select>
+    <select id="queryWechatClass" resultType="com.czxy.manage.model.vo.classes.ClassWechatInfo">
+        with temp as (
+        select count(ca.id) as amount ,c.id from class c
+        left join course_arrange ca on c.arrange_id = ca.arrange_id
+        where c.id = #{userId}
+        group by c.id
+       )
+        select
+        c.name,c.id,c.begin_time as beginTime,c.end_time as endTime
+        ,c.created_time as createdTime,cm.name as compositionName,t.amount
+        from class c
+        left join student s
+        on c.id=s.class_id
+        left join user u
+        on u.id=s.user_id
+        left join composition cm
+        on c.composition_id=cm.id
+        left join temp t
+        on t.id=c.id
+        where u.id=#{userId}
+        order by c.created_time desc
+    </select>
+
 </mapper>
