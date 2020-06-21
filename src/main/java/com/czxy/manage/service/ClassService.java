@@ -48,6 +48,9 @@ public class ClassService {
     public PageInfo<ClassOrgInfo> page(ClassPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<ClassOrgEntity> classEntities = classMapper.queryAll(pageParam);
+        if (classEntities==null||classEntities.size()==0){
+            return new PageInfo<>();
+        }
         List<Integer> collect = classEntities.stream().map(n -> n.getId()).collect(Collectors.toList());
         List<CountEntity> countEntities = classMapper.queryCount(collect);
         for (ClassOrgEntity classOrgEntity : classEntities) {
