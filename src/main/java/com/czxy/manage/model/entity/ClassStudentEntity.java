@@ -34,4 +34,5 @@ public class ClassStudentEntity extends ClassEntity{
     @ApiModelProperty("学员身份")
     private Integer studentType;
     private String studentTypeName;
+    private String politics;
 }
