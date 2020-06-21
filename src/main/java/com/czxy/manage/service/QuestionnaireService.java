@@ -191,7 +191,7 @@ public class QuestionnaireService {
     @Transactional
     public Boolean copy(Integer paperId, String paperName) {
         PaperEntity paperEntity = questionnaireMapper.queryPaper(paperId);
-        paperEntity.setName(paperName);
+        paperEntity.setName(paperName+"复制");
         questionnaireMapper.insertPaper(paperEntity);
         List<PaperCopyStemEntity> paperCopyStemEntities = questionnaireMapper.queryPaperStem(paperId);
         List<Integer> stemIds = paperCopyStemEntities.stream().map(n -> n.getStemId()).collect(Collectors.toList());
