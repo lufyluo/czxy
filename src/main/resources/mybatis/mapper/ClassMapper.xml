@@ -141,6 +141,7 @@
         u.org_id as userOrgId,
         u.nation as userNation,
         u.nativeplace as userNativeplace,
+        u.politics,
         s.type as StudentType,
         s.id as studentId,
         s.id as id,
