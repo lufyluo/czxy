@@ -124,18 +124,29 @@
         order by `index`,optionIndex
 
     </select>
-    <select id="query" resultType="com.czxy.manage.model.entity.PaperCopyEntity">
+    <select id="queryPaper" resultType="com.czxy.manage.model.entity.PaperEntity">
         select
-        wp.id,wp.name,wp.description,wp.state,
-        wps.index,ws.title,ws.score,wo.name as optionName,wo.score as optionScore,
-        wo.index as optionIndex
-        from w_paper wp
-        left join w_paper_stem wps
-        on wp.id=wps.paper_id
-        left join w_stem ws
-        on ws.id=wps.stem_id
-        left join w_option wo
-        on wo.stem_id=ws.id
-        where wp.id=#{paperId}
+        name, description,state
+        from w_paper
+        where id=#{paperId}
+    </select>
+    <select id="queryPaperStem"
+            resultType="com.czxy.manage.model.entity.questionnaire.stem.PaperCopyStemEntity">
+        select
+        stem_id as stemId,`index`,paper_id as paperId
+        from w_paper_stem
+        where paper_id=#{paperId}
+    </select>
+    <select id="queryStem" resultType="com.czxy.manage.model.entity.questionnaire.stem.StemEntity">
+        select
+        title, score
+        from w_stem
+        where id=#{stemId}
+    </select>
+    <select id="queryOption" resultType="com.czxy.manage.model.entity.questionnaire.stem.OptionEntity">
+        select
+        name, score, `index`, stem_id as stemId
+        from w_option
+        where stem_id=#{stemId}
     </select>
 </mapper>

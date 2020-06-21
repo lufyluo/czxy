@@ -1,12 +1,12 @@
 package com.czxy.manage.dao;
 
-import com.czxy.manage.model.entity.PaperCopyEntity;
 import com.czxy.manage.model.entity.PaperDetailEntity;
 import com.czxy.manage.model.entity.PaperEntity;
 import com.czxy.manage.model.entity.PaperPageEntity;
 import com.czxy.manage.model.entity.questionnaire.PaperSubmitEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.OptionEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.PaperCopyStemEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.PaperStemEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.StemEntity;
 import com.czxy.manage.model.vo.questionnaire.PaperCreateInfo;
 import com.czxy.manage.model.vo.questionnaire.PaperSubmitInfo;
@@ -39,8 +39,6 @@ public interface QuestionnaireMapper {
 
     Integer clearAnswers(Integer paperId, Integer userId);
 
-    PaperCopyEntity query(Integer paperId);
-
     Integer insertPaper(PaperEntity paperEntity);
 
     Integer insertStem(StemEntity stemEntity);
@@ -48,4 +46,12 @@ public interface QuestionnaireMapper {
     Integer insertPaperStem(PaperCopyStemEntity paperCopyStemEntity);
 
     Integer insertOption(OptionEntity optionEntity);
+
+    PaperEntity queryPaper(Integer paperId);
+
+    List<PaperCopyStemEntity> queryPaperStem(Integer paperId);
+
+    StemEntity queryStem(Integer stemId);
+
+    OptionEntity queryOption(Integer stemId);
 }
