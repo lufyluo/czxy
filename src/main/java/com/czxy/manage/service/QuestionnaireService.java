@@ -200,9 +200,11 @@ public class QuestionnaireService {
         for (Integer stemId:stemIds){
             StemEntity stemEntity = questionnaireMapper.queryStem(stemId);
             questionnaireMapper.insertStem(stemEntity);
-            OptionEntity optionEntity = questionnaireMapper.queryOption(stemId);
-            optionEntity.setStemId(stemEntity.getId());
-            questionnaireMapper.insertOption(optionEntity);
+            List<OptionEntity> optionEntities = questionnaireMapper.queryOption(stemId);
+            for (OptionEntity optionEntity:optionEntities){
+                optionEntity.setStemId(stemEntity.getId());
+                questionnaireMapper.insertOption(optionEntity);
+            }
             for (PaperCopyStemEntity p:paperCopyStemEntities){
                 p.setStemId(stemEntity.getId());
                 p.setPaperId(paperEntity.getId());

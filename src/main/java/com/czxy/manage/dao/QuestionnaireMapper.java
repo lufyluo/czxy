@@ -53,5 +53,5 @@ public interface QuestionnaireMapper {
 
     StemEntity queryStem(Integer stemId);
 
-    OptionEntity queryOption(Integer stemId);
+    List<OptionEntity> queryOption(Integer stemId);
 }
