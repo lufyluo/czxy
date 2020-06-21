@@ -21,7 +21,7 @@
         insert into w_paper(name, description, state) values (#{name},#{description},0)
     </insert>
     <insert id="insertStem" useGeneratedKeys="true" keyProperty="id">
-        insert into w_stem (title, score) values (#{title},#{score})
+        insert into w_stem (title, score,`type`,required,category) values (#{title},#{score},#{type},#{required},#{category})
     </insert>
     <insert id="insertPaperStem" useGeneratedKeys="true" keyProperty="id">
         insert into w_paper_stem (`index`, paper_id, stem_id) values(#{index},#{paperId},#{stemId})
@@ -139,7 +139,7 @@
     </select>
     <select id="queryStem" resultType="com.czxy.manage.model.entity.questionnaire.stem.StemEntity">
         select
-        title, score
+        title, score,`type`,required,category
         from w_stem
         where id=#{stemId}
     </select>

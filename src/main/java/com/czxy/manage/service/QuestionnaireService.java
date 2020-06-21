@@ -11,6 +11,7 @@ import com.czxy.manage.model.entity.StudentDetailEntity;
 import com.czxy.manage.model.entity.questionnaire.PaperSendEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.OptionEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.PaperCopyStemEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.PaperStemEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.StemEntity;
 import com.czxy.manage.model.vo.PaperAddInfo;
 import com.czxy.manage.model.vo.PaperInfo;

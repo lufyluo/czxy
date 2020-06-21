@@ -65,7 +65,7 @@
         <if test="param != null and param != '' ">and u.name like '%${param}%'</if>
         <if test="skill != null and skill!='' ">and t.skill = #{skill}</if>
         <if test="star != null and star!='' ">and t.star = #{star}</if>
-        <if test="system != null and system>0 ">and t.system = #{system}</if>
+        <if test="system != null and system>=0 ">and t.system = #{system}</if>
         <if test="area != null and area!='' ">and t.area = #{area}</if>
         order by t.id desc
     </select>
