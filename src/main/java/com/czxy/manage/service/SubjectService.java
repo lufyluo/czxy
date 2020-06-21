@@ -1,20 +1,19 @@
 package com.czxy.manage.service;
 
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.czxy.manage.dao.FileMapper;
 import com.czxy.manage.dao.SubjectMapper;
 import com.czxy.manage.dao.TeacherMapper;
 import com.czxy.manage.dao.TypeMapper;
+import com.czxy.manage.infrastructure.gloable.ManageException;
+import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
-import com.czxy.manage.model.entity.FileEntity;
-import com.czxy.manage.model.entity.SubjectDetailEntity;
-import com.czxy.manage.model.entity.SubjectEntity;
-import com.czxy.manage.model.entity.TypeEntity;
+import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.plan.PlanInfo;
 import com.czxy.manage.model.vo.site.TypeInfo;
-import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
-import com.czxy.manage.model.vo.subject.SubjectDetailInfo;
-import com.czxy.manage.model.vo.subject.SubjectInfo;
-import com.czxy.manage.model.vo.subject.SubjectPageParam;
+import com.czxy.manage.model.vo.subject.*;
+import com.czxy.manage.model.vo.teacher.ImportTeacherInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,11 +22,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -95,7 +96,7 @@ public class SubjectService {
     public Boolean add(SubjectInfo subjectInfo) {
         List<TypeInfo> typeInfos = subjectInfo.getTypes();
         List<TypeEntity> typeEntityList = PojoMapper.INSTANCE.toTypeEntities(typeInfos);
-        typeEntityList.forEach(n->n.setCategory(0));
+        typeEntityList.forEach(n -> n.setCategory(0));
         typeService.batchInsertIfObsent(typeEntityList);
         SubjectEntity subjectEntity = PojoMapper.INSTANCE.toSubjectEntity(subjectInfo);
         String result = typeEntityList.stream().map(n -> n.getId().toString()).collect(Collectors.joining(","));
@@ -108,8 +109,7 @@ public class SubjectService {
         SubjectEntity subjectEntity = subjectMapper.queryById(subjectId);
         SubjectByIdInfo subjectByIdInfo = PojoMapper.INSTANCE.toSubjectByIdInfo(subjectEntity);
         subjectByIdInfo.setTeacherName(teacherMapper.queryName(subjectEntity.getTeacherId()));
-        if(!StringUtils.isEmpty(subjectEntity.getTypes()))
-        {
+        if (!StringUtils.isEmpty(subjectEntity.getTypes())) {
             String types = subjectEntity.getTypes();
             String[] split = types.split(",");
             List<TypeInfo> typeInfoList = new ArrayList<>();
@@ -124,7 +124,7 @@ public class SubjectService {
             }
             subjectByIdInfo.setTypes(typeInfoList);
         }
-        if(!StringUtils.isEmpty(subjectEntity.getFiles())){
+        if (!StringUtils.isEmpty(subjectEntity.getFiles())) {
             String files = subjectEntity.getFiles();
             List<Integer> fileIds = new ArrayList<>();
             Arrays.stream(files.split(",")).forEach(n -> fileIds.add(Integer.parseInt(n)));
@@ -134,25 +134,26 @@ public class SubjectService {
 
         return subjectByIdInfo;
     }
+
     public List<SubjectByIdInfo> getByTeacherId(Integer teacherId) {
         List<SubjectEntity> subjectEntities = subjectMapper.getByTeacherId(teacherId);
-        if(subjectEntities==null||subjectEntities.size() ==0){
+        if (subjectEntities == null || subjectEntities.size() == 0) {
             return null;
         }
         List<SubjectByIdInfo> subjectByIdInfo = PojoMapper.INSTANCE.toSubjectByIdInfos(subjectEntities);
         String teacherName = teacherMapper.queryName(teacherId);
-        subjectByIdInfo.forEach(n->n.setTeacherName(teacherName));
+        subjectByIdInfo.forEach(n -> n.setTeacherName(teacherName));
         fillTypes(subjectByIdInfo);
         return subjectByIdInfo;
     }
 
-    private void fillTypes(List<SubjectByIdInfo> planInfos){
-        planInfos.forEach(n->{
+    private void fillTypes(List<SubjectByIdInfo> planInfos) {
+        planInfos.forEach(n -> {
             List<Integer> typeIds = Arrays.stream(n.getTypeIds().split(","))
-                    .map(item->Integer.parseInt(item))
+                    .map(item -> Integer.parseInt(item))
                     .distinct().collect(Collectors.toList());
             List<TypeEntity> typeEntities = typeMapper.queryAll(typeIds);
-            if(typeEntities!=null){
+            if (typeEntities != null) {
                 n.setTypes(PojoMapper.INSTANCE.toTypeInfos(typeEntities));
             }
         });
@@ -173,5 +174,42 @@ public class SubjectService {
     public Boolean delete(List<Integer> subjectIds) {
         subjectMapper.delete(subjectIds);
         return true;
+    }
+
+    public Boolean importSubjects(MultipartFile file) {
+        ImportParams params = new ImportParams();
+        params.setStartRows(0);
+        try {
+            List<SubjectImportInfo> subjectImportInfos = ExcelImportUtil.importExcel(file.getInputStream(), SubjectImportInfo.class, params);
+            if (subjectImportInfos == null || subjectImportInfos.isEmpty()) {
+                return true;
+            }
+            fillTeacherId(subjectImportInfos);
+            List<SubjectEntity> subjectEntities = PojoMapper.INSTANCE.toImportSubjectEntities(subjectImportInfos);
+            subjectMapper.batchInsert(subjectEntities);
+            return true;
+        } catch (ManageException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw new ManageException(ResponseStatus.FAILURE, "导入课题失败");
+        }
+    }
+
+    private void fillTeacherId(List<SubjectImportInfo> subjectImportInfos) {
+        List<String> collect = subjectImportInfos.stream().map(n -> n.getTeacherName()).distinct().collect(Collectors.toList());
+        List<TeacherDetailEntity> teacherEntities = teacherMapper.queryByNames(collect);
+        if (teacherEntities == null) {
+            throw new ManageException(ResponseStatus.FAILURE, "教师不存在");
+        }
+        subjectImportInfos.forEach(n -> {
+            Optional<TeacherDetailEntity> optionalTeacherDetailEntity = teacherEntities
+                    .stream()
+                    .filter(item -> item.getName().equals(n.getTeacherName())).findFirst();
+            if (optionalTeacherDetailEntity.isPresent()) {
+                n.setTeacherId(optionalTeacherDetailEntity.get().getTeacherId());
+            } else {
+                throw new ManageException(ResponseStatus.FAILURE, n.getTeacherName() + " 教师不存在");
+            }
+        });
     }
 }

@@ -19,7 +19,7 @@ public interface OrgMapper {
 
     List<OrgEntity> getByNames(@Param("list") List<String> list);
 
-    Integer batchInsert(List<String> orgNames);
+    Integer batchInsert(List<OrgEntity> orgEntities);
 
     Integer updateStarAndName(CustomerInfo customerInfo);
 

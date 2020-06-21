@@ -25,4 +25,6 @@ public interface SubjectMapper {
     List<CourseDetailEntity> queryByArrangeId(Integer arrangeId);
 
     List<SubjectEntity> getByTeacherId(Integer teacherId);
+
+    Integer batchInsert(List<SubjectEntity> subjectEntities);
 }

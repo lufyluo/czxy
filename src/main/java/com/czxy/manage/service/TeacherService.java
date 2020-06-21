@@ -43,8 +43,6 @@ public class TeacherService {
     private UserService userService;
     @Autowired
     private SubjectService subjectService;
-    @Resource
-    private OrgMapper orgMapper;
 
     public PageInfo<TeacherDetailInfo> page(TeacherPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -77,15 +75,11 @@ public class TeacherService {
     }
 
     @Transactional
-    public Boolean update(TeacherUpdateInfo teacherUpdateInfo, Integer teacherId) {
+    public Boolean update(TeacherUpdateInfo teacherUpdateInfo) {
         Integer orgId = orgService.insertIfAbsentOrg(teacherUpdateInfo.getOrgName(), teacherUpdateInfo.getOrgId());
         TeacherEntity teacherEntity = PojoMapper.INSTANCE.TeacherUpdateToTeacherEntity(teacherUpdateInfo);
-        if(teacherUpdateInfo.getTeacherId() == null){
-            teacherUpdateInfo.setTeacherId(teacherId);
-        }
         teacherMapper.update(teacherEntity);
-        Integer userId = teacherMapper.queryUserId(teacherEntity);
-        teacherUpdateInfo.setUserId(userId);
+        teacherUpdateInfo.setUserId(teacherUpdateInfo.getId());
         UserUpdateEntity userUpdateEntity = PojoMapper.INSTANCE.teacherUpdateToUserUpdateEnity(teacherUpdateInfo);
         userUpdateEntity.setOrgId(orgId);
         userMapper.updateByTeacher(userUpdateEntity);
@@ -109,7 +103,7 @@ public class TeacherService {
     }
 
     @Transactional
-    public List<ImportTeacherInfo> batchImport(Integer system, MultipartFile file) {
+    public List<ImportTeacherInfo> batchImport(MultipartFile file) {
         ImportParams params = new ImportParams();
         params.setStartRows(0);
         try {
@@ -120,9 +114,6 @@ public class TeacherService {
             teacherInfos = teacherInfos.stream().filter(n -> !StringUtils.isEmpty(n.getPhone())).collect(Collectors.toList());
             fillOrgIds(teacherInfos);
             fillUserIds(teacherInfos);
-            teacherInfos.forEach(n -> {
-                n.setSystem(system);
-            });
             List<TeacherEntity> teacherEntities = PojoMapper.INSTANCE.importTeacherInfoToTeacherEntity(teacherInfos);
             teacherEntities = clearExistTeacher(teacherEntities);
             if (teacherEntities != null && teacherEntities.size() > 0) {
@@ -137,7 +128,7 @@ public class TeacherService {
 
     private List<TeacherEntity> clearExistTeacher(List<TeacherEntity> teacherEntities) {
         List<Integer> userIds = teacherEntities.stream().map(TeacherEntity::getUserId).collect(Collectors.toList());
-        if(userIds == null|| userIds.size() == 0){
+        if (userIds == null || userIds.size() == 0) {
             return teacherEntities;
         }
         List<TeacherEntity> teacherExistEntities = teacherMapper.queryByUserIds(userIds);
@@ -171,11 +162,12 @@ public class TeacherService {
         List<String> orgNames = importTeacherInfos.stream()
                 .filter(n -> !StringUtils.isEmpty(n.getOrgName()))
                 .map(ImportTeacherInfo::getOrgName)
+                .distinct()
                 .collect(Collectors.toList());
         if (orgNames == null || orgNames.size() == 0) {
             return;
         }
-        List<OrgEntity> orgs = getOrgEntities(orgNames);
+        List<OrgEntity> orgs = orgService.batchInsertIfAbsentOrg(orgNames);
 
         for (int i = 0; i < importTeacherInfos.size(); i++) {
             ImportTeacherInfo importTeacherInfo = importTeacherInfos.get(i);
@@ -187,19 +179,4 @@ public class TeacherService {
             }
         }
     }
-
-    private List<OrgEntity> getOrgEntities(List<String> orgNames) {
-        List<OrgEntity> orgs = orgMapper.getByNames(orgNames);
-        if (orgs == null || orgs.size() == 0) {
-            orgMapper.batchInsert(orgNames);
-            orgs = orgMapper.getByNames(orgNames);
-        } else if (orgs.size() < orgNames.size()) {
-            List<String> orgExists = orgs.stream().map(OrgEntity::getName).collect(Collectors.toList());
-            orgNames.removeAll(orgExists);
-            orgMapper.batchInsert(orgNames);
-            orgs = orgMapper.getByNames(orgNames);
-        }
-        return orgs;
-    }
-
 }

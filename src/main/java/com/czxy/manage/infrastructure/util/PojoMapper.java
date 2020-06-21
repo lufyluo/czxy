@@ -34,6 +34,7 @@ import com.czxy.manage.model.vo.stock.StockInfo;
 import com.czxy.manage.model.vo.student.*;
 import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
 import com.czxy.manage.model.vo.subject.SubjectDetailDomainInfo;
+import com.czxy.manage.model.vo.subject.SubjectImportInfo;
 import com.czxy.manage.model.vo.subject.SubjectInfo;
 import com.czxy.manage.model.vo.teacher.*;
 import com.czxy.manage.model.vo.user.*;
@@ -294,4 +295,7 @@ public interface PojoMapper {
     UserPartInfo toUserPartInfo(UserEntity userEntity);
 
     ClassFileEntity toClassFileEntity(ClassFileCreateInfo classCreateInfo);
+
+    SubjectEntity toImportSubjectEntity(SubjectImportInfo subjectImportInfo);
+    List<SubjectEntity> toImportSubjectEntities(List<SubjectImportInfo> subjectImportInfos);
 }

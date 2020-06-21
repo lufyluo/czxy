@@ -27,7 +27,7 @@
             area=#{area},
             pay=#{pay},
             updated_time=now()
-        where id = #{teacherId}
+        where user_id = #{id}
     </update>
     <delete id="delete">
         delete from teacher where id in
@@ -145,8 +145,18 @@
         select
         <include refid="base_column"></include>
         from teacher where user_id in
-                           <foreach collection="list" separator="," item="item" close=")" open="(">
-                               #{item}
-                           </foreach>
+        <foreach collection="list" separator="," item="item" close=")" open="(">
+            #{item}
+        </foreach>
+    </select>
+    <select id="queryByNames" resultType="com.czxy.manage.model.entity.TeacherDetailEntity">
+        select
+        t.id as teacherId,u.name
+        from teacher t
+        left join user u on t.user_id = u.id
+        where u.name in
+        <foreach collection="list" separator="," item="item" close=")" open="(">
+            #{item}
+        </foreach>
     </select>
 </mapper>
