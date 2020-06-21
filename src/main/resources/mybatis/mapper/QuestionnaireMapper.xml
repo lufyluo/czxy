@@ -17,6 +17,18 @@
             (#{item.paperId},#{item.stemId},#{item.optionId},#{item.userId},#{item.answerText})
         </foreach>
     </insert>
+    <insert id="insertPaper" useGeneratedKeys="true" keyProperty="id">
+        insert into w_paper(name, description, state) values (#{name},#{description},0)
+    </insert>
+    <insert id="insertStem" useGeneratedKeys="true" keyProperty="id">
+        insert into w_stem (title, score) values (#{title},#{score})
+    </insert>
+    <insert id="insertPaperStem" useGeneratedKeys="true" keyProperty="id">
+        insert into w_paper_stem (`index`, paper_id, stem_id) values(#{index},#{paperId},#{stemId})
+    </insert>
+    <insert id="insertOption" useGeneratedKeys="true" keyProperty="id">
+        insert into w_option (name, score, `index`, stem_id) values (#{name},#{score},#{index},#{stemId})
+    </insert>
     <update id="update">
         update w_paper
         set name=#{name},
@@ -111,5 +123,19 @@
 
         order by `index`,optionIndex
 
+    </select>
+    <select id="query" resultType="com.czxy.manage.model.entity.PaperCopyEntity">
+        select
+        wp.id,wp.name,wp.description,wp.state,
+        wps.index,ws.title,ws.score,wo.name as optionName,wo.score as optionScore,
+        wo.index as optionIndex
+        from w_paper wp
+        left join w_paper_stem wps
+        on wp.id=wps.paper_id
+        left join w_stem ws
+        on ws.id=wps.stem_id
+        left join w_option wo
+        on wo.stem_id=ws.id
+        where wp.id=#{paperId}
     </select>
 </mapper>

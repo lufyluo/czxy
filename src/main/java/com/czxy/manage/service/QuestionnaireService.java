@@ -5,10 +5,15 @@ import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
+import com.czxy.manage.model.entity.PaperCopyEntity;
 import com.czxy.manage.model.entity.PaperDetailEntity;
 import com.czxy.manage.model.entity.PaperEntity;
 import com.czxy.manage.model.entity.StudentDetailEntity;
 import com.czxy.manage.model.entity.questionnaire.PaperSendEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.OptionEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.PaperCopyStemEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.PaperStemEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.StemEntity;
 import com.czxy.manage.model.vo.PaperAddInfo;
 import com.czxy.manage.model.vo.PaperInfo;
 import com.czxy.manage.model.vo.questionnaire.*;
@@ -183,8 +188,29 @@ public class QuestionnaireService {
         }
         return optionAnalysisDetailInfos;
     }
-
+    @Transactional
     public Boolean copy(Integer paperId, String paperName) {
-        return null;
+        PaperCopyEntity paperCopyEntity = questionnaireMapper.query(paperId);
+        paperCopyEntity.setName(paperName);
+        PaperEntity paperEntity = new PaperEntity();
+        paperEntity.setName(paperCopyEntity.getName());
+        paperEntity.setDescription(paperCopyEntity.getDescription());
+        questionnaireMapper.insertPaper(paperEntity);
+        StemEntity stemEntity =new StemEntity();
+        stemEntity.setTitle(paperCopyEntity.getTitle());
+        stemEntity.setScore(paperCopyEntity.getScore());
+        questionnaireMapper.insertStem(stemEntity);
+        PaperCopyStemEntity paperCopyStemEntity = new PaperCopyStemEntity();
+        paperCopyStemEntity.setIndex(paperCopyEntity.getIndex());
+        paperCopyStemEntity.setPaperId(paperEntity.getId());
+        paperCopyStemEntity.setStemId(stemEntity.getId());
+        questionnaireMapper.insertPaperStem(paperCopyStemEntity);
+        OptionEntity optionEntity = new OptionEntity();
+        optionEntity.setIndex(paperCopyEntity.getOptionIndex());
+        optionEntity.setName(paperCopyEntity.getOptionName());
+        optionEntity.setScore(paperCopyEntity.getOptionScore());
+        optionEntity.setStemId(stemEntity.getId());
+        questionnaireMapper.insertOption(optionEntity);
+        return true;
     }
 }
