@@ -72,7 +72,7 @@ public class LogAspect {
             restLog.setRequestBody(params);
             restLog.setMethod(httpServletRequest.getMethod());
             restLog.setUrl(httpServletRequest.getServletPath());
-            restLog.setRequestBody(response);
+            restLog.setResponse(response);
             restLog.setRemoteIp(httpServletRequest.getRemoteAddr());
             return JSON.toJSONString(restLog);
         } catch (Exception e) {

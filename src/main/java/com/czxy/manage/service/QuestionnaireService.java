@@ -139,7 +139,7 @@ public class QuestionnaireService {
                 PaperDetailEntity stemInfo = entry.getValue().get(0);
                 StemAnalysisDetailInfo stemDetailInfo = PojoMapper.INSTANCE.toPaperDetailEntity(stemInfo);
                 stemDetailInfo.setId(entry.getKey());
-                if (stemDetailInfo.getCategory() == 1) {
+                if (stemDetailInfo.getCategory() == 1 && total > 0) {
                     int avg = entry.getValue().stream().filter(n -> n.getOptionSelected() == 1).collect(Collectors.summingInt(n -> n.getOptionScore()));
                     stemDetailInfo.setAvgScore(avg / total);
                 }
@@ -178,8 +178,10 @@ public class QuestionnaireService {
                 optionAnalysisDetailInfo.setScore(entry.getValue().get(0).getOptionScore());
                 optionAnalysisDetailInfo.setIndex(entry.getValue().get(0).getOptionIndex());
                 Long count = entry.getValue().stream().filter(n -> n.getAnswerId() != null).collect(Collectors.counting());
-                float percent = (int) ((new BigDecimal((float) count / total).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()) * 100);
-                optionAnalysisDetailInfo.setPercent(percent + "%");
+                if (total > 0) {
+                    float percent = (int) ((new BigDecimal((float) count / total).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()) * 100);
+                    optionAnalysisDetailInfo.setPercent(percent + "%");
+                }
                 optionAnalysisDetailInfo.setCount(count.intValue());
                 optionAnalysisDetailInfos.add(optionAnalysisDetailInfo);
             }
@@ -191,24 +193,28 @@ public class QuestionnaireService {
     @Transactional
     public Boolean copy(Integer paperId, String paperName) {
         PaperEntity paperEntity = questionnaireMapper.queryPaper(paperId);
-        if(paperEntity.getName()==paperName){
-            paperEntity.setName(paperName+"复制");
+        if (paperEntity.getName().equals(paperName)) {
+            paperEntity.setName(paperName + "复制");
+        } else {
+            paperEntity.setName(paperName);
         }
         questionnaireMapper.insertPaper(paperEntity);
         List<PaperCopyStemEntity> paperCopyStemEntities = questionnaireMapper.queryPaperStem(paperId);
-        List<Integer> stemIds = paperCopyStemEntities.stream().map(n -> n.getStemId()).collect(Collectors.toList());
-        HashSet hashSet = new HashSet(stemIds);
-        stemIds.clear();
-        stemIds.addAll(hashSet);
-        for (Integer stemId:stemIds){
+        List<Integer> stemIds = paperCopyStemEntities.stream().map(n -> n.getStemId()).distinct().collect(Collectors.toList());
+        for (Integer stemId : stemIds) {
             StemEntity stemEntity = questionnaireMapper.queryStem(stemId);
             questionnaireMapper.insertStem(stemEntity);
-            List<OptionEntity> optionEntities = questionnaireMapper.queryOption(stemId);
-            for (OptionEntity optionEntity:optionEntities){
-                optionEntity.setStemId(stemEntity.getId());
-                questionnaireMapper.insertOption(optionEntity);
+            if(!ObjectUtils.nullSafeEquals("问答题", stemEntity.getType())){
+                List<OptionEntity> optionEntities = questionnaireMapper.queryOption(stemId);
+                for (OptionEntity optionEntity : optionEntities) {
+                    optionEntity.setStemId(stemEntity.getId());
+                    questionnaireMapper.insertOption(optionEntity);
+                }
             }
-            for (PaperCopyStemEntity p:paperCopyStemEntities){
+
+            Optional<PaperCopyStemEntity> first = paperCopyStemEntities.stream().filter(n -> n.getStemId().equals(stemId)).findFirst();
+            if (first.isPresent()) {
+                PaperCopyStemEntity p = first.get();
                 p.setStemId(stemEntity.getId());
                 p.setPaperId(paperEntity.getId());
                 questionnaireMapper.insertPaperStem(p);

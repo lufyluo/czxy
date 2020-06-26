@@ -26,7 +26,9 @@
         where id = #{id}
     </update>
     <update id="clearStudent">
-        update student set class_id = null where class_id = #{classId}
+        update student
+        set class_id = null
+        where class_id = #{classId}
     </update>
     <delete id="delete">
         delete from class where id in
@@ -179,16 +181,22 @@
         where id = #{classId}
     </select>
     <select id="queryRecentByStudentUserId" resultType="java.lang.Integer">
-        select class_id from student s where user_id = #{userId} order by id desc limit 1
+        select class_id
+        from student s
+        where user_id = #{userId}
+          and class_id is not null
+        order by id desc
+        limit 1
     </select>
     <select id="queryCount" resultType="com.czxy.manage.model.entity.CountEntity">
         select count(s.class_id) as studentCount,c.id as classId
         from class c
         left join student s
         on c.id=s.class_id
-        where c.id in <foreach collection="collect" item="item" index="index"
-                               open="(" separator="," close=")">#{item}
-                      </foreach>
+        where c.id in
+        <foreach collection="collect" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
         group by s.class_id,c.id
     </select>
 </mapper>

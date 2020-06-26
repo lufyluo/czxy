@@ -18,6 +18,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -49,9 +50,9 @@ public class QuestionnaireStemService {
             List<OptionEntity> optionEntities = PojoMapper.INSTANCE.toOptionEntities(stemUpdateInfo.getOptions());
             optionEntities.forEach(n -> n.setStemId(stemEntity.getId()));
             insertOrUpdate(optionEntities);
-           List<Integer> optionIds = optionEntities.stream().filter(n->n.getId()!=null).map(OptionEntity::getId).collect(Collectors.toList());
-            optionMapper.deleteOptions(optionIds,stemEntity.getId());
-        }else{
+            List<Integer> optionIds = optionEntities.stream().filter(n -> n.getId() != null).map(OptionEntity::getId).collect(Collectors.toList());
+            optionMapper.deleteOptions(optionIds, stemEntity.getId());
+        } else {
             optionMapper.deleteByStemId(stemEntity.getId());
         }
         return true;
@@ -107,16 +108,19 @@ public class QuestionnaireStemService {
     private List<PaperStemInfo> distinctAndFilleOptions1(List<PaperStemInfo> stemInfos) {
         List<PaperStemInfo> result = new ArrayList<>();
         stemInfos.forEach(n -> {
-            List<PaperStemInfo> options = stemInfos
-                    .stream()
-                    .filter(op -> op.getStemId() == n.getId())
-                    .collect(Collectors.toList());
-            options.sort(Comparator.comparing(PaperStemInfo::getOptionIndex));
-            if (options != null && !result.stream().anyMatch(temp -> temp.getId() == n.getId())) {
-                n.setOptions(toOptionInfos1(options));
+            if (!ObjectUtils.nullSafeEquals("问答题", n.getType())) {
+                List<PaperStemInfo> options = stemInfos
+                        .stream()
+                        .filter(op -> ObjectUtils.nullSafeEquals(op.getStemId(), n.getId()))
+                        .collect(Collectors.toList());
+                options.sort(Comparator.comparing(PaperStemInfo::getOptionIndex));
+                if (options != null && !result.stream().anyMatch(temp -> temp.getId().equals(n.getId()))) {
+                    n.setOptions(toOptionInfos1(options));
+                    result.add(n);
+                }
+            }else {
                 result.add(n);
             }
-
         });
         return result;
     }
