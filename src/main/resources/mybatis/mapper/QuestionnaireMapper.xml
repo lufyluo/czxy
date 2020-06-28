@@ -115,7 +115,7 @@
         left join w_stem ws on wps.stem_id = ws.id
         left join w_option wo on ws.id = wo.stem_id
         left join w_paper_submit w on w.paper_id = p.id and w.stem_id = ws.id
-        left join user u on w.user_id = u.id
+        inner join user u on w.user_id = u.id
         <if test="userId != null and userId != ''">
             and w.user_id = #{userId}
         </if>

@@ -45,6 +45,12 @@ public class SiteController {
         return PageResponse.success(siteService.page(pageParam));
     }
 
+    @GetMapping("/page_topics")
+    @ApiOperation("分页获取主题点位")
+    public PageResponse<SiteInfo> pageWithTopic(SitePageParam<String> pageParam) {
+        return PageResponse.success(siteService.pageWithTopic(pageParam));
+    }
+
     @GetMapping("/{id}")
     @Anonymous
     @ApiOperation("获取点位详情")

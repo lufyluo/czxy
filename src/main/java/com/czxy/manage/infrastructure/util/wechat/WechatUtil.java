@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,9 +36,12 @@ public class WechatUtil {
     public String msgTag;
     @Value("${czxy.wechat.quetionnaire}")
     public String quetionnaire;
+    @Value("${czxy.wechat.sendByTag}")
+    public String sendByTagApi;
     public String accessToken;
     @Autowired
     private RestTemplate restTemplate;
+
 
     public String getOpenId(String code) {
         try {
@@ -59,7 +63,39 @@ public class WechatUtil {
 
     }
 
+    /**
+     * {
+     * "filter":{
+     * "is_to_all":false,
+     * "tag_id":2
+     * },
+     * "text":{
+     * "content":"CONTENT"
+     * },
+     * "msgtype":"text"
+     * }
+     */
     public Boolean send(int tag, String msg) {
+
+        JSONObject postData = new JSONObject();
+        Map<String, Object> filter = new HashMap<>();
+        filter.put("is_to_all", false);
+        filter.put("tag_id", tag);
+
+        Map<String, Object> text = new HashMap<>();
+        text.put("content", msg);
+        postData.put("filter", filter);
+        postData.put("text", text);
+        postData.put("msgtype", "text");
+
+        TagInfo body = restTemplate.postForEntity(sendByTagApi + accessToken, postData, TagInfo.class).getBody();
+        if (body.getErrcode() == 40014 || body.getErrcode() == 42001 || body.getErrcode() == 40001) {
+            getAccessToken();
+            return send(tag, msg);
+        }
+        if (body.getErrcode() != null && body.getErrcode() > 0) {
+            return false;
+        }
         return true;
     }
 
@@ -80,27 +116,54 @@ public class WechatUtil {
         return tagInfo.getId();
     }
 
-    private Boolean addTag(List<String> ids, int tagId) {
+    public Boolean addTag(List<String> ids, int tagId) {
         int pageIndex = 0;
         int pageSize = 50;
-        int toIndex = pageIndex*pageSize+pageSize;
-        int max =Math.max(toIndex,ids.size());
-        while (max<ids.size()){
+        int toIndex = pageIndex * pageSize + pageSize;
+        int max = Math.min(toIndex, ids.size());
+        while (max <= ids.size()) {
             JSONObject postData = new JSONObject();
             List<String> currentIds = ids.subList(pageIndex, max);
             postData.put("openid_list", currentIds);
             postData.put("tagid", tagId);
-            TagInfo body = restTemplate.postForEntity(createTagApi, postData, TagInfo.class).getBody();
-            if (body.getErrcode() == null) {
-                return true;
+            TagInfo body = restTemplate.postForEntity(addTagApi + accessToken, postData, TagInfo.class).getBody();
+            if (body.getErrcode() == 40014 || body.getErrcode() == 42001 || body.getErrcode() == 40001) {
+                getAccessToken();
+                addTag(currentIds, tagId);
+            }
+            if (body.getErrcode() != null && body.getErrcode() > 0) {
+                return false;
+            }
+            if (max == ids.size()) {
+                break;
+            }
+            toIndex += pageSize;
+            max = toIndex > ids.size() ? ids.size() : toIndex;
+        }
+        return true;
+    }
+
+    public Boolean clearTag(List<String> ids, int tagId) {
+        int pageIndex = 0;
+        int pageSize = 50;
+        int toIndex = pageIndex * pageSize + pageSize;
+        int max = Math.max(toIndex, ids.size());
+        while (max < ids.size()) {
+            JSONObject postData = new JSONObject();
+            List<String> currentIds = ids.subList(pageIndex, max);
+            postData.put("openid_list", currentIds);
+            postData.put("tagid", tagId);
+            TagInfo body = restTemplate.postForEntity(clearTagApi + accessToken, postData, TagInfo.class).getBody();
+            if (body.getErrcode() == 40014 || body.getErrcode() == 42001 || body.getErrcode() == 40001) {
+                getAccessToken();
+                clearTag(currentIds, tagId);
+            }
+            if (body.getErrcode() != null && body.getErrcode() > 0) {
+                return false;
             }
 
         }
-        return false;
-    }
-
-    private Boolean clearTag(List<String> ids, int tagId) {
-        return null;
+        return true;
     }
 
     private String getAccessToken() {

@@ -65,6 +65,9 @@ public class OrgService {
             List<String> orgExists = orgs.stream().map(OrgEntity::getName).collect(Collectors.toList());
             orgNames.removeAll(orgExists);
         }
+        if (orgNames == null || orgNames.size() == 0) {
+            return orgs;
+        }
         List<OrgEntity> collect = orgNames
                 .stream()
                 .map(n -> {

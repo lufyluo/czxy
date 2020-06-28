@@ -113,6 +113,7 @@ public interface PojoMapper {
 
     UserUpdateEntity studentUpdateToUserUpdateEntity(StudentUpdateInfo studentUpdateInfo);
 
+    @Mappings({@Mapping(source = "classArrangeId",target = "arrangeId")})
     ClassEntity classCreateInfoToClassEntity(ClassCreateInfo classCreateInfo);
 
     @Mappings({@Mapping(ignore = true, target = "types"), @Mapping(ignore = true, target = "topicId")})

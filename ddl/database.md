@@ -859,6 +859,8 @@ create table class_file
 )
 comment '班级附件';
 
+alter table w_stem modify category smallint null comment '0-普通题目，1-分数题目';
+
 
 )
 ```

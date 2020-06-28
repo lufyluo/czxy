@@ -2,16 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.ClassMasterMapper">
     <sql id="base_column">
-               id
+        id
         ,user_id as userId
         ,type
         updated_time as updatedTime, created_time as createdTime
     </sql>
     <insert id="insertMaster">
-        insert into class_master(user_id,type,class_id)
-        values(#{userId},0,#{classId})
+        insert into class_master(user_id, type, class_id)
+        values (#{userId}, 0, #{classId})
     </insert>
+    <delete id="delete">
+        delete
+        from class_master
+        where class_id = #{classId}
+          and user_id = #{masterId}
+    </delete>
     <select id="queryClass" resultType="java.lang.Integer">
-        select class_id from class_master where user_id  =#{userId} order by id desc limit 1
+        select class_id
+        from class_master
+        where user_id = #{userId}
+        order by id desc
+        limit 1
     </select>
 </mapper>

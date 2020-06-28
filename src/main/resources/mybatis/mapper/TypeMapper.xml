@@ -7,7 +7,8 @@
     </sql>
     <insert id="insert" parameterType="com.czxy.manage.model.entity.TypeEntity" useGeneratedKeys="true"
             keyProperty="id">
-        insert into type (name, category) VALUES(#{name},0)
+        insert into type (name, category)
+        VALUES (#{name}, 0)
     </insert>
     <insert id="batchInsert" useGeneratedKeys="true"
             keyProperty="id">
@@ -29,10 +30,9 @@
         </foreach>
     </select>
     <select id="query" resultType="java.lang.String">
-        select
-        name
+        select name
         from type
-        where id=#{parseInt}
+        where id = #{parseInt}
     </select>
     <select id="queryByKey" resultType="com.czxy.manage.model.entity.TypeEntity">
         select
@@ -43,5 +43,14 @@
             and name like '%${key}%'
         </if>
         order by id desc
+    </select>
+    <select id="queryByNames" resultType="com.czxy.manage.model.entity.TypeEntity">
+        select id,name from type
+        where
+        category =0 and
+        name in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
     </select>
 </mapper>

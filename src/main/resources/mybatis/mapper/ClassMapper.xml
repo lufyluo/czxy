@@ -185,7 +185,12 @@
         from student s
         where user_id = #{userId}
           and class_id is not null
-        order by id desc
+        union all
+        select class_id
+        from class_master s
+        where user_id = #{userId}
+          and class_id is not null
+        order by class_id desc
         limit 1
     </select>
     <select id="queryCount" resultType="com.czxy.manage.model.entity.CountEntity">

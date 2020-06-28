@@ -14,15 +14,17 @@ public interface SiteMapper {
 
     Integer insert(SiteEntity siteEntity);
 
-    Boolean delete(@Param("siteIds") List<Integer> siteIds);
+    Boolean delete(List<Integer> siteIds);
 
-    List<SiteEntity> query( SitePageParam sitePageParam);
+    List<SiteEntity> query(SitePageParam sitePageParam);
+
+    List<SiteEntity> queryWithTopics(SitePageParam sitePageParam);
 
     Integer update(SiteEntity siteEntity);
 
     Integer batchInsert(List<SiteEntity> siteEntities);
 
-    Integer insertTopic( List<TopicInfo> topics);
+    Integer insertTopic(List<TopicInfo> topics);
 
     Integer deleteTopic(List<Integer> siteIds);
 
@@ -40,4 +42,8 @@ public interface SiteMapper {
     SiteEntity queryById(Integer id);
 
     Integer clear(Integer id);
+
+    List<String> queryByNames(List<String> names);
+
+    Integer batchInsertTopics(Integer siteId, @Param("topics") String[] topics);
 }

@@ -36,8 +36,14 @@ public class SiteAddInfo extends BaseEntity {
     private Integer countyId;
     @Excel(name = "费用")
     private Integer fee;
-//    @Excel(name = "点位类型")
-    private String typeName;
-    @ApiModelProperty("点位课堂名称")
+    @Excel(name = "点位主题")
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private String topicNames;
+    @ApiModelProperty(hidden = true)
+    @Excel(name = "点位类型")
+    @JsonIgnore
+    private String typeNames;
+    @ApiModelProperty("点位课堂名称（点位主题）")
     private List<TopicInfo> topics;
 }

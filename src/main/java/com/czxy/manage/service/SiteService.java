@@ -16,6 +16,7 @@ import com.czxy.manage.model.vo.site.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -64,7 +65,7 @@ public class SiteService {
         for (int i = 0; i < siteEntities.size(); i++) {
             SiteEntity siteEntity = siteEntities.get(i);
             String types = siteEntity.getTypes();
-            if(StringUtils.isEmpty(types)){
+            if (StringUtils.isEmpty(types)) {
                 continue;
             }
             String[] split = types.split(",");
@@ -139,13 +140,50 @@ public class SiteService {
             if (siteInfos == null || siteInfos.size() == 0) {
                 throw new ManageException(ResponseStatus.ARGUMENTNOTVALID, "数据为空！");
             }
-            List<SiteEntity> siteEntities = PojoMapper.INSTANCE.toSiteEntities(siteInfos);
+            List<String> names = siteInfos.stream().map(n -> n.getName()).collect(Collectors.toList());
+            List<String> existSites = siteMapper.queryByNames(names);
+            if (existSites != null && existSites.size() > 0) {
+                throw new ManageException(ResponseStatus.DATAEXIST, "点位已存在：" + ArrayUtils.toString(existSites));
+            }
+            List<SiteEntity> siteEntities = prepare(siteInfos);
             siteMapper.batchInsert(siteEntities);
+            addTopics(siteEntities);
             return true;
-        } catch (Exception e) {
+        }
+        catch (ManageException ex){
+            throw ex;
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private List<SiteEntity> prepare(List<SiteAddInfo> siteInfos) {
+        List<SiteEntity> entities = new ArrayList<>();
+        siteInfos.forEach(n -> {
+            if (!StringUtils.isEmpty(n.getTypeNames())) {
+                String[] types = n.getTypeNames().split("\n");
+                List<TypeInfo> typeInfos = Arrays.stream(types).map(t -> {
+                    TypeInfo typeInfo = new TypeInfo();
+                    typeInfo.setName(t);
+                    typeInfo.setCategory(0);
+                    return typeInfo;
+                }).collect(Collectors.toList());
+                n.setTypes(typeInfos);
+            }
+            entities.add(prepare(n));
+        });
+        return entities;
+    }
+
+    private void addTopics(List<SiteEntity> siteEntities) {
+        siteEntities.forEach(n -> {
+            if (!StringUtils.isEmpty(n.getTopicNames())) {
+                String[] topics = n.getTopicNames().split("\n");
+                siteMapper.batchInsertTopics(n.getId(), topics);
+            }
+        });
     }
 
     public SiteDetailInfo get(Integer id) {
@@ -156,12 +194,12 @@ public class SiteService {
         SiteDetailInfo siteInfo = PojoMapper.INSTANCE.toSiteDetailInfo(siteEntity);
         fillTypes(siteEntity, siteInfo);
         fillTopics(siteInfo);
-        fillPics(siteEntity,siteInfo);
-        fillAttachFiles(siteEntity,siteInfo);
+        fillPics(siteEntity, siteInfo);
+        fillAttachFiles(siteEntity, siteInfo);
         return siteInfo;
     }
 
-    private void fillAttachFiles(SiteEntity siteEntity,SiteDetailInfo siteInfo) {
+    private void fillAttachFiles(SiteEntity siteEntity, SiteDetailInfo siteInfo) {
         String attachFiles = siteEntity.getAttachFiles();
         if (!StringUtils.isEmpty(attachFiles)) {
             List<Integer> fileIds = Arrays.asList(attachFiles.split(",")).stream().map(n -> Integer.parseInt(n)).collect(Collectors.toList());
@@ -170,7 +208,7 @@ public class SiteService {
         }
     }
 
-    private void fillPics(SiteEntity siteEntity,SiteDetailInfo siteInfo) {
+    private void fillPics(SiteEntity siteEntity, SiteDetailInfo siteInfo) {
         String pics = siteEntity.getPics();
         if (!StringUtils.isEmpty(pics)) {
             List<Integer> fileIds = Arrays.asList(pics.split(",")).stream().map(n -> Integer.parseInt(n)).collect(Collectors.toList());
@@ -191,5 +229,38 @@ public class SiteService {
             List<TypeEntity> typeEntities = typeMapper.queryAll(typeIds);
             siteInfo.setTypes(PojoMapper.INSTANCE.toTypeInfos(typeEntities));
         }
+    }
+
+    public PageInfo pageWithTopic(SitePageParam<String> pageParam) {
+        Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
+        List<SiteEntity> siteEntities = siteMapper.queryWithTopics(pageParam);
+
+        for (int i = 0; i < siteEntities.size(); i++) {
+            SiteEntity siteEntity = siteEntities.get(i);
+            String types = siteEntity.getTypes();
+            if (StringUtils.isEmpty(types)) {
+                continue;
+            }
+            String[] split = types.split(",");
+            List<String> typeNames = new ArrayList<>();
+            for (int j = 0; j < split.length; j++) {
+                Integer m = Integer.parseInt(split[j]);
+                String typeName = typeMapper.query(m);
+                typeNames.add(typeName);
+            }
+            String typeName = String.join(",", typeNames);
+            siteEntity.setTypeName(typeName);
+        }
+        PageInfo<SiteInfo> result = page.toPageInfo();
+        result.setList(PojoMapper.INSTANCE.toSiteInfo(siteEntities));
+        result.getList().forEach(n -> {
+            if (StringUtils.isEmpty(n.getPath())) {
+                n.setAddress(n.getAddr());
+            } else {
+                n.setAddress(n.getPath().replace(",", "") + n.getAddr());
+            }
+
+        });
+        return result;
     }
 }

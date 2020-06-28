@@ -22,6 +22,7 @@ public class SiteEntity extends BaseEntity {
     private Integer cityId;
     private Integer countyId;
     private Integer fee;
+    private String topicNames;
     private String topicName;
     private String typeName;
 }

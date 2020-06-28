@@ -48,6 +48,10 @@ public class UserService {
     @Autowired
     private AccountService accountService;
 
+    public List<String> getWechatIds(List<Integer> userIds) {
+        return userMapper.queryByUserIds(userIds);
+    }
+
     @Transactional
     public Boolean add(UserCreateInfo userInfo) {
         insertIfAbsentOrg(userInfo);

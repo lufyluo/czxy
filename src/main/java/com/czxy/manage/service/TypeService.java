@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class TypeService {
@@ -20,6 +21,7 @@ public class TypeService {
     private TypeMapper typeMapper;
 
     public Boolean batchInsertIfObsent(List<TypeEntity> typeEntityList) {
+        checkExist(typeEntityList);
         List<TypeEntity> typeAddEntities = typeEntityList
                 .stream()
                 .filter(n -> n.getId() == null && !StringUtils.isEmpty(n.getName()))
@@ -39,7 +41,21 @@ public class TypeService {
         });
         return true;
     }
+
+    private void checkExist(List<TypeEntity> typeEntityList) {
+        List<String> names = typeEntityList.stream().map(n -> n.getName()).collect(Collectors.toList());
+        List<TypeEntity> exists = typeMapper.queryByNames(names);
+        typeEntityList.forEach(n->{
+            Optional<TypeEntity> optional = exists.stream()
+                    .filter(m->ObjectUtils.nullSafeEquals(m.getName(),n.getName())).findFirst();
+            if(optional.isPresent()){
+                n.setId(optional.get().getId());
+            }
+        });
+    }
+
     public Boolean batchInsert(List<TypeEntity> typeAddEntities) {
+
         typeMapper.batchInsert(typeAddEntities);
         return true;
     }
