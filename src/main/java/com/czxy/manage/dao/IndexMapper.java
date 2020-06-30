@@ -10,4 +10,12 @@ public interface IndexMapper {
     List<String> getUrl();
 
     String queryNewMessage();
+
+    Integer getStudentNumbers();
+
+    Integer getTeacherNumbers();
+
+    Integer getSiteNumbers();
+
+    Integer getSubjectNumbers();
 }

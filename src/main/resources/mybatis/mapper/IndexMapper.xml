@@ -17,4 +17,16 @@
         order by created_time desc
         limit 1
     </select>
+    <select id="getStudentNumbers" resultType="java.lang.Integer">
+        select count(distinct user_id ) from student where class_id <![CDATA[ > ]]> 0
+    </select>
+    <select id="getTeacherNumbers" resultType="java.lang.Integer">
+        select count(distinct user_id ) from  teacher
+    </select>
+    <select id="getSiteNumbers" resultType="java.lang.Integer">
+        select count(1) from site
+    </select>
+    <select id="getSubjectNumbers" resultType="java.lang.Integer">
+        select count(1) from subject
+    </select>
 </mapper>
