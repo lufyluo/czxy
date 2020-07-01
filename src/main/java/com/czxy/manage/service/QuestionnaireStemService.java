@@ -108,7 +108,7 @@ public class QuestionnaireStemService {
     private List<PaperStemInfo> distinctAndFilleOptions1(List<PaperStemInfo> stemInfos) {
         List<PaperStemInfo> result = new ArrayList<>();
         stemInfos.forEach(n -> {
-            if (!ObjectUtils.nullSafeEquals("问答题", n.getType())) {
+            if (!ObjectUtils.nullSafeEquals("题", n.getType())) {
                 List<PaperStemInfo> options = stemInfos
                         .stream()
                         .filter(op -> ObjectUtils.nullSafeEquals(op.getStemId(), n.getId()))
