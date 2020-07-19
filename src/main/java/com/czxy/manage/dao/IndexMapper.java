@@ -1,5 +1,6 @@
 package com.czxy.manage.dao;
 
+import com.czxy.manage.model.vo.index.RankInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,4 +19,9 @@ public interface IndexMapper {
     Integer getSiteNumbers();
 
     Integer getSubjectNumbers();
+
+    List<RankInfo> getTeacherCount();
+
+    List<RankInfo> getSiteCount();
+
 }

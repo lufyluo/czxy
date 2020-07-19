@@ -36,11 +36,11 @@ public class IndexService {
     }
 
     public List<RankInfo> getTeacherRank() {
-        return null;
+        return indexMapper.getTeacherCount();
     }
 
     public List<RankInfo> getSiteRank() {
-        return null;
+        return indexMapper.getSiteCount();
     }
 
     public List<TrendInfo> getClassTrend(Long beginTime, Long endTime) {
