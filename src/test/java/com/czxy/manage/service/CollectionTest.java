@@ -3,6 +3,7 @@ package com.czxy.manage.service;
 import com.czxy.manage.model.vo.site.TopicInfo;
 import org.junit.jupiter.api.Test;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -47,6 +48,12 @@ public   class CollectionTest {
         arr1.add(integer);
         HashSet hashSet = new HashSet(arr1);
 
-        System.out.println(arr1.size());
+    }
+    @Test
+    public void doubleTest() {
+        int a =17123;
+        int b = 13;
+        DecimalFormat decimalFormat=new DecimalFormat("0.00");
+        System.out.println(decimalFormat.format((double)a/b));
     }
 }

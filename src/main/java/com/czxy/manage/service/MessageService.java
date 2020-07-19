@@ -12,6 +12,7 @@ import com.czxy.manage.model.entity.StudentDetailEntity;
 import com.czxy.manage.model.entity.questionnaire.PaperSendEntity;
 import com.czxy.manage.model.vo.SendInfo;
 import com.czxy.manage.model.vo.message.MessageInfo;
+import com.czxy.manage.model.vo.message.SendTagInfo;
 import com.czxy.manage.model.vo.message.UserPageParam;
 import com.czxy.manage.model.vo.student.GetAllParam;
 import com.czxy.manage.model.vo.student.StudentPageParam;
@@ -131,5 +132,10 @@ public class MessageService {
         MessageInfo messageInfo = PojoMapper.INSTANCE.toMessageInfo(messageEntity);
         messageInfo.setTitle("最新系统通知");
         return messageInfo;
+    }
+
+    public Boolean sendTag(SendTagInfo sendInfo) {
+        wechatUtil.send(100,sendInfo.getMessage());
+        return true;
     }
 }

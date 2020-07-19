@@ -242,11 +242,11 @@ public class ClassCourseService {
                 );
         subjectDetailDomainInfos.sort(Comparator.comparing(SubjectDetailDomainInfo::getTime));
         Map<String, List<SubjectDetailDomainInfo>> maps
-                = subjectDetailDomainInfos.stream().collect(Collectors.groupingBy(n -> n.getTime(), LinkedHashMap::new,Collectors.toList()));
+                = subjectDetailDomainInfos.stream().collect(Collectors.groupingBy(n -> n.getTime(), LinkedHashMap::new, Collectors.toList()));
 
         List<String[]> body = new ArrayList<>();
         for (Map.Entry<String, List<SubjectDetailDomainInfo>> entry : maps.entrySet()) {
-            String[] arr = new String[size+1];
+            String[] arr = new String[size + 1];
             setValue(begin, arr, entry.getValue());
             arr[0] = entry.getKey();
             body.add(arr);
@@ -276,7 +276,11 @@ public class ClassCourseService {
                         content = content + "  描述:" + n.getDescription();
                     }
                 } else if (n.getCategory() == 1) {
-                    content = content + "  点位: " + n.getAddress();
+                    if (StringUtils.isEmpty(n.getAddress())) {
+                        content = content + "  点位: --";
+                    } else {
+                        content = content + "  点位: " + n.getAddress();
+                    }
                 }
                 if (arr.length > dayNum - currentDayNum + 1) {
                     int arrIndex = currentDayNum - dayNum + 1;
@@ -292,7 +296,7 @@ public class ClassCourseService {
         if (classId == null) {
             classId = classMasterMapper.queryClass(userId);
         }
-        if(classId ==null){
+        if (classId == null) {
             return null;
         }
         return get(classId);

@@ -28,6 +28,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -134,6 +135,7 @@ public class QuestionnaireService {
                 .collect(Collectors.groupingBy(n -> n.getStemId()));
         List<StemAnalysisDetailInfo> stemDetailInfos = new ArrayList<>();
         int total = paperSendMapper.countByPaperId(paperId);
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
         for (Map.Entry<Integer, List<PaperDetailEntity>> entry : items.entrySet()) {
             if (entry.getValue() != null && entry.getValue().size() > 0) {
                 PaperDetailEntity stemInfo = entry.getValue().get(0);
@@ -141,7 +143,8 @@ public class QuestionnaireService {
                 stemDetailInfo.setId(entry.getKey());
                 if (stemDetailInfo.getCategory() == 1 && total > 0) {
                     int avg = entry.getValue().stream().filter(n -> n.getOptionSelected() == 1).collect(Collectors.summingInt(n -> n.getOptionScore()));
-                    stemDetailInfo.setAvgScore(avg / total);
+                    String format = decimalFormat.format((double) avg / total);
+                    stemDetailInfo.setAvgScore(format);
                 }
                 stemDetailInfo.setAnswers(getOptions(entry.getValue(), total));
                 stemDetailInfos.add(stemDetailInfo);
@@ -204,7 +207,7 @@ public class QuestionnaireService {
         for (Integer stemId : stemIds) {
             StemEntity stemEntity = questionnaireMapper.queryStem(stemId);
             questionnaireMapper.insertStem(stemEntity);
-            if(!ObjectUtils.nullSafeEquals("问答题", stemEntity.getType())){
+            if (!ObjectUtils.nullSafeEquals("问答题", stemEntity.getType())) {
                 List<OptionEntity> optionEntities = questionnaireMapper.queryOption(stemId);
                 for (OptionEntity optionEntity : optionEntities) {
                     optionEntity.setStemId(stemEntity.getId());

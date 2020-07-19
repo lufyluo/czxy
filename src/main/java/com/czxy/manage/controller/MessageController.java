@@ -6,6 +6,7 @@ import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.vo.SendInfo;
 import com.czxy.manage.model.vo.message.MessageInfo;
+import com.czxy.manage.model.vo.message.SendTagInfo;
 import com.czxy.manage.model.vo.message.UserPageParam;
 import com.czxy.manage.service.MessageService;
 import io.swagger.annotations.Api;
@@ -24,6 +25,12 @@ public class MessageController {
     @ApiOperation("消息推送")
     public BaseResponse<Boolean> send(@RequestBody SendInfo sendInfo) {
         return ResponseUtil.success(messageService.send(sendInfo));
+    }
+
+    @PostMapping("/tag")
+    @ApiOperation("按微信分组消息推送")
+    public BaseResponse<Boolean> sendTag(@RequestBody SendTagInfo sendInfo) {
+        return ResponseUtil.success(messageService.sendTag(sendInfo));
     }
 
     @GetMapping("/page")

@@ -44,6 +44,9 @@ public class SiteService {
         SiteEntity siteEntity = prepare(siteAddInfo);
         siteMapper.insert(siteEntity);
         List<TopicInfo> topics = siteAddInfo.getTopics();
+        if(topics == null || topics.size() ==0){
+            return true;
+        }
         Integer id = siteEntity.getId();
         for (TopicInfo t : topics) {
             t.setSiteId(id);
@@ -211,9 +214,13 @@ public class SiteService {
     private void fillPics(SiteEntity siteEntity, SiteDetailInfo siteInfo) {
         String pics = siteEntity.getPics();
         if (!StringUtils.isEmpty(pics)) {
-            List<Integer> fileIds = Arrays.asList(pics.split(",")).stream().map(n -> Integer.parseInt(n)).collect(Collectors.toList());
-            List<FileEntity> fileInfos = fileMapper.query(fileIds);
-            siteInfo.setPics(PojoMapper.INSTANCE.tiFileInfos(fileInfos));
+            List<String> picUrls = Arrays.asList(pics.split(","));
+            List<FileEntity> collect = picUrls.stream().map(n -> {
+                FileEntity fileEntity = new FileEntity();
+                fileEntity.setUrl(n);
+                return fileEntity;
+            }).collect(Collectors.toList());
+            siteInfo.setPics(PojoMapper.INSTANCE.tiFileInfos(collect));
         }
     }
 
