@@ -17,8 +17,8 @@ token:
   expire: 30000
 czxy:
   wechat:
-    appId: wx786922b9c7cde075
-    secret: 1467ab7029c34d735887825039afcef5
+    appId: wx657fdaf188aec6b1
+    secret: df7522936b9653b37b8feae7a940514d
     accessTokenUrl: https://api.weixin.qq.com/sns/oauth2/access_token?appid=${czxy.wechat.appId}&secret=${czxy.wechat.secret}&code=%s&grant_type=authorization_code
     accessToken: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${czxy.wechat.appId}&secret=${czxy.wechat.secret}
     createTag: https://api.weixin.qq.com/cgi-bin/tags/create?access_token=
