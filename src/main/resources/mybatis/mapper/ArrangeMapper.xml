@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.czxy.manage.dao.ArrangeMapper">
-    <sql id="base_column">
-        id
-        ,name
-        ,description
-        updated_time as updatedTime, created_time as createdTime
-    </sql>
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into arrange (name, description)
         values (#{name}, #{description})

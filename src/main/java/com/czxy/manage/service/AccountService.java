@@ -129,6 +129,9 @@ public class AccountService {
     }
 
     public String wechatLogin(String code) {
+        if(StringUtils.isEmpty(code)){
+            throw new ManageException(ResponseStatus.ARGUMENTNOTVALID);
+        }
         String openId = wechatUtil.getOpenId(code);
         if(StringUtils.isEmpty(openId)){
             throw new ManageException(ResponseStatus.FAILURE,"获取认证失败！");

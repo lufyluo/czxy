@@ -204,4 +204,14 @@
         </foreach>
         group by s.class_id,c.id
     </select>
+    <select id="queryByTime" resultType="com.czxy.manage.model.vo.index.RankInfo">
+        select count(id) as value,
+        date_format(created_time, '%Y-%m') as name
+        from class
+        where #{beginTime} <![CDATA[<]]> created_time
+        <if test="endTime != null">
+            and #{endTime} > created_time
+        </if>
+        group BY date_format(created_time, '%Y-%m')
+    </select>
 </mapper>

@@ -4,12 +4,15 @@ import com.czxy.manage.model.entity.StudentAddEntity;
 import com.czxy.manage.model.entity.StudentDetailEntity;
 import com.czxy.manage.model.entity.StudentEntity;
 import com.czxy.manage.model.entity.StudentUpdateEntity;
+import com.czxy.manage.model.vo.index.RankInfo;
+import com.czxy.manage.model.vo.index.TrendInfo;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
 import com.czxy.manage.model.vo.student.StudentPageParam;
 import com.czxy.manage.model.vo.student.StudentUpdateInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -41,4 +44,6 @@ public interface StudentMapper {
     Integer updateStudentClass(Integer classId,@Param("studentIds") List<Integer> studentIds);
 
     StudentEntity queryStudent(Integer userId);
+
+    List<RankInfo> queryByTime(Date beginTime, Date endTime);
 }

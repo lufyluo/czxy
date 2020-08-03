@@ -47,14 +47,13 @@ public class WechatUtil {
         try {
             String url = String.format(accessTokenUrl, code);
             log.info("url: " + url);
-//            ResponseEntity<WechatAccessTokenResponse> forEntity = restTemplate.getForEntity(url, WechatAccessTokenResponse.class);
             ResponseEntity<String> forEntity = restTemplate.getForEntity(url, String.class);
             log.info("微信返回值：" + forEntity.getBody());
             Map<String, String> map = JSON.parseObject(forEntity.getBody(), Map.class);
             if (map.get("errcode") == null && map.get("openid") != null) {
-                return map.get("openid").toString();
+                return map.get("openid");
             }
-            log.info(map.get("errcode").toString());
+            log.info(map.get("errcode"));
             return null;
         } catch (Exception ex) {
             log.error("获取openid发生错误：" + ex);

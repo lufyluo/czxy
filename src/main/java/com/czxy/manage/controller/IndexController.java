@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -49,22 +50,24 @@ public class IndexController {
     }
 
     @GetMapping("/trend/class")
-    @ApiOperation("获取班级增长趋势")
+    @ApiOperation("获取班级数量增长趋势")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "beginTime", example = "1595080399"),
-            @ApiImplicitParam(name = "endTime", example = "1595080399")
+            @ApiImplicitParam(name = "beginTime",value = "开始时间：{yyyy-MM-dd}",example = "yyyy-MM-dd",dataType="date"),
+            @ApiImplicitParam(name = "endTime", value = "结束时间：{yyyy-MM-dd}",example = "yyyy-MM-dd",dataType="date")
     })
-    public BaseResponse<List<TrendInfo>> getClassTrend(@RequestParam Long beginTime, @RequestParam Long endTime) {
+    public BaseResponse<List<RankInfo>> getClassTrend(@RequestParam @DateTimeFormat(pattern ="yyyy-MM-dd") Date beginTime,
+                                                      @RequestParam @DateTimeFormat(pattern ="yyyy-MM-dd") Date endTime) {
         return ResponseUtil.success(indexService.getClassTrend(beginTime, endTime));
     }
 
     @GetMapping("/trend/student")
-    @ApiOperation("获取学生增长趋势")
+    @ApiOperation("获取学生数量增长趋势")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "beginTime", example = "1595080399"),
-            @ApiImplicitParam(name = "endTime", example = "1595080399")
+            @ApiImplicitParam(name = "beginTime", value = "开始时间：{yyyy-MM-dd}",example = "yyyy-MM-dd",dataType="date"),
+            @ApiImplicitParam(name = "endTime", value = "结束时间：{yyyy-MM-dd}",example = "yyyy-MM-dd",dataType="date")
     })
-    public BaseResponse<List<TrendInfo>> getStudentTrend(@RequestParam Long beginTime, @RequestParam Long endTime) {
+    public BaseResponse<List<RankInfo>> getStudentTrend(@RequestParam @DateTimeFormat(pattern ="yyyy-MM-dd")Date beginTime,
+                                                        @RequestParam @DateTimeFormat(pattern ="yyyy-MM-dd")Date endTime) {
         return ResponseUtil.success(indexService.getStudentTrend(beginTime, endTime));
     }
 }
