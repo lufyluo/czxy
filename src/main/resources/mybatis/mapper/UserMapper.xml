@@ -254,16 +254,26 @@
         limit 1
     </select>
     <select id="queryClassId" resultType="com.czxy.manage.model.entity.ClassEntity">
-        select
-        c.id,c.name,c.org_id as orgId,c.begin_time as beginTime,c.end_time as endTime,
-        c.arrange_id as arrangeId,c.recommend_org_id as recommendOrgId,c.composition_id as compositionId,
-        c.duration ,c.province_id as provinceId,c.city_id as cityId,c.county_id as countyId,c.addr
+        select c.id,
+               c.name,
+               c.org_id           as orgId,
+               c.begin_time       as beginTime,
+               c.end_time         as endTime,
+               c.arrange_id       as arrangeId,
+               c.recommend_org_id as recommendOrgId,
+               c.composition_id   as compositionId,
+               c.duration,
+               c.province_id      as provinceId,
+               c.city_id          as cityId,
+               c.county_id        as countyId,
+               c.addr
         from user u
-        left join student s
-        on u.id=s.user_id
-        left join class c
-        on s.class_id=c.id
-        where u.id=#{id} and c.id is not null
+                 left join student s
+                           on u.id = s.user_id
+                 left join class c
+                           on s.class_id = c.id
+        where u.id = #{id}
+          and c.id is not null
     </select>
     <select id="queryFile" resultType="com.czxy.manage.model.vo.files.FileInfo">
         select
@@ -273,8 +283,53 @@
         on c.id=cf.class_id
         left join file f
         on cf.file_id=f.id
-        where f.id is not null and  c.id in <foreach collection="classIds" item="item" index="index"
-                               open="(" separator="," close=")">#{item}
-                      </foreach>
+        where f.id is not null and c.id in
+        <foreach collection="classIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
     </select>
+    <select id="queryWechatClass" resultType="com.czxy.manage.model.vo.classes.ClassWechatInfo">
+        with temp as (
+            select count(ca.id) as amount, c.id
+            from class c
+                     left join course_arrange ca on c.arrange_id = ca.arrange_id
+                     left join student s on s.class_id = c.id
+            where s.user_id = #{userId}
+            group by c.id
+        ),
+             studentNumber as (
+                 select count(s.id) as number, c.id
+                 from student s
+                          left join class c on s.class_id = c.id
+                 group by c.id
+             )
+        select c.name
+             , c.id
+             , c.begin_time   as beginTime
+             , c.end_time     as endTime
+             , c.created_time as createdTime
+             , cm.name        as compositionName
+             , t.amount
+             , sn.number
+        from class c
+                 left join student s
+                           on c.id = s.class_id
+                 left join user u
+                           on u.id = s.user_id
+                 left join composition cm
+                           on c.composition_id = cm.id
+                 left join temp t
+                           on t.id = c.id
+                 left join studentNumber sn
+                           on sn.id = c.id
+        where u.id = #{userId}
+        order by c.created_time desc
+    </select>
+    <select id="queryByUserIds" resultType="java.lang.String">
+        select distinct wechat_id from user where id in
+        <foreach collection="list" item="item" separator="," close=")" open="(">
+            #{item}
+        </foreach>
+    </select>
+
 </mapper>

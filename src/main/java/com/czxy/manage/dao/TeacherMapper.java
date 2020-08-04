@@ -37,4 +37,6 @@ public interface TeacherMapper {
     TeacherEntity queryByUserId(Integer userId);
 
     List<TeacherEntity> queryByUserIds(List<Integer> userIds);
+
+    List<TeacherDetailEntity> queryByNames(List<String> collect);
 }

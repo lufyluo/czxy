@@ -34,4 +34,5 @@ public class ClassStudentInfo {
     @ApiModelProperty("学员身份")
     private Integer studentType;
     private String studentTypeName;
+    private String politics;
 }

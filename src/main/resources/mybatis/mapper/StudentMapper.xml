@@ -51,7 +51,9 @@
         <if test="cityId != null and cityId>0 ">and c.city_id = #{cityId}</if>
         <if test="countyId != null and countyId>0 ">and c.county_id = #{countyId}</if>
         <if test="classId != null and classId >0 ">and s.class_id= #{classId}</if>
-        <if test="excludeClassId != null and excludeClassId >0 ">and (s.class_id != #{excludeClassId} or s.class_id is NULL)</if>
+        <if test="excludeClassId != null and excludeClassId >0 ">and (s.class_id != #{excludeClassId} or s.class_id is
+            NULL)
+        </if>
         order by s.id desc
     </select>
     <select id="queryByStudentId" resultType="com.czxy.manage.model.entity.StudentUpdateEntity">
@@ -67,9 +69,26 @@
     <select id="queryStudent" resultType="com.czxy.manage.model.entity.StudentEntity">
         select id, sign_flag as signFlag, class_id as classId, user_id as userId, type, org_id as orgId
         from student
-        where user_id = #{userId} AND class_id is not NULL
+        where user_id = #{userId}
+          AND class_id is not NULL
         order by id desc
         limit 1
+    </select>
+    <select id="queryByTime" resultType="com.czxy.manage.model.vo.index.RankInfo">
+        select
+        count(s.id) as value,
+        date_format(s.created_time, '%Y-%m') as name
+        from student s
+        LEFT JOIN class c
+        on s.class_id = c.id
+        where c.id is not null
+        <if test="beginTime != null">
+            and #{beginTime} <![CDATA[<]]> s.created_time
+        </if>
+        <if test="endTime != null">
+            and #{endTime} <![CDATA[>]]> s.created_time
+        </if>
+        group BY date_format(s.created_time, '%Y-%m')
     </select>
     <update id="sign">
         update student set sign_flag = 1 , updated_time=now() where id in

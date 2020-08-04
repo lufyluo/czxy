@@ -27,12 +27,14 @@ import com.czxy.manage.model.vo.questionnaire.stem.OptionInfo;
 import com.czxy.manage.model.vo.questionnaire.stem.PaperStemInfo;
 import com.czxy.manage.model.vo.questionnaire.stem.StemInfo;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
+import com.czxy.manage.model.vo.site.SiteDetailInfo;
 import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.model.vo.site.TypeInfo;
 import com.czxy.manage.model.vo.stock.StockInfo;
 import com.czxy.manage.model.vo.student.*;
 import com.czxy.manage.model.vo.subject.SubjectByIdInfo;
 import com.czxy.manage.model.vo.subject.SubjectDetailDomainInfo;
+import com.czxy.manage.model.vo.subject.SubjectImportInfo;
 import com.czxy.manage.model.vo.subject.SubjectInfo;
 import com.czxy.manage.model.vo.teacher.*;
 import com.czxy.manage.model.vo.user.*;
@@ -111,6 +113,7 @@ public interface PojoMapper {
 
     UserUpdateEntity studentUpdateToUserUpdateEntity(StudentUpdateInfo studentUpdateInfo);
 
+    @Mappings({@Mapping(source = "classArrangeId",target = "arrangeId")})
     ClassEntity classCreateInfoToClassEntity(ClassCreateInfo classCreateInfo);
 
     @Mappings({@Mapping(ignore = true, target = "types"), @Mapping(ignore = true, target = "topicId")})
@@ -155,6 +158,10 @@ public interface PojoMapper {
     UserUpdateEntity teacherUpdateToUserUpdateEnity(TeacherUpdateInfo teacherUpdateInfo);
 
     SiteInfo toSiteInfo(SiteEntity siteEntity);
+    @Mappings({@Mapping(target = "types",ignore = true),
+            @Mapping(target = "pics",ignore = true),
+            @Mapping(target = "attachFiles",ignore = true)})
+    SiteDetailInfo toSiteDetailInfo(SiteEntity siteEntity);
 
     List<SiteInfo> toSiteInfo(List<SiteEntity> siteEntities);
 
@@ -289,4 +296,7 @@ public interface PojoMapper {
     UserPartInfo toUserPartInfo(UserEntity userEntity);
 
     ClassFileEntity toClassFileEntity(ClassFileCreateInfo classCreateInfo);
+
+    SubjectEntity toImportSubjectEntity(SubjectImportInfo subjectImportInfo);
+    List<SubjectEntity> toImportSubjectEntities(List<SubjectImportInfo> subjectImportInfos);
 }

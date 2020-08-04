@@ -11,7 +11,7 @@
     <insert id="batchInsert" keyProperty="id" useGeneratedKeys="true">
         insert into org (name) values
         <foreach collection="list" item="item" separator=",">
-            (#{item})
+            (#{item.name})
         </foreach>
     </insert>
     <update id="update">

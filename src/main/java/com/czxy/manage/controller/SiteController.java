@@ -6,6 +6,7 @@ import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
 import com.czxy.manage.model.vo.site.SiteAddInfo;
+import com.czxy.manage.model.vo.site.SiteDetailInfo;
 import com.czxy.manage.model.vo.site.SiteInfo;
 import com.czxy.manage.model.vo.site.SitePageParam;
 import com.czxy.manage.service.SiteService;
@@ -44,6 +45,19 @@ public class SiteController {
         return PageResponse.success(siteService.page(pageParam));
     }
 
+    @GetMapping("/page_topics")
+    @ApiOperation("分页获取主题点位")
+    public PageResponse<SiteInfo> pageWithTopic(SitePageParam<String> pageParam) {
+        return PageResponse.success(siteService.pageWithTopic(pageParam));
+    }
+
+    @GetMapping("/{id}")
+    @Anonymous
+    @ApiOperation("获取点位详情")
+    public BaseResponse<SiteDetailInfo> get(@PathVariable Integer id) {
+        return ResponseUtil.success(siteService.get(id));
+    }
+
     @PutMapping
     @ApiOperation("编辑点位")
     public BaseResponse<Boolean> update(@RequestBody SiteAddInfo siteAddInfo) {
@@ -53,6 +67,7 @@ public class SiteController {
     @ApiOperation("导入")
     @RequestMapping(path = "/import", method = RequestMethod.POST)
     @FileAnonymous
+    @Anonymous
     public BaseResponse<Boolean> batchImport(@RequestParam(value = "file") MultipartFile file) {
         return ResponseUtil.success(siteService.batchImport(file));
     }

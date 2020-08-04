@@ -1,6 +1,7 @@
 package com.czxy.manage.dao;
 
 import com.czxy.manage.model.entity.*;
+import com.czxy.manage.model.vo.classes.ClassWechatInfo;
 import com.czxy.manage.model.vo.customer.CustomerInfo;
 import com.czxy.manage.model.vo.files.FileInfo;
 import org.apache.ibatis.annotations.Mapper;
@@ -53,4 +54,8 @@ public interface UserMapper {
     List<ClassEntity> queryClassId(Integer id);
 
     List<FileInfo> queryFile(@Param("classIds") List<Integer> classIds);
+
+    List<ClassWechatInfo> queryWechatClass(Integer userId);
+
+    List<String> queryByUserIds(List<Integer> userIds);
 }

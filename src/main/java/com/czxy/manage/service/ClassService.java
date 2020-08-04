@@ -48,6 +48,9 @@ public class ClassService {
     public PageInfo<ClassOrgInfo> page(ClassPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<ClassOrgEntity> classEntities = classMapper.queryAll(pageParam);
+        if (classEntities == null || classEntities.size() == 0) {
+            return new PageInfo<>();
+        }
         List<Integer> collect = classEntities.stream().map(n -> n.getId()).collect(Collectors.toList());
         List<CountEntity> countEntities = classMapper.queryCount(collect);
         for (ClassOrgEntity classOrgEntity : classEntities) {
@@ -104,7 +107,7 @@ public class ClassService {
         Integer compositionId = compositionService.insertIfAbsent(classCreateInfo.getCompositionId(), classCreateInfo.getComposition());
         classEntity.setCompositionId(compositionId);
         classMapper.insert(classEntity);
-        classFileService.batchInsert(classCreateInfo.getFileIds(),classEntity.getId());
+        classFileService.batchInsert(classCreateInfo.getFileIds(), classEntity.getId());
         if (classCreateInfo.getMasterId() != null && classCreateInfo.getMasterId() > 0) {
             classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId());
         }
@@ -146,13 +149,20 @@ public class ClassService {
     public Boolean update(ClassUpdateInfo classCreateInfo) {
         buildData(classCreateInfo);
         ClassEntity classEntity = PojoMapper.INSTANCE.classUpdateInfoToClassEntity(classCreateInfo);
+        if (classEntity.getArrangeId() == null) {
+            classEntity.setArrangeId(classCreateInfo.getClassArrangeId());
+        }
         classMapper.update(classEntity);
         studentService.setClassLeader(
                 getLeaderId(classCreateInfo.getLeaderName(), classCreateInfo.getStudentAddInfos()
                 )
                 , classEntity.getId());
         updateStudents(classCreateInfo);
-        classFileService.batchUpdate(classCreateInfo.getId(),classCreateInfo.getFileIds());
+        classFileService.batchUpdate(classCreateInfo.getId(), classCreateInfo.getFileIds());
+        classMasterMapper.delete(classCreateInfo.getMasterId(), classEntity.getId());
+        if (classCreateInfo.getMasterId() != null && classCreateInfo.getMasterId() > 0) {
+            classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId());
+        }
         return true;
     }
 
@@ -192,9 +202,6 @@ public class ClassService {
 
     public List<ClassStudentInfo> getStudents(Integer userId) {
         Integer classId = classMapper.queryRecentByStudentUserId(userId);
-        if (classId == null) {
-            classId = classMasterMapper.queryClass(userId);
-        }
         if (classId == null) {
             return null;
         }

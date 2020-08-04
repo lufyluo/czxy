@@ -30,6 +30,7 @@ public class ImportTeacherInfo {
     @Excel(name = "区域")
     private String area;
     @ApiModelProperty("0-党校系统，1-领导干部系统，2-高校系统")
+    @Excel(name = "所属系统",replace = {"党校系统_0","领导干部系统_1","高校系统_2"})
     private Integer system;
     @ApiModelProperty("职称：高级、一级、二级、三级")
     @Excel(name = "职称")
@@ -37,11 +38,18 @@ public class ImportTeacherInfo {
     @ApiModelProperty("星级：一级、二级、三级")
     @Excel(name = "星级")
     private String star;
-    @ApiModelProperty("单位名字")
+    @ApiModelProperty("工作单位")
+    @Excel(name = "工作单位")
     private String orgName;
     @ApiModelProperty(hidden = true)
     private Integer orgId;
     @ApiModelProperty("课酬，单位 元/天")
     @Excel(name = "课酬")
     private Integer pay;
+    @ApiModelProperty("学历")
+    @Excel(name = "学历")
+    private String education;
+    @ApiModelProperty("民族")
+    @Excel(name = "民族")
+    private String nation;
 }

@@ -36,12 +36,8 @@ public class StudentService {
     private ClassMapper classMapper;
     @Autowired
     private OrgService orgService;
-    @Resource
-    private OrgMapper orgMapper;
     @Autowired
     private WechatUtil wechatUtil;
-    @Resource
-    private TeacherMapper teacherMapper;
 
     public PageInfo<StudentDetailInfo> page(StudentPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -91,8 +87,8 @@ public class StudentService {
     }
 
     public Boolean delete(List<Integer> studentIds) {
-        Boolean delete = studentMapper.delete(studentIds);
-        return delete;
+        studentMapper.delete(studentIds);
+        return true;
     }
 
     @Transactional
@@ -111,11 +107,12 @@ public class StudentService {
         List<String> orgNames = studentAddInfos.stream()
                 .filter(n -> !StringUtils.isEmpty(n.getOrgName()))
                 .map(StudentAddInfo::getOrgName)
+                .distinct()
                 .collect(Collectors.toList());
         if (orgNames == null || orgNames.size() == 0) {
             return;
         }
-        List<OrgEntity> orgs = getOrgEntities(orgNames);
+        List<OrgEntity> orgs = orgService.batchInsertIfAbsentOrg(orgNames);
 
         for (int i = 0; i < studentAddInfos.size(); i++) {
             StudentAddInfo studentAddInfo = studentAddInfos.get(i);
@@ -128,20 +125,6 @@ public class StudentService {
         }
     }
 
-    private List<OrgEntity> getOrgEntities(List<String> orgNames) {
-        List<OrgEntity> orgs = orgMapper.getByNames(orgNames);
-        if (orgs == null || orgs.size() == 0) {
-            orgMapper.batchInsert(orgNames);
-            orgs = orgMapper.getByNames(orgNames);
-        } else if (orgs.size() < orgNames.size()) {
-            List<String> orgExists = orgs.stream().map(OrgEntity::getName).collect(Collectors.toList());
-            orgNames.removeAll(orgExists);
-            orgMapper.batchInsert(orgNames);
-            orgs = orgMapper.getByNames(orgNames);
-        }
-        return orgs;
-    }
-
     @Transactional
     public Boolean batchInsert(List<StudentAddInfo> studentAddInfos) {
         if (studentAddInfos == null || studentAddInfos.size() == 0) {
@@ -149,6 +132,7 @@ public class StudentService {
         }
         List<UserEntity> userEntities = PojoMapper.INSTANCE.studentAddToUserEntities(studentAddInfos).stream().
                 filter(n -> ObjectUtils.nullSafeEquals(n.getId(), null)).collect(Collectors.toList());
+
         userService.fillUserId(userEntities);
 
         studentAddInfos.forEach(n -> {

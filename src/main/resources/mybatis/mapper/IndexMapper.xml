@@ -17,4 +17,46 @@
         order by created_time desc
         limit 1
     </select>
+    <select id="getStudentNumbers" resultType="java.lang.Integer">
+        select count(distinct user_id ) from student where class_id <![CDATA[ > ]]> 0
+    </select>
+    <select id="getTeacherNumbers" resultType="java.lang.Integer">
+        select count(distinct user_id ) from  teacher
+    </select>
+    <select id="getSiteNumbers" resultType="java.lang.Integer">
+        select count(1) from site
+    </select>
+    <select id="getSubjectNumbers" resultType="java.lang.Integer">
+        select count(1) from subject
+    </select>
+    <select id="getTeacherCount" resultType="com.czxy.manage.model.vo.index.RankInfo">
+        select u.name,count(s.id) as `value` from
+        course_arrange ca
+        left join class c
+        on c.arrange_id = ca.arrange_id
+        left join subject s
+        on ca.content_id =s.id
+        left join teacher t
+        on s.teacher_id = t.id
+        left join user u
+        on u.id = t.user_id
+        where u.name is not null and u.name != '班主任' and ca.category = 0
+        and  c.id is not null
+        group by u.id
+        order by count(s.id),u.created_time desc
+        limit 5
+    </select>
+    <select id="getSiteCount" resultType="com.czxy.manage.model.vo.index.RankInfo">
+        select s.name,count(s.id) as `value` from
+        course_arrange ca
+        left join class c
+        on ca.arrange_id = c.arrange_id
+        left join site s
+        on ca.content_id = s.id
+        where ca.category =1 and c.id is not null
+        and s.name is not null
+        group by s.id
+        order by count(s.id),s.created_time desc
+        limit 5
+    </select>
 </mapper>

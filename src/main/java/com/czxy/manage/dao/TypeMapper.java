@@ -17,4 +17,6 @@ public interface TypeMapper {
     String query(@Param("parseInt") Integer parseInt);
 
     List<TypeEntity> queryByKey(String key, int category);
+
+    List<TypeEntity> queryByNames(List<String> names);
 }

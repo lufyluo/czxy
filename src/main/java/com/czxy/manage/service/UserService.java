@@ -9,6 +9,7 @@ import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.AccountEntity;
 import com.czxy.manage.model.entity.ClassEntity;
 import com.czxy.manage.model.entity.UserEntity;
+import com.czxy.manage.model.vo.classes.ClassWechatInfo;
 import com.czxy.manage.model.vo.files.FileInfo;
 import com.czxy.manage.model.vo.user.UserCreateInfo;
 import com.czxy.manage.model.vo.user.UserInfo;
@@ -47,6 +48,10 @@ public class UserService {
     @Autowired
     private AccountService accountService;
 
+    public List<String> getWechatIds(List<Integer> userIds) {
+        return userMapper.queryByUserIds(userIds);
+    }
+
     @Transactional
     public Boolean add(UserCreateInfo userInfo) {
         insertIfAbsentOrg(userInfo);
@@ -54,7 +59,7 @@ public class UserService {
         userMapper.insert(userEntity);
         AccountEntity accountEntity = PojoMapper.INSTANCE.toAccountEntity(userInfo);
         accountEntity.setUserId(userEntity.getId());
-        accountEntity.setPassword(accountService.decodePassword(accountEntity.getPassword(),null));
+        accountEntity.setPassword(accountService.decodePassword(accountEntity.getPassword(), null));
         accountMapper.insert(accountEntity);
         return true;
     }
@@ -100,9 +105,10 @@ public class UserService {
         userInfos.setList(userInfoList);
         return userInfos;
     }
+
     public String getGenderDesc(Integer gender) {
         String genderDesc = "";
-        if(gender==null){
+        if (gender == null) {
             return "未知";
         }
         switch (gender) {
@@ -121,7 +127,7 @@ public class UserService {
 
     private void fillGender(List<UserInfo> userInfos) {
         if (userInfos != null) {
-            userInfos.forEach(n-> n.setGenderDesc(getGenderDesc(n.getGender())));
+            userInfos.forEach(n -> n.setGenderDesc(getGenderDesc(n.getGender())));
         }
     }
 
@@ -189,12 +195,17 @@ public class UserService {
 
     public List<FileInfo> get(Integer id) {
         List<ClassEntity> classEntities = userMapper.queryClassId(id);
-            if (classEntities==null||classEntities.size() == 0){
-                throw new ManageException(ResponseStatus.FAILURE,"您还不是班级学生，请先加入班级");
-            }
+        if (classEntities == null || classEntities.size() == 0) {
+            throw new ManageException(ResponseStatus.FAILURE, "您还不是班级学生，请先加入班级");
+        }
         List<Integer> classIds = classEntities.stream().map(n -> n.getId()).collect(Collectors.toList());
         List<FileInfo> fileInfos = userMapper.queryFile(classIds);
         return fileInfos;
+    }
+
+    public List<ClassWechatInfo> gerClass(Integer userId) {
+        List<ClassWechatInfo> classWechatInfos = userMapper.queryWechatClass(userId);
+        return classWechatInfos;
     }
 }
 

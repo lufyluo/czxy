@@ -240,12 +240,13 @@ public class ClassCourseService {
                 .forEach(n -> n.setTime(
                         hourFormat.format(n.getBeginTime()) + "-" + hourFormat.format(n.getEndTime()))
                 );
+        subjectDetailDomainInfos.sort(Comparator.comparing(SubjectDetailDomainInfo::getTime));
         Map<String, List<SubjectDetailDomainInfo>> maps
-                = subjectDetailDomainInfos.stream().collect(Collectors.groupingBy(n -> n.getTime()));
+                = subjectDetailDomainInfos.stream().collect(Collectors.groupingBy(n -> n.getTime(), LinkedHashMap::new, Collectors.toList()));
 
         List<String[]> body = new ArrayList<>();
         for (Map.Entry<String, List<SubjectDetailDomainInfo>> entry : maps.entrySet()) {
-            String[] arr = new String[size];
+            String[] arr = new String[size + 1];
             setValue(begin, arr, entry.getValue());
             arr[0] = entry.getKey();
             body.add(arr);
@@ -269,13 +270,17 @@ public class ClassCourseService {
                 String content = "课题: " + n.getName();
                 if (n.getCategory() == 0) {
                     if (!StringUtils.isEmpty(n.getTeacherName())) {
-                        content = content + "\r\n授课老师: " + n.getTeacherName();
+                        content = content + "  授课老师: " + n.getTeacherName();
                     }
                     if (!StringUtils.isEmpty(n.getDescription())) {
-                        content = content + "\r\n描述:" + n.getDescription();
+                        content = content + "  描述:" + n.getDescription();
                     }
                 } else if (n.getCategory() == 1) {
-                    content = content + "\r\n点位: " + n.getAddress();
+                    if (StringUtils.isEmpty(n.getAddress())) {
+                        content = content + "  点位: --";
+                    } else {
+                        content = content + "  点位: " + n.getAddress();
+                    }
                 }
                 if (arr.length > dayNum - currentDayNum + 1) {
                     int arrIndex = currentDayNum - dayNum + 1;
@@ -291,7 +296,7 @@ public class ClassCourseService {
         if (classId == null) {
             classId = classMasterMapper.queryClass(userId);
         }
-        if(classId ==null){
+        if (classId == null) {
             return null;
         }
         return get(classId);

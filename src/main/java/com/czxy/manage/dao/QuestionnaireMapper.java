@@ -4,6 +4,10 @@ import com.czxy.manage.model.entity.PaperDetailEntity;
 import com.czxy.manage.model.entity.PaperEntity;
 import com.czxy.manage.model.entity.PaperPageEntity;
 import com.czxy.manage.model.entity.questionnaire.PaperSubmitEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.OptionEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.PaperCopyStemEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.PaperStemEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.StemEntity;
 import com.czxy.manage.model.vo.questionnaire.PaperCreateInfo;
 import com.czxy.manage.model.vo.questionnaire.PaperSubmitInfo;
 import org.apache.ibatis.annotations.Mapper;
@@ -34,4 +38,20 @@ public interface QuestionnaireMapper {
     List<PaperDetailEntity> queryPaperDetail(Integer userId, Integer paperId);
 
     Integer clearAnswers(Integer paperId, Integer userId);
+
+    Integer insertPaper(PaperEntity paperEntity);
+
+    Integer insertStem(StemEntity stemEntity);
+
+    Integer insertPaperStem(PaperCopyStemEntity paperCopyStemEntity);
+
+    Integer insertOption(OptionEntity optionEntity);
+
+    PaperEntity queryPaper(Integer paperId);
+
+    List<PaperCopyStemEntity> queryPaperStem(Integer paperId);
+
+    StemEntity queryStem(Integer stemId);
+
+    List<OptionEntity> queryOption(Integer stemId);
 }

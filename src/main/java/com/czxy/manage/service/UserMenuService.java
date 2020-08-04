@@ -1,6 +1,7 @@
 package com.czxy.manage.service;
 
 import com.czxy.manage.dao.MenuMapper;
+import com.czxy.manage.dao.UserMapper;
 import com.czxy.manage.dao.UserMenuMapper;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.infrastructure.util.maplain.MaplainUtil;

@@ -17,6 +17,18 @@
             (#{item.paperId},#{item.stemId},#{item.optionId},#{item.userId},#{item.answerText})
         </foreach>
     </insert>
+    <insert id="insertPaper" useGeneratedKeys="true" keyProperty="id">
+        insert into w_paper(name, description, state) values (#{name},#{description},0)
+    </insert>
+    <insert id="insertStem" useGeneratedKeys="true" keyProperty="id">
+        insert into w_stem (title, score,`type`,required,category) values (#{title},#{score},#{type},#{required},#{category})
+    </insert>
+    <insert id="insertPaperStem" useGeneratedKeys="true" keyProperty="id">
+        insert into w_paper_stem (`index`, paper_id, stem_id) values(#{index},#{paperId},#{stemId})
+    </insert>
+    <insert id="insertOption" useGeneratedKeys="true" keyProperty="id">
+        insert into w_option (name, score, `index`, stem_id) values (#{name},#{score},#{index},#{stemId})
+    </insert>
     <update id="update">
         update w_paper
         set name=#{name},
@@ -103,7 +115,7 @@
         left join w_stem ws on wps.stem_id = ws.id
         left join w_option wo on ws.id = wo.stem_id
         left join w_paper_submit w on w.paper_id = p.id and w.stem_id = ws.id
-        left join user u on w.user_id = u.id
+        inner join user u on w.user_id = u.id
         <if test="userId != null and userId != ''">
             and w.user_id = #{userId}
         </if>
@@ -111,5 +123,30 @@
 
         order by `index`,optionIndex
 
+    </select>
+    <select id="queryPaper" resultType="com.czxy.manage.model.entity.PaperEntity">
+        select
+        name, description,state
+        from w_paper
+        where id=#{paperId}
+    </select>
+    <select id="queryPaperStem"
+            resultType="com.czxy.manage.model.entity.questionnaire.stem.PaperCopyStemEntity">
+        select
+        stem_id as stemId,`index`,paper_id as paperId
+        from w_paper_stem
+        where paper_id=#{paperId}
+    </select>
+    <select id="queryStem" resultType="com.czxy.manage.model.entity.questionnaire.stem.StemEntity">
+        select
+        title, score,`type`,required,category
+        from w_stem
+        where id=#{stemId}
+    </select>
+    <select id="queryOption" resultType="com.czxy.manage.model.entity.questionnaire.stem.OptionEntity">
+        select
+        name, score, `index`, stem_id as stemId
+        from w_option
+        where stem_id=#{stemId}
     </select>
 </mapper>

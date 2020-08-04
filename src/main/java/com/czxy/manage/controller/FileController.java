@@ -24,7 +24,6 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
-
     @ApiOperation("文件上传")
     @PostMapping("/upload/oss")
     @FileAnonymous

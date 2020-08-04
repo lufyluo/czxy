@@ -13,6 +13,8 @@ public class SiteInfo extends BaseEntity {
     private Integer id;
     private String name;
     private String types;
+    @ApiModelProperty("点位类型名称")
+    private String typeName;
     private String contactorName;
     private String contactorPhone;
     private Integer topicId;
@@ -33,8 +35,6 @@ public class SiteInfo extends BaseEntity {
     private Integer fee;
     @ApiModelProperty("点位主题名称")
     private String topicName;
-    @ApiModelProperty("点位类型名称")
-    private String typeName;
     @ApiModelProperty("点位详细地址（带省市县）")
     private String address;
     @JsonIgnore

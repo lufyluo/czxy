@@ -44,8 +44,8 @@ public class TeacherController {
     }
     @PutMapping
     @ApiOperation("编辑教师")
-    public BaseResponse<Boolean> update(@RequestBody TeacherUpdateInfo teacherUpdateInfo,@RequestParam Integer teacherId){
-        return ResponseUtil.success(teacherService.update(teacherUpdateInfo,teacherId));
+    public BaseResponse<Boolean> update(@RequestBody TeacherUpdateInfo teacherUpdateInfo){
+        return ResponseUtil.success(teacherService.update(teacherUpdateInfo));
     }
     @GetMapping
     @ApiOperation("教师详情")
@@ -60,11 +60,9 @@ public class TeacherController {
     }
 
     @ApiOperation("导入")
-    @RequestMapping(path = "/import/{system}", method = RequestMethod.POST)
-    @ApiImplicitParams({@ApiImplicitParam(name = "system",value = "0-党校系统，1-领导干部系统，2-高校系统")})
+    @RequestMapping(path = "/import", method = RequestMethod.POST)
     @FileAnonymous
-    public BaseResponse<List<ImportTeacherInfo>> batchImport(@PathVariable("system") Integer system,
-                                                             @RequestParam(value = "file") MultipartFile file){
-        return ResponseUtil.success(teacherService.batchImport(system,file));
+    public BaseResponse<List<ImportTeacherInfo>> batchImport(@RequestParam(value = "file") MultipartFile file){
+        return ResponseUtil.success(teacherService.batchImport(file));
     }
 }

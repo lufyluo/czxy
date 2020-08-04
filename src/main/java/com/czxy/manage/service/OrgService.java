@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrgService {
@@ -54,5 +56,30 @@ public class OrgService {
         PageInfo<OrgInfo> result = page.toPageInfo();
         result.setList(PojoMapper.INSTANCE.toOrgInfos(orgEntities));
         return result;
+    }
+
+    public List<OrgEntity> batchInsertIfAbsentOrg(@NotNull List<String> orgNames) {
+        orgNames = orgNames.stream().distinct().collect(Collectors.toList());
+        List<OrgEntity> orgs = orgMapper.getByNames(orgNames);
+        if (orgs != null && orgs.size() > 0) {
+            List<String> orgExists = orgs.stream().map(OrgEntity::getName).collect(Collectors.toList());
+            orgNames.removeAll(orgExists);
+        }
+        if (orgNames == null || orgNames.size() == 0) {
+            return orgs;
+        }
+        List<OrgEntity> collect = orgNames
+                .stream()
+                .map(n -> {
+                    OrgEntity orgEntity = new OrgEntity();
+                    orgEntity.setName(n);
+                    return orgEntity;
+                }).collect(Collectors.toList());
+
+        orgMapper.batchInsert(collect);
+        if (orgs != null && orgs.size() > 0) {
+            collect.addAll(orgs);
+        }
+        return collect;
     }
 }

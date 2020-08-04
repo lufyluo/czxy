@@ -10,19 +10,39 @@
         VALUES (#{name}, #{types}, #{contactorName}, #{contactorPhone}, #{topicId}, #{driveTime}, #{addr},
                 #{description}, #{pics}, #{attachFiles}, #{provinceId}, #{cityId}, #{countyId}, #{fee})
     </insert>
-    <insert id="batchInsert">
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id">
         insert into site
         (name, types, contactor_name, contactor_phone, topic_id, drive_time, addr, description, pics, attach_files,
         province_id, city_id, county_id, fee)
         VALUES
-        <foreach collection="list" item="item" open="(" close=")" separator=",">
-            #{item.name},#{item.types},#{item.contactorName}
+        <foreach collection="list" item="item" separator=",">
+            (#{item.name},#{item.types},#{item.contactorName}
             ,#{item.contactorPhone},#{item.topicId},#{item.driveTime}
             ,#{item.addr},#{item.description},#{item.pics},#{item.attachFiles}
-            ,#{item.provinceId},#{item.cityId},#{item.countyId},#{item.fee}
+            ,#{item.provinceId},#{item.cityId},#{item.countyId},#{item.fee})
         </foreach>
 
     </insert>
+    <insert id="insertTopic">
+        insert into site_topic
+        (site_id , topic)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.siteId},#{item.topic})
+        </foreach>
+    </insert>
+    <insert id="insertTopics" useGeneratedKeys="true" keyProperty="id">
+        insert into site_topic (site_id, topic)
+        values (#{siteId}, #{topic})
+    </insert>
+    <insert id="batchInsertTopics">
+        insert into site_topic (site_id, topic)
+        values
+        <foreach collection="topics" separator="," item="item">
+            (#{siteId},#{item})
+        </foreach>
+    </insert>
+
     <update id="update">
         update site
         set name=#{name},
@@ -42,20 +62,45 @@
             updated_time=now()
         where id = #{id}
     </update>
+    <update id="updateTopic">
+        update site_topic
+        set topic=#{topic}
+        where id = #{id}
+    </update>
+
     <delete id="delete">
         delete from site where id in
-        <foreach collection="siteIds" item="item" index="index"
+        <foreach collection="list" item="item" index="index"
                  open="(" separator="," close=")">#{item}
         </foreach>
     </delete>
+    <delete id="deleteTopic">
+        delete from site_topic where site_id in
+        <foreach collection="list" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
+    </delete>
+    <delete id="deleteTopicById">
+        delete from site_topic where id in
+        <foreach collection="integers" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
+    </delete>
+    <delete id="clear">
+        delete
+        from site_topic
+        where site_id = #{id}
+    </delete>
+
     <select id="query" resultType="com.czxy.manage.model.entity.SiteEntity">
         select
         s.id,s.name,s.types,
         s.contactor_name as contactorName,
         s.contactor_phone as contactorPhone,
         s.topic_id as topicId,
-        t.name as topicName,
-        s.drive_time as driveTime,s.addr,
+        s.drive_time as driveTime,
+        s.addr,
+        s.pics,
         a.path,
         s.description,s.pics,s.attach_files as attachFiles,
         s.province_id as provinceId,
@@ -64,18 +109,83 @@
         s.updated_time as updatedTime,s.created_time as createdTime,s.fee
         from
         site s
-        left join type t
-        on t.id = s.topic_id
         left join address a
         on s.county_id = a.id
         where 1=1
         <if test="param != null and param != ''">
-            and (s.name like '%${param}%' or t.name like '%${param}%')
+            and s.name like '%${param}%'
         </if>
         <if test="typeId != null and typeId != ''">
             and (s.types like '${typeId},%' or s.types like '%,${typeId}' or s.types like '%,${typeId},%' or s.types =
             #{typeId})
         </if>
         order by star,id desc
+    </select>
+    <select id="queryWithTopics" resultType="com.czxy.manage.model.entity.SiteEntity">
+        select
+        s.id,s.name,s.types,
+        s.contactor_name as contactorName,
+        s.contactor_phone as contactorPhone,
+        s.topic_id as topicId,
+        s.drive_time as driveTime,s.addr,
+        a.path,
+        s.description,s.pics,s.attach_files as attachFiles,
+        s.province_id as provinceId,
+        s.city_id as cityId,
+        s.county_id as countyId,
+        s.updated_time as updatedTime,s.created_time as createdTime,s.fee,
+        st.topic as topicName
+        from
+        site s
+        left join site_topic st on s.id = st.site_id
+        left join address a
+        on s.county_id = a.id
+        where 1=1
+        <if test="param != null and param != ''">
+            and s.name like '%${param}%'
+        </if>
+        <if test="typeId != null and typeId != ''">
+            and (s.types like '${typeId},%' or s.types like '%,${typeId}' or s.types like '%,${typeId},%' or s.types =
+            #{typeId})
+        </if>
+        order by star,id desc
+    </select>
+    <select id="queryTopicId" resultType="java.lang.Integer">
+        select id
+        from site_topic
+        where site_id = #{id}
+    </select>
+    <select id="queryTopicsBySiteId" resultType="com.czxy.manage.model.vo.site.TopicInfo">
+        select id, site_id as siteId, topic, updated_time as updatedTime, created_time as createdTime
+        from site_topic
+        where site_id = #{siteId};
+    </select>
+    <select id="queryById" resultType="com.czxy.manage.model.entity.SiteEntity">
+        select id,
+               name,
+               types,
+               contactor_name  as contactorName,
+               contactor_phone as contactorPhone,
+               drive_time      as driveTime,
+               addr,
+               province_id     as provinceId,
+               city_id         as cityId,
+               county_id       as countyId,
+               description,
+               pics,
+               attach_files    as attachFiles,
+               fee,
+               star,
+               updated_time    as updatedTime,
+               created_time    as createdTime
+        from site
+        where id = #{id};
+    </select>
+    <select id="queryByNames" resultType="java.lang.String">
+        select distinct name from site where name
+        in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
     </select>
 </mapper>

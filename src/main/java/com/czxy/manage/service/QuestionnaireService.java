@@ -9,6 +9,10 @@ import com.czxy.manage.model.entity.PaperDetailEntity;
 import com.czxy.manage.model.entity.PaperEntity;
 import com.czxy.manage.model.entity.StudentDetailEntity;
 import com.czxy.manage.model.entity.questionnaire.PaperSendEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.OptionEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.PaperCopyStemEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.PaperStemEntity;
+import com.czxy.manage.model.entity.questionnaire.stem.StemEntity;
 import com.czxy.manage.model.vo.PaperAddInfo;
 import com.czxy.manage.model.vo.PaperInfo;
 import com.czxy.manage.model.vo.questionnaire.*;
@@ -24,6 +28,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -130,6 +135,7 @@ public class QuestionnaireService {
                 .collect(Collectors.groupingBy(n -> n.getStemId()));
         List<StemAnalysisDetailInfo> stemDetailInfos = new ArrayList<>();
         int total = paperSendMapper.countByPaperId(paperId);
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
         for (Map.Entry<Integer, List<PaperDetailEntity>> entry : items.entrySet()) {
             if (entry.getValue() != null && entry.getValue().size() > 0) {
                 PaperDetailEntity stemInfo = entry.getValue().get(0);
@@ -137,7 +143,8 @@ public class QuestionnaireService {
                 stemDetailInfo.setId(entry.getKey());
                 if (stemDetailInfo.getCategory() == 1 && total > 0) {
                     int avg = entry.getValue().stream().filter(n -> n.getOptionSelected() == 1).collect(Collectors.summingInt(n -> n.getOptionScore()));
-                    stemDetailInfo.setAvgScore(avg / total);
+                    String format = decimalFormat.format((double) avg / total);
+                    stemDetailInfo.setAvgScore(format);
                 }
                 stemDetailInfo.setAnswers(getOptions(entry.getValue(), total));
                 stemDetailInfos.add(stemDetailInfo);
@@ -174,15 +181,48 @@ public class QuestionnaireService {
                 optionAnalysisDetailInfo.setScore(entry.getValue().get(0).getOptionScore());
                 optionAnalysisDetailInfo.setIndex(entry.getValue().get(0).getOptionIndex());
                 Long count = entry.getValue().stream().filter(n -> n.getAnswerId() != null).collect(Collectors.counting());
-                if (count != null && count > 0) {
+                if (total > 0) {
                     float percent = (int) ((new BigDecimal((float) count / total).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()) * 100);
                     optionAnalysisDetailInfo.setPercent(percent + "%");
-                    optionAnalysisDetailInfo.setCount(count.intValue());
                 }
+                optionAnalysisDetailInfo.setCount(count.intValue());
                 optionAnalysisDetailInfos.add(optionAnalysisDetailInfo);
             }
 
         }
         return optionAnalysisDetailInfos;
+    }
+
+    @Transactional
+    public Boolean copy(Integer paperId, String paperName) {
+        PaperEntity paperEntity = questionnaireMapper.queryPaper(paperId);
+        if (paperEntity.getName().equals(paperName)) {
+            paperEntity.setName(paperName + "复制");
+        } else {
+            paperEntity.setName(paperName);
+        }
+        questionnaireMapper.insertPaper(paperEntity);
+        List<PaperCopyStemEntity> paperCopyStemEntities = questionnaireMapper.queryPaperStem(paperId);
+        List<Integer> stemIds = paperCopyStemEntities.stream().map(n -> n.getStemId()).distinct().collect(Collectors.toList());
+        for (Integer stemId : stemIds) {
+            StemEntity stemEntity = questionnaireMapper.queryStem(stemId);
+            questionnaireMapper.insertStem(stemEntity);
+            if (!ObjectUtils.nullSafeEquals("问答题", stemEntity.getType())) {
+                List<OptionEntity> optionEntities = questionnaireMapper.queryOption(stemId);
+                for (OptionEntity optionEntity : optionEntities) {
+                    optionEntity.setStemId(stemEntity.getId());
+                    questionnaireMapper.insertOption(optionEntity);
+                }
+            }
+
+            Optional<PaperCopyStemEntity> first = paperCopyStemEntities.stream().filter(n -> n.getStemId().equals(stemId)).findFirst();
+            if (first.isPresent()) {
+                PaperCopyStemEntity p = first.get();
+                p.setStemId(stemEntity.getId());
+                p.setPaperId(paperEntity.getId());
+                questionnaireMapper.insertPaperStem(p);
+            }
+        }
+        return true;
     }
 }

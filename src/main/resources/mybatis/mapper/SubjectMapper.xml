@@ -3,8 +3,16 @@
 <mapper namespace="com.czxy.manage.dao.SubjectMapper">
     <insert id="add" parameterType="com.czxy.manage.model.entity.SubjectEntity" useGeneratedKeys="true"
             keyProperty="id">
-        insert into subject (name, content, types, files, teacher_id, category,description)
-        values (#{name}, #{content}, #{types}, #{files}, #{teacherId}, #{category},#{description})
+        insert into subject (name, content, types, files, teacher_id, category, description)
+        values (#{name}, #{content}, #{types}, #{files}, #{teacherId}, #{category}, #{description})
+    </insert>
+    <insert id="batchInsert">
+        insert into subject
+        (name, content,teacher_id, category, description)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.name},#{item.content},#{item.teacherId},#{item.category},#{item.description})
+        </foreach>
     </insert>
     <update id="update">
         update subject

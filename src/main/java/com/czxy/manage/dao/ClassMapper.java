@@ -5,9 +5,11 @@ import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.classes.ClassInfo;
 import com.czxy.manage.model.vo.classes.ClassPageParam;
+import com.czxy.manage.model.vo.index.RankInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -33,4 +35,6 @@ public interface ClassMapper {
     Integer clearStudent(Integer classId);
 
     List<CountEntity> queryCount(@Param("collect") List<Integer> collect);
+
+    List<RankInfo> queryByTime(Date beginTime, Date endTime);
 }

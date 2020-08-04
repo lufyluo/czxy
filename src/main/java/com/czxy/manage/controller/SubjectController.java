@@ -1,5 +1,6 @@
 package com.czxy.manage.controller;
 
+import com.czxy.manage.infrastructure.aop.FileAnonymous;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
@@ -18,6 +19,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -54,5 +56,11 @@ public class SubjectController {
     @ApiOperation("批量删除课题")
     public BaseResponse<Boolean> delete(@PathVariable List<Integer> subjectIds){
         return ResponseUtil.success(subjectService.delete(subjectIds));
+    }
+    @PostMapping("/import")
+    @ApiOperation("导入课题")
+    @FileAnonymous
+    public BaseResponse<Boolean> importSubjects(MultipartFile file){
+        return ResponseUtil.success(subjectService.importSubjects(file));
     }
 }

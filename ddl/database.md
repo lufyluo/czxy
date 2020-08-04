@@ -859,18 +859,22 @@ create table class_file
 )
 comment '班级附件';
 
-create table site_topic
+alter table w_stem modify category smallint null comment '0-普通题目，1-分数题目';
+
+
+)
+
+-- 暂时每天见
+create table wechat_media
 (
 	id int auto_increment,
-	site_id int null,
-	topic VARCHAR(100) null comment '主题名称',
-	updated_time timestamp default now() null,
-	created_time timestamp default now() null,
-	constraint site_topic_pk
+	media_id varchar(100) not null comment '图文消息id',
+	create_at long null comment '图文创建时间',
+	created_time datetime default now() null,
+	constraint wechat_media_pk
 		primary key (id)
 )
-comment '点位主题';
+comment '微信图文记录';
 
 
-)
 ```

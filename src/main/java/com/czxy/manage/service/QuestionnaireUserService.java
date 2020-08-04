@@ -13,9 +13,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,7 +40,7 @@ public class QuestionnaireUserService {
         if (paperSubmitInfo == null || paperSubmitInfo.size() == 0) {
             return true;
         }
-        questionnaireMapper.clearAnswers(paperSubmitInfo.get(0).getPaperId(),paperSubmitInfo.get(0).getUserId());
+        questionnaireMapper.clearAnswers(paperSubmitInfo.get(0).getPaperId(), paperSubmitInfo.get(0).getUserId());
         List<PaperSubmitEntity> entities = toPaperSubmitEntities(paperSubmitInfo);
         questionnaireMapper.batchInsert(entities);
         PaperSubmitInfo paperSubmitInfo1 = paperSubmitInfo.get(0);
@@ -55,6 +57,10 @@ public class QuestionnaireUserService {
                     entity.setOptionId(op);
                     entities.add(entity);
                 });
+            }
+            if (!StringUtils.isEmpty(n.getAnswerText())) {
+                PaperSubmitEntity entity = PojoMapper.INSTANCE.toPaperSubmitEntity(n);
+                entities.add(entity);
             }
         });
         return entities;
@@ -78,6 +84,7 @@ public class QuestionnaireUserService {
             }
 
         }
+        stemDetailInfos.sort(Comparator.comparingInt(StemDetailInfo::getIndex));
         paperDetailInfo.setStemDetailInfos(stemDetailInfos);
         return paperDetailInfo;
     }
