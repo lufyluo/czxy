@@ -863,4 +863,18 @@ alter table w_stem modify category smallint null comment '0-普通题目，1-分
 
 
 )
+
+-- 暂时每天见
+create table wechat_media
+(
+	id int auto_increment,
+	media_id varchar(100) not null comment '图文消息id',
+	create_at long null comment '图文创建时间',
+	created_time datetime default now() null,
+	constraint wechat_media_pk
+		primary key (id)
+)
+comment '微信图文记录';
+
+
 ```
