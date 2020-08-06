@@ -20,4 +20,7 @@ public class ClassEntity extends BaseEntity {
     private Integer compositionId;
     private Integer duration;
     private String addr;
+    private String classroom;
+    @ApiModelProperty("班级互动区开关,0-可用，1-不可用")
+    private Byte chatOff;
 }

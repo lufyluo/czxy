@@ -4,6 +4,7 @@ import com.czxy.manage.dao.*;
 import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
+import com.czxy.manage.infrastructure.util.qrcode.QrCodeUtil;
 import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.PaperDetailEntity;
 import com.czxy.manage.model.entity.PaperEntity;
@@ -20,14 +21,19 @@ import com.czxy.manage.model.vo.student.GetAllParam;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -46,6 +52,8 @@ public class QuestionnaireService {
     private PaperMapper paperMapper;
     @Autowired
     private StudentService studentService;
+    @Value("${czxy.paper}")
+    private String paperUrl;
 
     public PageInfo<PaperInfo> page(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -224,5 +232,22 @@ public class QuestionnaireService {
             }
         }
         return true;
+    }
+
+    public void qrcode(Integer paperId, HttpServletResponse response) {
+        PaperEntity paperEntity = questionnaireMapper.queryPaper(paperId);
+        if(paperEntity == null){
+            throw new ManageException(ResponseStatus.DATANOTEXIST);
+        }
+        try {
+            response.setContentType("application/octet-stream");
+            //处理文件名为中文的情况
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(paperEntity.getName()+".jpg", "UTF-8"));
+            QrCodeUtil.writeToStream(response.getOutputStream(),paperUrl+paperId);
+        } catch (WriterException e) {
+            throw new ManageException(ResponseStatus.FAILURE,e.getMessage());
+        } catch (IOException e) {
+            throw new ManageException(ResponseStatus.FAILURE,e.getMessage());
+        }
     }
 }

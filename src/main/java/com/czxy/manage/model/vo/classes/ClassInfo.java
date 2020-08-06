@@ -38,4 +38,8 @@ public class ClassInfo extends BaseEntity {
     private Integer duration;
     @ApiModelProperty("详细地址（不包含省市县）")
     private String addr;
+    @ApiModelProperty("班级教室")
+    private String classroom;
+    @ApiModelProperty("班级互动区开关,0-可用，1-不可用")
+    private Byte chatOff;
 }

@@ -61,7 +61,7 @@ public class ClassController {
     }
 
     @PutMapping("/studentClass")
-    @ApiOperation("根据classID设置学生班级信息")
+    @ApiOperation("根据classID设置学生班级信息,接口不支持删除以前班上同学")
     public BaseResponse<Boolean> updateStudentClass(@RequestBody StudentClassInfo studentClassInfo) {
         return ResponseUtil.success(classService.updateStudentClass(studentClassInfo));
     }

@@ -129,7 +129,7 @@ public class SubjectService {
             List<Integer> fileIds = new ArrayList<>();
             Arrays.stream(files.split(",")).forEach(n -> fileIds.add(Integer.parseInt(n)));
             List<FileEntity> fileEntities = fileMapper.query(fileIds);
-            subjectByIdInfo.setFileInfos(PojoMapper.INSTANCE.tiFileInfos(fileEntities));
+            subjectByIdInfo.setFileInfos(PojoMapper.INSTANCE.toFileInfos(fileEntities));
         }
 
         return subjectByIdInfo;

@@ -876,5 +876,12 @@ create table wechat_media
 )
 comment '微信图文记录';
 
+alter table class
+	add classroom varchar(150) null comment '教室名称' after addr;
+
+alter table class
+	add chat_off smallint default 0 null comment '公众号班级互动区开关，0-可用，1-不可用' after classroom;
+
+
 
 ```

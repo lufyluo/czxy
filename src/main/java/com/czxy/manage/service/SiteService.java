@@ -207,7 +207,7 @@ public class SiteService {
         if (!StringUtils.isEmpty(attachFiles)) {
             List<Integer> fileIds = Arrays.asList(attachFiles.split(",")).stream().map(n -> Integer.parseInt(n)).collect(Collectors.toList());
             List<FileEntity> fileInfos = fileMapper.query(fileIds);
-            siteInfo.setAttachFiles(PojoMapper.INSTANCE.tiFileInfos(fileInfos));
+            siteInfo.setAttachFiles(PojoMapper.INSTANCE.toFileInfos(fileInfos));
         }
     }
 
@@ -220,7 +220,7 @@ public class SiteService {
                 fileEntity.setUrl(n);
                 return fileEntity;
             }).collect(Collectors.toList());
-            siteInfo.setPics(PojoMapper.INSTANCE.tiFileInfos(collect));
+            siteInfo.setPics(PojoMapper.INSTANCE.toFileInfos(collect));
         }
     }
 

@@ -1,5 +1,7 @@
 package com.czxy.manage.controller;
 
+import com.czxy.manage.infrastructure.aop.Anonymous;
+import com.czxy.manage.infrastructure.aop.FileAnonymous;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
@@ -15,6 +17,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Api(tags = "问卷-试卷管理", value = "试卷管理")
@@ -71,5 +75,13 @@ public class QuestionnaireController {
     @ApiOperation("问卷复制")
     public BaseResponse<Boolean> copy(@RequestParam Integer paperId, @RequestParam String paperName) {
         return ResponseUtil.success(questionnaireService.copy(paperId, paperName));
+    }
+
+    @GetMapping("/qrcode/{paperId}")
+    @ApiOperation("下载问卷二维码")
+    @FileAnonymous
+    @Anonymous
+    public void qrcode(@PathVariable @Min(value = 1,message = "paperId 参数错误") Integer paperId, HttpServletResponse response) {
+        questionnaireService.qrcode(paperId,response);
     }
 }

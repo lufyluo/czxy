@@ -4,10 +4,10 @@
     <insert id="insert" useGeneratedKeys="true"
             keyProperty="id">
         insert into class(name, province_id, city_id, county_id, org_id, arrange_id, recommend_org_id, composition_id,
-                          begin_time, end_time, duration, addr)
+                          begin_time, end_time, duration, addr,classroom,chat_off)
         values (#{name}, #{provinceId}, #{cityId}, #{countyId}, #{orgId}, #{arrangeId}, #{recommendOrgId},
                 #{compositionId},
-                #{beginTime}, #{endTime}, #{duration}, #{addr})
+                #{beginTime}, #{endTime}, #{duration}, #{addr},#{classroom},#{chatOff})
     </insert>
     <update id="update">
         update class
@@ -22,6 +22,8 @@
           , recommend_org_id = #{recommendOrgId}
           , duration         = #{duration}
           , composition_id   = #{compositionId}
+          , classroom        = #{classroom}
+          , chat_off         = #{charOff}
           , updated_time     = now()
         where id = #{id}
     </update>
@@ -102,7 +104,8 @@
                c.updated_time     as updatedTime,
                c.created_time     as createdTime,
                c.appellation,
-
+               c.classroom,
+               c.chat_off         as charOff,
                c.duration         as duration,
                o.name             as orgName,
                a.path             as addressName,
@@ -176,7 +179,9 @@
                province_id      as provinceId,
                city_id          as cityId,
                county_id        as countyId,
-               addr
+               addr,
+               classroom,
+               chat_off         as chatOff
         from class
         where id = #{classId}
     </select>
