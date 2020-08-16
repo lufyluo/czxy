@@ -9,6 +9,8 @@ import com.czxy.manage.model.entity.questionnaire.stem.StemEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.StemOptionEntity;
 import com.czxy.manage.model.vo.*;
 import com.czxy.manage.model.vo.arrange.ArrangeInfo;
+import com.czxy.manage.model.vo.chat.ChatContentCreateInfo;
+import com.czxy.manage.model.vo.chat.ChatContentInfo;
 import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.classes.files.ClassFileCreateInfo;
 import com.czxy.manage.model.vo.customer.CustomerCreateInfo;
@@ -299,4 +301,9 @@ public interface PojoMapper {
 
     SubjectEntity toImportSubjectEntity(SubjectImportInfo subjectImportInfo);
     List<SubjectEntity> toImportSubjectEntities(List<SubjectImportInfo> subjectImportInfos);
+
+    ChatContentEntity toChatContentEntity(ChatContentCreateInfo chatContentCreateInfo);
+
+    ChatContentInfo toChatContentInfo(ChatContentDetailEntity chatContentDetailEntity);
+    List<ChatContentInfo> toChatContentInfos(List<ChatContentDetailEntity> chatContentEntities);
 }

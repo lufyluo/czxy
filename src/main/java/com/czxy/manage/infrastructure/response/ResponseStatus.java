@@ -21,7 +21,9 @@ public enum ResponseStatus implements BaseEnum {
     DATAEXIST("00000005", "数据已存在存在"),
     ORIGINPWDERROR("00000006", "原密码错误"),
     LOGINERROR("00000008", "账号密码错误"),
-    ACCESSTOKENFAIL("00000012", "获取accessToken失败！");
+    ACCESSTOKENFAIL("00000012", "获取accessToken失败！"),
+    CHATROOM_CLOSED("00000040", "班级互动区已关闭"),
+    PAPER_SUBMITED("00000044", "问卷已提交！");
     private String code;
     private String desc;
 

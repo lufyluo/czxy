@@ -1,9 +1,13 @@
 package com.czxy.manage.service;
 
 import com.czxy.manage.dao.OptionMapper;
+import com.czxy.manage.dao.PaperMapper;
 import com.czxy.manage.dao.StemMapper;
+import com.czxy.manage.infrastructure.gloable.ManageException;
+import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.PageParam;
+import com.czxy.manage.model.entity.PaperEntity;
 import com.czxy.manage.model.entity.PlanEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.OptionEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.PaperStemEntity;
@@ -32,6 +36,8 @@ public class QuestionnaireStemService {
     private StemMapper stemMapper;
     @Resource
     private OptionMapper optionMapper;
+    @Resource
+    private PaperMapper paperMapper;
 
     public PageInfo<StemInfo> page(PageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
@@ -101,7 +107,6 @@ public class QuestionnaireStemService {
     public List<PaperStemInfo> get(Integer paperId) {
         List<PaperStemEntity> stemEntities = stemMapper.queryByPaperId(paperId);
         List<PaperStemInfo> stemInfos = PojoMapper.INSTANCE.toPaperStemInfos(stemEntities);
-
         return distinctAndFilleOptions1(stemInfos);
     }
 
@@ -118,7 +123,7 @@ public class QuestionnaireStemService {
                     n.setOptions(toOptionInfos1(options));
                     result.add(n);
                 }
-            }else {
+            } else {
                 result.add(n);
             }
         });

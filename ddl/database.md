@@ -882,6 +882,20 @@ alter table class
 alter table class
 	add chat_off smallint default 0 null comment '公众号班级互动区开关，0-可用，1-不可用' after classroom;
 
+create table chat_room
+(
+	id bigint auto_increment,
+	sender_id int not null comment '发送者用户id',
+	file_id int null comment '图片id',
+	content varchar(150) null comment '文字内容',
+	class_id int not null comment '班级id',
+	del_flag smallint default 0 null comment '是否有效，0-有效，1-无效',
+	updated_time datetime default now() null,
+	created_time datetime default now() null,
+	constraint chat_room_pk
+		primary key (id)
+)
+comment '公众号班级互动区';
 
 
 ```

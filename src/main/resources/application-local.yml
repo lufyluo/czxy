@@ -29,7 +29,7 @@ czxy:
     uploadnews: https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=
     msgTag: czxyMsg
     quetionnaire: czxy_paper
-  paper: https://djyh5.zyhqh.com/#/paper?id=
+  paper: https://djyh5.zyhqh.com/#/questionnaireInfo?id=
 aliyun:
   oss:
     endPoint: YjNOekxXTnVMV05vWlc1blpIVXVZV3hwZVhWdVkzTXVZMjl0

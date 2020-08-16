@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czxy.manage.dao.ChatroomMapper">
+    <insert id="insert">
+        insert into chat_room
+        (sender_id,file_id,content,class_id) values
+        (#{senderId},#{fileId},#{content},#{classId})
+    </insert>
+
+    <select id="queryNexts" resultType="com.czxy.manage.model.entity.ChatContentDetailEntity">
+        select
+        c.id,
+        c.sender_id as senderId,
+        c.file_id as fileId,
+        c.content,
+        c.class_id as classId,
+        f.url,
+        u.name as senderName
+        from chat_room c
+        left join user u
+        on c.sender_id = u.id
+        left join file f
+        on c.file_id = f.id
+        where c.class_id = #{classId}
+        and c.id>#{lastId}
+        limit #{step}
+    </select>
+</mapper>

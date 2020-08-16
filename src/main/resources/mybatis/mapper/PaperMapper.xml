@@ -5,4 +5,10 @@
     <update id="updateState">
         update w_paper set state = #{state},updated_time = now() where id = #{paperId}
     </update>
+    <select id="query" resultType="com.czxy.manage.model.entity.PaperEntity">
+        select p.name,p.description,ps.state from w_paper p
+        left join w_paper_send ps
+        on p.id = ps.paper_id
+        where ps.paper_id = #{paperId} and ps.user_id=#{userId}
+    </select>
 </mapper>

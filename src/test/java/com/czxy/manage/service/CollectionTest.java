@@ -3,16 +3,20 @@ package com.czxy.manage.service;
 import com.czxy.manage.model.vo.site.TopicInfo;
 import org.junit.jupiter.api.Test;
 
+import java.io.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Vector;
 import java.util.stream.Collectors;
+import java.util.zip.GZIPOutputStream;
 
-public   class CollectionTest {
+public  abstract class CollectionTest {
 
     @Test
-    public void removeAllTest() {
+    public void removeAllTest()throws IOException {
+        Thread t= new Thread();
         List<String> arr1 = new ArrayList<>();
         arr1.add("a");
         arr1.add("b");
@@ -22,6 +26,11 @@ public   class CollectionTest {
         arr2.add("b");
         arr1.removeAll(arr2);
         System.out.println(arr1.size());
+
+        new  BufferedWriter(new FileWriter(""));
+        new  BufferedReader(new FileReader(""));
+        new GZIPOutputStream(new FileOutputStream(""));
+        new ObjectInputStream(new FileInputStream(""));
     }
 
     @Test

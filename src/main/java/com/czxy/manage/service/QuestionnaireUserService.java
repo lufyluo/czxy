@@ -6,6 +6,7 @@ import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
 import com.czxy.manage.model.entity.PaperDetailEntity;
 import com.czxy.manage.model.entity.PaperPageEntity;
+import com.czxy.manage.model.entity.questionnaire.PaperSendEntity;
 import com.czxy.manage.model.entity.questionnaire.PaperSubmitEntity;
 import com.czxy.manage.model.vo.questionnaire.*;
 import com.github.pagehelper.Page;
@@ -86,6 +87,8 @@ public class QuestionnaireUserService {
         }
         stemDetailInfos.sort(Comparator.comparingInt(StemDetailInfo::getIndex));
         paperDetailInfo.setStemDetailInfos(stemDetailInfos);
+        int state  = questionnaireMapper.querySendState(userId,paperId);
+        paperDetailInfo.setState(state);
         return paperDetailInfo;
     }
 
