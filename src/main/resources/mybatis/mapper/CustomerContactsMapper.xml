@@ -4,7 +4,7 @@
     <select id="query" resultType="com.czxy.manage.model.entity.CustomerContactsEntity">
         select
         p.id
-        ,p.name
+        ,p.name as planName
         ,p.state
         ,p.composition_id as compositionId
         ,c.name as compositionName
@@ -19,6 +19,7 @@
         ,oc.contactor_phone as contactorPhone
         ,oc.contactor_name as contactorName
         ,o.name as orgName
+        ,o.name
         ,o.star as orgStar
         ,o.id as orgId
         ,o.province_id as provinceId

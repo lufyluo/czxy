@@ -306,4 +306,6 @@ public interface PojoMapper {
 
     ChatContentInfo toChatContentInfo(ChatContentDetailEntity chatContentDetailEntity);
     List<ChatContentInfo> toChatContentInfos(List<ChatContentDetailEntity> chatContentEntities);
+
+    ContactLogEntity toContactLogEntity(ContactLogInfo contactLogInfo);
 }

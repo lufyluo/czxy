@@ -7,6 +7,6 @@ public class ChatContentEntity {
     private Long id;
     private Integer senderId;
     private String content;
-    private String fileId;
+    private Integer fileId;
     private Integer classId;
 }

@@ -8,4 +8,5 @@ public class PaperSendEntity {
     private Integer isToAll;
     private Integer userId;
     private Integer paperId;
+    private Integer state;
 }

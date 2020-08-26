@@ -11,4 +11,8 @@ public interface ContactLogMapper {
     Integer insert(ContactLogInfo contactLogInfo);
 
     List<ContactLogEntity> query(Integer planId);
+
+    Integer delete(Integer id);
+
+    Integer update(ContactLogEntity entity);
 }

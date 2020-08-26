@@ -23,4 +23,15 @@ public class ContactLogService {
         List<ContactLogEntity> entities= contactLogMapper.query(planId);
         return PojoMapper.INSTANCE.toContactLogInfo(entities);
     }
+
+    public Boolean delete(Integer id) {
+        contactLogMapper.delete(id);
+        return true;
+    }
+
+    public Boolean update(ContactLogInfo contactLogInfo) {
+        ContactLogEntity entity = PojoMapper.INSTANCE.toContactLogEntity(contactLogInfo);
+        contactLogMapper.update(entity);
+        return true;
+    }
 }

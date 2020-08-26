@@ -13,7 +13,7 @@ public class ChatContentCreateInfo {
     @ApiModelProperty("文字内容")
     private String content;
     @ApiModelProperty("图片id")
-    private String fileId;
+    private Integer fileId;
     @ApiModelProperty("班级id")
     @Min(value = 1,message = "班级id错误！")
     private Integer classId;

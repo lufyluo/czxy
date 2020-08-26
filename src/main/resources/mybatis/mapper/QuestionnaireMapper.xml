@@ -149,7 +149,7 @@
         from w_option
         where stem_id=#{stemId}
     </select>
-    <select id="querySendState" resultType="java.lang.Integer">
+    <select id="querySendState" resultType="com.czxy.manage.model.entity.questionnaire.PaperSendEntity">
         select state from w_paper_send
         where user_id = #{userId} and paper_id = #{paperId} order by id desc limit 1
     </select>

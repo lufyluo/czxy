@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Data
 public class ContactLogInfo {
+    @ApiModelProperty("操作记录id")
     private Integer id;
     @ApiModelProperty("客户通讯录id")
     private Integer planId;

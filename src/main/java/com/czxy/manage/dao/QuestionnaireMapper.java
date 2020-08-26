@@ -56,5 +56,5 @@ public interface QuestionnaireMapper {
 
     List<OptionEntity> queryOption(Integer stemId);
 
-    int querySendState(Integer userId, Integer paperId);
+    PaperSendEntity querySendState(Integer userId, Integer paperId);
 }

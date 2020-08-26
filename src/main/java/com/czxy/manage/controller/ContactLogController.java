@@ -34,4 +34,14 @@ public class ContactLogController {
     public BaseResponse<Boolean> add(@RequestBody ContactLogInfo contactLogInfo) {
         return ResponseUtil.success(contactLogService.add(contactLogInfo));
     }
+    @DeleteMapping("/{id}")
+    @ApiOperation("删除")
+    public BaseResponse<Boolean> delete(@PathVariable Integer id) {
+        return ResponseUtil.success(contactLogService.delete(id));
+    }
+    @PutMapping
+    @ApiOperation("更新")
+    public BaseResponse<Boolean> update(@RequestBody ContactLogInfo contactLogInfo) {
+        return ResponseUtil.success(contactLogService.update(contactLogInfo));
+    }
 }

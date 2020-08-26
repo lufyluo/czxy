@@ -6,6 +6,14 @@
             (content, plan_id,contact_time)
         values (#{content}, #{planId},#{contactTime})
     </insert>
+    <update id="update">
+        update contact_log
+        set content=#{content},contact_time = #{contactTime}
+        where id = #{id}
+    </update>
+    <delete id="delete">
+        delete from contact_log where id = #{id}
+    </delete>
     <select id="query" resultType="com.czxy.manage.model.entity.ContactLogEntity">
         select id, content, plan_id as planId, del_flag,contact_time as contactTime,
                updated_time as updatedTime, created_time as createdTime

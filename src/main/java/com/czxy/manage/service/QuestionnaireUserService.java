@@ -87,8 +87,11 @@ public class QuestionnaireUserService {
         }
         stemDetailInfos.sort(Comparator.comparingInt(StemDetailInfo::getIndex));
         paperDetailInfo.setStemDetailInfos(stemDetailInfos);
-        int state  = questionnaireMapper.querySendState(userId,paperId);
-        paperDetailInfo.setState(state);
+        PaperSendEntity stateEntity  = questionnaireMapper.querySendState(userId,paperId);
+        if(stateEntity == null){
+            throw new ManageException(ResponseStatus.DATANOTEXIST,"该用户不存在该问卷！");
+        }
+        paperDetailInfo.setState(stateEntity.getState());
         return paperDetailInfo;
     }
 
