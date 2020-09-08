@@ -265,6 +265,7 @@ public class StudentService {
         if (studentDetailEntities != null) {
             studentDetailEntities
                     .stream()
+                    .filter(n -> !StringUtils.isEmpty(n.getPhone()))
                     .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(StudentDetailEntity::getPhone))));
         }
         return studentDetailEntities;

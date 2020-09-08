@@ -23,7 +23,7 @@
           , duration         = #{duration}
           , composition_id   = #{compositionId}
           , classroom        = #{classroom}
-          , chat_off         = #{charOff}
+          , chat_off         = #{chatOff}
           , updated_time     = now()
         where id = #{id}
     </update>

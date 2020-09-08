@@ -98,8 +98,9 @@ public class TeacherService {
     }
 
     public List<TeacherWechatInfo> get() {
-        return null;
-//        return teacherMapper.get();
+        //当前老师资料严重缺省
+        //return null;
+        return teacherMapper.get();
     }
 
     @Transactional

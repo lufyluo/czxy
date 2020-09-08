@@ -42,7 +42,7 @@ public class MessageService {
     public Boolean send(SendInfo sendInfo) {
         if (sendInfo.getUserIds() != null && sendInfo.getUserIds().size() > 0) {
             List<String> wechatIds = userService.getWechatIds(sendInfo.getUserIds());
-            pushWechat(wechatIds,sendInfo.getMessage());
+            pushWechat(wechatIds, sendInfo.getMessage());
             List<SendEntity> entities = sendInfo.getUserIds()
                     .stream()
                     .map(n -> {
@@ -65,7 +65,7 @@ public class MessageService {
                     .map(n -> n.getWechatId())
                     .filter(n -> !StringUtils.isEmpty(n))
                     .distinct()
-                    .collect(Collectors.toList()),sendInfo.getMessage());
+                    .collect(Collectors.toList()), sendInfo.getMessage());
 
             List<SendEntity> entities = studentDetailEntities
                     .stream()
@@ -99,16 +99,18 @@ public class MessageService {
         }
     }
 
-    private void pushWechat(List<String> wechatIds,String msg) {
-        Boolean aBoolean = wechatUtil.addTag(wechatIds, WechatConfig.msgTagId);
-        if(!aBoolean){
-            throw new ManageException(ResponseStatus.FAILURE,"群发送失败！");
-        }
-        Boolean send = wechatUtil.send(WechatConfig.msgTagId, msg);
-        if(!send){
-            throw new ManageException(ResponseStatus.FAILURE,"群发送失败！!");
-        }
-        wechatUtil.clearTag(wechatIds,WechatConfig.msgTagId);
+    private void pushWechat(List<String> wechatIds, String msg) {
+        //todo:暂时不做消息推送
+        return;
+//        Boolean aBoolean = wechatUtil.addTag(wechatIds, WechatConfig.msgTagId);
+//        if(!aBoolean){
+//            throw new ManageException(ResponseStatus.FAILURE,"群发送失败！");
+//        }
+//        Boolean send = wechatUtil.send(WechatConfig.msgTagId, msg);
+//        if(!send){
+//            throw new ManageException(ResponseStatus.FAILURE,"群发送失败！!");
+//        }
+//        wechatUtil.clearTag(wechatIds,WechatConfig.msgTagId);
     }
 
     public PageInfo<MessageInfo> get(UserPageParam<String> pageParam) {
@@ -135,7 +137,7 @@ public class MessageService {
     }
 
     public Boolean sendTag(SendTagInfo sendInfo) {
-        wechatUtil.send(100,sendInfo.getMessage());
+        wechatUtil.send(100, sendInfo.getMessage());
         return true;
     }
 }
