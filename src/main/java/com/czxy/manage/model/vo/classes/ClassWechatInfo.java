@@ -25,4 +25,6 @@ public class ClassWechatInfo {
     private Date createdTime;
     @ApiModelProperty("学生数量")
     private Integer number;
+    @ApiModelProperty("互动区开关，0-关闭，1-打开")
+    private Byte chatOff;
 }

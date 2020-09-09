@@ -312,6 +312,7 @@
              )
         select c.name
              , c.id
+             , c.chat_off     as chatOff
              , c.begin_time   as beginTime
              , c.end_time     as endTime
              , c.created_time as createdTime
