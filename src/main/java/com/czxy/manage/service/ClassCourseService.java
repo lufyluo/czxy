@@ -1,5 +1,12 @@
 package com.czxy.manage.service;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
+import cn.afterturn.easypoi.excel.entity.params.ExcelCollectionParams;
+import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
+import cn.afterturn.easypoi.util.PoiPublicUtil;
 import com.czxy.manage.dao.ArrangeMapper;
 import com.czxy.manage.dao.ClassMasterMapper;
 import com.czxy.manage.dao.CourseArrangeMapper;
@@ -19,11 +26,21 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpResponse;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,6 +57,8 @@ public class ClassCourseService {
     private CourseArrangeMapper courseArrangeMapper;
     @Resource
     ClassMasterMapper classMasterMapper;
+    @Resource
+    HttpServletResponse httpServletResponse;
 
     public ClassArrangeInfo get(Integer classId) {
         ClassArrangeWithTimeEntity classArrangeWithTimeEntity = arrangeMapper.get(classId);
@@ -300,5 +319,49 @@ public class ClassCourseService {
             return null;
         }
         return get(classId);
+    }
+
+    public void exportFile(Integer id) throws Exception {
+        ClassArrangeTableInfo tableInfo = tableById(id);
+        int size = tableInfo.getBody().size();
+        int length = tableInfo.getHead().size();
+        Workbook workbook = new HSSFWorkbook();
+        Sheet sheet = workbook.createSheet();
+        sheet.setDefaultColumnWidth(50);
+        for (int rowNum = 0; rowNum < size + 1; rowNum++) {
+            Row row = sheet.createRow(rowNum);
+            row.setHeight((short) 500);
+            for (int i = 0; i < length; i++) {
+                Cell cell = getCell(row, i, workbook);
+                if (rowNum == 0) {
+                    cell.setCellValue(tableInfo.getHead().get(i));
+                } else {
+                    String[] strings = tableInfo.getBody().get(rowNum - 1);
+                    List<String> asList = Arrays.asList(strings);
+                    String s = asList.get(i);
+                    if (s != null) {
+                        cell.setCellValue(s);
+                    } else {
+                        cell.setCellValue("");
+                    }
+                }
+            }
+        }
+        httpServletResponse.setContentType("application/vnd.ms-excel");
+        httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("班级课表.xls", "UTF-8"));
+        ServletOutputStream outputStream = httpServletResponse.getOutputStream();
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
+    }
+
+    private Cell getCell(Row row, Integer index, Workbook workbook) {
+        Cell cell = row.createCell(index);
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setWrapText(true);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cell.setCellStyle(cellStyle);
+        return cell;
     }
 }

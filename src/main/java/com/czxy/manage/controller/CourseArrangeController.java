@@ -1,5 +1,7 @@
 package com.czxy.manage.controller;
 
+import com.czxy.manage.infrastructure.aop.Anonymous;
+import com.czxy.manage.infrastructure.aop.FileAnonymous;
 import com.czxy.manage.infrastructure.response.BaseResponse;
 import com.czxy.manage.infrastructure.response.PageResponse;
 import com.czxy.manage.infrastructure.response.ResponseUtil;
@@ -18,19 +20,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Api(tags = "班级课表",value = "班级课表" )
+@Api(tags = "班级课表", value = "班级课表")
 @RequestMapping("/api/class_arrange")
 public class CourseArrangeController {
     @Autowired
     ClassCourseService classCourseService;
+
     @GetMapping("/{classId}")
     @ApiOperation("根据班级获取课表")
-    public BaseResponse<ClassArrangeInfo> get(@PathVariable Integer classId){
+    public BaseResponse<ClassArrangeInfo> get(@PathVariable Integer classId) {
         return ResponseUtil.success(classCourseService.get(classId));
     }
 
     @GetMapping("/table/{classId}")
-    @ApiOperation(value = "根据班级获取课表（课表管理，查看页数据结构）",hidden = true)
+    @ApiOperation(value = "根据班级获取课表（课表管理，查看页数据结构）", hidden = true)
     @Deprecated
     public BaseResponse<ClassArrangeTableInfo> table(@PathVariable Integer classId) {
         return ResponseUtil.success(classCourseService.table(classId));
@@ -56,22 +59,33 @@ public class CourseArrangeController {
 
     @PostMapping
     @ApiOperation("添加课表，成功返回课表id")
-    public BaseResponse<Integer> add(@RequestBody CourseArrangeAddInfo courseArrangeAddInfo){
+    public BaseResponse<Integer> add(@RequestBody CourseArrangeAddInfo courseArrangeAddInfo) {
         return ResponseUtil.success(classCourseService.add(courseArrangeAddInfo));
     }
+
     @PutMapping
     @ApiOperation("编辑课表")
-    public BaseResponse<Boolean> update(@RequestBody CourseArrangeUpdateInfo courseArrangeUpdateInfo){
+    public BaseResponse<Boolean> update(@RequestBody CourseArrangeUpdateInfo courseArrangeUpdateInfo) {
         return ResponseUtil.success(classCourseService.update(courseArrangeUpdateInfo));
     }
+
     @GetMapping("/page")
     @ApiOperation("分页获取课表")
-    public PageResponse<ArrangeInfo> page(PageParam<String> pageParam){
+    public PageResponse<ArrangeInfo> page(PageParam<String> pageParam) {
         return PageResponse.success(classCourseService.page(pageParam));
     }
+
     @DeleteMapping("/{arrangeIds}")
     @ApiOperation("批量删除课表信息")
-    public BaseResponse<Boolean> delete(@PathVariable List<Integer> arrangeIds){
+    public BaseResponse<Boolean> delete(@PathVariable List<Integer> arrangeIds) {
         return ResponseUtil.success(classCourseService.delete(arrangeIds));
+    }
+
+    @GetMapping("/export/tableById/{id}")
+    @ApiOperation("根据课表ID导出")
+    @FileAnonymous
+    @Anonymous
+    public void exportFile(@PathVariable Integer id) throws Exception {
+        classCourseService.exportFile(id);
     }
 }
