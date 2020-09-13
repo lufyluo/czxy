@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ClassMasterMapper {
-    Integer insertMaster(Integer userId, Integer classId);
+    Integer insertMaster(Integer userId, Integer classId,Integer type);
 
     Integer queryClass(Integer userId);
 

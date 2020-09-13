@@ -10,6 +10,8 @@ public class ClassInformationEntity extends ClassEntity{
     private String orgName;
     private String addressName;
     private String masterName;
+    @ApiModelProperty("班主任助理")
+    private String assistantName;
     private String leaderName;
     @ApiModelProperty("推荐单位")
     private String recommendOrgName;

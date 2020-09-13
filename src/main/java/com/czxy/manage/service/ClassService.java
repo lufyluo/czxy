@@ -109,7 +109,10 @@ public class ClassService {
         classMapper.insert(classEntity);
         classFileService.batchInsert(classCreateInfo.getFileIds(), classEntity.getId());
         if (classCreateInfo.getMasterId() != null && classCreateInfo.getMasterId() > 0) {
-            classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId());
+            classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId(),0);
+        }
+        if (classCreateInfo.getAssistantId() != null && classCreateInfo.getAssistantId() > 0) {
+            classMasterMapper.insertMaster(classCreateInfo.getAssistantId(), classEntity.getId(),1);
         }
         if (classCreateInfo.getStudentAddInfos() != null && classCreateInfo.getStudentAddInfos().size() > 0) {
             classCreateInfo.getStudentAddInfos().forEach(n -> {
@@ -161,7 +164,11 @@ public class ClassService {
         classFileService.batchUpdate(classCreateInfo.getId(), classCreateInfo.getFileIds());
         classMasterMapper.delete(classCreateInfo.getMasterId(), classEntity.getId());
         if (classCreateInfo.getMasterId() != null && classCreateInfo.getMasterId() > 0) {
-            classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId());
+            classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId(),0);
+        }
+        classMasterMapper.delete(classCreateInfo.getAssistantId(), classEntity.getId());
+        if (classCreateInfo.getAssistantName() != null && classCreateInfo.getAssistantId() > 0) {
+            classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId(),1);
         }
         return true;
     }

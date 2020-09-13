@@ -9,7 +9,7 @@
     </sql>
     <insert id="insertMaster">
         insert into class_master(user_id, type, class_id)
-        values (#{userId}, 0, #{classId})
+        values (#{userId}, #{type}, #{classId})
     </insert>
     <delete id="delete">
         delete
