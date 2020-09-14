@@ -1,18 +1,14 @@
 package com.czxy.manage.service;
 
-import cn.afterturn.easypoi.excel.ExcelExportUtil;
-import cn.afterturn.easypoi.excel.ExcelImportUtil;
-import cn.afterturn.easypoi.excel.entity.ExportParams;
-import cn.afterturn.easypoi.excel.entity.ImportParams;
-import cn.afterturn.easypoi.excel.entity.params.ExcelCollectionParams;
-import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
-import cn.afterturn.easypoi.util.PoiPublicUtil;
-import com.czxy.manage.dao.*;
+import com.czxy.manage.dao.ArrangeMapper;
+import com.czxy.manage.dao.ClassMasterMapper;
+import com.czxy.manage.dao.CourseArrangeMapper;
+import com.czxy.manage.dao.SubjectMapper;
 import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
-import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.PageParam;
+import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.arrange.ArrangeInfo;
 import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.subject.SubjectDetailDomainInfo;
@@ -20,7 +16,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpResponse;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
@@ -30,10 +25,6 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -53,8 +44,6 @@ public class ClassCourseService {
     ClassMasterMapper classMasterMapper;
     @Resource
     HttpServletResponse httpServletResponse;
-    @Resource
-    ClassMapper classMapper;
 
     public ClassArrangeInfo get(Integer classId) {
         ClassArrangeWithTimeEntity classArrangeWithTimeEntity = arrangeMapper.get(classId);
@@ -318,8 +307,8 @@ public class ClassCourseService {
     }
 
     public void exportFile(Integer id) throws Exception {
-        ClassInformationEntity query = classMapper.query(id);
-        if (query==null){
+        ClassArrangeWithTimeEntity arrangeWithTimeEntity = arrangeMapper.getById(id);
+        if (arrangeWithTimeEntity==null){
             throw new ManageException(ResponseStatus.DATANOTEXIST,"班級不存在！");
         }
         ClassArrangeTableInfo tableInfo = tableById(id);
@@ -348,7 +337,7 @@ public class ClassCourseService {
             }
         }
         httpServletResponse.setContentType("application/vnd.ms-excel");
-        httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(query.getName()+"课表.xls", "UTF-8"));
+        httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(arrangeWithTimeEntity.getName()+".xls", "UTF-8"));
         ServletOutputStream outputStream = httpServletResponse.getOutputStream();
         workbook.write(outputStream);
         outputStream.close();
