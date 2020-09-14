@@ -7,18 +7,12 @@ import cn.afterturn.easypoi.excel.entity.ImportParams;
 import cn.afterturn.easypoi.excel.entity.params.ExcelCollectionParams;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import cn.afterturn.easypoi.util.PoiPublicUtil;
-import com.czxy.manage.dao.ArrangeMapper;
-import com.czxy.manage.dao.ClassMasterMapper;
-import com.czxy.manage.dao.CourseArrangeMapper;
-import com.czxy.manage.dao.SubjectMapper;
+import com.czxy.manage.dao.*;
 import com.czxy.manage.infrastructure.gloable.ManageException;
 import com.czxy.manage.infrastructure.response.ResponseStatus;
 import com.czxy.manage.infrastructure.util.PojoMapper;
-import com.czxy.manage.model.entity.ArrangeEntity;
+import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.PageParam;
-import com.czxy.manage.model.entity.ClassArrangeWithTimeEntity;
-import com.czxy.manage.model.entity.CourseArrangeEntity;
-import com.czxy.manage.model.entity.CourseDetailEntity;
 import com.czxy.manage.model.vo.arrange.ArrangeInfo;
 import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.subject.SubjectDetailDomainInfo;
@@ -59,6 +53,8 @@ public class ClassCourseService {
     ClassMasterMapper classMasterMapper;
     @Resource
     HttpServletResponse httpServletResponse;
+    @Resource
+    ClassMapper classMapper;
 
     public ClassArrangeInfo get(Integer classId) {
         ClassArrangeWithTimeEntity classArrangeWithTimeEntity = arrangeMapper.get(classId);
@@ -322,6 +318,10 @@ public class ClassCourseService {
     }
 
     public void exportFile(Integer id) throws Exception {
+        ClassInformationEntity query = classMapper.query(id);
+        if (query==null){
+            throw new ManageException(ResponseStatus.DATANOTEXIST,"班級不存在！");
+        }
         ClassArrangeTableInfo tableInfo = tableById(id);
         int size = tableInfo.getBody().size();
         int length = tableInfo.getHead().size();
@@ -348,7 +348,7 @@ public class ClassCourseService {
             }
         }
         httpServletResponse.setContentType("application/vnd.ms-excel");
-        httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("班级课表.xls", "UTF-8"));
+        httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(query.getName()+"课表.xls", "UTF-8"));
         ServletOutputStream outputStream = httpServletResponse.getOutputStream();
         workbook.write(outputStream);
         outputStream.close();
