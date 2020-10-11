@@ -52,6 +52,7 @@
         ,c.arrange_id as arrangeId
         ,c.composition_id as compositionId
         ,c.duration
+        ,c.chat_off as chatOff
         ,com.name as composition
         ,c.recommend_org_id as recommendOrgId
         ,o1.name as recommendOrgName
@@ -112,7 +113,7 @@
                c.created_time     as createdTime,
                c.appellation,
                c.classroom,
-               c.chat_off         as charOff,
+               c.chat_off         as chatOff,
                c.duration         as duration,
                o.name             as orgName,
                a.path             as addressName,

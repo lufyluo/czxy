@@ -167,8 +167,8 @@ public class ClassService {
             classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId(),0);
         }
         classMasterMapper.delete(classCreateInfo.getAssistantId(), classEntity.getId());
-        if (classCreateInfo.getAssistantName() != null && classCreateInfo.getAssistantId() > 0) {
-            classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId(),1);
+        if (classCreateInfo.getAssistantId() != null && classCreateInfo.getAssistantId() > 0) {
+            classMasterMapper.insertMaster(classCreateInfo.getAssistantId(), classEntity.getId(),1);
         }
         return true;
     }

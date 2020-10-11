@@ -227,7 +227,7 @@ public class ClassCourseService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
         head.add("班次日期");
         while (beginCalendar.getTimeInMillis() < end.getTime()
-                && beginCalendar.getTime().getDate() != end.getDate()) {
+                && !dateFormat.format(beginCalendar.getTime()).equals(dateFormat.format(end))) {
             head.add(dateFormat.format(beginCalendar.getTime()));
             beginCalendar.add(Calendar.DATE, 1);
         }
