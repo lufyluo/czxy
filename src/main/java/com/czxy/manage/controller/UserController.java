@@ -61,7 +61,7 @@ public class UserController {
 
     @GetMapping("/page_masters")
     @ApiOperation(value = "分页获取班主任", notes = "分页获取班主任")
-    public PageResponse<UserInfo> page(PageParam<String> pageParam) {
+    public PageResponse<UserCreateInfo> page(PageParam<String> pageParam) {
         return PageResponse.success(userService.page(pageParam));
     }
 

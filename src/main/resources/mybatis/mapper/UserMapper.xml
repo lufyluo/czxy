@@ -18,7 +18,7 @@
          nativeplace, education, politics, head_img)
         values (#{name}, #{idCard}, #{phone},
                 #{gender}, #{position}, #{age},
-                #{birthday}, 2, #{wechatId},
+                #{birthday}, #{category}, #{wechatId},
                 #{orgId}, #{nation}, #{nativePlace},
                 #{education}, #{politics}, #{headImg});
     </insert>
@@ -151,8 +151,18 @@
     </select>
     <select id="queryMaster" resultType="com.czxy.manage.model.entity.UserEntity">
         select
-        <include refid="base_column"/>
-        from user where category=3
+        u.id, name, idcard, phone, gender, position, age, birthday, category,head_img as headImg,
+        wechat_id as wechatId,
+        u.updated_time as updatedTime,
+        u.created_time as createdTime,
+        org_id as orgId,
+        nation,
+        nativeplace as nativePlace,
+        a.account
+        from user u
+        left join account a
+        on u.id = a.user_id
+        where category=3
         <if test="param != null and param != ''">
             and name like '%${param}%'
         </if>
@@ -333,6 +343,9 @@
         <foreach collection="list" item="item" separator="," close=")" open="(">
             #{item}
         </foreach>
+    </select>
+    <select id="exist" resultType="java.lang.Integer">
+        select count(1) from user where phone = #{phone}
     </select>
 
 </mapper>

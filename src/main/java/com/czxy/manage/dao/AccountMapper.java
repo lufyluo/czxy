@@ -24,4 +24,6 @@ public interface AccountMapper {
     Integer deleteByUserId(@Param("id") List<Integer> id);
 
     Integer update(AccountEntity accountEntity);
+
+    Integer exist(String account);
 }

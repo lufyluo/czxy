@@ -58,4 +58,6 @@ public interface UserMapper {
     List<ClassWechatInfo> queryWechatClass(Integer userId);
 
     List<String> queryByUserIds(List<Integer> userIds);
+
+    Integer exist(String phone);
 }

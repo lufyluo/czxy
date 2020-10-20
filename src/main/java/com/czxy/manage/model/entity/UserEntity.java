@@ -29,4 +29,5 @@ public class UserEntity extends BaseEntity{
     private String education;
     private String politics;
     private String headImg;
+    private String account;
 }

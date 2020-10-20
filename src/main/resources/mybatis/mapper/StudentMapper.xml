@@ -98,8 +98,7 @@
     </update>
     <update id="update">
         update student
-        set class_id=#{classId},
-            type=#{type},
+        set type=#{type},
             updated_time=now()
         where id = #{id}
     </update>

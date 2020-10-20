@@ -54,9 +54,12 @@ public class UserService {
 
     @Transactional
     public Boolean add(UserCreateInfo userInfo) {
+        checkParam(userInfo);
         insertIfAbsentOrg(userInfo);
         UserEntity userEntity = PojoMapper.INSTANCE.toUserEntity(userInfo);
         userMapper.insert(userEntity);
+
+
         AccountEntity accountEntity = PojoMapper.INSTANCE.toAccountEntity(userInfo);
         accountEntity.setUserId(userEntity.getId());
         accountEntity.setPassword(accountService.decodePassword(accountEntity.getPassword(), null));
@@ -72,6 +75,7 @@ public class UserService {
 
     @Transactional
     public Boolean update(UserCreateInfo userCreateInfo) {
+        checkParam(userCreateInfo);
         insertIfAbsentOrg(userCreateInfo);
         updateUserAccount(userCreateInfo);
         return true;
@@ -206,6 +210,18 @@ public class UserService {
     public List<ClassWechatInfo> gerClass(Integer userId) {
         List<ClassWechatInfo> classWechatInfos = userMapper.queryWechatClass(userId);
         return classWechatInfos;
+    }
+
+    private void checkParam(UserCreateInfo userCreateInfo){
+        Integer user = userMapper.exist(userCreateInfo.getPhone());
+        if (user > 0) {
+            throw new ManageException(ResponseStatus.DATAEXIST, "电话已被使用！");
+        }
+
+        Integer account = accountMapper.exist(userCreateInfo.getAccount());
+        if (account > 0) {
+            throw new ManageException(ResponseStatus.DATAEXIST, "账号已被使用！");
+        }
     }
 }
 

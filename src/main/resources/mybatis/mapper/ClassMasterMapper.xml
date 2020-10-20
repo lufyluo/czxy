@@ -11,6 +11,9 @@
         insert into class_master(user_id, type, class_id)
         values (#{userId}, #{type}, #{classId})
     </insert>
+    <delete id="clearClassAssistant">
+        delete from class_master where class_id = #{classId} and type =1
+    </delete>
     <delete id="delete">
         delete
         from class_master
@@ -23,5 +26,15 @@
         where user_id = #{userId}
         order by id desc
         limit 1
+    </select>
+    <select id="queryMasterAssistants" resultType="com.czxy.manage.model.vo.teacher.MasterInfo">
+        select class_id as classId,u.name,u.id
+        from class_master cm
+        left join user u
+        on cm.user_id = u.id
+        where type =1 and cm.class_id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
     </select>
 </mapper>

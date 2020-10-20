@@ -1,7 +1,10 @@
 package com.czxy.manage.model.vo.classes;
 
+import com.czxy.manage.model.vo.teacher.MasterInfo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ClassOrgInfo extends ClassInfo {
@@ -18,9 +21,11 @@ public class ClassOrgInfo extends ClassInfo {
     private Integer masterId;
     @ApiModelProperty("班主任姓名")
     private String masterName;
-    private Integer assistantId;
     @ApiModelProperty("班主任助理")
-    private String assistantName;
+    private List<MasterInfo> assistants;
+//    private Integer assistantId;
+//    @ApiModelProperty("班主任助理")
+//    private String assistantName;
     @ApiModelProperty("课表名称")
     private String arrangeName;
     @ApiModelProperty("班级总人数")

@@ -11,6 +11,7 @@ import com.czxy.manage.model.PageParam;
 import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.classes.*;
 import com.czxy.manage.model.vo.student.StudentAddInfo;
+import com.czxy.manage.model.vo.teacher.MasterInfo;
 import com.czxy.manage.service.classFile.ClassFileService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -22,7 +23,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -48,6 +51,8 @@ public class ClassService {
     public PageInfo<ClassOrgInfo> page(ClassPageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<ClassOrgEntity> classEntities = classMapper.queryAll(pageParam);
+
+
         if (classEntities == null || classEntities.size() == 0) {
             return new PageInfo<>();
         }
@@ -61,8 +66,26 @@ public class ClassService {
             }
         }
         PageInfo<ClassOrgInfo> result = page.toPageInfo();
-        result.setList(PojoMapper.INSTANCE.toClassOrgInfos(classEntities));
+        List<ClassOrgInfo> classOrgInfos = transClassInfos(classEntities);
+        result.setList(classOrgInfos);
         return result;
+    }
+
+    private List<ClassOrgInfo> transClassInfos(List<ClassOrgEntity> classEntities) {
+        if (classEntities == null || classEntities.size() == 0) {
+            return new ArrayList<>();
+        }
+        List<Integer> classIds = classEntities.stream().map(n -> n.getId()).collect(Collectors.toList());
+        List<MasterInfo> assistants = classMasterMapper.queryMasterAssistants(classIds);
+        List<ClassOrgInfo> classOrgInfos = PojoMapper.INSTANCE.toClassOrgInfos(classEntities);
+        classOrgInfos.forEach(n -> {
+            List<MasterInfo> classAssistant = assistants
+                    .stream()
+                    .filter(ass -> ass.getClassId() == n.getId())
+                    .collect(Collectors.toList());
+            n.setAssistants(classAssistant);
+        });
+        return classOrgInfos;
     }
 
     public Boolean delete(List<Integer> id) {
@@ -109,11 +132,11 @@ public class ClassService {
         classMapper.insert(classEntity);
         classFileService.batchInsert(classCreateInfo.getFileIds(), classEntity.getId());
         if (classCreateInfo.getMasterId() != null && classCreateInfo.getMasterId() > 0) {
-            classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId(),0);
+            classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId(), 0);
         }
-        if (classCreateInfo.getAssistantId() != null && classCreateInfo.getAssistantId() > 0) {
-            classMasterMapper.insertMaster(classCreateInfo.getAssistantId(), classEntity.getId(),1);
-        }
+
+        handleAssistant(classCreateInfo.getAssistants(), classEntity.getId());
+
         if (classCreateInfo.getStudentAddInfos() != null && classCreateInfo.getStudentAddInfos().size() > 0) {
             classCreateInfo.getStudentAddInfos().forEach(n -> {
                 n.setClassId(classEntity.getId());
@@ -133,6 +156,15 @@ public class ClassService {
         }
 
         return true;
+    }
+
+    private void handleAssistant(List<MasterInfo> assistants, Integer classId) {
+        classMasterMapper.clearClassAssistant(classId);
+        if (assistants != null && assistants.size() > 0) {
+            assistants.forEach(n -> {
+                classMasterMapper.insertMaster(n.getId(), classId, 1);
+            });
+        }
     }
 
     private Integer getLeaderId(String leaderName, List<StudentAddInfo> studentAddInfos) {
@@ -164,12 +196,9 @@ public class ClassService {
         classFileService.batchUpdate(classCreateInfo.getId(), classCreateInfo.getFileIds());
         classMasterMapper.delete(classCreateInfo.getMasterId(), classEntity.getId());
         if (classCreateInfo.getMasterId() != null && classCreateInfo.getMasterId() > 0) {
-            classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId(),0);
+            classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId(), 0);
         }
-        classMasterMapper.delete(classCreateInfo.getAssistantId(), classEntity.getId());
-        if (classCreateInfo.getAssistantId() != null && classCreateInfo.getAssistantId() > 0) {
-            classMasterMapper.insertMaster(classCreateInfo.getAssistantId(), classEntity.getId(),1);
-        }
+        handleAssistant(classCreateInfo.getAssistants(), classEntity.getId());
         return true;
     }
 

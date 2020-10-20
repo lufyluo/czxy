@@ -11,6 +11,7 @@ import com.czxy.manage.service.QuestionnaireUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class QuestionnaireUserController {
 
     @PostMapping
     @ApiOperation("批量提交答案")
-    public BaseResponse<Boolean> submit(@RequestBody List<PaperSubmitInfo> paperSubmitInfo) {
+    public BaseResponse<Boolean> submit(@Validated @RequestBody List<PaperSubmitInfo> paperSubmitInfo) {
         return ResponseUtil.success(questionnaireUserService.submit(paperSubmitInfo));
     }
 }

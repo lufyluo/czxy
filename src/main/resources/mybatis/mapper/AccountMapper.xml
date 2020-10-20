@@ -26,6 +26,9 @@
         from account
         where account = #{account} and password = #{pwd}
     </select>
+    <select id="exist" resultType="java.lang.Integer">
+        select count(1) from account where account = #{account}
+    </select>
 
     <insert id="insert" parameterType="com.czxy.manage.model.entity.AccountEntity" useGeneratedKeys="true"
             keyProperty="id">

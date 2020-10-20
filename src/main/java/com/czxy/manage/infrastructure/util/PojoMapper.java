@@ -57,6 +57,8 @@ public interface PojoMapper {
     PojoMapper INSTANCE = Mappers.getMapper(PojoMapper.class);
 
     UserEntity toUserEntity(UserCreateInfo userInfo);
+    
+    UserEntity toUserEntity(UserInfo userInfo);
 
     AccountEntity toAccountEntity(UserCreateInfo userInfo);
 
@@ -308,4 +310,11 @@ public interface PojoMapper {
     List<ChatContentInfo> toChatContentInfos(List<ChatContentDetailEntity> chatContentEntities);
 
     ContactLogEntity toContactLogEntity(ContactLogInfo contactLogInfo);
+
+    @Mappings({
+            @Mapping(source ="assistantId",target = "id"),
+            @Mapping(source ="assistantName",target = "name")
+    })
+    MasterInfo toMasterInfo(ClassOrgEntity value);
+    List<MasterInfo> toMasterInfos(List<ClassOrgEntity> value);
 }

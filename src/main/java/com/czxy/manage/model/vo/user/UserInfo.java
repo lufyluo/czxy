@@ -45,6 +45,8 @@ public class UserInfo extends BaseEntity {
     private String politics;
     @ApiModelProperty("头像")
     private String headImg;
+    @ApiModelProperty("账号")
+    private String account;
     @ApiModelProperty("用户菜单权限")
     private List<UserMenuInfo> userMenuInfoList;
 }

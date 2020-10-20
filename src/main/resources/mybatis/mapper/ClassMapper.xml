@@ -62,8 +62,6 @@
         ,o.name as orgName
         ,cm.user_id as masterId
         ,u.name as masterName
-        ,cma.user_id as assistantId
-        ,ucma.name as assistantName
         ,u1.name as leaderName
         ,s.user_id as leaderId
         ,arr.name as arrangeName
@@ -76,10 +74,6 @@
         on c.id = cm.class_id and cm.type = 0
         left join user u
         on cm.user_id = u.id
-        left join class_master cma
-        on c.id = cma.class_id and cma.type = 1
-        left join user ucma
-        on cma.user_id = ucma.id
         left join student s
         on s.class_id = c.id and s.type = 10
         left join user u1

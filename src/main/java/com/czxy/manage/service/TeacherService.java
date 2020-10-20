@@ -62,6 +62,7 @@ public class TeacherService {
         Integer orgId = orgService.insertIfAbsentOrg(teacherInfo.getOrgName(), teacherInfo.getOrgId());
         UserEntity userEntity = PojoMapper.INSTANCE.teacherInfoToUserEntity(teacherInfo);
         userEntity.setOrgId(orgId);
+        userEntity.setCategory(2);
         userMapper.insert(userEntity);
         teacherInfo.setUserId(userEntity.getId());
         TeacherEntity teacherEntity = PojoMapper.INSTANCE.toTeacherEntity(teacherInfo);
