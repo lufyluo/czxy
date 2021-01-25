@@ -15,4 +15,5 @@ public class FileInfo {
     private String url;
     @JsonFormat(pattern = "yyyy年MM月dd日 HH:mm:ss")
     private Date createdTime;
+    private Boolean canPreview;
 }

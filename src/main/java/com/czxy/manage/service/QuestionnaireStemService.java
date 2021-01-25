@@ -66,6 +66,7 @@ public class QuestionnaireStemService {
 
     @Transactional
     public Integer add(StemInfo stemCreateInfo) {
+        validatedOptions(stemCreateInfo);
         StemEntity stemEntity = PojoMapper.INSTANCE.toStemEntity(stemCreateInfo);
         stemMapper.insert(stemEntity);
         if (stemCreateInfo.getOptions() != null && stemCreateInfo.getOptions().size() > 0) {
@@ -76,6 +77,18 @@ public class QuestionnaireStemService {
             optionMapper.deleteByStemId(stemEntity.getId());
         }
         return stemEntity.getId();
+    }
+
+    private void validatedOptions(StemInfo stemCreateInfo) {
+        if (stemCreateInfo == null) {
+            throw new ManageException(ResponseStatus.ARGUMENTNOTVALID, "参数不能为空！");
+        }
+        String noAnswerStemType = "问答";
+        if (stemCreateInfo.getType() != null && !noAnswerStemType.equals(stemCreateInfo.getType())) {
+            if (stemCreateInfo.getOptions() == null || stemCreateInfo.getOptions().size() == 0) {
+                throw new ManageException(ResponseStatus.ARGUMENTNOTVALID, "非问答题必须创建选项！");
+            }
+        }
     }
 
     public Boolean delete(List<Integer> stemIds) {

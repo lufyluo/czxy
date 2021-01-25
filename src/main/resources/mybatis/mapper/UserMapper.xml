@@ -264,26 +264,37 @@
         limit 1
     </select>
     <select id="queryClassId" resultType="com.czxy.manage.model.entity.ClassEntity">
-        select c.id,
-               c.name,
-               c.org_id           as orgId,
-               c.begin_time       as beginTime,
-               c.end_time         as endTime,
-               c.arrange_id       as arrangeId,
-               c.recommend_org_id as recommendOrgId,
-               c.composition_id   as compositionId,
-               c.duration,
-               c.province_id      as provinceId,
-               c.city_id          as cityId,
-               c.county_id        as countyId,
-               c.addr
-        from user u
-                 left join student s
-                           on u.id = s.user_id
-                 left join class c
-                           on s.class_id = c.id
-        where u.id = #{id}
-          and c.id is not null
+        SELECT DISTINCT
+        	c.id,
+        	c.NAME,
+        	c.org_id AS orgId,
+        	c.begin_time AS beginTime,
+        	c.end_time AS endTime,
+        	c.arrange_id AS arrangeId,
+        	c.recommend_org_id AS recommendOrgId,
+        	c.composition_id AS compositionId,
+        	c.duration,
+        	c.province_id AS provinceId,
+        	c.city_id AS cityId,
+        	c.county_id AS countyId,
+        	c.addr
+        FROM
+        	class c
+        WHERE
+        	c.id IN (
+        	SELECT
+        		s.class_id
+        	FROM
+        		student s
+        	WHERE
+        		s.user_id = 253
+        	UNION
+        	SELECT
+        		cm.class_id
+        	FROM
+        		class_master cm
+        WHERE
+        	cm.user_id = 253)
     </select>
     <select id="queryFile" resultType="com.czxy.manage.model.vo.files.FileInfo">
         select

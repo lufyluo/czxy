@@ -10,6 +10,7 @@ import com.czxy.manage.model.vo.files.FileInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,14 +22,26 @@ import java.util.stream.Collectors;
 public class ClassFileService {
     @Resource
     private ClassFileMapper classFileMapper;
+    @Value("${czxy.max_file}")
+    private Long fileSize;
 
     public PageInfo<FileInfo> page(ClassFilePageParam<String> pageParam) {
         Page page = PageHelper.startPage(pageParam.getPageIndex(), pageParam.getPageSize());
         List<FileEntity> files = classFileMapper.query(pageParam);
         PageInfo pageInfo = page.toPageInfo();
         List<FileInfo> fileInfos = PojoMapper.INSTANCE.toFileInfos(files);
+        calCanPreview(fileInfos);
         pageInfo.setList(fileInfos);
         return pageInfo;
+    }
+
+    private void calCanPreview(List<FileInfo> fileInfos) {
+        if(fileInfos == null || fileInfos.size() == 0){
+            return;
+        }
+        fileInfos.stream().forEach(n->{
+            n.setCanPreview(fileSize<n.getSize());
+        });
     }
 
     public Boolean delete(Integer classId, Integer fileId) {
