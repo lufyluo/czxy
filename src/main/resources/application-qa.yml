@@ -31,7 +31,7 @@ czxy:
     quetionnaire: czxy_paper
   paper: https://djyh5.zyhqh.com/#/questionnaireInfo?id=
   # 文件可预览大小
-  max_file: 10240
+  max_file: 10240000
 aliyun:
   oss:
     endPoint: YjNOekxXTnVMV0psYVdwcGJtY3VZV3hwZVhWdVkzTXVZMjl0
