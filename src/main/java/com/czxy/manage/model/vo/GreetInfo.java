@@ -15,7 +15,7 @@ public class GreetInfo {
     private String name;
     @ApiModelProperty("问候语")
     private String greet;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "HH:mm:ss",timezone = "GMT+8")
     @ApiModelProperty("问候语发送时间")
     private Date sendTime;
 }

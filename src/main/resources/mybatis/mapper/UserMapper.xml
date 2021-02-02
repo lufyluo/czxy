@@ -358,5 +358,9 @@
     <select id="exist" resultType="java.lang.Integer">
         select count(1) from user where phone = #{phone}
     </select>
+    <select id="queryByBirthDay" resultType="com.czxy.manage.model.entity.UserEntity">
+        SELECT distinct <include refid="base_column" /> from `user`
+        where SUBSTR(idcard FROM 11 FOR 4) = #{birthDay} and wechat_id is not null
+    </select>
 
 </mapper>

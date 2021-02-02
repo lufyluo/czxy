@@ -8,7 +8,6 @@ import com.czxy.manage.model.vo.wechat.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -30,6 +29,8 @@ public class WechatUtil {
     public String createTagApi;
     @Value("${czxy.wechat.addTag}")
     public String addTagApi;
+    @Value("${czxy.wechat.findFans}")
+    public String findFansApi;
     @Value("${czxy.wechat.clearTag}")
     public String clearTagApi;
     @Value("${czxy.wechat.msgTag}")
@@ -193,6 +194,33 @@ public class WechatUtil {
         return tagInfo.getId();
     }
 
+    public Boolean hasFans(Integer tagId) {
+        return hasFans(tagId, true);
+    }
+
+    public Boolean hasFans(Integer tagId, Boolean retry) {
+        JSONObject postData = new JSONObject();
+        postData.put("tagid", tagId);
+        WechatTagResponse body = restTemplate.postForEntity(findFansApi + accessToken, postData, WechatTagResponse.class).getBody();
+        if (body.getCount() != null && body.getCount() == 0) {
+            return false;
+        }
+        if (body.getErrcode() == 40014 || body.getErrcode() == 42001 || body.getErrcode() == 40001) {
+            if (!retry) {
+                return true;
+            }
+            getAccessToken();
+            hasFans(tagId, false);
+        }
+        if (body.getErrcode() != null && body.getErrcode() > 0) {
+            return false;
+        }
+        if (body.getCount() == 0) {
+            return false;
+        }
+        return true;
+    }
+
     public Boolean addTag(List<String> openIds, int tagId) {
         return addTag(openIds, tagId, true);
     }
@@ -235,8 +263,8 @@ public class WechatUtil {
         int pageIndex = 0;
         int pageSize = 50;
         int toIndex = pageIndex * pageSize + pageSize;
-        int max = Math.max(toIndex, openIds.size());
-        while (max < openIds.size()) {
+        int max = Math.min(toIndex, openIds.size());
+        while (max <= openIds.size()) {
             JSONObject postData = new JSONObject();
             List<String> currentIds = openIds.subList(pageIndex, max);
             postData.put("openid_list", currentIds);
@@ -252,7 +280,11 @@ public class WechatUtil {
             if (body.getErrcode() != null && body.getErrcode() > 0) {
                 return false;
             }
-
+            if (max == openIds.size()) {
+                break;
+            }
+            toIndex += pageSize;
+            max = toIndex > openIds.size() ? openIds.size() : toIndex;
         }
         return true;
     }

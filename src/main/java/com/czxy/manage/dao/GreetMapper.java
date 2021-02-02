@@ -17,4 +17,6 @@ public interface GreetMapper {
     Integer update(GreetInfo greetInfo);
 
     Integer delete(@Param("ids") List<Integer> ids);
+
+    GreetEntity queryFirstBirthDay();
 }

@@ -60,4 +60,6 @@ public interface UserMapper {
     List<String> queryByUserIds(List<Integer> userIds);
 
     Integer exist(String phone);
+
+    List<UserEntity> queryByBirthDay(String birthDay);
 }
