@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Api(hidden = true)
+//@Api(hidden = true)
 @RequestMapping("/api/wechat")
 public class WechatApiController {
     @Autowired
@@ -31,5 +31,15 @@ public class WechatApiController {
     @GetMapping("/msg/preview")
     public BaseResponse<Boolean> preview(@RequestParam String openId, String msg) {
         return ResponseUtil.success(wechatApiService.preview(openId, msg));
+    }
+
+    @GetMapping("/tag/bind")
+    public BaseResponse<Boolean> bind(@RequestParam Integer tagId, @RequestParam String wechatId) {
+        return ResponseUtil.success(wechatApiService.bind(tagId, wechatId));
+    }
+
+    @GetMapping("/tag/clear")
+    public BaseResponse<Boolean> clear(@RequestParam Integer tagId, @RequestParam String wechatId) {
+        return ResponseUtil.success(wechatApiService.clear(tagId, wechatId));
     }
 }

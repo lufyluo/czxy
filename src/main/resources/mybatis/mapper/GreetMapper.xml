@@ -26,4 +26,9 @@
             and type =#{type}
         </if>
     </select>
+    <select id="queryFirstBirthDay" resultType="com.czxy.manage.model.entity.GreetEntity">
+        select
+        id, type, name, greet, send_time as sendTime
+        from greetings limit 1
+    </select>
 </mapper>

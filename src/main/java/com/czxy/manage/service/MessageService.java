@@ -137,7 +137,7 @@ public class MessageService {
     }
 
     public Boolean sendTag(SendTagInfo sendInfo) {
-        wechatUtil.send(100, sendInfo.getMessage());
+        wechatUtil.send(sendInfo.getTag(), sendInfo.getMessage());
         return true;
     }
 }
