@@ -62,4 +62,6 @@ public interface UserMapper {
     Integer exist(String phone);
 
     List<UserEntity> queryByBirthDay(String birthDay);
+
+    List<UserEntity> queryWechatUsers();
 }

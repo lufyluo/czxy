@@ -69,7 +69,6 @@
             age=#{age},
             birthday=#{birthday},
             category=#{category},
-            wechat_id=#{wechatId},
             updated_time=now(),
             org_id=#{orgId},
             nation=#{nation},
@@ -361,6 +360,10 @@
     <select id="queryByBirthDay" resultType="com.czxy.manage.model.entity.UserEntity">
         SELECT distinct <include refid="base_column" /> from `user`
         where SUBSTR(idcard FROM 11 FOR 4) = #{birthDay} and wechat_id is not null
+    </select>
+    <select id="queryWechatUsers" resultType="com.czxy.manage.model.entity.UserEntity">
+        SELECT distinct <include refid="base_column" /> from `user`
+        where  wechat_id is not null and wechat_id !=''
     </select>
 
 </mapper>

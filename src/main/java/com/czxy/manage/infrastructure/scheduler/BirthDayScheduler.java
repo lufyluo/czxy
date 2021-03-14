@@ -5,7 +5,10 @@ import com.czxy.manage.dao.UserMapper;
 import com.czxy.manage.infrastructure.util.wechat.WechatUtil;
 import com.czxy.manage.model.entity.GreetEntity;
 import com.czxy.manage.model.entity.UserEntity;
+import com.czxy.manage.model.vo.SendInfo;
+import com.czxy.manage.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -26,7 +29,9 @@ public class BirthDayScheduler {
     private UserMapper userMapper;
     @Resource
     private WechatUtil wechatUtil;
-    private final Integer tagId = 100;
+    @Autowired
+    private MessageService messageService;
+    private final Integer tagId = 102;
 
     //@Scheduled(cron = "0 30 12 ? * *")
     public void birthDayMessageExecute() {
@@ -61,8 +66,47 @@ public class BirthDayScheduler {
         });
     }
 
-    @Scheduled(cron = "0 30 13 ? * *")
+    @Scheduled(cron = "0 30 14 ? * *")
     public void batchBirthDayMessageExecute() {
+        log.info("生日祝福开始！");
+//        List<UserEntity> userEntities = getBirthDayUsers();
+//        if (userEntities == null || userEntities.size() == 0) {
+//            return;
+//        }
+//
+//        GreetEntity greetEntity = greetMapper.queryFirstBirthDay();
+//        if (greetEntity == null) {
+//            log.warn("未设置生日祝福模版！");
+//            return;
+//        }
+//        Boolean notEmptyTagGroups = wechatUtil.hasFans(tagId);
+//        if (notEmptyTagGroups) {
+//            log.error("tag 小组未清空！");
+//            return;
+//        }
+//        List<String> openIDs = userEntities.stream().map(n->n.getWechatId()).collect(Collectors.toList());
+//        Boolean aBoolean1 = wechatUtil.addTag(openIDs, tagId);
+//        if (!aBoolean1) {
+//            log.error("添加组失败");
+//            return;
+//        }
+//        String birthdayMsg = getBirthdayMsg(null, greetEntity.getGreet());
+//        Boolean sendFlag = wechatUtil.send(tagId, birthdayMsg);
+//        if(sendFlag){
+//            log.info("推送成功！");
+//        }
+//        Boolean clearFlag = wechatUtil.clearTag(openIDs, tagId);
+//        if (!clearFlag) {
+//            log.error("清理分组失败！");
+//            return;
+//        }
+        log.info("生日祝福发送成功！");
+    }
+
+
+    @Scheduled(cron = "0 30 14 ? * *")
+    public void batchBirthDaySMSMessageExecute() {
+        log.info("生日祝福开始！");
         List<UserEntity> userEntities = getBirthDayUsers();
         if (userEntities == null || userEntities.size() == 0) {
             return;
@@ -73,24 +117,18 @@ public class BirthDayScheduler {
             log.warn("未设置生日祝福模版！");
             return;
         }
-        Boolean notEmptyTagGroups = wechatUtil.hasFans(tagId);
-        if (notEmptyTagGroups) {
-            log.error("tag 小组未清空！");
-            return;
-        }
-        List<String> openIDs = userEntities.stream().map(n->n.getWechatId()).collect(Collectors.toList());
-        Boolean aBoolean1 = wechatUtil.addTag(openIDs, tagId);
-        if (!aBoolean1) {
-            log.error("添加组失败");
-            return;
-        }
-        String birthdayMsg = getBirthdayMsg(null, greetEntity.getGreet());
-        wechatUtil.send(tagId, birthdayMsg);
-        Boolean clearFlag = wechatUtil.clearTag(openIDs, tagId);
-        if (!clearFlag) {
-            log.error("清理分组失败！");
-            return;
-        }
+
+        userEntities.stream().forEach(n -> {
+            String birthdayMsg = getBirthdayMsg(n, greetEntity.getGreet());
+            SendInfo sendInfo = new SendInfo();
+            sendInfo.setMessage(birthdayMsg);
+            sendInfo.setUserIds(Arrays.asList(n.getId()));
+            sendInfo.setIsToAll(0);
+            messageService.send(sendInfo);
+
+
+        });
+        log.info("生日祝福发送成功！");
     }
 
     private List<UserEntity> getBirthDayUsers() {
@@ -103,7 +141,7 @@ public class BirthDayScheduler {
     }
 
     private String getBirthdayMsg(UserEntity userEntity, String msgTemplate) {
-        if(userEntity == null){
+        if (userEntity == null) {
             return msgTemplate.replace("{user}", "");
         }
         return msgTemplate.replace("{user}", userEntity.getName());

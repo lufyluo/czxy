@@ -24,6 +24,7 @@ czxy:
     createTag: https://api.weixin.qq.com/cgi-bin/tags/create?access_token=
     addTag: https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token=
     clearTag: https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging?access_token=
+    findFans: https://api.weixin.qq.com/cgi-bin/user/tag/get?access_token=
     sendByTag: https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=
     preview: https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token=
     uploadnews: https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=

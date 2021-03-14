@@ -43,7 +43,7 @@ public class WechatUtil {
     public String preview;
     @Value("${czxy.wechat.uploadnews}")
     public String uploadnews;
-    public String accessToken = "35__hAfn2u5b390wYnc5-1fS-Pb7uF8Y4ug4TUgGhG9k1umoRTh9z8userSIEuif5-HKWq4OLcUJRWfTXRIYxeGFSnV0DU1ApN0-qV3O59IlHLob7-he-Huijl8AnEfaPT_jAKI7awbFBNea2XGVREaABACYL";
+    public String accessToken = "42_VX4kDTj-rC5t595HQLaym1xtnrAyv9fGhmnVPCcFTbUtos8hfitIE_KGsVguewDxHfJL_dJok0nSRkALfNPBu95VTmsIMd3jGsfUNiwBFmZKu7imsu6NJ7aCTZ5zRyaqCaCFlAfV1N1iiqPrLKZjAAABAP";
     @Autowired
     private RestTemplate restTemplate;
 
@@ -205,7 +205,7 @@ public class WechatUtil {
         if (body.getCount() != null && body.getCount() == 0) {
             return false;
         }
-        if (body.getErrcode() == 40014 || body.getErrcode() == 42001 || body.getErrcode() == 40001) {
+        if (body.getErrcode() != null && (body.getErrcode() == 40014 || body.getErrcode() == 42001 || body.getErrcode() == 40001)) {
             if (!retry) {
                 return true;
             }
@@ -232,7 +232,7 @@ public class WechatUtil {
         int max = Math.min(toIndex, openIds.size());
         while (max <= openIds.size()) {
             JSONObject postData = new JSONObject();
-            List<String> currentIds = openIds.subList(pageIndex, max);
+            List<String> currentIds = openIds.subList(pageIndex * pageSize, max);
             postData.put("openid_list", currentIds);
             postData.put("tagid", tagId);
             TagInfo body = restTemplate.postForEntity(addTagApi + accessToken, postData, TagInfo.class).getBody();
@@ -250,6 +250,7 @@ public class WechatUtil {
                 break;
             }
             toIndex += pageSize;
+            pageIndex++;
             max = toIndex > openIds.size() ? openIds.size() : toIndex;
         }
         return true;
@@ -297,5 +298,31 @@ public class WechatUtil {
             return map.get("access_token");
         }
         throw new ManageException(ResponseStatus.ACCESSTOKENFAIL);
+    }
+
+    public Boolean sendAll(Integer tagId, String msg, boolean retry) {
+        JSONObject postData = new JSONObject();
+        Map<String, Object> filter = new HashMap<>();
+        filter.put("is_to_all", false);
+        filter.put("tag_id", tagId);
+
+        Map<String, Object> text = new HashMap<>();
+        text.put("content", msg);
+        postData.put("filter", filter);
+        postData.put("text", text);
+        postData.put("msgtype", "text");
+
+        TagInfo body = restTemplate.postForEntity(sendByTagApi + accessToken, postData, TagInfo.class).getBody();
+        if (body.getErrcode() == 40014 || body.getErrcode() == 42001 || body.getErrcode() == 40001) {
+            if (!retry) {
+                return false;
+            }
+            getAccessToken();
+            return send(tagId, msg, false);
+        }
+        if (body.getErrcode() != null && body.getErrcode() > 0) {
+            return false;
+        }
+        return true;
     }
 }
