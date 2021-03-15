@@ -13,6 +13,19 @@ public class ArrayListTest {
         arr.add("b");
         arr.add("c");
         List<String> strings = arr.subList(0, arr.size());
+        strings.forEach(n->{
+            if(n.equals("b")){
+                return;
+            }
+            System.out.println(n);
+        });
+        System.out.println("===================");
+        strings.stream().forEach(n->{
+            if(n.equals("a")){
+                return;
+            }
+            System.out.println(n);
+        });
         System.out.println(strings.size());
     }
 }

@@ -40,3 +40,7 @@ aliyun:
     accessKey: VEZSQlNUUkhORFF5TVZjM1l6bEROMXBMT0VGUlUzRlg=
     accessKeySecret: UTBkMVN6RTJWV294U0dGeVJrczFjRnBhTWtGdk5Ia3liVVZvVUU5cQ==
     bucket: WkdWMkxXTjZlSGs9
+  sms:
+    birthday:
+      template: SMS_213091124
+      sign: 成都村政学院

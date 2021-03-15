@@ -1,7 +1,10 @@
 package com.czxy.manage.infrastructure.scheduler;
 
+import com.alibaba.fastjson.JSON;
 import com.czxy.manage.dao.GreetMapper;
 import com.czxy.manage.dao.UserMapper;
+import com.czxy.manage.infrastructure.util.aliyun.AliyunBirthdaySmsConfig;
+import com.czxy.manage.infrastructure.util.aliyun.SmsUtil;
 import com.czxy.manage.infrastructure.util.wechat.WechatUtil;
 import com.czxy.manage.model.entity.GreetEntity;
 import com.czxy.manage.model.entity.UserEntity;
@@ -12,11 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -32,6 +38,11 @@ public class BirthDayScheduler {
     @Autowired
     private MessageService messageService;
     private final Integer tagId = 102;
+
+    @Autowired
+    private SmsUtil smsUtil;
+    @Autowired
+    private AliyunBirthdaySmsConfig config;
 
     //@Scheduled(cron = "0 30 12 ? * *")
     public void birthDayMessageExecute() {
@@ -66,7 +77,7 @@ public class BirthDayScheduler {
         });
     }
 
-    @Scheduled(cron = "0 30 14 ? * *")
+    //@Scheduled(cron = "0 30 14 ? * *")
     public void batchBirthDayMessageExecute() {
         log.info("生日祝福开始！");
 //        List<UserEntity> userEntities = getBirthDayUsers();
@@ -104,7 +115,7 @@ public class BirthDayScheduler {
     }
 
 
-    @Scheduled(cron = "0 30 14 ? * *")
+    @Scheduled(cron = "0 30 09 ? * *")
     public void batchBirthDaySMSMessageExecute() {
         log.info("生日祝福开始！");
         List<UserEntity> userEntities = getBirthDayUsers();
@@ -125,8 +136,14 @@ public class BirthDayScheduler {
             sendInfo.setUserIds(Arrays.asList(n.getId()));
             sendInfo.setIsToAll(0);
             messageService.send(sendInfo);
+            if (StringUtils.isEmpty(n.getPhone())) {
+                return;
+            }
 
-
+            Map param = new HashMap();
+            param.put("user", n.getName());
+            String templateParam = JSON.toJSONString(param);
+            smsUtil.sendTemplate(config.getTemplate(), config.getSign(), n.getPhone(), templateParam);
         });
         log.info("生日祝福发送成功！");
     }
