@@ -3,6 +3,7 @@ package com.czxy.manage.dao;
 import com.czxy.manage.model.entity.ContactLogEntity;
 import com.czxy.manage.model.vo.customerContacts.ContactLogInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,9 +11,9 @@ import java.util.List;
 public interface ContactLogMapper {
     Integer insert(ContactLogInfo contactLogInfo);
 
-    List<ContactLogEntity> query(Integer planId);
+    List<ContactLogEntity> query(@Param("planId") Integer planId);
 
-    Integer delete(Integer id);
+    Integer delete(@Param("id") Integer id);
 
     Integer update(ContactLogEntity entity);
 }

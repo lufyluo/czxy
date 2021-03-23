@@ -10,10 +10,11 @@ import java.util.List;
 public interface OptionMapper {
     Integer batchInsert(List<OptionEntity> optionEntities);
 
-    Integer deleteByStemId(Integer stemId);
+    Integer deleteByStemId(@Param("stemId") Integer stemId);
 
     Integer batchUpdate(List<OptionEntity> updateOptions);
+
     Integer update(OptionEntity optionEntity);
 
-    Integer deleteOptions(@Param("optionIds") List<Integer> optionIds, Integer stemId);
+    Integer deleteOptions(@Param("optionIds") List<Integer> optionIds, @Param("stemId") Integer stemId);
 }

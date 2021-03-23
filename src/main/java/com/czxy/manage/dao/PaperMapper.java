@@ -2,11 +2,12 @@ package com.czxy.manage.dao;
 
 import com.czxy.manage.model.entity.PaperEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface PaperMapper {
-    Integer updateState(Integer paperId, int state);
+    Integer updateState(@Param("paperId") Integer paperId, @Param("state") int state);
 
-    PaperEntity query(Integer paperId);
+    PaperEntity query(@Param("paperId") Integer paperId);
 }
 

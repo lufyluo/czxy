@@ -13,11 +13,11 @@ import java.util.List;
  */
 @Mapper
 public interface AccountMapper {
-    AccountEntity query(String account, String pwd);
+    AccountEntity query(@Param("account") String account, @Param("pwd") String pwd);
 
-    Integer updatePwd(int id, String newPwd);
+    Integer updatePwd(@Param("id") int id,@Param("newPwd") String newPwd);
 
-    Integer delete(Integer id);
+    Integer delete(@Param("id") Integer id);
 
     Integer insert(AccountEntity accountEntity);
 
@@ -25,5 +25,5 @@ public interface AccountMapper {
 
     Integer update(AccountEntity accountEntity);
 
-    Integer exist(String account);
+    Integer exist(@Param("account") String account);
 }

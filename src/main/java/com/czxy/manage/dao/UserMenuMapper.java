@@ -2,14 +2,15 @@ package com.czxy.manage.dao;
 
 import com.czxy.manage.model.entity.UserMenuEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface UserMenuMapper {
-    UserMenuEntity getByUserId(Integer userId);
+    UserMenuEntity getByUserId(@Param("userId") Integer userId);
 
-    Integer delete(Integer userId);
+    Integer delete(@Param("userId") Integer userId);
 
-    Integer insert(Integer userId, String menus);
+    Integer insert(@Param("userId") Integer userId, @Param("menus") String menus);
 }

@@ -5,6 +5,7 @@ import com.czxy.manage.model.entity.questionnaire.stem.PaperStemEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.StemEntity;
 import com.czxy.manage.model.entity.questionnaire.stem.StemOptionEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface StemMapper {
 
     List<StemOptionEntity> query(PageParam<String> pageParam);
 
-    List<PaperStemEntity> queryByPaperId(Integer paperId);
+    List<PaperStemEntity> queryByPaperId(@Param("paperId") Integer paperId);
 }

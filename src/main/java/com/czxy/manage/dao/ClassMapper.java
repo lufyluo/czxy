@@ -18,23 +18,23 @@ public interface ClassMapper {
 
     Integer delete(@Param("id") List<Integer> id);
 
-    ClassInformationEntity query(Integer id);
+    ClassInformationEntity query(@Param("id") Integer id);
 
-    List<ClassStudentEntity> queryAllStudent(Integer classId);
+    List<ClassStudentEntity> queryAllStudent(@Param("classId") Integer classId);
 
     Integer insert(ClassEntity classEntity);
 
     Integer update(ClassEntity classEntity);
 
-    Integer queryByName(String className);
+    Integer queryByName(@Param("className")String className);
 
-    ClassEntity queryClass(Integer classId);
+    ClassEntity queryClass(@Param("classId") Integer classId);
 
-    Integer queryRecentByStudentUserId(Integer userId);
+    Integer queryRecentByStudentUserId(@Param("userId")Integer userId);
 
-    Integer clearStudent(Integer classId);
+    Integer clearStudent(@Param("classId")Integer classId);
 
     List<CountEntity> queryCount(@Param("collect") List<Integer> collect);
 
-    List<RankInfo> queryByTime(Date beginTime, Date endTime);
+    List<RankInfo> queryByTime(@Param("beginTime") Date beginTime,@Param("endTime") Date endTime);
 }

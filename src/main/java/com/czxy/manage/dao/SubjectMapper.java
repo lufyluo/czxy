@@ -12,19 +12,19 @@ import java.util.List;
 @Mapper
 public interface SubjectMapper {
 
-    List<SubjectDetailEntity> query(String param, Integer typeId,Integer category);
+    List<SubjectDetailEntity> query(@Param("param") String param, @Param("typeId") Integer typeId, @Param("category") Integer category);
 
     Integer add(SubjectEntity subjectEntity);
 
-    SubjectEntity queryById(Integer subjectId);
+    SubjectEntity queryById(@Param("subjectId") Integer subjectId);
 
     Integer update(SubjectEntity subjectEntity);
 
     Integer delete(@Param("subjectIds") List<Integer> subjectIds);
 
-    List<CourseDetailEntity> queryByArrangeId(Integer arrangeId);
+    List<CourseDetailEntity> queryByArrangeId(@Param("arrangeId") Integer arrangeId);
 
-    List<SubjectEntity> getByTeacherId(Integer teacherId);
+    List<SubjectEntity> getByTeacherId(@Param("teacherId") Integer teacherId);
 
     Integer batchInsert(List<SubjectEntity> subjectEntities);
 }

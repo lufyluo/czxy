@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Mapper
 public interface UserMapper {
-    UserEntity query(int id);
+    UserEntity query(@Param("id") int id);
 
     Integer insert(UserEntity userEntity);
 
@@ -25,7 +25,7 @@ public interface UserMapper {
 
     Integer update(UserEntity userEntity);
 
-    UserEntity queryByToken(String token);
+    UserEntity queryByToken(@Param("token") String token);
 
     Integer updateByStudent(UserUpdateEntity userUpdateEntity);
 
@@ -33,35 +33,35 @@ public interface UserMapper {
 
     Integer updateByTeacher(UserUpdateEntity userUpdateEntity);
 
-    List<UserEntity> queryMaster(String param);
+    List<UserEntity> queryMaster(@Param("param") String param);
 
-    List<UserEntity> queryClassLeader(String param);
+    List<UserEntity> queryClassLeader(@Param("param") String param);
 
-    Integer queryId(String phone,String name);
+    Integer queryId(@Param("phone") String phone, @Param("name") String name);
 
-    Integer updateWechat(Integer userId,String openId);
+    Integer updateWechat(@Param("userId") Integer userId, @Param("openId") String openId);
 
     Integer updateByCustomer(CustomerInfo customerInfo);
 
     List<UserEntity> queryByPhones(List<String> phones);
 
-    UserEntity queryByWechatId(String openId);
+    UserEntity queryByWechatId(@Param("openId") String openId);
 
-    StudentClassNameEntity queryclassName(Integer userId);
+    StudentClassNameEntity queryclassName(@Param("userId") Integer userId);
 
-    UserEntity queryByUserId(Integer userId);
+    UserEntity queryByUserId(@Param("userId") Integer userId);
 
-    List<ClassEntity> queryClassId(Integer id);
+    List<ClassEntity> queryClassId(@Param("id") Integer id);
 
     List<FileInfo> queryFile(@Param("classIds") List<Integer> classIds);
 
-    List<ClassWechatInfo> queryWechatClass(Integer userId);
+    List<ClassWechatInfo> queryWechatClass(@Param("userId") Integer userId);
 
     List<String> queryByUserIds(List<Integer> userIds);
 
-    Integer exist(String phone);
+    Integer exist(@Param("phone") String phone);
 
-    List<UserEntity> queryByBirthDay(String birthDay);
+    List<UserEntity> queryByBirthDay(@Param("birthDay") String birthDay);
 
     List<UserEntity> queryWechatUsers();
 }

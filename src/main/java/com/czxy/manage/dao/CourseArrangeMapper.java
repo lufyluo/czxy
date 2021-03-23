@@ -2,6 +2,7 @@ package com.czxy.manage.dao;
 
 import com.czxy.manage.model.entity.CourseArrangeEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -9,8 +10,8 @@ import java.util.List;
 public interface CourseArrangeMapper {
     Integer batchInsert(List<CourseArrangeEntity> courseArrangeEntities);
 
-    Integer deleteByArrangeId(Integer arrangeId);
+    Integer deleteByArrangeId(@Param("arrangeId") Integer arrangeId);
 
-    Integer queryRecentClassIdByUserId(Integer userId);
+    Integer queryRecentClassIdByUserId(@Param("userId") Integer userId);
 
 }

@@ -9,15 +9,15 @@ import java.util.List;
 
 @Mapper
 public interface ArrangeMapper {
-    ClassArrangeWithTimeEntity get(Integer classId);
+    ClassArrangeWithTimeEntity get(@Param("classId") Integer classId);
 
     Integer insert(ArrangeEntity arrangeEntity);
 
-    List<ArrangeEntity> page(String param);
+    List<ArrangeEntity> page(@Param("param") String param);
 
     Integer delete(@Param("arrangeIds") List<Integer> arrangeIds);
 
-    ClassArrangeWithTimeEntity getById(Integer id);
+    ClassArrangeWithTimeEntity getById(@Param("id") Integer id);
 
     Integer update(ArrangeEntity arrangeEntity);
 }

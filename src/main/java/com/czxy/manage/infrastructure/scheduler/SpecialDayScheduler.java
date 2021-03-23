@@ -28,7 +28,7 @@ public class SpecialDayScheduler {
     private WechatUtil wechatUtil;
     private final Integer tagId = 102;
 
-    @Scheduled(cron = "20 46 20 ? * *")
+    //@Scheduled(cron = "20 46 20 ? * *")
     public void batchBirthDayMessageExecute() {
         log.info("新年祝福开始！");
         List<UserEntity> userEntities = getUsers();

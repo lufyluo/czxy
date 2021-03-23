@@ -31,19 +31,19 @@ public interface StudentMapper {
 
     Integer batchInsert(List<StudentEntity> list);
 
-    Integer clearLeader(Integer classId);
+    Integer clearLeader(@Param("classId") Integer classId);
 
-    Integer setLeader(Integer userId, Integer classId);
+    Integer setLeader(@Param("userId") Integer userId, @Param("classId") Integer classId);
 
-    Integer updateByUserId(Integer userId);
+    Integer updateByUserId(@Param("userId") Integer userId);
 
-    Boolean queryByUserId(Integer userId);
+    Boolean queryByUserId(@Param("userId") Integer userId);
 
     Integer updateClass(List<StudentAddInfo> studentAddInfos);
 
-    Integer updateStudentClass(Integer classId,@Param("studentIds") List<Integer> studentIds);
+    Integer updateStudentClass(@Param("classId") Integer classId, @Param("studentIds") List<Integer> studentIds);
 
-    StudentEntity queryStudent(Integer userId);
+    StudentEntity queryStudent(@Param("userId") Integer userId);
 
-    List<RankInfo> queryByTime(Date beginTime, Date endTime);
+    List<RankInfo> queryByTime(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime);
 }

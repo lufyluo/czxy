@@ -3,12 +3,13 @@ package com.czxy.manage.dao;
 import com.czxy.manage.model.entity.CustomerEntity;
 import com.czxy.manage.model.vo.customer.CustomerInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface CustomerMapper {
-    List<CustomerEntity> query(String param, Integer star);
+    List<CustomerEntity> query(@Param("param") String param, @Param("star") Integer star);
 
     Integer update(CustomerInfo customerInfo);
 
@@ -18,5 +19,5 @@ public interface CustomerMapper {
 
     Integer updateAll(CustomerEntity customerEntity);
 
-    Integer countContactor(Integer orgId);
+    Integer countContactor(@Param("orgId") Integer orgId);
 }

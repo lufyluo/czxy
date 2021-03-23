@@ -34,7 +34,7 @@ public interface TeacherMapper {
     Integer batchInsert(List<TeacherEntity> teacherEntities);
 
 
-    TeacherEntity queryByUserId(Integer userId);
+    TeacherEntity queryByUserId(@Param("userId") Integer userId);
 
     List<TeacherEntity> queryByUserIds(List<Integer> userIds);
 

@@ -4,6 +4,7 @@ import com.czxy.manage.model.entity.MessageEntity;
 import com.czxy.manage.model.entity.SendEntity;
 import com.czxy.manage.model.vo.message.UserPageParam;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,5 +14,5 @@ public interface MessageMapper {
 
     List<MessageEntity> query(UserPageParam<String> pageParam);
 
-    MessageEntity queryByUserId(Integer userId);
+    MessageEntity queryByUserId(@Param("userId") Integer userId);
 }

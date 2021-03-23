@@ -3,6 +3,7 @@ package com.czxy.manage.dao;
 import com.czxy.manage.model.entity.AccountEntity;
 import com.czxy.manage.model.vo.user.UserAccountInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  */
 @Mapper
 public interface UserAccountMapper {
-    AccountEntity query(String pwd, String token);
+    AccountEntity query(@Param("pwd") String pwd, @Param("token") String token);
 
-    List<UserAccountInfo> queryAll(String param);
+    List<UserAccountInfo> queryAll(@Param("param") String param);
 }

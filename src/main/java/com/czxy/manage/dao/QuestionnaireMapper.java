@@ -18,7 +18,7 @@ import java.util.List;
 
 @Mapper
 public interface QuestionnaireMapper {
-    List<PaperEntity> page(String param);
+    List<PaperEntity> page(@Param("param") String param);
 
     Integer insert(PaperCreateInfo paperInfo);
 
@@ -28,17 +28,17 @@ public interface QuestionnaireMapper {
 
     void updateState(@Param("paperIds") List<Integer> paperIds, @Param("state") int state);
 
-    List<PaperPageEntity> get(String param,Integer userId);
+    List<PaperPageEntity> get(@Param("param") String param, @Param("userId") Integer userId);
 
     Boolean insertBySubmit(PaperSubmitInfo n);
 
-    Boolean updateSend(Integer userId, Integer paperId);
+    Boolean updateSend(@Param("userId") Integer userId, @Param("paperId") Integer paperId);
 
     Integer batchInsert(List<PaperSubmitEntity> paperSubmitInfo);
 
-    List<PaperDetailEntity> queryPaperDetail(Integer userId, Integer paperId);
+    List<PaperDetailEntity> queryPaperDetail(@Param("userId") Integer userId, @Param("paperId") Integer paperId);
 
-    Integer clearAnswers(Integer paperId, Integer userId);
+    Integer clearAnswers(@Param("paperId") Integer paperId, @Param("userId") Integer userId);
 
     Integer insertPaper(PaperEntity paperEntity);
 
@@ -48,13 +48,13 @@ public interface QuestionnaireMapper {
 
     Integer insertOption(OptionEntity optionEntity);
 
-    PaperEntity queryPaper(Integer paperId);
+    PaperEntity queryPaper(@Param("paperId") Integer paperId);
 
-    List<PaperCopyStemEntity> queryPaperStem(Integer paperId);
+    List<PaperCopyStemEntity> queryPaperStem(@Param("paperId") Integer paperId);
 
-    StemEntity queryStem(Integer stemId);
+    StemEntity queryStem(@Param("stemId") Integer stemId);
 
-    List<OptionEntity> queryOption(Integer stemId);
+    List<OptionEntity> queryOption(@Param("stemId") Integer stemId);
 
-    PaperSendEntity querySendState(Integer userId, Integer paperId);
+    PaperSendEntity querySendState(@Param("userId") Integer userId, @Param("paperId") Integer paperId);
 }

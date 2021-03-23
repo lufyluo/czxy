@@ -13,9 +13,9 @@ public interface OrgMapper {
 
     Integer update(OrgEntity orgEntity);
 
-    OrgEntity query(int orgId);
+    OrgEntity query(@Param("orgId") int orgId);
 
-    List<OrgEntity> queryAll(String param);
+    List<OrgEntity> queryAll(@Param("param") String param);
 
     List<OrgEntity> getByNames(@Param("list") List<String> list);
 
@@ -23,9 +23,9 @@ public interface OrgMapper {
 
     Integer updateStarAndName(CustomerInfo customerInfo);
 
-    Integer updateStar(Integer orgId, Integer orgStar);
+    Integer updateStar(@Param("orgId") Integer orgId, @Param("orgStar") Integer orgStar);
 
-    OrgEntity queryByNames(String orgName);
+    OrgEntity queryByNames(@Param("orgName") String orgName);
 
     Integer updateAll(OrgEntity orgEntity);
 }
