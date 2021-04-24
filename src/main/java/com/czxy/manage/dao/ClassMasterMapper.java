@@ -15,6 +15,8 @@ public interface ClassMasterMapper {
 
     Integer delete(@Param("masterId")Integer masterId,@Param("classId") Integer classId);
 
+    Integer clearMaster(@Param("classId") Integer classId);
+
     Integer clearClassAssistant(@Param("classId") Integer classId);
 
     List<MasterInfo> queryMasterAssistants(List<Integer> classIds);

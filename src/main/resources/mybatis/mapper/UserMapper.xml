@@ -112,6 +112,11 @@
             updated_time=now()
         where id = #{userId}
     </update>
+    <update id="updateCategory">
+        update user
+        set category=#{category}
+        where id = #{id}
+    </update>
     <delete id="delete">
         delete from user where id in
         <foreach collection="id" item="item" index="index"

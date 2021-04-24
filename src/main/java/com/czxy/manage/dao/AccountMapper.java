@@ -1,6 +1,7 @@
 package com.czxy.manage.dao;
 
 import com.czxy.manage.model.entity.AccountEntity;
+import com.czxy.manage.model.vo.user.UserCreateInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,4 +27,8 @@ public interface AccountMapper {
     Integer update(AccountEntity accountEntity);
 
     Integer exist(@Param("account") String account);
+
+    Integer existUserAccount(@Param("account") String account,@Param("userId") Integer userId);
+
+    Integer updateAccount(AccountEntity userInfo);
 }

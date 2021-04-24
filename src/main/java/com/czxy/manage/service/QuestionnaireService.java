@@ -149,12 +149,19 @@ public class QuestionnaireService {
                 PaperDetailEntity stemInfo = entry.getValue().get(0);
                 StemAnalysisDetailInfo stemDetailInfo = PojoMapper.INSTANCE.toPaperDetailEntity(stemInfo);
                 stemDetailInfo.setId(entry.getKey());
+//                if (stemDetailInfo.getCategory() == 1 && total > 0) {
+//                    int avg = entry.getValue().stream().filter(n -> n.getOptionSelected().equals(1)).collect(Collectors.summingInt(n -> n.getOptionScore()));
+//                    String format = decimalFormat.format((double) avg / total);
+//                    stemDetailInfo.setAvgScore(format);
+//                }
+                List<OptionAnalysisDetailInfo> options = getOptions(entry.getValue(), total);
                 if (stemDetailInfo.getCategory() == 1 && total > 0) {
-                    int avg = entry.getValue().stream().filter(n -> n.getOptionSelected() == 1).collect(Collectors.summingInt(n -> n.getOptionScore()));
-                    String format = decimalFormat.format((double) avg / total);
+                    int personCount = options.stream().mapToInt(n -> n.getCount()).sum();
+                    int totalPercent = options.stream().mapToInt(n -> n.getScore() * n.getCount()).sum();
+                    String format = decimalFormat.format((double) totalPercent / personCount);
                     stemDetailInfo.setAvgScore(format);
                 }
-                stemDetailInfo.setAnswers(getOptions(entry.getValue(), total));
+                stemDetailInfo.setAnswers(options);
                 stemDetailInfos.add(stemDetailInfo);
             }
 
@@ -168,7 +175,7 @@ public class QuestionnaireService {
         List<OptionAnalysisDetailInfo> optionAnalysisDetailInfos = new ArrayList<>();
         if (ObjectUtils.nullSafeEquals("问答题", options.get(0).getType())) {
             OptionAnalysisDetailInfo optionAnalysisDetailInfo = PojoMapper.INSTANCE.toOptionAnalysisDetailInfo(options.get(0));
-            List<PaperDetailEntity> collect = options.stream().filter(n -> !StringUtils.isEmpty(n.getAnswerText())).collect(Collectors.toList());
+            List<PaperDetailEntity> collect = options.stream().distinct().filter(n -> !StringUtils.isEmpty(n.getAnswerText())).collect(Collectors.toList());
             if (collect != null && collect.size() > 0) {
                 optionAnalysisDetailInfo.setCount(collect.size());
                 List<String> AnswerTexts = options.stream().map(n -> n.getUserName() + ":" + n.getAnswerText()).collect(Collectors.toList());
@@ -180,6 +187,9 @@ public class QuestionnaireService {
         }
 
         Map<Integer, List<PaperDetailEntity>> collect = options.stream().collect(Collectors.groupingBy(n -> n.getOptionId()));
+        int realTotal = collect.entrySet().stream()
+                .map(n -> n.getValue().stream().filter(x -> x.getAnswerId() != null).collect(Collectors.toList()))
+                .mapToInt(n->n.size()).sum();
         for (Map.Entry<Integer, List<PaperDetailEntity>> entry : collect.entrySet()) {
             if (entry.getValue() != null && entry.getValue().size() > 0) {
                 OptionAnalysisDetailInfo optionAnalysisDetailInfo = PojoMapper.INSTANCE.toOptionAnalysisDetailInfo(entry.getValue().get(0));
@@ -190,7 +200,7 @@ public class QuestionnaireService {
                 optionAnalysisDetailInfo.setIndex(entry.getValue().get(0).getOptionIndex());
                 Long count = entry.getValue().stream().filter(n -> n.getAnswerId() != null).collect(Collectors.counting());
                 if (total > 0) {
-                    float percent = (int) ((new BigDecimal((float) count / total).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()) * 100);
+                    float percent = (int) ((new BigDecimal((float) count / realTotal).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()) * 100);
                     optionAnalysisDetailInfo.setPercent(percent + "%");
                 }
                 optionAnalysisDetailInfo.setCount(count.intValue());

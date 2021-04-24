@@ -11,6 +11,9 @@
     <update id="update">
         update account set account = #{account}, password =#{password},updated_time = now() where user_id =#{id}
     </update>
+    <update id="updateAccount">
+        update account set account = #{account}, password =#{password},updated_time = now() where user_id =#{userId}
+    </update>
     <delete id="delete">
         delete from account where id = #{id}
     </delete>
@@ -28,6 +31,9 @@
     </select>
     <select id="exist" resultType="java.lang.Integer">
         select count(1) from account where account = #{account}
+    </select>
+    <select id="existUserAccount" resultType="java.lang.Integer">
+        select count(1) from account where account = #{account} and user_id = #{userId}
     </select>
 
     <insert id="insert" parameterType="com.czxy.manage.model.entity.AccountEntity" useGeneratedKeys="true"

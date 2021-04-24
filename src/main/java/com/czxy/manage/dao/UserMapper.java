@@ -4,6 +4,7 @@ import com.czxy.manage.model.entity.*;
 import com.czxy.manage.model.vo.classes.ClassWechatInfo;
 import com.czxy.manage.model.vo.customer.CustomerInfo;
 import com.czxy.manage.model.vo.files.FileInfo;
+import com.czxy.manage.model.vo.user.UserCreateInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -64,4 +65,6 @@ public interface UserMapper {
     List<UserEntity> queryByBirthDay(@Param("birthDay") String birthDay);
 
     List<UserEntity> queryWechatUsers();
+
+    Integer updateCategory(UserCreateInfo userInfo);
 }

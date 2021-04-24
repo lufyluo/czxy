@@ -24,10 +24,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -54,14 +51,38 @@ public class UserService {
 
     @Transactional
     public Boolean add(UserCreateInfo userInfo) {
-        checkParam(userInfo);
-        insertIfAbsentOrg(userInfo);
-        UserEntity userEntity = PojoMapper.INSTANCE.toUserEntity(userInfo);
-        userMapper.insert(userEntity);
+        List<UserEntity> userEntities = userMapper.queryByPhones(Arrays.asList(userInfo.getPhone()));
+        //添加班主任特殊逻辑
+        if (userEntities != null && userEntities.size() > 0 && userInfo.getCategory() != null && userInfo.getCategory() == 3) {
+            UserEntity userEntity = userEntities.get(0);
+            userInfo.setId(userEntity.getId());
+            userMapper.updateCategory(userInfo);
+            AccountEntity accountEntity = PojoMapper.INSTANCE.toAccountEntity(userInfo);
+            accountEntity.setUserId(userEntity.getId());
+            accountEntity.setPassword(accountService.decodePassword(accountEntity.getPassword(), null));
+            Integer integer = accountMapper.updateAccount(accountEntity);
+            if (integer == 0) {
+                accountMapper.insert(accountEntity);
+            }
+            return true;
+        }
+        if (userEntities == null || userEntities.size() == 0) {
+            insertIfAbsentOrg(userInfo);
+            UserEntity userEntity = PojoMapper.INSTANCE.toUserEntity(userInfo);
+            Integer insert = userMapper.insert(userEntity);
+            userEntities.add(userEntity);
+            if (insert != 1) {
+                throw new ManageException(ResponseStatus.FAILURE, "添加用户失败，请联系管理员！");
+            }
+        }
 
+        Integer result = accountMapper.existUserAccount(userInfo.getAccount(), userEntities.get(0).getId());
+        if (result >= 1) {
+            throw new ManageException(ResponseStatus.DATAEXIST, "该用户已经拥有账号！");
+        }
 
         AccountEntity accountEntity = PojoMapper.INSTANCE.toAccountEntity(userInfo);
-        accountEntity.setUserId(userEntity.getId());
+        accountEntity.setUserId(userEntities.get(0).getId());
         accountEntity.setPassword(accountService.decodePassword(accountEntity.getPassword(), null));
         accountMapper.insert(accountEntity);
         return true;
@@ -212,7 +233,7 @@ public class UserService {
         return classWechatInfos;
     }
 
-    private void checkParam(UserCreateInfo userCreateInfo){
+    private void checkParam(UserCreateInfo userCreateInfo) {
         Integer user = userMapper.exist(userCreateInfo.getPhone());
         if (user > 0) {
             throw new ManageException(ResponseStatus.DATAEXIST, "电话已被使用！");

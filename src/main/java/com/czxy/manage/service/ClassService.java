@@ -25,7 +25,6 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -194,7 +193,7 @@ public class ClassService {
                 , classEntity.getId());
         updateStudents(classCreateInfo);
         classFileService.batchUpdate(classCreateInfo.getId(), classCreateInfo.getFileIds());
-        classMasterMapper.delete(classCreateInfo.getMasterId(), classEntity.getId());
+        classMasterMapper.clearMaster(classEntity.getId());
         if (classCreateInfo.getMasterId() != null && classCreateInfo.getMasterId() > 0) {
             classMasterMapper.insertMaster(classCreateInfo.getMasterId(), classEntity.getId(), 0);
         }

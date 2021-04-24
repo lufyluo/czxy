@@ -20,6 +20,11 @@
         where class_id = #{classId}
           and user_id = #{masterId}
     </delete>
+    <delete id="clearMaster">
+        delete
+        from class_master
+        where class_id = #{classId}
+    </delete>
     <select id="queryClass" resultType="java.lang.Integer">
         select class_id
         from class_master
